@@ -18,14 +18,13 @@
 
 image: node:22-alpine
 
-variables:
-  NODE_ENV: production
-  NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.npm"
-
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
   - deploy
+
+variables:
+  NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.npm"
 
 build-vite:
   stage: build
@@ -42,9 +41,7 @@ build-vite:
   script:
     - npm run build
   artifacts:
-    when: on_success
-    paths:
-      - dist/
+    paths: [dist/]
     expire_in: 1 week
 
 build-job:       # This job runs in the build stage, which runs first.
