@@ -1,20 +1,45 @@
-# React + Vite
+# TZR Rechner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Eine leichtgewichtige React-Anwendung auf Basis von Vite. Das Projekt dient als Ausgangspunkt für den Teilzeitausbildungsrechner und bietet Hot Module Reloading sowie Tailwind CSS für das Styling.
 
-Currently, two official plugins are available:
+## Voraussetzungen
+- Node.js 20 oder neuer (empfohlen)
+- npm 10 oder neuer
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Installation
+```bash
+npm install
+```
 
-## React Compiler
+## Lokale Entwicklung
+```bash
+npm run dev
+```
+Der Dev-Server läuft standardmäßig unter `http://localhost:5173`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Qualitätschecks
+- `npm run lint` überprüft den Code mit ESLint.
 
-## Expanding the ESLint configuration
+## Produktion
+```bash
+npm run build
+npm run preview
+```
+`build` erzeugt den Produktionsbuild im Ordner `dist`, `preview` dient zur lokalen Kontrolle des Builds.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Docker
+```bash
+docker build -t tzr-rechner .
+docker run -p 8080:80 tzr-rechner
+```
+Der Container liefert den Produktionsbuild über Nginx aus und ist anschließend unter `http://localhost:8080` erreichbar.
 
-## Running via docker:
-Build: docker build -t tzr-rechner .
-Run: docker run -p 8080:80 tzr-rechner
+## Projektstruktur
+- `src/` – React-Komponenten und Tailwind-Konfiguration
+- `public/` – statische Assets
+- `vite.config.js` – Vite-Konfiguration mit React-Plugin
+
+## Weiterführende Links
+- [Vite Dokumentation](https://vite.dev)
+- [React Dokumentation](https://react.dev)
+- [Tailwind CSS](https://tailwindcss.com)
