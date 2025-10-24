@@ -1,29 +1,44 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import React from "react";
+import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import FulltimeHoursInput, { FULLTIME_INPUT_NAME } from "../FulltimeHoursInput.jsx";
+import userEvent from "@testing-library/user-event";
+import FulltimeHoursInput, {
+  FULLTIME_INPUT_NAME,
+  FULLTIME_MIN,
+  FULLTIME_MAX,
+} from "../FulltimeHoursInput";
 
 describe("FulltimeHoursInput", () => {
-  it("zeigt den Standardwert 40 Stunden an", () => {
+  it("renders with default value and no error", () => {
     render(<FulltimeHoursInput />);
-    const input = screen.getByRole("spinbutton", { name: FULLTIME_INPUT_NAME });
-    expect(input.value).toBe("40");
+    const input = screen.getByTestId(FULLTIME_INPUT_NAME);
+
+    expect(input).toHaveValue(40);
+    expect(input).toHaveAttribute("min", String(FULLTIME_MIN));
+    expect(input).toHaveAttribute("max", String(FULLTIME_MAX));
+    expect(input).toHaveAttribute("aria-invalid", "false");
+    expect(screen.queryByRole("alert")).toBeNull();
   });
 
-  it("zeigt eine Fehlermeldung bei zu hoher Eingabe", () => {
+  it("shows an error when value is out of range", async () => {
     render(<FulltimeHoursInput />);
-    const input = screen.getByRole("spinbutton", { name: FULLTIME_INPUT_NAME });
-    fireEvent.change(input, { target: { value: "50" } });
-    expect(screen.getByText(/zahl zwischen 35 und 45/i)).toBeInTheDocument();
+    const input = screen.getByTestId(FULLTIME_INPUT_NAME);
+
+    await userEvent.clear(input);
+    await userEvent.type(input, "50");
+
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("alert")).toHaveTextContent("ERR 35-45");
   });
 
-  it("entfernt die Fehlermeldung, wenn Eingabe wieder gültig ist", () => {
+  it("accepts a value within the range", async () => {
     render(<FulltimeHoursInput />);
-    const input = screen.getByRole("spinbutton", { name: FULLTIME_INPUT_NAME });
+    const input = screen.getByTestId(FULLTIME_INPUT_NAME);
 
-    fireEvent.change(input, { target: { value: "50" } });
-    expect(screen.getByText(/zahl zwischen 35 und 45/i)).toBeInTheDocument();
+    await userEvent.clear(input);
+    await userEvent.type(input, "42");
 
-    fireEvent.change(input, { target: { value: "40" } });
-    expect(screen.queryByText(/zahl zwischen 35 und 45/i)).not.toBeInTheDocument();
+    expect(input).toHaveAttribute("aria-invalid", "false");
+    expect(screen.queryByRole("alert")).toBeNull();
   });
 });

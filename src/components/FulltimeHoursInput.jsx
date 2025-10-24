@@ -1,59 +1,57 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const FULLTIME_INPUT_NAME = "fulltime-hours-input";
+export const FULLTIME_ERROR_ID = `${FULLTIME_INPUT_NAME}-error`;
+export const FULLTIME_MIN = 35;
+export const FULLTIME_MAX = 45;
+
+export const isFulltimeHoursValid = (raw) => {
+  if (raw === "") return false;
+  const n = Number(raw);
+  return !Number.isNaN(n) && n >= FULLTIME_MIN && n <= FULLTIME_MAX;
+};
 
 export default function FulltimeHoursInput() {
-  const [hours, setHours] = useState(40); // Standardwert 40 Stunden
-  const [error, setError] = useState("");
-
-  const MIN = 35;
-  const MAX = 45;
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-
-    // Leere Eingabe behandeln (z. B. bei Löschung)
-    if (value === "") {
-      setHours("");
-      setError("Bitte geben Sie eine Zahl zwischen 35 und 45 ein.");
-      return;
-    }
-
-    const num = Number(value);
-
-    if (isNaN(num) || num < MIN || num > MAX) {
-      setError("Ungültige Eingabe: Bitte geben Sie eine Zahl zwischen " + MIN + " und " + MAX + " ein.");
-    } else {
-      setError("");
-    }
-
-    setHours(value);
-  };
+  const { t } = useTranslation();
+  const [hours, setHours] = useState(40); // Default 40 hours
+  const isValid = isFulltimeHoursValid(hours);
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      <label htmlFor="fulltime-hours" className="font-semibold text-gray-800">
-        Wie viele Stunden sind im Unternehmen üblich?:
+      <label
+        htmlFor={FULLTIME_INPUT_NAME}
+        className="font-semibold text-gray-800"
+      >
+        {t("fulltimeHours.label")}
       </label>
 
       <input
-        id="fulltime-hours"
-        name="fulltime-hours"
+        id={FULLTIME_INPUT_NAME}
+        name={FULLTIME_INPUT_NAME}
+        data-testid={FULLTIME_INPUT_NAME}
         type="number"
-        inputMode="numeric"           // optimierte mobile Tastatur
-        min={MIN}
-        max={MAX}
+        inputMode="numeric"
+        min={FULLTIME_MIN}
+        max={FULLTIME_MAX}
         step={0.5}
         value={hours}
-        onChange={handleChange}
-        data-testid={FULLTIME_INPUT_NAME}
-        className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 
-          ${error ? "border-red-500" : "border-gray-300"}`}
+        onChange={(e) => setHours(e.target.value)}
+        aria-invalid={!isValid}
+        aria-describedby={FULLTIME_ERROR_ID}
+        className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+          !isValid ? "border-red-500" : "border-gray-300"
+        }`}
       />
 
-      {error && (
-        <p className="text-red-600 text-sm" role="alert">
-          {error}
+      {!isValid && (
+        <p
+          id={FULLTIME_ERROR_ID}
+          data-testid={`${FULLTIME_INPUT_NAME}-error`}
+          className="text-red-600 text-sm"
+          role="alert"
+        >
+          {t("fulltimeHours.error", { min: FULLTIME_MIN, max: FULLTIME_MAX })}
         </p>
       )}
     </div>
