@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+export const FULLTIME_INPUT_NAME = "fulltime-hours-input";
+
 export default function FulltimeHoursInput() {
   const [hours, setHours] = useState(40); // Standardwert 40 Stunden
   const [error, setError] = useState("");
@@ -44,6 +46,7 @@ export default function FulltimeHoursInput() {
         step={0.5}
         value={hours}
         onChange={handleChange}
+        data-testid={FULLTIME_INPUT_NAME}
         className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 
           ${error ? "border-red-500" : "border-gray-300"}`}
       />
