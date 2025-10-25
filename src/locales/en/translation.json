@@ -1,0 +1,17 @@
+{
+  "fulltimeHours": {
+    "label": "Full-time hours per week",
+    "error": "BLiblablub"
+  },
+  "parttimeHours": {
+    "label": "Part-time hours per week",
+    "error": "Please enter a value between {{min}} and {{max}}.",
+    "factorText": "BLiblablub"
+  },
+  "regularDuration": {
+    "label": "Regular training duration in months",
+    "error": "Please enter a value between {{min}} and {{max}}.",
+    "minHint": "At least {{min}} months.",
+    "durationText": "BLiblablub"
+  }
+}

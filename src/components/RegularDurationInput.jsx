@@ -5,7 +5,7 @@ export const REGULAR_DURATION_NAME = "regular-duration-input";
 export const REGULAR_DURATION_ERROR_ID = `${REGULAR_DURATION_NAME}-error`;
 export const REGULAR_DURATION_HINT_ID = `${REGULAR_DURATION_NAME}-hint`;
 export const REGULAR_DURATION_TOOLTIP_ID = `${REGULAR_DURATION_NAME}-tooltip`;
-export const DURATION_MIN = 12;
+export const DURATION_MIN = 12; //  https://www.gesetze-im-internet.de/bbig_2005/__5.html Stimmt nicht mit Gesetz überein
 export const DURATION_MAX = 48;
 
 export const isRegularDurationValid = (raw) => {

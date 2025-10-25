@@ -1,0 +1,17 @@
+{
+    "fulltimeHours": {
+        "label": "Vollzeitstunden pro Woche",
+        "error": "Bliblablub"
+    },
+    "parttimeHours": {
+        "label": "Teilzeitstunden pro Woche",
+        "error": "Bliblablub",
+        "factorText": "Das entspricht etwa {{percent}} % der Vollzeit"
+    },
+    "regularDuration": {
+        "label": "Reguläre Ausbildungsdauer in Monaten",
+        "error": "Bliblablub",
+        "minHint": "Mindestens {{min}} Monate.", 
+        "durationText": "{{months}} Monate: {{years}} Jahre und {{remainingMonths}} Monate"
+    }
+}
