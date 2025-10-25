@@ -7,7 +7,8 @@ vi.mock("react-i18next", () => ({
         ? `ERR ${opts?.min}-${opts?.max}`
         : key === "parttimeHours.error"
         ? `ERR ${opts?.min}-${opts?.max}`
+        : key === "regularDuration.error"
+        ? `ERR ${opts?.min}-${opts?.max}`
         : key,
   }),
 }));
-

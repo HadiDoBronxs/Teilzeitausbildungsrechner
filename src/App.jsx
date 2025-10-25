@@ -3,7 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import FulltimeHoursInput from './components/FulltimeHoursInput.jsx'
-import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx";
+import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx"
+import RegularDurationInput from "./components/RegularDurationInput.jsx"
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <h1 className="text-2xl font-bold mb-4 text-center">Teilzeitausbildungsrechner</h1>
       <FulltimeHoursInput />
       <ParttimeHoursInput />
+      <RegularDurationInput />
     </main>
 
   );
