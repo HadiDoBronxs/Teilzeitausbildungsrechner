@@ -6,7 +6,8 @@
     "parttimeHours": {
         "label": "Teilzeitstunden pro Woche",
         "error": "Bliblablub",
-        "factorText": "Das entspricht etwa {{percent}} % der Vollzeit"
+        "factorText": "Das entspricht etwa {{percent}} % der Vollzeit",
+        "factorError": "Teilzeit muss mindestens 50 % der Vollzeit betragen."
     },
     "regularDuration": {
         "label": "Reguläre Ausbildungsdauer in Monaten",
@@ -28,7 +29,13 @@
             "noReduction": "Vollzeit: {{full}} Monate, Ihre Teilzeit: {{part}} Monate ({{delta}} Monate)."
         },
         "factor": "Faktor: {{pct}} %",
-        "howCalculated": "Wie wird das berechnet?"
+        "howCalculated": "Wie wird das berechnet?",
+        "error": {
+            "title": "Berechnung nicht möglich",
+            "generic": "Bitte überprüfe deine Eingaben.",
+            "minFactor": "Teilzeit muss mindestens 50 % der Vollzeit betragen.",
+            "invalidHours": "Bitte gib gültige Stundenwerte für Vollzeit und Teilzeit an."
+        }
     },
     "transparency": {
         "title": "Transparenz",

@@ -8,11 +8,34 @@ const formatDelta = (value) => {
   return `${sign}${value}`;
 };
 
-export default function ResultCard({ values }) {
+export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
-  const result = useMemo(() => readFormAndCalc(values), [values]);
+  const result = useMemo(
+    () => injectedResult ?? readFormAndCalc(values),
+    [values, injectedResult]
+  );
   const { reductionMonths = 0 } = values;
   const hasReduction = Number(reductionMonths) > 0;
+  const errorKey = result?.errorCode
+    ? `result.error.${result.errorCode}`
+    : "result.error.generic";
+
+  if (result && result.allowed === false) {
+    return (
+      <section className="w-full max-w-2xl bg-white rounded-xl border border-red-200 shadow-sm p-4 space-y-2">
+        <h2 className="text-xl font-semibold text-red-700">
+          {t("result.error.title")}
+        </h2>
+        <p className="text-slate-700">{t(errorKey)}</p>
+        <a
+          className="text-blue-600 underline font-medium inline-block"
+          href="/transparenz#berechnung"
+        >
+          {t("result.howCalculated")}
+        </a>
+      </section>
+    );
+  }
 
   return (
     <section className="w-full max-w-2xl bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-2">

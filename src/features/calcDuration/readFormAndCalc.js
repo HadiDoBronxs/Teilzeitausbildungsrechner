@@ -11,6 +11,7 @@ export const readFormAndCalc = ({
   fullDurationMonths,
   reductionMonths = 0,
   rounding = "round",
+  minDurationMonths,
 }) =>
   calculateDuration({
     weeklyFull: toNumber(weeklyFull),
@@ -18,6 +19,10 @@ export const readFormAndCalc = ({
     fullDurationMonths: toNumber(fullDurationMonths),
     reductionMonths: toNumber(reductionMonths ?? 0),
     rounding,
+    minDurationMonths:
+      minDurationMonths === undefined || minDurationMonths === ""
+        ? undefined
+        : toNumber(minDurationMonths),
   });
 
 export default readFormAndCalc;

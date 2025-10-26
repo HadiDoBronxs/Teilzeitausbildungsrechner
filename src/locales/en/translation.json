@@ -6,7 +6,8 @@
   "parttimeHours": {
     "label": "Part-time hours per week",
     "error": "Please enter a value between {{min}} and {{max}}.",
-    "factorText": "BLiblablub"
+    "factorText": "BLiblablub",
+    "factorError": "Part-time must be at least 50% of full-time hours."
   },
   "regularDuration": {
     "label": "Regular training duration in months",
@@ -28,7 +29,13 @@
       "noReduction": "Full time: {{full}} months, your part time: {{part}} months ({{delta}} months)."
     },
     "factor": "Factor: {{pct}} %",
-    "howCalculated": "How is this calculated?"
+    "howCalculated": "How is this calculated?",
+    "error": {
+      "title": "Calculation not possible",
+      "generic": "Please check your entries.",
+      "minFactor": "Part-time must be at least 50% of the full-time hours.",
+      "invalidHours": "Please enter valid numbers for full-time and part-time hours."
+    }
   },
   "transparency": {
     "title": "Transparency",

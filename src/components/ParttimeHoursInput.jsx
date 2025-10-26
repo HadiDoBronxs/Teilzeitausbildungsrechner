@@ -19,6 +19,12 @@ export default function ParttimeHoursInput({
   const { t } = useTranslation();
   const [hours, setHours] = useState(30); // Default 30 hours
   const isValid = isParttimeHoursValid(hours);
+  const numericHours = Number(hours);
+  const showFactorInfo =
+    isValid && fulltimeHours > 0 && hours !== "" && !Number.isNaN(numericHours);
+  const meetsMinFactor = showFactorInfo
+    ? numericHours / fulltimeHours >= 0.5
+    : true;
   useEffect(() => {
     if (typeof onValueChange === "function") {
       onValueChange(hours);
@@ -64,11 +70,18 @@ export default function ParttimeHoursInput({
       )}
 
       {/* optional: Prozentanzeige bei gültiger Eingabe */}
-      {isValid && (
-        <p className="text-green-700 text-sm font-medium" aria-live="polite">
-          {t("parttimeHours.factorText", {
-            percent: ((Number(hours) / fulltimeHours) * 100).toFixed(0),
-          })}
+      {showFactorInfo && (
+        <p
+          className={`text-sm font-medium ${
+            meetsMinFactor ? "text-green-700" : "text-red-600"
+          }`}
+          aria-live="polite"
+        >
+          {meetsMinFactor
+            ? t("parttimeHours.factorText", {
+                percent: ((numericHours / fulltimeHours) * 100).toFixed(0),
+              })
+            : t("parttimeHours.factorError")}
         </p>
       )}
     </div>
