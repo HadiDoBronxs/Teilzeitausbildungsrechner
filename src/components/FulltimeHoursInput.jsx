@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export const FULLTIME_INPUT_NAME = "fulltime-hours-input";
@@ -12,10 +12,15 @@ export const isFulltimeHoursValid = (raw) => {
   return !Number.isNaN(n) && n >= FULLTIME_MIN && n <= FULLTIME_MAX;
 };
 
-export default function FulltimeHoursInput() {
+export default function FulltimeHoursInput({ onValueChange }) {
   const { t } = useTranslation();
   const [hours, setHours] = useState(40); // Default 40 hours
   const isValid = isFulltimeHoursValid(hours);
+  useEffect(() => {
+    if (typeof onValueChange === "function") {
+      onValueChange(hours);
+    }
+  }, [hours, onValueChange]);
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">

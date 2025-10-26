@@ -14,14 +14,14 @@ export const isRegularDurationValid = (raw) => {
   return !Number.isNaN(n) && n >= DURATION_MIN && n <= DURATION_MAX;
 };
 
-export default function RegularDurationInput() {
+export default function RegularDurationInput({ onValueChange }) {
   const { t } = useTranslation();
   const [months, setMonths] = useState(36); // Default 36 months
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
   const isValid = isRegularDurationValid(months);
 
-  React.useEffect(() => {
+  useEffect(() => {
     function onDocClick(e) {
       if (!wrapperRef.current) return;
       if (!wrapperRef.current.contains(e.target)) setOpen(false);
@@ -29,6 +29,12 @@ export default function RegularDurationInput() {
     document.addEventListener("pointerdown", onDocClick);
     return () => document.removeEventListener("pointerdown", onDocClick);
   }, []);
+
+  useEffect(() => {
+    if (typeof onValueChange === "function") {
+      onValueChange(months);
+    }
+  }, [months, onValueChange]);
 
 const baseDescribedBy = [REGULAR_DURATION_HINT_ID];
   const ariaDescribedBy = [

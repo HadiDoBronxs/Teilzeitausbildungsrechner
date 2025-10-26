@@ -13,5 +13,47 @@
     "error": "Please enter a value between {{min}} and {{max}}.",
     "minHint": "At least {{min}} months.",
     "durationText": "BLiblablub"
+  },
+  "reduction": {
+    "label": "Reduction (months)",
+    "placeholder": "e.g. 6",
+    "error": {
+      "nonNegative": "Please enter a whole number ≥ 0."
+    }
+  },
+  "result": {
+    "headline": "Your training takes {{value}}.",
+    "compare": {
+      "withReduction": "Full time (with reduction): {{eff}} months, your part time: {{part}} months ({{delta}} months).",
+      "noReduction": "Full time: {{full}} months, your part time: {{part}} months ({{delta}} months)."
+    },
+    "factor": "Factor: {{pct}} %",
+    "howCalculated": "How is this calculated?"
+  },
+  "transparency": {
+    "title": "Transparency",
+    "subtitle": "This is how we calculate the result in plain language.",
+    "steps": {
+      "step1": {
+        "title": "Step 1: Subtract your reduction",
+        "text": "Take the normal full-time duration and subtract your reduction months. The result is the reduced full-time duration.",
+        "example": "Example: 36 months minus 6 months = 30 months."
+      },
+      "step2": {
+        "title": "Step 2: Find the factor",
+        "text": "Divide your part-time hours by the full-time hours. This gives you the part-time factor.",
+        "example": "Example: 30 hours divided by 40 hours = factor 0.75."
+      },
+      "step3": {
+        "title": "Step 3: Calculate the part-time duration",
+        "text": "Divide the reduced full-time duration by the factor and round to whole months.",
+        "example": "Example: 30 months divided by 0.75 = 40 months."
+      },
+      "step4": {
+        "title": "Step 4: Show the difference",
+        "text": "Compare the part-time duration with the reduced full-time duration to see if it is longer or shorter.",
+        "example": "Example: 40 months minus 30 months = +10 months (longer)."
+      }
+    }
   }
 }

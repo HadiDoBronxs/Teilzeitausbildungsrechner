@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export const PARTTIME_INPUT_NAME = "parttime-hours-input";
@@ -12,10 +12,18 @@ export const isParttimeHoursValid = (raw) => {
   return !Number.isNaN(n) && n >= PARTTIME_MIN && n <= PARTTIME_MAX;
 };
 
-export default function ParttimeHoursInput({ fulltimeHours = 40 }) {
+export default function ParttimeHoursInput({
+  fulltimeHours = 40,
+  onValueChange,
+}) {
   const { t } = useTranslation();
   const [hours, setHours] = useState(30); // Default 30 hours
   const isValid = isParttimeHoursValid(hours);
+  useEffect(() => {
+    if (typeof onValueChange === "function") {
+      onValueChange(hours);
+    }
+  }, [hours, onValueChange]);
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">

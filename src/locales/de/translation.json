@@ -13,5 +13,47 @@
         "error": "Bliblablub",
         "minHint": "Mindestens {{min}} Monate.", 
         "durationText": "{{months}} Monate: {{years}} Jahre und {{remainingMonths}} Monate"
+    },
+    "reduction": {
+        "label": "Verkürzung (Monate)",
+        "placeholder": "z. B. 6",
+        "error": {
+            "nonNegative": "Bitte gib eine ganze Zahl ≥ 0 ein."
+        }
+    },
+    "result": {
+        "headline": "Ihre Ausbildung dauert {{value}}.",
+        "compare": {
+            "withReduction": "Vollzeit (mit Verkürzung): {{eff}} Monate, Ihre Teilzeit: {{part}} Monate ({{delta}} Monate).",
+            "noReduction": "Vollzeit: {{full}} Monate, Ihre Teilzeit: {{part}} Monate ({{delta}} Monate)."
+        },
+        "factor": "Faktor: {{pct}} %",
+        "howCalculated": "Wie wird das berechnet?"
+    },
+    "transparency": {
+        "title": "Transparenz",
+        "subtitle": "So funktioniert die Berechnung in einfacher Sprache.",
+        "steps": {
+            "step1": {
+                "title": "Schritt 1: Verkürzung abziehen",
+                "text": "Ziehe deine Verkürzung in Monaten von der normalen Vollzeitdauer ab. Das Ergebnis ist die verkürzte Vollzeitdauer.",
+                "example": "Beispiel: 36 Monate minus 6 Monate = 30 Monate."
+            },
+            "step2": {
+                "title": "Schritt 2: Faktor berechnen",
+                "text": "Teile deine Teilzeitstunden durch die Vollzeitstunden. Dadurch entsteht der Teilzeit-Faktor.",
+                "example": "Beispiel: 30 Stunden geteilt durch 40 Stunden = Faktor 0,75."
+            },
+            "step3": {
+                "title": "Schritt 3: Teilzeitdauer finden",
+                "text": "Teile die verkürzte Vollzeitdauer durch den Faktor und runde auf volle Monate.",
+                "example": "Beispiel: 30 Monate geteilt durch 0,75 = 40 Monate."
+            },
+            "step4": {
+                "title": "Schritt 4: Unterschied anzeigen",
+                "text": "Vergleiche die Teilzeitdauer mit der verkürzten Vollzeitdauer. So siehst du, ob es länger oder kürzer wird.",
+                "example": "Beispiel: 40 Monate minus 30 Monate = +10 Monate (länger)."
+            }
+        }
     }
 }
