@@ -46,10 +46,29 @@ export default function App() {
       <h1 className="text-2xl font-bold text-center">
         Teilzeitausbildungsrechner
       </h1>
-      <FulltimeHoursInput onValueChange={setFulltimeHours} />
+      <FulltimeHoursInput 
+        onValueChange={(raw) => {
+          // Guard empty string / null / undefined coming from the input
+          if (raw === "" || raw === null || raw === undefined) {
+            setFulltimeHours(40);
+            return;
+          }
+          const n = Number(raw);
+          setFulltimeHours(Number.isNaN(n) ? 40 : n);
+        }} 
+      />
       <ParttimeHoursInput
         fulltimeHours={fulltimeHours}
-        onValueChange={setParttimeHours}
+        onValueChange={(raw) => {
+          // Keep parttime in numeric form for the formValues object.
+          if (raw === "" || raw === null || raw === undefined) {
+            setParttimeHours(undefined);
+            return;
+          }
+          const n = Number(raw);
+          setParttimeHours(Number.isNaN(n) ? 30 : n);
+          }
+        }
       />
       <RegularDurationInput onValueChange={setFullDurationMonths} />
       <ReductionMonthsInput
