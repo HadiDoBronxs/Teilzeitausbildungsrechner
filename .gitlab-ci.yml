@@ -25,30 +25,45 @@ stages:          # List of stages for jobs, and their order of execution
 
 variables:
   NPM_CONFIG_CACHE: "$CI_PROJECT_DIR/.npm"
+  CI: "true"
+
+cache:
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - .npm
+    - node_modules/
+
+before_script:
+  - node --version
+  - npm --version
+  - npm ci
 
 build-vite:
   stage: build
-  cache:
-    key:
-      files:
-        - package-lock.json
-    paths:
-      - .npm/
-  before_script:
-    - node --version
-    - npm --version
-    - npm ci
   script:
     - npm run build
   artifacts:
-    paths: [dist/]
+    paths:
+      - dist/
     expire_in: 1 week
 
-build-job:       # This job runs in the build stage, which runs first.
-  stage: build
+unit-tests:
+  stage: test
+  needs:
+    - job: build-vite
+      optional: false
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - npm test -- --coverage
+  artifacts:
+    when: always
+    reports:
+      junit: coverage/junit.xml || coverage/test-results.xml
+    paths:
+      - coverage/
+    expire_in: 1 week
+  coverage: '/all:\s+(\d+%)/'
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
@@ -57,16 +72,11 @@ unit-test-job:   # This job runs in the test stage.
     - sleep 60
     - echo "Code coverage is 90%"
 
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
-
 deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  stage: deploy  
   environment: production
+  needs:
+    - unit-tests
   script:
     - echo "Deploying application..."
     - echo "Application successfully deployed."
