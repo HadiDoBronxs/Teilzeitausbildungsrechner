@@ -54,4 +54,28 @@ describe("ParttimeHoursInput", () => {
     expect(input).toHaveAttribute("aria-invalid", "false");
     expect(screen.queryByRole("alert")).toBeNull();
   });
+
+  it("caps the computed max at 35h when fulltime is high (e.g. 45h)", async () => {
+    render(<ParttimeHoursInput fulltimeHours={45} />);
+    const input = screen.getByTestId(PARTTIME_INPUT_NAME);
+    const { min, max } = computeParttimeBounds(45);
+
+    // Expect the capped max to be 35
+    expect(max).toBe(35);
+    expect(input).toHaveAttribute("min", String(min));
+    expect(input).toHaveAttribute("max", String(max));
+
+    await userEvent.clear(input);
+    await userEvent.type(input, "35");
+    expect(input).toHaveAttribute("aria-invalid", "false");
+    expect(screen.queryByRole("alert")).toBeNull();
+
+    await userEvent.clear(input);
+    await userEvent.type(input, "36");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+    
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      `ERR ${String(min)}-${String(max)}`
+    );
+  });
 });
