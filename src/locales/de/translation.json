@@ -4,10 +4,10 @@
         "error": "Bitte geben Sie eine Zahl zwischen {{min}} und {{max}} Stunden ein."
     },
     "parttimeHours": {
-        "label": "Teilzeitstunden pro Woche",
-        "error": "Bliblablub",
+        "label": "Wie viele Stunden wollen Sie pro Woche arbeiten?",
+        "error": "Bitte geben Sie einen Wert zwischen {{min}} und {{max}} Stunden pro Woche ein.",
         "factorText": "Das entspricht etwa {{percent}} % der Vollzeit",
-        "factorError": "Teilzeit muss mindestens 50 % der Vollzeit betragen."
+        "factorError": "Die Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Weniger ist nicht möglich."
     },
     "regularDuration": {
         "label": "Reguläre Ausbildungsdauer in Monaten",

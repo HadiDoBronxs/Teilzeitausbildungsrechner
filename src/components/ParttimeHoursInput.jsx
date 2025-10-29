@@ -19,11 +19,19 @@ export function computeParttimeBounds(fulltimeHours) {
   const rawMin = ft * 0.5;
   const rawMax = ft * 0.8;
 
-  const min = Math.ceil(rawMin * 2) / 2;
-  const max = Math.floor(rawMax * 2) / 2;
+  // Round to nearest 0.5 step but ensure min >= rawMin and max <= rawMax
+  const minRounded = Math.ceil(rawMin * 2) / 2;
+  const maxRounded = Math.floor(rawMax * 2) / 2;
 
-  // ensure min <= max (edge case for very small fulltimeHours)
-  return { min: Math.min(min, max), max: Math.max(min, max) };
+  // Cap the maximum at 35 hours as a reasonable upper limit for parttime
+  const CAPPED_MAX = 35;
+  const maxCapped = Math.min(maxRounded, CAPPED_MAX);
+
+  // Ensure min <= max (edge cases for very small fulltime)
+  const min = Math.min(minRounded, maxCapped);
+  const max = Math.max(minRounded, maxCapped);
+
+  return { min, max };
 }
 
 /**
