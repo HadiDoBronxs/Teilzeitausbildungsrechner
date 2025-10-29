@@ -28,7 +28,7 @@ describe("FulltimeHoursInput", () => {
     await userEvent.type(input, "50");
 
     expect(input).toHaveAttribute("aria-invalid", "true");
-    expect(screen.getByRole("alert")).toHaveTextContent("ERR 35-45");
+    expect(screen.getByRole("alert")).toHaveTextContent("ERR 35-48");
   });
 
   it("accepts a value within the range", async () => {

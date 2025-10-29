@@ -1,7 +1,7 @@
 {
     "fulltimeHours": {
-        "label": "Vollzeitstunden pro Woche",
-        "error": "Bliblablub"
+        "label": "Wie viele Vollzeitstunden sind in Ihrem Betrieb pro Woche vorgesehen?",
+        "error": "Bitte geben Sie eine Zahl zwischen {{min}} und {{max}} Stunden ein."
     },
     "parttimeHours": {
         "label": "Teilzeitstunden pro Woche",
