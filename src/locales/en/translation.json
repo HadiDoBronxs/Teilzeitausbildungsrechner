@@ -10,8 +10,8 @@
     "factorError": "Part-time must be at least 50% of full-time hours."
   },
   "regularDuration": {
-    "label": "Regular training duration in months",
-    "error": "Please enter a value between {{min}} and {{max}}.",
+    "label": "How long is your usual training duration in months?",
+    "error": "Please enter a number between {{min}} and {{max}} months.",
     "minHint": "At least {{min}} months.",
     "durationText": "BLiblablub"
   },
