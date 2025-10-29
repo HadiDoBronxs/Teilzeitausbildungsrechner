@@ -38,8 +38,49 @@
         }
     },
     "transparency": {
-        "title": "Transparenz",
+        "title": "Wie wird das berechnet?",
+        "close": "Schließen",
         "subtitle": "So funktioniert die Berechnung in einfacher Sprache.",
+        "step1": {
+            "title": "Schritt 1: 50%-Regel",
+            "text": "Gewünschte Wochenstunden / Reguläre Wochenstunden = {{part}} / {{full}} = {{pct}}%",
+            "ok": "Zulässig (≥ 50 %).",
+            "fail": "Nicht zulässig (< 50 %). Die Berechnung wird gestoppt."
+        },
+        "step2": {
+            "title": "Schritt 2: Teilzeit-Faktor",
+            "text": "F_tz = {{part}} / {{full}} = {{factor}}"
+        },
+        "step3": {
+            "title": "Schritt 3: Individuelle Basisdauer",
+            "text": "Regeldauer {{fullM}} − Verkürzung {{redM}} = {{rawBase}} → Mindestdauer {{minM}} ⇒ Basis = {{basis}} Monate ({{basisYM}})."
+        },
+        "step4": {
+            "title": "Schritt 4: Theoretische neue Dauer",
+            "text": "D_theo = Basis / F_tz = {{basis}} / {{factor}} = {{dtheo}}"
+        },
+        "step5": {
+            "title": "Schritt 5: Schutzregeln",
+            "six": {
+                "text": "6-Monats-Regel: Verlängerung = D_theo − Basis = {{ext}} Monate → {{applied}}",
+                "applied": "angewendet (Ergebnis auf Basis gesetzt)",
+                "notApplied": "nicht angewendet"
+            },
+            "cap": {
+                "text": "1,5×-Deckel: max = {{cap}} Monate → {{applied}}",
+                "applied": "angewendet (auf max gekappt)",
+                "notApplied": "nicht angewendet"
+            }
+        },
+        "step6": {
+            "title": "Schritt 6: Runden auf ganze Monate",
+            "text": "{{roundingFn}}({{value}}) = {{rounded}} Monate ({{roundedYM}})."
+        },
+        "result": "Finales Ergebnis: {{finalM}} Monate ({{finalYM}}).",
+        "delta": {
+            "basis": "Veränderung ggü. Basis: {{delta}} Monate.",
+            "original": "Veränderung ggü. ursprünglicher Vollzeit: {{delta}} Monate."
+        },
         "steps": {
             "step1": {
                 "title": "Schritt 1: Verkürzung abziehen",
@@ -62,5 +103,8 @@
                 "example": "Beispiel: 40 Monate minus 30 Monate = +10 Monate (länger)."
             }
         }
+    },
+    "error": {
+        "below50": "Die gewünschte Wochenarbeitszeit liegt unter 50 % der regulären Arbeitszeit. Bitte Eingaben prüfen."
     }
 }

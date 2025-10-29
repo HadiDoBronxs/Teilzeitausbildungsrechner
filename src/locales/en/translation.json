@@ -38,8 +38,49 @@
     }
   },
   "transparency": {
-    "title": "Transparency",
+    "title": "How is this calculated?",
+    "close": "Close",
     "subtitle": "This is how we calculate the result in plain language.",
+    "step1": {
+      "title": "Step 1: 50% rule",
+      "text": "Requested weekly hours / regular weekly hours = {{part}} / {{full}} = {{pct}}%",
+      "ok": "Allowed (≥ 50%).",
+      "fail": "Not allowed (< 50%). Calculation stops here."
+    },
+    "step2": {
+      "title": "Step 2: Part-time factor",
+      "text": "F_tz = {{part}} / {{full}} = {{factor}}"
+    },
+    "step3": {
+      "title": "Step 3: Individual base duration",
+      "text": "Standard duration {{fullM}} − reduction {{redM}} = {{rawBase}} → minimum duration {{minM}} ⇒ basis = {{basis}} months ({{basisYM}})."
+    },
+    "step4": {
+      "title": "Step 4: Theoretical new duration",
+      "text": "D_theo = basis / F_tz = {{basis}} / {{factor}} = {{dtheo}}"
+    },
+    "step5": {
+      "title": "Step 5: Safeguards",
+      "six": {
+        "text": "6-month rule: extension = D_theo − basis = {{ext}} months → {{applied}}",
+        "applied": "applied (result stays at the basis)",
+        "notApplied": "not applied"
+      },
+      "cap": {
+        "text": "1.5× cap: max = {{cap}} months → {{applied}}",
+        "applied": "applied (clamped to the cap)",
+        "notApplied": "not applied"
+      }
+    },
+    "step6": {
+      "title": "Step 6: Round to whole months",
+      "text": "{{roundingFn}}({{value}}) = {{rounded}} months ({{roundedYM}})."
+    },
+    "result": "Final result: {{finalM}} months ({{finalYM}}).",
+    "delta": {
+      "basis": "Change vs. basis: {{delta}} months.",
+      "original": "Change vs. original full-time: {{delta}} months."
+    },
     "steps": {
       "step1": {
         "title": "Step 1: Subtract your reduction",
@@ -62,5 +103,8 @@
         "example": "Example: 40 months minus 30 months = +10 months (longer)."
       }
     }
+  },
+  "error": {
+    "below50": "The requested weekly working time is below 50% of the regular working time. Please check your entries."
   }
 }
