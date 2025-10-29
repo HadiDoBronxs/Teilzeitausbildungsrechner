@@ -4,10 +4,10 @@
     "error": "BLiblablub"
   },
   "parttimeHours": {
-    "label": "Part-time hours per week",
+    "label": "How many hours do you want to work per week?",
     "error": "Please enter a value between {{min}} and {{max}}.",
-    "factorText": "BLiblablub",
-    "factorError": "Part-time must be at least 50% of full-time hours."
+    "factorText": "This is approximately {{percent}} % of full-time",
+    "factorError": "Part-time must be at least 50% of full-time hours. Working less is not possible."
   },
   "regularDuration": {
     "label": "Regular training duration in months",
