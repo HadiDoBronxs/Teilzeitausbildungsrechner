@@ -10,8 +10,8 @@
         "factorError": "Die Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Weniger ist nicht möglich."
     },
     "regularDuration": {
-        "label": "Reguläre Ausbildungsdauer in Monaten",
-        "error": "Bliblablub",
+        "label": "Wie lange dauert Ihre übliche Ausbildungszeit in Monaten?",
+        "error": "Bitte geben Sie eine Zahl zwischen {{min}} und {{max}} Monaten ein.",
         "minHint": "Mindestens {{min}} Monate.", 
         "durationText": "{{months}} Monate: {{years}} Jahre und {{remainingMonths}} Monate"
     },
