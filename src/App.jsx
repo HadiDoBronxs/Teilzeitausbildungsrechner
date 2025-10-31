@@ -15,7 +15,10 @@ export default function App() {
   if (isTransparencyPath) {
     return <Transparenz />;
   }
+  return <CalculatorApp />;
+}
 
+function CalculatorApp() {
   const [fulltimeHours, setFulltimeHours] = useState(40);
   const [parttimeHours, setParttimeHours] = useState(30);
   const [fullDurationMonths, setFullDurationMonths] = useState(36);
@@ -46,7 +49,7 @@ export default function App() {
       <h1 className="text-2xl font-bold text-center">
         Teilzeitausbildungsrechner
       </h1>
-      <FulltimeHoursInput 
+      <FulltimeHoursInput
         onValueChange={(raw) => {
           // Guard empty string / null / undefined coming from the input
           if (raw === "" || raw === null || raw === undefined) {
@@ -55,7 +58,7 @@ export default function App() {
           }
           const n = Number(raw);
           setFulltimeHours(Number.isNaN(n) ? 40 : n);
-        }} 
+        }}
       />
       <ParttimeHoursInput
         fulltimeHours={fulltimeHours}

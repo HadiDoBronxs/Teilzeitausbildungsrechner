@@ -1,50 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-export const PARTTIME_INPUT_NAME = "parttime-hours-input";
-export const PARTTIME_ERROR_ID = `${PARTTIME_INPUT_NAME}-error`;
-
-/**
- * Compute part-time bounds as 50% .. 80% of fulltimeHours.
- * We round the bounds to the nearest 0.5 step:
- *  - min is ceil(rawMin * 2) / 2 to ensure it's >= 50%
- *  - max is floor(rawMax * 2) / 2 to ensure it's <= 80%
- */
-export function computeParttimeBounds(fulltimeHours) {
-  const ft = Number(fulltimeHours);
-  if (Number.isNaN(ft) || ft <= 0) {
-    // Fallback
-    return { min: 20, max: 30 };
-  }
-  const rawMin = ft * 0.5;
-  const rawMax = ft * 0.8;
-
-  // Round to nearest 0.5 step but ensure min >= rawMin and max <= rawMax
-  const minRounded = Math.ceil(rawMin * 2) / 2;
-  const maxRounded = Math.floor(rawMax * 2) / 2;
-
-  // Cap the maximum at 35 hours as a reasonable upper limit for parttime
-  const CAPPED_MAX = 35;
-  const maxCapped = Math.min(maxRounded, CAPPED_MAX);
-
-  // Ensure min <= max (edge cases for very small fulltime)
-  const min = Math.min(minRounded, maxCapped);
-  const max = Math.max(minRounded, maxCapped);
-
-  return { min, max };
-}
-
-/**
- * Validation that considers the fulltimeHours bounds.
- * raw may be a string or number. Returns boolean.
- */
-export function isParttimeHoursValid(raw, fulltimeHours) {
-  if (raw === "") return false;
-  const n = Number(raw);
-  if (Number.isNaN(n)) return false;
-  const { min, max } = computeParttimeBounds(fulltimeHours);
-  return n >= min && n <= max;
-}
+import {
+  PARTTIME_INPUT_NAME,
+  PARTTIME_ERROR_ID,
+  computeParttimeBounds,
+  isParttimeHoursValid,
+} from "./ParttimeHoursInput.helpers";
 
 export default function ParttimeHoursInput({
   fulltimeHours = 40,
@@ -52,27 +13,30 @@ export default function ParttimeHoursInput({
 }) {
   const { t } = useTranslation();
 
-  const { min: computedMin, max: computedMax } =
-    computeParttimeBounds(fulltimeHours);
+  const { min: computedMin, max: computedMax } = useMemo(
+    () => computeParttimeBounds(fulltimeHours),
+    [fulltimeHours]
+  );
 
   // Default preference: 30 if possible, otherwise clamp into computed range.
-  const initialHours = (() => {
+  const preferredDefault = useMemo(() => {
     const defaultPref = 30;
     const val = Math.min(computedMax, Math.max(computedMin, defaultPref));
     return String(val);
-  })();
+  }, [computedMin, computedMax]);
 
-  const [hours, setHours] = useState(initialHours);
+  const [hours, setHours] = useState(() => preferredDefault);
 
+  const fulltimeNumeric = Number(fulltimeHours);
   const isValid = isParttimeHoursValid(hours, fulltimeHours);
   const numericHours = Number(hours);
   const showFactorInfo =
     isValid &&
-    Number(fulltimeHours) > 0 &&
+    fulltimeNumeric > 0 &&
     hours !== "" &&
     !Number.isNaN(numericHours);
   const meetsMinFactor = showFactorInfo
-    ? numericHours / Number(fulltimeHours) >= 0.5
+    ? numericHours / fulltimeNumeric >= 0.5
     : true;
 
   // Notify parent when hours change
@@ -84,14 +48,14 @@ export default function ParttimeHoursInput({
 
   // If fulltimeHours changes, clamp the current hours into the new range.
   useEffect(() => {
-    if (hours === "") return;
-    const n = Number(hours);
-    if (Number.isNaN(n)) return;
-    const clamped = Math.min(computedMax, Math.max(computedMin, n));
-    if (clamped !== n) {
-      setHours(String(clamped));
-    }
-  }, [computedMin, computedMax]); // run when bounds change
+    setHours((prev) => {
+      if (prev === "") return prev;
+      const n = Number(prev);
+      if (Number.isNaN(n)) return prev;
+      const clamped = Math.min(computedMax, Math.max(computedMin, n));
+      return clamped === n ? prev : String(clamped);
+    });
+  }, [computedMin, computedMax]);
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
@@ -143,9 +107,7 @@ export default function ParttimeHoursInput({
         >
           {meetsMinFactor
             ? t("parttimeHours.factorText", {
-                percent: ((numericHours / Number(fulltimeHours)) * 100).toFixed(
-                  0
-                ),
+                percent: ((numericHours / fulltimeNumeric) * 100).toFixed(0),
               })
             : t("parttimeHours.factorError")}
         </p>

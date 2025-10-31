@@ -2,10 +2,11 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
-import ParttimeHoursInput, {
+import ParttimeHoursInput from "../ParttimeHoursInput";
+import {
   PARTTIME_INPUT_NAME,
-  computeParttimeBounds
-} from "../ParttimeHoursInput";
+  computeParttimeBounds,
+} from "../ParttimeHoursInput.helpers";
 
 describe("ParttimeHoursInput", () => {
   it("renders with default value and no error", () => {
@@ -26,8 +27,6 @@ describe("ParttimeHoursInput", () => {
 
     await userEvent.clear(input);
     await userEvent.type(input, "15");
-    const { min: lowBound, max: highBound } = computeParttimeBounds(40);
-
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 20-32");
   });
@@ -38,8 +37,6 @@ describe("ParttimeHoursInput", () => {
 
     await userEvent.clear(input);
     await userEvent.type(input, "35");
-    const { min: low, max: high } = computeParttimeBounds(40);
-
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 20-32");
   });
