@@ -19,6 +19,7 @@
 image: node:22-alpine
 
 stages:          # List of stages for jobs, and their order of execution
+  - lint
   - build
   - test
   - deploy
@@ -39,6 +40,12 @@ before_script:
   - node --version
   - npm --version
   - npm ci
+
+lint:
+  stage: lint
+  script:
+    - npm run lint
+  allow_failure: false
 
 build-vite:
   stage: build
