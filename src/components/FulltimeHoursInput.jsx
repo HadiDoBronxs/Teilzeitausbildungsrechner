@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 export const FULLTIME_INPUT_NAME = "fulltime-hours-input";
 export const FULLTIME_ERROR_ID = `${FULLTIME_INPUT_NAME}-error`;
+export const FULLTIME_HELP_ID = `${FULLTIME_INPUT_NAME}-help`;
 export const FULLTIME_MIN = 35;
 export const FULLTIME_MAX = 48;
 
@@ -21,6 +22,11 @@ export default function FulltimeHoursInput({ onValueChange }) {
       onValueChange(hours);
     }
   }, [hours, onValueChange]);
+
+  const describedBy = [FULLTIME_HELP_ID];
+  if (!isValid) {
+    describedBy.push(FULLTIME_ERROR_ID);
+  }
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
@@ -43,11 +49,15 @@ export default function FulltimeHoursInput({ onValueChange }) {
         value={hours}
         onChange={(e) => setHours(e.target.value)}
         aria-invalid={!isValid}
-        aria-describedby={FULLTIME_ERROR_ID}
+        aria-describedby={describedBy.join(" ")}
         className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
           !isValid ? "border-red-500" : "border-gray-300"
         }`}
       />
+
+      <p id={FULLTIME_HELP_ID} className="text-sm text-slate-600">
+        Übliche Vollzeitstunden liegen zwischen {FULLTIME_MIN} und {FULLTIME_MAX} Stunden pro Woche.
+      </p>
 
       {!isValid && (
         <p
