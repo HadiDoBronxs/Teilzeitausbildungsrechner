@@ -62,15 +62,22 @@ unit-tests:
     - job: build-vite
       optional: false
   script:
-    - npm test -- --coverage
+    - npm test -- --coverage  --run
+    - |
+      # Ensure coverage directory exists and contains artifacts
+      if [ ! -d coverage ]; then
+        echo "ERROR: Coverage directory was not created!"
+        exit 1
+      fi
+      echo "Coverage artifacts generated:"
+      ls -la coverage/
+
   artifacts:
     when: always
-    reports:
-      junit: coverage/junit.xml || coverage/test-results.xml
     paths:
       - coverage/
     expire_in: 1 week
-  coverage: '/all:\s+(\d+%)/'
+  coverage: '/All files\s+\|\s+\d+\.\d+\%\s+\|\s+\d+\.\d+\%\s+\|\s+\d+\.\d+\%\s+\|\s+(\d+\.\d+%)/'
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  
