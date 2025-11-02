@@ -18,6 +18,7 @@
   "reduction": {
     "label": "Reduction (months)",
     "placeholder": "e.g. 6",
+    "help": "Enter how many months your training should be shortened (0 if none).",
     "error": {
       "nonNegative": "Please enter a whole number ≥ 0."
     }

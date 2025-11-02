@@ -18,6 +18,7 @@
     "reduction": {
         "label": "Verkürzung (Monate)",
         "placeholder": "z. B. 6",
+        "help": "Gib an, um wie viele Monate deine Ausbildung verkürzt werden soll (0, wenn keine Verkürzung).",
         "error": {
             "nonNegative": "Bitte gib eine ganze Zahl ≥ 0 ein."
         }

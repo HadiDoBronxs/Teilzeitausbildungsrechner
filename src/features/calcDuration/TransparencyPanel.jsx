@@ -234,8 +234,8 @@ export default function TransparencyPanel({ formValues, onClose }) {
               {t("transparency.step1.text", step1Values)}
             </p>
             <p
-              className={`text-sm font-medium ${
-                percent >= 50 ? "text-green-600" : "text-red-600"
+              className={`text-sm font-semibold ${
+                percent >= 50 ? "text-slate-900" : "text-red-700"
               }`}
             >
               {t(
