@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -85,14 +86,14 @@ export default function ParttimeHoursInput({
 
   // If fulltimeHours changes, clamp the current hours into the new range.
   useEffect(() => {
-    if (hours === "") return;
-    const n = Number(hours);
-    if (Number.isNaN(n)) return;
-    const clamped = Math.min(computedMax, Math.max(computedMin, n));
-    if (clamped !== n) {
-      setHours(String(clamped));
-    }
-  }, [computedMin, computedMax]); // run when bounds change
+    setHours((current) => {
+      if (current === "") return current;
+      const n = Number(current);
+      if (Number.isNaN(n)) return current;
+      const clamped = Math.min(computedMax, Math.max(computedMin, n));
+      return clamped === n ? current : String(clamped);
+    });
+  }, [computedMin, computedMax]);
 
   const describedBy = [PARTTIME_HELP_ID];
   if (!isValid) {

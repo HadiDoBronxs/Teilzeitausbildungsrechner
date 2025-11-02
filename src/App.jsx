@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import "./App.css";
 import FulltimeHoursInput from "./components/FulltimeHoursInput.jsx";
 import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx";
@@ -15,10 +16,7 @@ const isTransparencyPath =
   window.location.pathname.startsWith("/transparenz");
 
 export default function App() {
-  if (isTransparencyPath) {
-    return <Transparenz />;
-  }
-
+  const { t } = useTranslation();
   const [fulltimeHours, setFulltimeHours] = useState(40);
   const [parttimeHours, setParttimeHours] = useState(30);
   const [fullDurationMonths, setFullDurationMonths] = useState(36);
@@ -44,10 +42,14 @@ export default function App() {
     [fulltimeHours, parttimeHours, fullDurationMonths, reductionMonths]
   );
 
+  if (isTransparencyPath) {
+    return <Transparenz />;
+  }
+
   return (
     <>
       <a className="skip-link" href={`#${MAIN_ID}`}>
-        Zum Inhalt springen
+        {t("skipToMain")}
       </a>
       <main
         id={MAIN_ID}
