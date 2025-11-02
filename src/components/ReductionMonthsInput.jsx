@@ -72,7 +72,7 @@ export default function ReductionMonthsInput({
       {!isValid && (
         <p
           id={REDUCTION_ERROR_ID}
-          className="text-red-600 text-sm"
+          className="text-red-700 text-sm font-semibold"
           role="alert"
           data-testid={REDUCTION_ERROR_ID}
         >

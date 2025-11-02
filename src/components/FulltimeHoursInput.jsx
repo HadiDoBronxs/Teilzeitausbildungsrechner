@@ -64,7 +64,7 @@ export default function FulltimeHoursInput({ onValueChange }) {
         <p
           id={FULLTIME_ERROR_ID}
           data-testid={`${FULLTIME_INPUT_NAME}-error`}
-          className="text-red-600 text-sm"
+          className="text-red-700 text-sm font-semibold"
           role="alert"
         >
           {t("fulltimeHours.error", { min: FULLTIME_MIN, max: FULLTIME_MAX })}
