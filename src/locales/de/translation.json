@@ -1,26 +1,30 @@
 {
+    "skipToMain": "Zum Inhalt springen",
     "fulltimeHours": {
         "label": "Wie viele Vollzeitstunden sind in Ihrem Betrieb pro Woche vorgesehen?",
-        "error": "Bitte geben Sie eine Zahl zwischen {{min}} und {{max}} Stunden ein."
+        "help": "In vielen Betrieben liegt die Vollzeit zwischen {{min}} und {{max}} Stunden pro Woche.",
+        "error": "Bitte gib eine Zahl zwischen {{min}} und {{max}} Stunden ein."
     },
     "parttimeHours": {
         "label": "Wie viele Stunden wollen Sie pro Woche arbeiten?",
-        "error": "Bitte geben Sie einen Wert zwischen {{min}} und {{max}} Stunden pro Woche ein.",
-        "factorText": "Das entspricht etwa {{percent}} % der Vollzeit",
+        "help": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
+        "error": "Bitte gib einen Wert zwischen {{min}} und {{max}} Stunden pro Woche ein.",
+        "factorText": "Das entspricht etwa {{percent}} % der Vollzeit.",
         "factorError": "Die Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Weniger ist nicht möglich."
     },
     "regularDuration": {
         "label": "Wie lange dauert Ihre übliche Ausbildungszeit in Monaten?",
-        "error": "Bitte geben Sie eine Zahl zwischen {{min}} und {{max}} Monaten ein.",
-        "minHint": "Mindestens {{min}} Monate.", 
-        "durationText": "{{months}} Monate: {{years}} Jahre und {{remainingMonths}} Monate"
+        "error": "Bitte gib eine Zahl zwischen {{min}} und {{max}} Monaten ein.",
+        "minHint": "Mindestens {{min}} Monate.",
+        "durationText": "{{months}} Monate: {{years}} Jahre und {{remainingMonths}} Monate."
     },
     "reduction": {
         "label": "Verkürzung (Monate)",
         "placeholder": "z. B. 6",
         "help": "Gib an, um wie viele Monate deine Ausbildung verkürzt werden soll (0, wenn keine Verkürzung).",
         "error": {
-            "nonNegative": "Bitte gib eine ganze Zahl ≥ 0 ein."
+            "nonNegative": "Bitte gib eine ganze Zahl größer oder gleich 0 ein.",
+            "maxValue": "Die Verkürzung darf nicht größer als {{max}} Monate sein."
         }
     },
     "result": {
@@ -44,7 +48,7 @@
         "subtitle": "So funktioniert die Berechnung in einfacher Sprache.",
         "step1": {
             "title": "Schritt 1: 50%-Regel",
-            "text": "Gewünschte Wochenstunden / Reguläre Wochenstunden = {{part}} / {{full}} = {{pct}}%",
+            "text": "Gewünschte Wochenstunden / Reguläre Wochenstunden = {{part}} / {{full}} = {{pct}} %",
             "ok": "Zulässig (≥ 50 %).",
             "fail": "Nicht zulässig (< 50 %). Die Berechnung wird gestoppt."
         },
