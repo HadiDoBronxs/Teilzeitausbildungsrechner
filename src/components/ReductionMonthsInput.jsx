@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 export const REDUCTION_INPUT_NAME = "reduction-months-input";
 export const REDUCTION_ERROR_ID = `${REDUCTION_INPUT_NAME}-error`;
+export const REDUCTION_HELP_ID = `${REDUCTION_INPUT_NAME}-help`;
 
 const isValidInteger = (value, min, max) => {
   if (value === "" || value === undefined || value === null) return true;
@@ -30,7 +31,12 @@ export default function ReductionMonthsInput({
     [stringValue, min, max]
   );
 
-  const describedBy = !isValid ? REDUCTION_ERROR_ID : undefined;
+  const describedBy = [
+    REDUCTION_HELP_ID,
+    !isValid ? REDUCTION_ERROR_ID : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
@@ -52,11 +58,17 @@ export default function ReductionMonthsInput({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         aria-invalid={!isValid}
-        aria-describedby={describedBy}
+        aria-describedby={describedBy || undefined}
         className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
           !isValid ? "border-red-500" : "border-gray-300"
         }`}
       />
+      <p
+        id={REDUCTION_HELP_ID}
+        className="text-sm text-slate-600"
+      >
+        {t("reduction.help", { min })}
+      </p>
       {!isValid && (
         <p
           id={REDUCTION_ERROR_ID}
