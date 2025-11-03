@@ -2,11 +2,12 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
-import RegularDurationInput, {
+import RegularDurationInput from "../RegularDurationInput";
+import {
   REGULAR_DURATION_NAME,
   DURATION_MIN,
   DURATION_MAX,
-} from "../RegularDurationInput";
+} from "../RegularDurationInput.constants";
 
 describe("RegularDurationInput", () => {
   it("renders with default value and no error", () => {

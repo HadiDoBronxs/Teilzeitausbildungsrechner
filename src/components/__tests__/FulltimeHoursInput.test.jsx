@@ -2,11 +2,12 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
-import FulltimeHoursInput, {
+import FulltimeHoursInput from "../FulltimeHoursInput";
+import {
   FULLTIME_INPUT_NAME,
   FULLTIME_MIN,
   FULLTIME_MAX,
-} from "../FulltimeHoursInput";
+} from "../FulltimeHoursInput.constants";
 
 describe("FulltimeHoursInput", () => {
   it("renders with default value and no error", () => {

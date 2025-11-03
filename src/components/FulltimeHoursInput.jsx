@@ -1,18 +1,13 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-export const FULLTIME_INPUT_NAME = "fulltime-hours-input";
-export const FULLTIME_ERROR_ID = `${FULLTIME_INPUT_NAME}-error`;
-export const FULLTIME_HELP_ID = `${FULLTIME_INPUT_NAME}-help`;
-export const FULLTIME_MIN = 35;
-export const FULLTIME_MAX = 48;
-
-export const isFulltimeHoursValid = (raw) => {
-  if (raw === "") return false;
-  const n = Number(raw);
-  return !Number.isNaN(n) && n >= FULLTIME_MIN && n <= FULLTIME_MAX;
-};
+import {
+  FULLTIME_INPUT_NAME,
+  FULLTIME_ERROR_ID,
+  FULLTIME_MIN,
+  FULLTIME_MAX,
+  isFulltimeHoursValid,
+  FULLTIME_HELP_ID,
+} from "./FulltimeHoursInput.constants";
 
 export default function FulltimeHoursInput({ onValueChange }) {
   const { t } = useTranslation();
@@ -24,10 +19,8 @@ export default function FulltimeHoursInput({ onValueChange }) {
     }
   }, [hours, onValueChange]);
 
-  const describedBy = [FULLTIME_HELP_ID];
-  if (!isValid) {
-    describedBy.push(FULLTIME_ERROR_ID);
-  }
+  const describedBy = [FULLTIME_HELP_ID, !isValid ? FULLTIME_ERROR_ID : null]
+  .filter(Boolean).join(" ");
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
@@ -50,7 +43,7 @@ export default function FulltimeHoursInput({ onValueChange }) {
         value={hours}
         onChange={(e) => setHours(e.target.value)}
         aria-invalid={!isValid}
-        aria-describedby={describedBy.join(" ")}
+        aria-describedby={describedBy || undefined}
         className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
           !isValid ? "border-red-500" : "border-gray-300"
         }`}

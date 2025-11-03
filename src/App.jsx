@@ -16,6 +16,13 @@ const isTransparencyPath =
   window.location.pathname.startsWith("/transparenz");
 
 export default function App() {
+  if (isTransparencyPath) {
+    return <Transparenz />;
+  }
+  return <CalculatorApp />;
+}
+
+function CalculatorApp() {
   const { t } = useTranslation();
   const [fulltimeHours, setFulltimeHours] = useState(40);
   const [parttimeHours, setParttimeHours] = useState(30);
@@ -41,10 +48,6 @@ export default function App() {
     }),
     [fulltimeHours, parttimeHours, fullDurationMonths, reductionMonths]
   );
-
-  if (isTransparencyPath) {
-    return <Transparenz />;
-  }
 
   return (
     <>

@@ -2,10 +2,11 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import userEvent from "@testing-library/user-event";
-import ParttimeHoursInput, {
+import ParttimeHoursInput from "../ParttimeHoursInput";
+import {
   PARTTIME_INPUT_NAME,
-  computeParttimeBounds
-} from "../ParttimeHoursInput";
+  computeParttimeBounds,
+} from "../ParttimeHoursInput.helpers";
 
 describe("ParttimeHoursInput", () => {
   it("renders with default value and no error", () => {

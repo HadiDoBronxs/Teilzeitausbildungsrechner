@@ -1,18 +1,14 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-
-export const REGULAR_DURATION_NAME = "regular-duration-input";
-export const REGULAR_DURATION_ERROR_ID = `${REGULAR_DURATION_NAME}-error`;
-export const REGULAR_DURATION_HINT_ID = `${REGULAR_DURATION_NAME}-hint`;
-export const DURATION_MIN = 12; //  https://www.gesetze-im-internet.de/bbig_2005/__5.html Stimmt nicht mit Gesetz überein
-export const DURATION_MAX = 48;
-
-export const isRegularDurationValid = (raw) => {
-  if (raw === "") return false;
-  const n = Number(raw);
-  return !Number.isNaN(n) && n >= DURATION_MIN && n <= DURATION_MAX;
-};
+import {
+  REGULAR_DURATION_NAME,
+  REGULAR_DURATION_ERROR_ID,
+  REGULAR_DURATION_HINT_ID,
+  REGULAR_DURATION_TOOLTIP_ID,
+  DURATION_MIN,
+  DURATION_MAX,
+  isRegularDurationValid,
+} from "./RegularDurationInput.constants";
 
 export default function RegularDurationInput({ onValueChange }) {
   const { t } = useTranslation();
@@ -25,10 +21,13 @@ export default function RegularDurationInput({ onValueChange }) {
     }
   }, [months, onValueChange]);
 
-  const describedBy = [REGULAR_DURATION_HINT_ID];
-  if (!isValid) {
-    describedBy.push(REGULAR_DURATION_ERROR_ID);
-  }
+  const baseDescribedBy = [REGULAR_DURATION_HINT_ID];
+  const ariaDescribedBy = [
+    ...baseDescribedBy,
+    !isValid ? REGULAR_DURATION_ERROR_ID : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
@@ -54,7 +53,7 @@ export default function RegularDurationInput({ onValueChange }) {
           setMonths(v === "" ? "" : Number(v));
         }}
         aria-invalid={!isValid}
-        aria-describedby={describedBy.join(" ")}
+        aria-describedby={ariaDescribedBy}
         className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
           !isValid ? "border-red-500" : "border-gray-300"
         }`}
