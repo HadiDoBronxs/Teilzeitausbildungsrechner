@@ -23,22 +23,13 @@ const resolveMinDuration = (fulltimeMonths, override) => {
   return Math.max(0, parsed);
 };
 
-const formatYearsMonths = (months, language) => {
+const formatYearsMonths = (months, t) => {
   const safeValue = Number.isFinite(months) ? months : 0;
   const rounded = Math.max(0, Math.round(safeValue));
   const years = Math.floor(rounded / 12);
   const remaining = rounded % 12;
-  const isGerman = language.startsWith("de");
-  const yearLabel =
-    years === 1 ? (isGerman ? "Jahr" : "year") : isGerman ? "Jahre" : "years";
-  const monthLabel =
-    remaining === 1
-      ? isGerman
-        ? "Monat"
-        : "month"
-      : isGerman
-      ? "Monate"
-      : "months";
+  const yearLabel = years === 1 ? t("format.year") : t("format.years");
+  const monthLabel = remaining === 1 ? t("format.month") : t("format.months");
   return `${years} ${yearLabel} ${remaining} ${monthLabel}`;
 };
 
@@ -227,8 +218,8 @@ export default function TransparencyPanel({ formValues, onClose }) {
     ? calculation.deltaVsOriginal
     : null;
 
-  const basisYM = formatYearsMonths(basis, i18n.language);
-  const roundedYM = formatYearsMonths(roundedDuration, i18n.language);
+  const basisYM = formatYearsMonths(basis, t);
+  const roundedYM = formatYearsMonths(roundedDuration, t);
 
   const step1Values = {
     part: formatter.format(weeklyPart),

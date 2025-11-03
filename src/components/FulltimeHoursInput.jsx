@@ -50,7 +50,7 @@ export default function FulltimeHoursInput({ onValueChange }) {
       />
 
       <p id={FULLTIME_HELP_ID} className="text-sm text-slate-600">
-        Übliche Vollzeitstunden liegen zwischen {FULLTIME_MIN} und {FULLTIME_MAX} Stunden pro Woche.
+        {t("fulltimeHours.help", { min: FULLTIME_MIN, max: FULLTIME_MAX })}
       </p>
 
       {!isValid && (

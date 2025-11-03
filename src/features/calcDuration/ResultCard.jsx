@@ -9,6 +9,15 @@ const formatDelta = (value) => {
   return `${sign}${value}`;
 };
 
+const formatMonths = (months, t) => {
+  const safeMonths = Math.max(0, Number.isFinite(months) ? months : 0);
+  const years = Math.floor(safeMonths / 12);
+  const remaining = safeMonths % 12;
+  const yearLabel = years === 1 ? t("format.year") : t("format.years");
+  const monthLabel = remaining === 1 ? t("format.month") : t("format.months");
+  return `${years} ${yearLabel} ${remaining} ${monthLabel}`;
+};
+
 export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
   const [showTransparency, setShowTransparency] = useState(false);
@@ -57,6 +66,8 @@ export default function ResultCard({ values, result: injectedResult }) {
     );
   }
 
+  const formattedParttime = formatMonths(result.parttimeFinalMonths, t);
+
   return (
     <>
       <section
@@ -64,7 +75,7 @@ export default function ResultCard({ values, result: injectedResult }) {
         aria-live="polite"
       >
         <h2 className="text-xl font-semibold text-slate-900">
-          {t("result.headline", { value: result.formatted.parttime })}
+          {t("result.headline", { value: formattedParttime })}
         </h2>
 
         <p className="text-slate-700">

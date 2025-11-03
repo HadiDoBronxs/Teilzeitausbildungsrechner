@@ -15,8 +15,16 @@
     "regularDuration": {
         "label": "Wie lange dauert Ihre übliche Ausbildungszeit in Monaten?",
         "error": "Bitte gib eine Zahl zwischen {{min}} und {{max}} Monaten ein.",
+        "hintPrefix": "Hinweis:",
         "minHint": "Mindestens {{min}} Monate.",
-        "durationText": "{{months}} Monate: {{years}} Jahre und {{remainingMonths}} Monate."
+        "durationText": "{{months}} Monate: {{years}} Jahre und {{remainingMonths}} Monate.",
+        "resultPrefix": "Ergebnis:"
+    },
+    "format": {
+        "year": "Jahr",
+        "years": "Jahre",
+        "month": "Monat",
+        "months": "Monate"
     },
     "reduction": {
         "label": "Verkürzung (Monate)",
@@ -25,6 +33,14 @@
         "error": {
             "nonNegative": "Bitte gib eine ganze Zahl größer oder gleich 0 ein.",
             "maxValue": "Die Verkürzung darf nicht größer als {{max}} Monate sein."
+        }
+    },
+    "app": {
+        "title": "Teilzeitausbildungsrechner",
+        "languages": "Sprache",
+        "languageNames": {
+            "de": "Deutsch",
+            "en": "Englisch"
         }
     },
     "result": {

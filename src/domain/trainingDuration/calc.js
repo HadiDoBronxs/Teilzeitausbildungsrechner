@@ -13,15 +13,6 @@ const clampRoundingMode = (mode) => {
   }
 };
 
-const formatMonths = (months) => {
-  const safeMonths = Math.max(0, Number.isFinite(months) ? months : 0);
-  const years = Math.floor(safeMonths / 12);
-  const remaining = safeMonths % 12;
-  return `${years} ${years === 1 ? "Jahr" : "Jahre"} ${remaining} ${
-    remaining === 1 ? "Monat" : "Monate"
-  }`;
-};
-
 const resolveMinDuration = (fulltimeMonths, override) => {
   if (override === undefined || override === null) {
     return Math.max(0, Math.floor(fulltimeMonths / 2));
@@ -51,11 +42,6 @@ const buildErrorResult = ({
     deltaMonths: 0,
     deltaDirection: "same",
     deltaVsOriginal: safeEffective - safeFull,
-    formatted: {
-      originalFulltime: formatMonths(safeFull),
-      effectiveFulltime: formatMonths(safeEffective),
-      parttime: formatMonths(safeEffective),
-    },
   };
 };
 
@@ -125,12 +111,6 @@ export function calculateDuration({
   const deltaDirection =
     deltaMonths > 0 ? "longer" : deltaMonths < 0 ? "shorter" : "same";
 
-  const formatted = {
-    originalFulltime: formatMonths(fulltimeMonths),
-    effectiveFulltime: formatMonths(effectiveFulltimeMonths),
-    parttime: formatMonths(parttimeFinalMonths),
-  };
-
   return {
     allowed: true,
     factor,
@@ -142,7 +122,6 @@ export function calculateDuration({
     deltaMonths,
     deltaDirection,
     deltaVsOriginal: parttimeFinalMonths - fulltimeMonths,
-    formatted,
   };
 }
 
