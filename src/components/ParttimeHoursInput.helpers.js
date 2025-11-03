@@ -1,5 +1,6 @@
 export const PARTTIME_INPUT_NAME = "parttime-hours-input";
 export const PARTTIME_ERROR_ID = `${PARTTIME_INPUT_NAME}-error`;
+export const PARTTIME_HELP_ID = `${PARTTIME_INPUT_NAME}-help`;
 const CAPPED_MAX = 35;
 
 export function computeParttimeBounds(fulltimeHours) {

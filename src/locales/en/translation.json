@@ -1,32 +1,37 @@
 {
+  "skipToMain": "Skip to main content",
   "fulltimeHours": {
-    "label": "How many hours are scheduled per week in your company?",
+    "label": "How many full-time hours are scheduled per week in your company?",
+    "help": "Most companies schedule between {{min}} and {{max}} full-time hours per week.",
     "error": "Please enter a number between {{min}} and {{max}} hours."
   },
   "parttimeHours": {
     "label": "How many hours do you want to work per week?",
-    "error": "Please enter a value between {{min}} and {{max}}.",
-    "factorText": "This is approximately {{percent}} % of full-time",
-    "factorError": "Part-time must be at least 50% of full-time hours. Working less is not possible."
+    "help": "Allowed range: at least 50% and at most 80% of the full-time hours.",
+    "error": "Please enter a value between {{min}} and {{max}} hours per week.",
+    "factorText": "This is approximately {{percent}} % of full-time.",
+    "factorError": "Part-time must be at least 50% of the full-time hours. Less is not possible."
   },
   "regularDuration": {
     "label": "How long is your usual training duration in months?",
     "error": "Please enter a number between {{min}} and {{max}} months.",
     "minHint": "At least {{min}} months.",
-    "durationText": "BLiblablub"
+    "durationText": "{{months}} months: {{years}} years and {{remainingMonths}} months."
   },
   "reduction": {
     "label": "Reduction (months)",
     "placeholder": "e.g. 6",
+    "help": "Enter how many months your training should be shortened (0 if none).",
     "error": {
-      "nonNegative": "Please enter a whole number ≥ 0."
+      "nonNegative": "Please enter a whole number greater than or equal to 0.",
+      "maxValue": "The reduction may not exceed {{max}} months."
     }
   },
   "result": {
     "headline": "Your training takes {{value}}.",
     "compare": {
-      "withReduction": "Full time (with reduction): {{eff}} months, your part time: {{part}} months ({{delta}} months).",
-      "noReduction": "Full time: {{full}} months, your part time: {{part}} months ({{delta}} months)."
+      "withReduction": "Full-time (with reduction): {{eff}} months, your part-time: {{part}} months ({{delta}} months).",
+      "noReduction": "Full-time: {{full}} months, your part-time: {{part}} months ({{delta}} months)."
     },
     "factor": "Factor: {{pct}} %",
     "howCalculated": "How is this calculated?",
@@ -43,9 +48,9 @@
     "subtitle": "This is how we calculate the result in plain language.",
     "step1": {
       "title": "Step 1: 50% rule",
-      "text": "Requested weekly hours / regular weekly hours = {{part}} / {{full}} = {{pct}}%",
+      "text": "Requested weekly hours / regular weekly hours = {{part}} / {{full}} = {{pct}} %",
       "ok": "Allowed (≥ 50%).",
-      "fail": "Not allowed (< 50%). Calculation stops here."
+      "fail": "Not allowed (< 50%). The calculation stops here."
     },
     "step2": {
       "title": "Step 2: Part-time factor",

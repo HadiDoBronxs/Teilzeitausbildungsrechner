@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import readFormAndCalc from "./readFormAndCalc";
 
@@ -50,9 +50,108 @@ const formatSigned = (value, formatter) => {
   return `${prefix}${formatter(Math.abs(value))}`;
 };
 
+const FOCUSABLE_SELECTORS =
+  'a[href], button:not([disabled]), textarea, input, select, details summary, [tabindex]:not([tabindex="-1"])';
+const DIALOG_TITLE_ID = "dialog-title";
+
 export default function TransparencyPanel({ formValues, onClose }) {
   const { t, i18n } = useTranslation();
   const calculation = useMemo(() => readFormAndCalc(formValues), [formValues]);
+  const dialogRef = useRef(null);
+  const lastFocusedElement = useRef(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) {
+      return;
+    }
+
+    if (
+      !lastFocusedElement.current &&
+      document.activeElement instanceof HTMLElement &&
+      document.activeElement !== document.body
+    ) {
+      lastFocusedElement.current = document.activeElement;
+    }
+
+    const getFocusableElements = () =>
+      Array.from(dialog.querySelectorAll(FOCUSABLE_SELECTORS)).filter(
+        (element) =>
+          !element.hasAttribute("disabled") &&
+          element.getAttribute("aria-hidden") !== "true" &&
+          element.tabIndex !== -1 &&
+          (element.offsetParent !== null ||
+            getComputedStyle(element).position === "fixed")
+      );
+
+    const focusInitialElement = () => {
+      const focusable = getFocusableElements();
+      if (focusable.length > 0) {
+        focusable[0].focus();
+      } else {
+        dialog.focus();
+      }
+    };
+
+    focusInitialElement();
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose?.();
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const focusable = getFocusableElements();
+      if (focusable.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      if (event.shiftKey) {
+        if (active === first || !dialog.contains(active)) {
+          event.preventDefault();
+          last.focus();
+        }
+        return;
+      }
+
+      if (active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    const handlePointerDown = (event) => {
+      if (!dialog.contains(event.target)) {
+        onClose?.();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("pointerdown", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("pointerdown", handlePointerDown);
+      if (
+        lastFocusedElement.current &&
+        typeof lastFocusedElement.current.focus === "function"
+      ) {
+        lastFocusedElement.current.focus();
+      }
+      lastFocusedElement.current = null;
+    };
+  }, [onClose]);
 
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
@@ -153,25 +252,35 @@ export default function TransparencyPanel({ formValues, onClose }) {
   if (!calculation?.allowed && (percent < 50 || calculation?.errorCode === "minFactor")) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
-        <div className="relative w-full max-w-3xl rounded-2xl bg-white shadow-xl">
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={DIALOG_TITLE_ID}
+          tabIndex={-1}
+          className="relative w-full max-w-3xl rounded-2xl bg-white shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+        >
           <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-            <h2 className="text-xl font-semibold text-slate-900">
+            <h2
+              id={DIALOG_TITLE_ID}
+              className="text-xl font-semibold text-slate-900"
+            >
               {t("transparency.title")}
             </h2>
             <button
               type="button"
-              className="text-slate-500 transition hover:text-slate-700"
+              className="text-slate-600 font-semibold transition hover:text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
               onClick={onClose}
             >
               {t("transparency.close")}
             </button>
           </header>
           <div className="space-y-4 px-6 py-5">
-            <p className="text-slate-700">{t("error.below50")}</p>
-            <p className="text-sm text-slate-600">
+            <p className="text-slate-800">{t("error.below50")}</p>
+            <p className="text-sm text-slate-700">
               {t("transparency.step1.text", step1Values)}
             </p>
-            <p className="text-sm font-medium text-red-600">
+            <p className="text-sm font-semibold text-red-700">
               {t("transparency.step1.fail")}
             </p>
           </div>
@@ -186,14 +295,24 @@ export default function TransparencyPanel({ formValues, onClose }) {
       : "result.error.generic";
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
-        <div className="relative w-full max-w-3xl rounded-2xl bg-white shadow-xl">
+        <div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={DIALOG_TITLE_ID}
+          tabIndex={-1}
+          className="relative w-full max-w-3xl rounded-2xl bg-white shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+        >
           <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-            <h2 className="text-xl font-semibold text-slate-900">
+            <h2
+              id={DIALOG_TITLE_ID}
+              className="text-xl font-semibold text-slate-900"
+            >
               {t("transparency.title")}
             </h2>
             <button
               type="button"
-              className="text-slate-500 transition hover:text-slate-700"
+              className="text-slate-600 font-semibold transition hover:text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
               onClick={onClose}
             >
               {t("transparency.close")}
@@ -203,7 +322,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <h3 className="text-base font-semibold text-slate-900">
               {t("result.error.title")}
             </h3>
-            <p className="text-slate-700">{t(errorKey)}</p>
+            <p className="text-slate-800">{t(errorKey)}</p>
           </div>
         </div>
       </div>
@@ -212,14 +331,24 @@ export default function TransparencyPanel({ formValues, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
-      <div className="relative w-full max-w-3xl rounded-2xl bg-white shadow-xl">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={DIALOG_TITLE_ID}
+        tabIndex={-1}
+        className="relative w-full max-w-3xl rounded-2xl bg-white shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+      >
         <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-          <h2 className="text-xl font-semibold text-slate-900">
+          <h2
+            id={DIALOG_TITLE_ID}
+            className="text-xl font-semibold text-slate-900"
+          >
             {t("transparency.title")}
           </h2>
           <button
             type="button"
-            className="text-slate-500 transition hover:text-slate-700"
+            className="text-slate-600 font-semibold transition hover:text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
             onClick={onClose}
           >
             {t("transparency.close")}
@@ -230,12 +359,12 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <h3 className="text-lg font-semibold text-slate-900">
               {t("transparency.step1.title")}
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-700">
               {t("transparency.step1.text", step1Values)}
             </p>
             <p
-              className={`text-sm font-medium ${
-                percent >= 50 ? "text-green-600" : "text-red-600"
+              className={`text-sm font-semibold ${
+                percent >= 50 ? "text-slate-900" : "text-red-700"
               }`}
             >
               {t(
@@ -250,7 +379,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <h3 className="text-lg font-semibold text-slate-900">
               {t("transparency.step2.title")}
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-700">
               {t("transparency.step2.text", {
                 part: formatter.format(weeklyPart),
                 full: formatter.format(weeklyFull),
@@ -263,7 +392,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <h3 className="text-lg font-semibold text-slate-900">
               {t("transparency.step3.title")}
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-700">
               {t("transparency.step3.text", {
                 fullM: formatter.format(fulltimeMonths),
                 redM: formatter.format(reductionMonths),
@@ -279,7 +408,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <h3 className="text-lg font-semibold text-slate-900">
               {t("transparency.step4.title")}
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-700">
               {t("transparency.step4.text", theoreticalValues)}
             </p>
           </section>
@@ -288,7 +417,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <h3 className="text-lg font-semibold text-slate-900">
               {t("transparency.step5.title")}
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-700">
               {t("transparency.step5.six.text", {
                 ext: formatSigned(extension, (value) => formatter.format(value)),
                 applied: t(
@@ -298,7 +427,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
                 ),
               })}
             </p>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-700">
               {t("transparency.step5.cap.text", {
                 cap: formatter.format(capLimit),
                 applied: t(
@@ -314,7 +443,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <h3 className="text-lg font-semibold text-slate-900">
               {t("transparency.step6.title")}
             </h3>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-700">
               {t("transparency.step6.text", {
                 roundingFn: roundingFnLabel,
                 value: formatter.format(durationAfterCap),
@@ -331,7 +460,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
                 finalYM: roundedYM,
               })}
             </p>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-700">
               {t("transparency.delta.basis", {
                 delta: formatSigned(deltaVsBasis, (value) =>
                   formatter.format(value)
@@ -339,7 +468,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
               })}
             </p>
             {Number.isFinite(deltaVsOriginal) && deltaVsOriginal !== 0 && (
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-700">
                 {t("transparency.delta.original", {
                   delta: formatSigned(deltaVsOriginal, (value) =>
                     formatter.format(value)

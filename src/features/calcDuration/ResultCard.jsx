@@ -28,8 +28,10 @@ export default function ResultCard({ values, result: injectedResult }) {
   const transparencyButton = (
     <button
       type="button"
-      className="text-blue-600 underline font-medium inline-block"
+      className="text-blue-600 underline font-semibold inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
       onClick={openTransparency}
+      aria-haspopup="dialog"
+      aria-expanded={showTransparency}
     >
       {t("result.howCalculated")}
     </button>
@@ -38,7 +40,10 @@ export default function ResultCard({ values, result: injectedResult }) {
   if (result && result.allowed === false) {
     return (
       <>
-        <section className="w-full max-w-2xl bg-white rounded-xl border border-red-200 shadow-sm p-4 space-y-2">
+        <section
+          className="w-full max-w-2xl bg-white rounded-xl border border-red-200 shadow-sm p-4 space-y-2"
+          aria-live="polite"
+        >
           <h2 className="text-xl font-semibold text-red-700">
             {t("result.error.title")}
           </h2>
@@ -54,7 +59,10 @@ export default function ResultCard({ values, result: injectedResult }) {
 
   return (
     <>
-      <section className="w-full max-w-2xl bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-2">
+      <section
+        className="w-full max-w-2xl bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-2"
+        aria-live="polite"
+      >
         <h2 className="text-xl font-semibold text-slate-900">
           {t("result.headline", { value: result.formatted.parttime })}
         </h2>
