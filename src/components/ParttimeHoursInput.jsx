@@ -89,7 +89,7 @@ export default function ParttimeHoursInput({
       />
 
       <p id={PARTTIME_HELP_ID} className="text-sm text-slate-600">
-        Erlaubter Bereich: {computedMin} bis {computedMax} Stunden pro Woche (ca. 50–80 % der Vollzeit).
+        {t("parttimeHours.help")}
       </p>
 
       {!isValid && (

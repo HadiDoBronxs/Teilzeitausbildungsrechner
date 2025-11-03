@@ -5,6 +5,7 @@ import FulltimeHoursInput from "./components/FulltimeHoursInput.jsx";
 import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx";
 import RegularDurationInput from "./components/RegularDurationInput.jsx";
 import ReductionMonthsInput from "./components/ReductionMonthsInput.jsx";
+import LanguageToggle from "./components/LanguageToggle.jsx";
 import ResultCard from "./features/calcDuration/ResultCard.jsx";
 import Transparenz from "./routes/transparenz.jsx";
 
@@ -16,6 +17,7 @@ const isTransparencyPath =
   window.location.pathname.startsWith("/transparenz");
 
 export default function App() {
+
   if (isTransparencyPath) {
     return <Transparenz />;
   }
@@ -60,9 +62,12 @@ function CalculatorApp() {
         aria-labelledby={MAIN_HEADING_ID}
         className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
       >
-        <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
-          Teilzeitausbildungsrechner
-        </h1>
+        <div className="w-full max-w-2xl flex flex-col items-center gap-4">
+          <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
+            {t("app.title")}
+          </h1>
+          <LanguageToggle />
+        </div>
         <FulltimeHoursInput
           onValueChange={(raw) => {
             // Guard empty string / null / undefined coming from the input

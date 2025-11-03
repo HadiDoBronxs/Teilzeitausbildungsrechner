@@ -63,7 +63,7 @@ export default function RegularDurationInput({ onValueChange }) {
         id={REGULAR_DURATION_HINT_ID}
         className="text-sm font-medium text-slate-700"
       >
-        Hinweis: {t("regularDuration.minHint", { min: DURATION_MIN })}
+        {t("regularDuration.hintPrefix")} {t("regularDuration.minHint", { min: DURATION_MIN })}
       </p>
 
       {!isValid && (
@@ -82,7 +82,7 @@ export default function RegularDurationInput({ onValueChange }) {
           className="text-sm font-semibold text-slate-900 bg-slate-100 border border-slate-300 rounded-md px-3 py-2"
           aria-live="polite"
         >
-          Ergebnis:{" "}
+          {t("regularDuration.resultPrefix")}{" "}
           {t("regularDuration.durationText", {
             months: Number(months),
             years: Math.floor(Number(months) / 12),

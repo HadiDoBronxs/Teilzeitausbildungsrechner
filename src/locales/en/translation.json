@@ -15,8 +15,16 @@
   "regularDuration": {
     "label": "How long is your usual training duration in months?",
     "error": "Please enter a number between {{min}} and {{max}} months.",
+    "hintPrefix": "Note:",
     "minHint": "At least {{min}} months.",
-    "durationText": "{{months}} months: {{years}} years and {{remainingMonths}} months."
+    "durationText": "{{months}} months: {{years}} years and {{remainingMonths}} months.",
+    "resultPrefix": "Result:"
+  },
+  "format": {
+    "year": "Year",
+    "years": "Years",
+    "month": "Month",
+    "months": "Months"
   },
   "reduction": {
     "label": "Reduction (months)",
@@ -25,6 +33,14 @@
     "error": {
       "nonNegative": "Please enter a whole number greater than or equal to 0.",
       "maxValue": "The reduction may not exceed {{max}} months."
+    }
+  },
+  "app": {
+    "title": "Part-time Training Calculator",
+    "languages": "Language",
+    "languageNames": {
+      "de": "German",
+      "en": "English"
     }
   },
   "result": {
