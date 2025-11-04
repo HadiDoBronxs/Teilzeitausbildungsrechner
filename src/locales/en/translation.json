@@ -51,6 +51,14 @@
     },
     "factor": "Factor: {{pct}} %",
     "howCalculated": "How is this calculated?",
+    "labels": {
+      "full": "Full-time",
+      "part": "Your part-time",
+      "change": "Change"
+    },
+    "months": "{{value}} months",
+    "months_one": "{{value}} month",
+    "months_other": "{{value}} months",
     "error": {
       "title": "Calculation not possible",
       "generic": "Please check your entries.",
