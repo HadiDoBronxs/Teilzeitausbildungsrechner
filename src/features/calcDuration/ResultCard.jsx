@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import readFormAndCalc from "./readFormAndCalc";
 import TransparencyPanel from "./TransparencyPanel";
@@ -9,15 +9,6 @@ const formatDelta = (value) => {
   return `${sign}${value}`;
 };
 
-const formatMonths = (months, t) => {
-  const safeMonths = Math.max(0, Number.isFinite(months) ? months : 0);
-  const years = Math.floor(safeMonths / 12);
-  const remaining = safeMonths % 12;
-  const yearLabel = years === 1 ? t("format.year") : t("format.years");
-  const monthLabel = remaining === 1 ? t("format.month") : t("format.months");
-  return `${years} ${yearLabel} ${remaining} ${monthLabel}`;
-};
-
 export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
   const [showTransparency, setShowTransparency] = useState(false);
@@ -25,6 +16,9 @@ export default function ResultCard({ values, result: injectedResult }) {
     () => injectedResult ?? readFormAndCalc(values),
     [values, injectedResult]
   );
+  if (!result) {
+    return null;
+  }
   const { reductionMonths = 0 } = values;
   const hasReduction = Number(reductionMonths) > 0;
   const errorKey = result?.errorCode
@@ -49,14 +43,11 @@ export default function ResultCard({ values, result: injectedResult }) {
   if (result && result.allowed === false) {
     return (
       <>
-        <section
-          className="w-full max-w-2xl bg-white rounded-xl border border-red-200 shadow-sm p-4 space-y-2"
-          aria-live="polite"
-        >
-          <h2 className="text-xl font-semibold text-red-700">
+        <section className="w-full max-w-2xl bg-white rounded-xl border border-red-200 shadow-sm p-4 space-y-4" role="status">
+          <h2 className="text-2xl md:text-3xl font-bold text-red-700">
             {t("result.error.title")}
           </h2>
-          <p className="text-slate-700">{t(errorKey)}</p>
+          <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
           {transparencyButton}
         </section>
         {showTransparency && (
@@ -66,39 +57,65 @@ export default function ResultCard({ values, result: injectedResult }) {
     );
   }
 
-  const formattedParttime = formatMonths(result.parttimeFinalMonths, t);
+  const baselineMonths = hasReduction
+    ? result.effectiveFulltimeMonths
+    : result.fulltimeMonths;
+
+  const metrics = [
+    {
+      key: "full",
+      label: t("result.labels.full"),
+      value: t("result.months", { count: baselineMonths, value: baselineMonths }),
+    },
+    {
+      key: "part",
+      label: t("result.labels.part"),
+      value: t("result.months", {
+        count: result.parttimeFinalMonths,
+        value: result.parttimeFinalMonths,
+      }),
+    },
+    {
+      key: "change",
+      label: t("result.labels.change"),
+      value: t("result.months", {
+        count: Math.abs(result.deltaMonths),
+        value: formatDelta(result.deltaMonths),
+      }),
+    },
+  ];
+
+  const formattedParttime =
+    result.formatted?.parttime ??
+    t("result.months", {
+      count: result.parttimeFinalMonths,
+      value: result.parttimeFinalMonths,
+    });
 
   return (
     <>
       <section
-        className="w-full max-w-2xl bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-2"
-        aria-live="polite"
+        className="w-full max-w-2xl bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6"
+        role="status"
       >
-        <h2 className="text-xl font-semibold text-slate-900">
+        <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
           {t("result.headline", { value: formattedParttime })}
         </h2>
 
-        <p className="text-slate-700">
-          {hasReduction
-            ? t("result.compare.withReduction", {
-                eff: result.effectiveFulltimeMonths,
-                part: result.parttimeFinalMonths,
-                delta: formatDelta(result.deltaMonths),
-              })
-            : t("result.compare.noReduction", {
-                full: result.fulltimeMonths,
-                part: result.parttimeFinalMonths,
-                delta: formatDelta(
-                  result.parttimeFinalMonths - result.fulltimeMonths
-                ),
-              })}
-        </p>
+        <dl className="grid gap-5 sm:grid-cols-3">
+          {metrics.map((metric) => (
+            <div key={metric.key} className="space-y-1">
+              <dt className="text-sm text-slate-600 font-medium">
+                {metric.label}
+              </dt>
+              <dd className="text-3xl md:text-4xl font-extrabold text-slate-900">
+                {metric.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
 
-        <p className="text-slate-700">
-          {t("result.factor", { pct: (result.factor * 100).toFixed(0) })}
-        </p>
-
-        {transparencyButton}
+        <div>{transparencyButton}</div>
       </section>
       {showTransparency && (
         <TransparencyPanel formValues={values} onClose={closeTransparency} />

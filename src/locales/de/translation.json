@@ -51,6 +51,14 @@
         },
         "factor": "Faktor: {{pct}} %",
         "howCalculated": "Wie wird das berechnet?",
+        "labels": {
+            "full": "Vollzeit",
+            "part": "Ihre Teilzeit",
+            "change": "Änderung"
+        },
+        "months": "{{value}} Monate",
+        "months_one": "{{value}} Monat",
+        "months_other": "{{value}} Monate",
         "error": {
             "title": "Berechnung nicht möglich",
             "generic": "Bitte überprüfe deine Eingaben.",
