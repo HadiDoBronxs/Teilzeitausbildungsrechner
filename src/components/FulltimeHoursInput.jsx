@@ -23,7 +23,7 @@ export default function FulltimeHoursInput({ onValueChange }) {
   .filter(Boolean).join(" ");
 
   return (
-    <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
+    <div className="flex flex-col w-full gap-4 px-4 py-3 mx-auto sm:max-w-sm sm:px-0">
       <label
         htmlFor={FULLTIME_INPUT_NAME}
         className="font-semibold text-gray-800"
@@ -44,7 +44,7 @@ export default function FulltimeHoursInput({ onValueChange }) {
         onChange={(e) => setHours(e.target.value)}
         aria-invalid={!isValid}
         aria-describedby={describedBy || undefined}
-        className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+        className={`border rounded-xl h-14 px-6 text-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 sm:h-12 sm:text-base sm:px-4 ${
           !isValid ? "border-red-500" : "border-gray-300"
         }`}
       />
