@@ -40,3 +40,10 @@
 .read-the-docs {
   color: #888;
 }
+
+h1 {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.2;
+}
