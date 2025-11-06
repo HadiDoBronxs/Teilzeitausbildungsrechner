@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { getSchoolDegreeOption } from "../../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "./readFormAndCalc";
 
 const MAX_EXTENSION_MONTHS = 6;
@@ -147,12 +148,31 @@ export default function TransparencyPanel({ formValues, onClose }) {
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
-  const reductionMonths = Math.max(0, toNumber(formValues?.reductionMonths, 0));
+  const totalReductionMonths = Math.max(
+    0,
+    toNumber(formValues?.reductionMonths, 0)
+  );
+  const manualReductionMonths = Math.max(
+    0,
+    toNumber(formValues?.manualReductionMonths, 0)
+  );
+  const schoolDegreeOption = getSchoolDegreeOption(
+    formValues?.schoolDegreeId ?? null
+  );
+  const degreeReductionMonths = Math.max(
+    0,
+    toNumber(
+      formValues?.degreeReductionMonths,
+      schoolDegreeOption?.months ?? 0
+    )
+  );
+  const reductionLabelKey =
+    formValues?.schoolDegreeLabelKey ?? schoolDegreeOption?.labelKey ?? null;
   const minDurationMonths = resolveMinDuration(
     fulltimeMonths,
     formValues?.minDurationMonths
   );
-  const rawBase = Math.max(0, fulltimeMonths - reductionMonths);
+  const rawBase = Math.max(0, fulltimeMonths - totalReductionMonths);
 
   const formatter = useMemo(
     () =>
@@ -169,6 +189,28 @@ export default function TransparencyPanel({ formValues, onClose }) {
       : weeklyFull > 0
       ? weeklyPart / weeklyFull
       : 0;
+  const reductionLabel = reductionLabelKey ? t(reductionLabelKey) : null;
+  const breakdownParts = [];
+  if (degreeReductionMonths > 0 && reductionLabel) {
+    breakdownParts.push(
+      t("reduction.breakdown.degree", {
+        months: formatter.format(degreeReductionMonths),
+        label: reductionLabel,
+      })
+    );
+  }
+  if (manualReductionMonths > 0) {
+    breakdownParts.push(
+      t("reduction.breakdown.manual", {
+        months: formatter.format(manualReductionMonths),
+      })
+    );
+  }
+  const formattedReduction = formatter.format(totalReductionMonths);
+  const reductionDisplay =
+    breakdownParts.length > 0
+      ? `${formattedReduction} (${breakdownParts.join(" + ")})`
+      : formattedReduction;
 
   const percent =
     weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
@@ -386,7 +428,8 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <p className="text-sm text-slate-700">
               {t("transparency.step3.text", {
                 fullM: formatter.format(fulltimeMonths),
-                redM: formatter.format(reductionMonths),
+                redM: formattedReduction,
+                reductionText: reductionDisplay,
                 rawBase: formatter.format(rawBase),
                 minM: formatter.format(minDurationMonths),
                 basis: formatter.format(basis),

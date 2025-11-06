@@ -5,9 +5,14 @@ import FulltimeHoursInput from "./components/FulltimeHoursInput.jsx";
 import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx";
 import RegularDurationInput from "./components/RegularDurationInput.jsx";
 import ReductionMonthsInput from "./components/ReductionMonthsInput.jsx";
+import SchoolDegreeReductionSelect from "./components/SchoolDegreeReductionSelect.jsx";
 import LanguageToggle from "./components/LanguageToggle.jsx";
 import ResultCard from "./features/calcDuration/ResultCard.jsx";
 import Transparenz from "./routes/transparenz.jsx";
+import {
+  getReductionMonthsForDegree,
+  getSchoolDegreeOption,
+} from "./domain/schoolDegreeReductions.js";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
@@ -26,18 +31,40 @@ export default function App() {
 
 function CalculatorApp() {
   const { t } = useTranslation();
+  const defaultDegreeId = "hs";
+  const [schoolDegreeId, setSchoolDegreeId] = useState(defaultDegreeId);
   const [fulltimeHours, setFulltimeHours] = useState(40);
   const [parttimeHours, setParttimeHours] = useState(30);
   const [fullDurationMonths, setFullDurationMonths] = useState(36);
-  const [reductionMonths, setReductionMonths] = useState();
+  const [manualReductionMonths, setManualReductionMonths] = useState();
+
+  const degreeReductionMonths = useMemo(
+    () => getReductionMonthsForDegree(schoolDegreeId),
+    [schoolDegreeId]
+  );
 
   const handleReductionChange = (raw) => {
     if (raw === "" || raw === null || raw === undefined) {
-      setReductionMonths(undefined);
+      setManualReductionMonths(undefined);
       return;
     }
     const parsed = parseInt(raw, 10);
-    setReductionMonths(Number.isNaN(parsed) ? undefined : parsed);
+    if (Number.isNaN(parsed)) {
+      setManualReductionMonths(undefined);
+      return;
+    }
+    setManualReductionMonths(Math.max(0, parsed));
+  };
+
+  const handleSchoolDegreeSelect = (nextId, months) => {
+    const safeId = nextId ?? null;
+    setSchoolDegreeId(safeId);
+    if (
+      safeId === null &&
+      (months === undefined || Number.isNaN(months) || months === 0)
+    ) {
+      return;
+    }
   };
 
   const formValues = useMemo(
@@ -45,10 +72,32 @@ function CalculatorApp() {
       weeklyFull: fulltimeHours,
       weeklyPart: parttimeHours,
       fullDurationMonths,
-      reductionMonths,
+      reductionMonths:
+        (Number.isFinite(degreeReductionMonths)
+          ? degreeReductionMonths
+          : 0) +
+        (Number.isFinite(manualReductionMonths)
+          ? manualReductionMonths
+          : 0),
+      degreeReductionMonths: Number.isFinite(degreeReductionMonths)
+        ? degreeReductionMonths
+        : 0,
+      manualReductionMonths: Number.isFinite(manualReductionMonths)
+        ? manualReductionMonths
+        : 0,
+      schoolDegreeId,
+      schoolDegreeLabelKey:
+        getSchoolDegreeOption(schoolDegreeId)?.labelKey ?? null,
       rounding: "round",
     }),
-    [fulltimeHours, parttimeHours, fullDurationMonths, reductionMonths]
+    [
+      fulltimeHours,
+      parttimeHours,
+      fullDurationMonths,
+      degreeReductionMonths,
+      manualReductionMonths,
+      schoolDegreeId,
+    ]
   );
 
   return (
@@ -92,8 +141,12 @@ function CalculatorApp() {
           }}
         />
         <RegularDurationInput onValueChange={setFullDurationMonths} />
+        <SchoolDegreeReductionSelect
+          value={schoolDegreeId ?? ""}
+          onChange={handleSchoolDegreeSelect}
+        />
         <ReductionMonthsInput
-          value={reductionMonths}
+          value={manualReductionMonths}
           onChange={handleReductionChange}
           min={0}
         />
