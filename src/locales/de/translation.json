@@ -27,16 +27,34 @@
         "months": "Monate"
     },
     "reduction": {
-        "label": "Verkürzung (Monate)",
+        "label": "Zusätzliche Verkürzung (Monate)",
+        "title": "Schulabschluss",
+        "selectPlaceholder": "Schulabschluss auswählen",
+        "dropdownDescription": "Wähle deinen höchsten Schulabschluss aus. Die passende Verkürzung wird übernommen.",
+        "why": "Warum kann ich verkürzen?",
+        "whyText": "Manche Schulabschlüsse enthalten bereits Teile der Ausbildung. Deshalb kann die IHK oder HWK die Ausbildungszeit verkürzen. Kammer und Betrieb entscheiden gemeinsam. In manchen Regionen gelten andere Regeln.",
+        "applied": "Verkürzung: −{{months}} Monate ({{label}})",
+        "totalApplied": "Verkürzung gesamt: −{{months}} Monate",
+        "manualApplied": "Zusätzliche Gründe: −{{months}} Monate",
         "placeholder": "z. B. 6",
-        "help": "Gib an, um wie viele Monate deine Ausbildung verkürzt werden soll (0, wenn keine Verkürzung).",
+        "help": "Gib an, um wie viele Monate deine Ausbildung zusätzlich verkürzt werden soll (0, wenn keine weitere Verkürzung).",
         "error": {
             "nonNegative": "Bitte gib eine ganze Zahl größer oder gleich 0 ein.",
             "maxValue": "Die Verkürzung darf nicht größer als {{max}} Monate sein."
+        },
+        "breakdown": {
+            "degree": "{{label}} −{{months}} Monate",
+            "manual": "Weitere Gründe −{{months}} Monate"
         }
     },
+    "reductionOptions": {
+        "hs": "Hauptschulabschluss",
+        "mr": "Fachoberschulreife / Mittlere Reife",
+        "fhr": "Fachhochschulreife",
+        "abi": "Hochschulreife"
+    },
     "app": {
-        "title": "Teilzeitausbildungsrechner",
+        "title": "Teilzeit-Ausbildungs-Rechner",
         "languages": "Sprache",
         "languageNames": {
             "de": "Deutsch",
@@ -82,7 +100,7 @@
         },
         "step3": {
             "title": "Schritt 3: Individuelle Basisdauer",
-            "text": "Regeldauer {{fullM}} − Verkürzung {{redM}} = {{rawBase}} → Mindestdauer {{minM}} ⇒ Basis = {{basis}} Monate ({{basisYM}})."
+            "text": "Regeldauer {{fullM}} − Verkürzung {{reductionText}} = {{rawBase}} → Mindestdauer {{minM}} ⇒ Basis = {{basis}} Monate ({{basisYM}})."
         },
         "step4": {
             "title": "Schritt 4: Theoretische neue Dauer",
