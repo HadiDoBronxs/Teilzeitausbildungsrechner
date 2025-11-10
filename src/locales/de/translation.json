@@ -29,6 +29,7 @@
     "reduction": {
         "label": "Zusätzliche Verkürzung (Monate)",
         "title": "Schulabschluss",
+        "question": "Was ist Ihr höchster Bildungsabschluss?",
         "selectPlaceholder": "Schulabschluss auswählen",
         "dropdownDescription": "Wähle deinen höchsten Schulabschluss aus. Die passende Verkürzung wird übernommen.",
         "why": "Warum kann ich verkürzen?",

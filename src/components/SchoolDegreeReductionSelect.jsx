@@ -9,6 +9,7 @@ import {
 const SELECT_ID = "school-degree-select";
 const TOOLTIP_ID = `${SELECT_ID}-tooltip`;
 const DESCRIPTION_ID = `${SELECT_ID}-description`;
+const QUESTION_ID = `${SELECT_ID}-question`;
 
 function buildOptions() {
   return SCHOOL_DEGREE_OPTIONS;
@@ -130,6 +131,10 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
         </button>
       </div>
 
+      <p id={QUESTION_ID} className="text-sm text-slate-700">
+        {t("reduction.question")}
+      </p>
+
       <p id={DESCRIPTION_ID} className="sr-only">
         {t("reduction.dropdownDescription")}
       </p>
@@ -141,7 +146,7 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
         className="w-full rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         value={value ?? ""}
         onChange={handleSelectChange}
-        aria-describedby={describedByIds.join(" ")}
+        aria-describedby={[QUESTION_ID, ...describedByIds].join(" ")}
       >
         <option value="">{t("reduction.selectPlaceholder")}</option>
         {options.map(renderOption)}

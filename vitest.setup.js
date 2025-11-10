@@ -18,6 +18,7 @@ const translators = {
   "result.error.generic": () => "Bitte überprüfe deine Eingaben.",
   "result.howCalculated": () => "Wie wird das berechnet?",
   "reduction.title": () => "Schulabschluss",
+  "reduction.question": () => "Was ist Ihr höchster Bildungsabschluss?",
   "reduction.selectPlaceholder": () => "Schulabschluss auswählen",
   "reduction.dropdownDescription": () =>
     "Wähle deinen höchsten Schulabschluss aus. Die passende Verkürzung wird übernommen.",

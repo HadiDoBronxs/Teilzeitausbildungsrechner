@@ -24,6 +24,14 @@ describe("SchoolDegreeReductionSelect", () => {
     ).toBeInTheDocument();
   });
 
+  it("displays the guiding question above the select", () => {
+    render(<SchoolDegreeReductionSelect value="" onChange={vi.fn()} />);
+
+    expect(
+      screen.getByText("Was ist Ihr höchster Bildungsabschluss?")
+    ).toBeInTheDocument();
+  });
+
   it("opens and closes the tooltip with keyboard support", async () => {
     const user = userEvent.setup();
     render(<SchoolDegreeReductionSelect value="" onChange={vi.fn()} />);

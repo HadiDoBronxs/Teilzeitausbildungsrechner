@@ -29,6 +29,7 @@
   "reduction": {
     "label": "Additional reduction (months)",
     "title": "School leaving certificate",
+    "question": "What is your highest school leaving certificate?",
     "selectPlaceholder": "Select school leaving certificate",
     "dropdownDescription": "Pick your highest school leaving certificate. The matching reduction will be applied automatically.",
     "why": "Why can I shorten?",
