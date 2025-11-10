@@ -10,53 +10,91 @@ const SELECT_ID = "school-degree-select";
 const TOOLTIP_ID = `${SELECT_ID}-tooltip`;
 const DESCRIPTION_ID = `${SELECT_ID}-description`;
 
-const buildOptions = () => SCHOOL_DEGREE_OPTIONS;
+function buildOptions() {
+  return SCHOOL_DEGREE_OPTIONS;
+}
 
+// Dropdown that lets the user pick their highest school degree and explains the automatic reduction.
 export default function SchoolDegreeReductionSelect({ value, onChange }) {
   const { t } = useTranslation();
+  // Options are static, memoising keeps referential equality between renders.
   const options = useMemo(buildOptions, []);
   const [isTooltipOpen, setTooltipOpen] = useState(false);
   const tooltipRef = useRef(null);
   const buttonRef = useRef(null);
 
-  useEffect(() => {
-    if (!isTooltipOpen) return undefined;
+  function invertTooltipState(previous) {
+    return !previous;
+  }
 
-    const handleKeyDown = (event) => {
+  function closeTooltip() {
+    setTooltipOpen(false);
+  }
+
+  // Close the tooltip when the user hits Escape or clicks outside the popover.
+  useEffect(function manageTooltipListeners() {
+    if (!isTooltipOpen) {
+      return undefined;
+    }
+
+    function handleKeyDown(event) {
       if (event.key === "Escape") {
         event.preventDefault();
-        setTooltipOpen(false);
+        closeTooltip();
       }
-    };
+    }
 
-    const handlePointerDown = (event) => {
-      if (!tooltipRef.current) return;
+    function handlePointerDown(event) {
+      if (!tooltipRef.current) {
+        return;
+      }
       if (
         tooltipRef.current.contains(event.target) ||
         buttonRef.current?.contains(event.target)
       ) {
         return;
       }
-      setTooltipOpen(false);
-    };
+      closeTooltip();
+    }
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("pointerdown", handlePointerDown);
 
-    return () => {
+    return function detachTooltipListeners() {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("pointerdown", handlePointerDown);
     };
   }, [isTooltipOpen]);
 
-  const handleSelectChange = (event) => {
+  // Bubble the selected id plus the mapped reduction months to the parent form.
+  function handleSelectChange(event) {
     const nextId = event.target.value || null;
     const months = getReductionMonthsForDegree(nextId);
     if (typeof onChange === "function") {
       onChange(nextId, months);
     }
-  };
+  }
 
+  function toggleTooltip() {
+    setTooltipOpen(invertTooltipState);
+  }
+
+  function handleButtonKeyDown(event) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeTooltip();
+    }
+  }
+
+  function renderOption(option) {
+    return (
+      <option key={option.id} value={option.id}>
+        {t(option.labelKey)}
+      </option>
+    );
+  }
+
+  // Surface a short explanation below the select when a degree adds months.
   const selectedOption = getSchoolDegreeOption(value);
   const describedByIds = [DESCRIPTION_ID];
   if (isTooltipOpen) {
@@ -79,13 +117,8 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
           aria-haspopup="dialog"
           aria-expanded={isTooltipOpen}
           aria-controls={TOOLTIP_ID}
-          onClick={() => setTooltipOpen((prev) => !prev)}
-          onKeyDown={(event) => {
-            if (event.key === "Escape") {
-              event.preventDefault();
-              setTooltipOpen(false);
-            }
-          }}
+          onClick={toggleTooltip}
+          onKeyDown={handleButtonKeyDown}
         >
           <span
             aria-hidden="true"
@@ -111,11 +144,7 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
         aria-describedby={describedByIds.join(" ")}
       >
         <option value="">{t("reduction.selectPlaceholder")}</option>
-        {options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {t(option.labelKey)}
-          </option>
-        ))}
+        {options.map(renderOption)}
       </select>
 
       {isTooltipOpen && (
