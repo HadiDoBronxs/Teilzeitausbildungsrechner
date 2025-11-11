@@ -6,6 +6,87 @@ const MAX_EXTENSION_MONTHS = 6;
 const DURATION_CAP_MULTIPLIER = 1.5;
 
 /**
+ * Field configuration for PDF input fields.
+ * Maps form field names to their PDF label translation keys and value formatters.
+ * This configuration makes the PDF generation resilient to form field changes.
+ * 
+ * @typedef {Object} FieldConfig
+ * @property {string} labelKey - Translation key for the field label
+ * @property {Function} getValue - Function to extract and format the value from formValues
+ * @property {boolean} [required=false] - Whether this field is required (will show warning if missing)
+ * @property {boolean} [conditional=false] - Whether this field should only be shown if value > 0
+ */
+
+/**
+ * Builds the field configuration for PDF input fields.
+ * This configuration is independent of the actual form structure and can be easily updated.
+ * 
+ * @param {Object} formValues - The form values object
+ * @param {Object} reduction - The reduction summary object
+ * @param {Function} safeT - Safe translation function
+ * @param {Function} formatter - Number formatter function
+ * @returns {Array<FieldConfig>} Array of field configurations
+ */
+function buildInputFieldConfig(formValues, reduction, safeT, formatter) {
+  const weeklyFull = toNumber(formValues?.weeklyFull);
+  const weeklyPart = toNumber(formValues?.weeklyPart);
+  const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
+  const schoolDegreeLabel = reduction.labelKey 
+    ? safeT(reduction.labelKey) 
+    : safeT("reduction.selectPlaceholder");
+
+  const configs = [
+    {
+      labelKey: "pdf.fulltimeHours",
+      getValue: () => `${formatter.format(weeklyFull)} h/week`,
+      required: true,
+    },
+    {
+      labelKey: "pdf.parttimeHours",
+      getValue: () => `${formatter.format(weeklyPart)} h/week`,
+      required: true,
+    },
+    {
+      labelKey: "pdf.regularDuration",
+      getValue: () => `${formatter.format(fulltimeMonths)}`,
+      required: true,
+    },
+    {
+      labelKey: "pdf.schoolDegree",
+      getValue: () => schoolDegreeLabel,
+      required: false,
+    },
+  ];
+
+  // Add conditional reduction fields
+  if (reduction.degree > 0) {
+    configs.push({
+      labelKey: "pdf.degreeReduction",
+      getValue: () => `${formatter.format(reduction.degree)}`,
+      conditional: true,
+    });
+  }
+
+  if (reduction.manual > 0) {
+    configs.push({
+      labelKey: "pdf.manualReduction",
+      getValue: () => `${formatter.format(reduction.manual)}`,
+      conditional: true,
+    });
+  }
+
+  if (reduction.total > 0) {
+    configs.push({
+      labelKey: "pdf.totalReduction",
+      getValue: () => `${formatter.format(reduction.total)}`,
+      conditional: true,
+    });
+  }
+
+  return configs;
+}
+
+/**
  * Converts a value to a number, returning a fallback if the value is not finite.
  * 
  * @param {*} value - The value to convert to a number.
@@ -275,10 +356,7 @@ export async function generatePDF(formValues, t, i18n) {
   // Extract calculation result
   const calculation = readFormAndCalc(formValues);
   
-  // Extract inputs
-  const weeklyFull = toNumber(formValues?.weeklyFull);
-  const weeklyPart = toNumber(formValues?.weeklyPart);
-  const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
+  // Extract reduction summary
   const reduction = buildReductionSummary({
     schoolDegreeId: formValues?.schoolDegreeId,
     degreeReductionMonths: formValues?.degreeReductionMonths,
@@ -307,17 +385,27 @@ export async function generatePDF(formValues, t, i18n) {
       return key;
     }
   }
-  
+
   // Replace t with safeTranslate for the rest of the function
   const safeT = safeTranslate;
 
-  const schoolDegreeLabel = reduction.labelKey 
-    ? safeTranslate(reduction.labelKey) 
-    : safeTranslate("reduction.selectPlaceholder");
   const formatter = new Intl.NumberFormat(i18n.language, {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   });
+
+  // Extract inputs for use in calculations
+  const weeklyFull = toNumber(formValues?.weeklyFull);
+  const weeklyPart = toNumber(formValues?.weeklyPart);
+  const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
+
+  // Get school degree label for use in transparency section
+  const schoolDegreeLabel = reduction.labelKey 
+    ? safeT(reduction.labelKey) 
+    : safeT("reduction.selectPlaceholder");
+
+  // Build input field configuration dynamically
+  const inputFieldConfigs = buildInputFieldConfig(formValues, reduction, safeT, formatter);
 
   // Input Values Section
   yPosition = addText(
@@ -329,32 +417,40 @@ export async function generatePDF(formValues, t, i18n) {
   );
   yPosition -= lineHeight;
 
-  const inputs = [
-    { label: safeT("pdf.fulltimeHours"), value: `${formatter.format(weeklyFull)} h/week` },
-    { label: safeT("pdf.parttimeHours"), value: `${formatter.format(weeklyPart)} h/week` },
-    { label: safeT("pdf.regularDuration"), value: `${formatter.format(fulltimeMonths)}` },
-    { label: safeT("pdf.schoolDegree"), value: schoolDegreeLabel },
-  ];
+  // Build inputs array dynamically from configuration
+  const inputs = inputFieldConfigs.map((config) => {
+    try {
+      return {
+        label: safeT(config.labelKey),
+        value: config.getValue(),
+      };
+    } catch (error) {
+      console.warn(`Failed to get value for field "${config.labelKey}":`, error);
+      return {
+        label: safeT(config.labelKey),
+        value: config.required ? "N/A" : "",
+      };
+    }
+  }).filter((input) => {
+    // Filter out empty conditional fields
+    return input.value !== "";
+  });
 
-  if (reduction.degree > 0) {
-    inputs.push({
-      label: safeT("pdf.degreeReduction"),
-      value: `${formatter.format(reduction.degree)}`,
+  // Warn about missing required fields (but don't fail)
+  const missingRequiredFields = inputFieldConfigs
+    .filter((config) => config.required)
+    .filter((config) => {
+      try {
+        const value = config.getValue();
+        return !value || value === "0" || value === "0 h/week";
+      } catch {
+        return true;
+      }
     });
-  }
 
-  if (reduction.manual > 0) {
-    inputs.push({
-      label: safeT("pdf.manualReduction"),
-      value: `${formatter.format(reduction.manual)}`,
-    });
-  }
-
-  if (reduction.total > 0) {
-    inputs.push({
-      label: safeT("pdf.totalReduction"),
-      value: `${formatter.format(reduction.total)}`,
-    });
+  if (missingRequiredFields.length > 0) {
+    console.warn("PDF generation: Some required fields are missing or zero:", 
+      missingRequiredFields.map((f) => f.labelKey).join(", "));
   }
 
   inputs.forEach((input) => {
