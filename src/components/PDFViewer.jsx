@@ -422,8 +422,19 @@ export default function PDFViewer({ pdfBytes, onClose }) {
   }
 
   /**
+   * Detects if the current device is a mobile device.
+   * 
+   * @function isMobileDevice
+   * @returns {boolean} True if the device is mobile.
+   */
+  function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+  }
+
+  /**
    * Opens the PDF and triggers the browser's print dialog.
-   * Uses an iframe approach for better compatibility across browsers.
+   * Uses different strategies for mobile vs desktop devices.
    * 
    * @function handlePrint
    */
@@ -432,7 +443,66 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       const blob = createPDFBlob();
       const url = URL.createObjectURL(blob);
       
-      // Create an iframe for printing
+      // On mobile devices, open PDF in new window/tab for better compatibility
+      if (isMobileDevice()) {
+        const printWindow = window.open(url, '_blank');
+        if (printWindow) {
+          // Try to trigger print after PDF loads
+          let printAttempted = false;
+          
+          function attemptMobilePrint() {
+            if (printAttempted) return;
+            printAttempted = true;
+            
+            try {
+              // Try to trigger print dialog
+              printWindow.print();
+              
+              // Set up cleanup after print
+              function handleAfterPrint() {
+                try {
+                  printWindow.close();
+                } catch (_err) {
+                  // Window might already be closed
+                }
+                URL.revokeObjectURL(url);
+                window.removeEventListener('afterprint', handleAfterPrint);
+              }
+              
+              window.addEventListener('afterprint', handleAfterPrint);
+              
+              // Fallback cleanup after 5 minutes
+              setTimeout(function fallbackCleanup() {
+                window.removeEventListener('afterprint', handleAfterPrint);
+                URL.revokeObjectURL(url);
+              }, 300000);
+            } catch (printErr) {
+              console.log("Auto-print not available on mobile. PDF opened in new tab - use browser menu to print.");
+              // On mobile, if print() fails, the PDF is still open in a new tab
+              // User can use browser menu to print/share
+              // Clean up blob URL after delay
+              setTimeout(function revokeBlob() {
+                URL.revokeObjectURL(url);
+              }, 60000);
+            }
+          }
+          
+          // Try to print after a short delay to allow PDF to load
+          setTimeout(attemptMobilePrint, 1000);
+          
+          // Also try when window loads (if event is available)
+          if (printWindow.addEventListener) {
+            printWindow.addEventListener('load', attemptMobilePrint);
+          }
+        } else {
+          // Popup blocked - fall back to save suggestion
+          URL.revokeObjectURL(url);
+          alert("Please allow popups to print, or use the Save button and print the saved file.");
+        }
+        return;
+      }
+      
+      // Desktop: Use iframe approach
       const iframe = document.createElement('iframe');
       iframe.style.position = 'fixed';
       iframe.style.right = '0';
