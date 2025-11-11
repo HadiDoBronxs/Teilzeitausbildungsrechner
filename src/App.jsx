@@ -10,6 +10,8 @@ import LanguageToggle from "./components/LanguageToggle.jsx";
 import ResultCard from "./features/calcDuration/ResultCard.jsx";
 import Transparenz from "./routes/transparenz.jsx";
 import { buildReductionSummary } from "./domain/schoolDegreeReductions.js";
+import { generatePDF } from "./utils/generatePDF.js";
+import PDFViewer from "./components/PDFViewer.jsx";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
@@ -49,13 +51,15 @@ export default function App() {
 }
 
 function CalculatorApp() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [schoolDegreeId, setSchoolDegreeId] = useState(DEFAULT_DEGREE_ID);
   const [fulltimeHours, setFulltimeHours] = useState(DEFAULT_FULLTIME_HOURS);
   const [parttimeHours, setParttimeHours] = useState(DEFAULT_PARTTIME_HOURS);
   const [fullDurationMonths, setFullDurationMonths] =
     useState(DEFAULT_DURATION_MONTHS);
   const [manualReductionMonths, setManualReductionMonths] = useState();
+  const [pdfBytes, setPdfBytes] = useState(null);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Keep the manual reduction state clean whenever the user types: no NaN, no negatives.
   function handleReductionChange(raw) {
@@ -116,6 +120,25 @@ function CalculatorApp() {
     schoolDegreeId,
   ]);
 
+  async function handleSaveAsPDF() {
+    try {
+      setIsGeneratingPDF(true);
+      const bytes = await generatePDF(formValues, t, i18n);
+      setPdfBytes(bytes);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      console.error("Error stack:", error.stack);
+      console.error("Error message:", error.message);
+      alert(`Failed to generate PDF: ${error.message || "Unknown error"}. Please check the console for details.`);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  }
+
+  function handleClosePDF() {
+    setPdfBytes(null);
+  }
+
   return (
     <>
       <a className="skip-link" href={`#${MAIN_ID}`}>
@@ -151,7 +174,16 @@ function CalculatorApp() {
           min={0}
         />
         <ResultCard values={formValues} />
+        <button
+          type="button"
+          onClick={handleSaveAsPDF}
+          disabled={isGeneratingPDF}
+          className="w-full max-w-2xl px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
+        </button>
       </main>
+      {pdfBytes && <PDFViewer pdfBytes={pdfBytes} onClose={handleClosePDF} />}
     </>
   );
 }
