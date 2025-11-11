@@ -10,7 +10,9 @@
         "help": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
         "error": "Bitte gib einen Wert zwischen {{min}} und {{max}} Stunden pro Woche ein.",
         "factorText": "Das entspricht etwa {{percent}} % der Vollzeit.",
-        "factorError": "Die Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Weniger ist nicht möglich."
+        "factorError": "Die Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Weniger ist nicht möglich.",
+        "avgDaily": "Das sind {{hours}} Stunden pro Tag."
+        
     },
     "regularDuration": {
         "label": "Wie lange dauert Ihre übliche Ausbildungszeit in Monaten?",

@@ -40,6 +40,12 @@ export default function ParttimeHoursInput({
     ? numericHours / fulltimeNumeric >= 0.5
     : true;
 
+
+    // Calculate average daily working hours
+  const avgDailyHours =
+  numericHours && numericHours > 0 ? (numericHours / 5).toFixed(1) : null;
+
+
   // Notify parent when hours change
   useEffect(() => {
     if (typeof onValueChange === "function") {
@@ -121,6 +127,22 @@ export default function ParttimeHoursInput({
             : t("parttimeHours.factorError")}
         </div>
       )}
+
+            {/* 
+      Display the calculated average daily working hours below the input field.
+      The text updates automatically whenever the weekly part-time hours change.
+      Shown only if a valid number is entered (avgDailyHours != null).
+    */}
+    {avgDailyHours && (
+      <p
+        role="status"
+        aria-live="polite"
+        className="text-sm text-slate-800 font-medium mt-1"
+      >
+        {t("parttimeHours.avgDaily", { hours: avgDailyHours })}
+      </p>
+    )}
+
     </div>
   );
 }
