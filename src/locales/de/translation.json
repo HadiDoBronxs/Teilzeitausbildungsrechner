@@ -156,5 +156,27 @@
     },
     "error": {
         "below50": "Die gewünschte Wochenarbeitszeit liegt unter 50 % der regulären Arbeitszeit. Bitte Eingaben prüfen."
+    },
+    "pdf": {
+        "saveButton": "Als PDF speichern",
+        "title": "Teilzeit-Ausbildungs-Berechnung",
+        "inputs": "Eingabewerte",
+        "results": "Berechnungsergebnisse",
+        "transparency": "Berechnungstransparenz",
+        "date": "Datum",
+        "fulltimeHours": "Vollzeitstunden pro Woche",
+        "parttimeHours": "Teilzeitstunden pro Woche",
+        "regularDuration": "Reguläre Ausbildungsdauer (Monate)",
+        "schoolDegree": "Schulabschluss",
+        "degreeReduction": "Verkürzung durch Abschluss (Monate)",
+        "manualReduction": "Zusätzliche Verkürzung (Monate)",
+        "totalReduction": "Gesamtverkürzung (Monate)",
+        "finalDuration": "Finale Ausbildungsdauer",
+        "baselineMonths": "Basisdauer (Monate)",
+        "parttimeMonths": "Teilzeitdauer (Monate)",
+        "deltaMonths": "Änderung (Monate)",
+        "factor": "Teilzeit-Faktor",
+        "disclaimer": "Haftungsausschluss",
+        "disclaimerText": "Diese Berechnung dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt. Regionale Regelungen können abweichen."
     }
 }
