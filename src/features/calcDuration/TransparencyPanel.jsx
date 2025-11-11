@@ -1,16 +1,17 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { buildReductionSummary } from "../../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "./readFormAndCalc";
 
 const MAX_EXTENSION_MONTHS = 6;
 const DURATION_CAP_MULTIPLIER = 1.5;
 
-const toNumber = (value, fallback = 0) => {
+function toNumber(value, fallback = 0) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
-};
+}
 
-const resolveMinDuration = (fulltimeMonths, override) => {
+function resolveMinDuration(fulltimeMonths, override) {
   const safeFull = Number.isFinite(fulltimeMonths) ? fulltimeMonths : 0;
   const fallback = Math.max(0, Math.floor(safeFull / 2));
   if (override === undefined || override === null || override === "") {
@@ -21,9 +22,9 @@ const resolveMinDuration = (fulltimeMonths, override) => {
     return fallback;
   }
   return Math.max(0, parsed);
-};
+}
 
-const formatYearsMonths = (months, t) => {
+function formatYearsMonths(months, t) {
   const safeValue = Number.isFinite(months) ? months : 0;
   const rounded = Math.max(0, Math.round(safeValue));
   const years = Math.floor(rounded / 12);
@@ -31,15 +32,15 @@ const formatYearsMonths = (months, t) => {
   const yearLabel = years === 1 ? t("format.year") : t("format.years");
   const monthLabel = remaining === 1 ? t("format.month") : t("format.months");
   return `${years} ${yearLabel} ${remaining} ${monthLabel}`;
-};
+}
 
-const formatSigned = (value, formatter) => {
+function formatSigned(value, formatter) {
   if (!Number.isFinite(value) || value === 0) {
     return formatter(0);
   }
   const prefix = value > 0 ? "+" : "-";
   return `${prefix}${formatter(Math.abs(value))}`;
-};
+}
 
 const FOCUSABLE_SELECTORS =
   'a[href], button:not([disabled]), textarea, input, select, details summary, [tabindex]:not([tabindex="-1"])';
@@ -47,11 +48,16 @@ const DIALOG_TITLE_ID = "dialog-title";
 
 export default function TransparencyPanel({ formValues, onClose }) {
   const { t, i18n } = useTranslation();
-  const calculation = useMemo(() => readFormAndCalc(formValues), [formValues]);
+
+  function computeCalculation() {
+    return readFormAndCalc(formValues);
+  }
+
+  const calculation = useMemo(computeCalculation, [formValues]);
   const dialogRef = useRef(null);
   const lastFocusedElement = useRef(null);
 
-  useEffect(() => {
+  useEffect(function setupDialogFocusManagement() {
     const dialog = dialogRef.current;
     if (!dialog) {
       return;
@@ -65,28 +71,34 @@ export default function TransparencyPanel({ formValues, onClose }) {
       lastFocusedElement.current = document.activeElement;
     }
 
-    const getFocusableElements = () =>
-      Array.from(dialog.querySelectorAll(FOCUSABLE_SELECTORS)).filter(
-        (element) =>
-          !element.hasAttribute("disabled") &&
-          element.getAttribute("aria-hidden") !== "true" &&
-          element.tabIndex !== -1 &&
-          (element.offsetParent !== null ||
-            getComputedStyle(element).position === "fixed")
+    function isElementFocusable(element) {
+      return (
+        !element.hasAttribute("disabled") &&
+        element.getAttribute("aria-hidden") !== "true" &&
+        element.tabIndex !== -1 &&
+        (element.offsetParent !== null ||
+          getComputedStyle(element).position === "fixed")
       );
+    }
 
-    const focusInitialElement = () => {
+    function getFocusableElements() {
+      return Array.from(dialog.querySelectorAll(FOCUSABLE_SELECTORS)).filter(
+        isElementFocusable
+      );
+    }
+
+    function focusInitialElement() {
       const focusable = getFocusableElements();
       if (focusable.length > 0) {
         focusable[0].focus();
       } else {
         dialog.focus();
       }
-    };
+    }
 
     focusInitialElement();
 
-    const handleKeyDown = (event) => {
+    function handleKeyDown(event) {
       if (event.key === "Escape") {
         event.preventDefault();
         onClose?.();
@@ -120,18 +132,18 @@ export default function TransparencyPanel({ formValues, onClose }) {
         event.preventDefault();
         first.focus();
       }
-    };
+    }
 
-    const handlePointerDown = (event) => {
+    function handlePointerDown(event) {
       if (!dialog.contains(event.target)) {
         onClose?.();
       }
-    };
+    }
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("pointerdown", handlePointerDown);
 
-    return () => {
+    return function cleanupDialogListeners() {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("pointerdown", handlePointerDown);
       if (
@@ -147,28 +159,67 @@ export default function TransparencyPanel({ formValues, onClose }) {
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
-  const reductionMonths = Math.max(0, toNumber(formValues?.reductionMonths, 0));
+  // Use the same helper as the card so both views describe the same reductions.
+  const reduction = buildReductionSummary({
+    schoolDegreeId: formValues?.schoolDegreeId,
+    degreeReductionMonths: formValues?.degreeReductionMonths,
+    manualReductionMonths: formValues?.manualReductionMonths,
+    labelKey: formValues?.schoolDegreeLabelKey,
+  });
+  const totalReductionMonths = reduction.total;
+  const manualReductionMonths = reduction.manual;
+  const degreeReductionMonths = reduction.degree;
+  const reductionLabel = reduction.labelKey ? t(reduction.labelKey) : null;
   const minDurationMonths = resolveMinDuration(
     fulltimeMonths,
     formValues?.minDurationMonths
   );
-  const rawBase = Math.max(0, fulltimeMonths - reductionMonths);
+  const rawBase = Math.max(0, fulltimeMonths - totalReductionMonths);
 
-  const formatter = useMemo(
-    () =>
-      new Intl.NumberFormat(i18n.language, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2,
-      }),
-    [i18n.language]
-  );
+  function buildNumberFormatter() {
+    return new Intl.NumberFormat(i18n.language, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    });
+  }
 
+  const formatter = useMemo(buildNumberFormatter, [i18n.language]);
+
+  function formatWithNumberFormatter(value) {
+    return formatter.format(value);
+  }
+
+  // Factor describes the ratio between part-time and full-time weekly hours (either provided by calc or recomputed here).
   const factor =
     Number.isFinite(calculation?.factor) && calculation.factor > 0
       ? calculation.factor
       : weeklyFull > 0
       ? weeklyPart / weeklyFull
       : 0;
+  const breakdownParts = [];
+  if (degreeReductionMonths > 0 && reductionLabel) {
+    // Explain the contribution from the selected school degree.
+    breakdownParts.push(
+      t("reduction.breakdown.degree", {
+        months: formatter.format(degreeReductionMonths),
+        label: reductionLabel,
+      })
+    );
+  }
+  if (manualReductionMonths > 0) {
+    // Mention any additional manual reduction the user entered.
+    breakdownParts.push(
+      t("reduction.breakdown.manual", {
+        months: formatter.format(manualReductionMonths),
+      })
+    );
+  }
+  const formattedReduction = formatter.format(totalReductionMonths);
+  // Compose a string like "18 (12 + 6)" so users see how the total reduction is built.
+  const reductionDisplay =
+    breakdownParts.length > 0
+      ? `${formattedReduction} (${breakdownParts.join(" + ")})`
+      : formattedReduction;
 
   const percent =
     weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
@@ -386,7 +437,8 @@ export default function TransparencyPanel({ formValues, onClose }) {
             <p className="text-sm text-slate-700">
               {t("transparency.step3.text", {
                 fullM: formatter.format(fulltimeMonths),
-                redM: formatter.format(reductionMonths),
+                redM: formattedReduction,
+                reductionText: reductionDisplay,
                 rawBase: formatter.format(rawBase),
                 minM: formatter.format(minDurationMonths),
                 basis: formatter.format(basis),
@@ -410,7 +462,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
             </h3>
             <p className="text-sm text-slate-700">
               {t("transparency.step5.six.text", {
-                ext: formatSigned(extension, (value) => formatter.format(value)),
+                ext: formatSigned(extension, formatWithNumberFormatter),
                 applied: t(
                   sixMonthRuleApplied
                     ? "transparency.step5.six.applied"
@@ -453,16 +505,15 @@ export default function TransparencyPanel({ formValues, onClose }) {
             </p>
             <p className="text-sm text-slate-700">
               {t("transparency.delta.basis", {
-                delta: formatSigned(deltaVsBasis, (value) =>
-                  formatter.format(value)
-                ),
+                delta: formatSigned(deltaVsBasis, formatWithNumberFormatter),
               })}
             </p>
             {Number.isFinite(deltaVsOriginal) && deltaVsOriginal !== 0 && (
               <p className="text-sm text-slate-700">
                 {t("transparency.delta.original", {
-                  delta: formatSigned(deltaVsOriginal, (value) =>
-                    formatter.format(value)
+                  delta: formatSigned(
+                    deltaVsOriginal,
+                    formatWithNumberFormatter
                   ),
                 })}
               </p>

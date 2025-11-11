@@ -8,6 +8,10 @@ const baseValues = {
   weeklyPart: 30,
   fullDurationMonths: 36,
   reductionMonths: 0,
+  degreeReductionMonths: 0,
+  manualReductionMonths: 0,
+  schoolDegreeId: "hs",
+  schoolDegreeLabelKey: "reductionOptions.hs",
 };
 
 const buildResult = (overrides = {}) => ({
@@ -47,13 +51,28 @@ describe("ResultCard", () => {
     });
     render(
       <ResultCard
-        values={{ ...baseValues, reductionMonths: 6 }}
+        values={{
+          ...baseValues,
+          reductionMonths: 6,
+          degreeReductionMonths: 6,
+          schoolDegreeId: "mr",
+          schoolDegreeLabelKey: "reductionOptions.mr",
+        }}
         result={result}
       />
     );
 
     expect(screen.getByText("Vollzeit")).toBeInTheDocument();
     expect(screen.getByText("30 Monate")).toBeInTheDocument();
+    expect(screen.getByText("Verkürzung gesamt: −6 Monate")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Verkürzung: −6 Monate (Fachoberschulreife / Mittlere Reife)"
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("Zusätzliche Gründe: −6 Monate")
+    ).not.toBeInTheDocument();
   });
 
   it("displays zero change correctly", () => {
@@ -69,5 +88,36 @@ describe("ResultCard", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Änderung")).toBeInTheDocument();
     expect(screen.getByText("0 Monate")).toBeInTheDocument();
+  });
+
+  it("shows total and breakdown when manual reduction is present", () => {
+    const result = buildResult({
+      effectiveFulltimeMonths: 24,
+      fulltimeMonths: 36,
+    });
+
+    render(
+      <ResultCard
+        values={{
+          ...baseValues,
+          reductionMonths: 18,
+          degreeReductionMonths: 12,
+          manualReductionMonths: 6,
+          schoolDegreeId: "abi",
+          schoolDegreeLabelKey: "reductionOptions.abi",
+        }}
+        result={result}
+      />
+    );
+
+    expect(
+      screen.getByText("Verkürzung gesamt: −18 Monate")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Verkürzung: −12 Monate (Hochschulreife)")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Zusätzliche Gründe: −6 Monate")
+    ).toBeInTheDocument();
   });
 });
