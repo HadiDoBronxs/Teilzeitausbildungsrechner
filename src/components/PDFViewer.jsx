@@ -487,70 +487,95 @@ export default function PDFViewer({ pdfBytes, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-slate-900">
-      {/* Toolbar */}
-      <div className="bg-slate-800 text-white px-4 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={goToPreviousPage}
-            disabled={currentPage <= 1}
-            className="px-3 py-1 bg-slate-700 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Previous
-          </button>
-          <span className="text-sm">
-            Page {currentPage} of {numPages}
-          </span>
-          <button
-            onClick={goToNextPage}
-            disabled={currentPage >= numPages}
-            className="px-3 py-1 bg-slate-700 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Next
-          </button>
-        </div>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={zoomOut}
-            className="px-3 py-1 bg-slate-700 rounded hover:bg-slate-600"
-            title="Zoom out"
-          >
-            −
-          </button>
-          <span className="text-sm">{Math.round(scale * 100)}%</span>
-          <button
-            onClick={zoomIn}
-            className="px-3 py-1 bg-slate-700 rounded hover:bg-slate-600"
-            title="Zoom in"
-          >
-            +
-          </button>
-          <button
-            onClick={handleSave}
-            className="px-4 py-1 bg-green-600 rounded hover:bg-green-700"
-            title="Save PDF"
-          >
-            Save
-          </button>
-          <button
-            onClick={handlePrint}
-            className="px-4 py-1 bg-blue-600 rounded hover:bg-blue-700"
-            title="Print PDF"
-          >
-            Print
-          </button>
+      {/* Toolbar - Mobile First */}
+      <div className="bg-slate-800 text-white">
+        {/* Top row: Page navigation and close button */}
+        <div className="flex items-center justify-between px-2 py-2 sm:px-4">
+          <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
+            <button
+              onClick={goToPreviousPage}
+              disabled={currentPage <= 1}
+              className="px-3 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation"
+              aria-label="Previous page"
+            >
+              <span className="hidden sm:inline">Previous</span>
+              <span className="sm:hidden">‹</span>
+            </button>
+            <span className="text-xs sm:text-sm font-medium px-2 whitespace-nowrap">
+              {currentPage} / {numPages}
+            </span>
+            <button
+              onClick={goToNextPage}
+              disabled={currentPage >= numPages}
+              className="px-3 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation"
+              aria-label="Next page"
+            >
+              <span className="hidden sm:inline">Next</span>
+              <span className="sm:hidden">›</span>
+            </button>
+          </div>
           <button
             onClick={onClose}
-            className="px-4 py-1 bg-red-600 rounded hover:bg-red-700"
-            title="Close viewer"
+            className="px-3 py-2 sm:px-4 sm:py-1 bg-red-600 rounded hover:bg-red-700 text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation ml-2"
+            aria-label="Close viewer"
           >
-            Close
+            <span className="hidden sm:inline">Close</span>
+            <span className="sm:hidden">✕</span>
           </button>
+        </div>
+        
+        {/* Bottom row: Zoom and actions */}
+        <div className="flex items-center justify-between px-2 py-2 sm:px-4 border-t border-slate-700">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button
+              type="button"
+              onClick={zoomOut}
+              className="px-4 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 active:bg-slate-500 text-xl sm:text-base font-bold min-w-[48px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
+              aria-label="Zoom out"
+            >
+              −
+            </button>
+            <span className="text-xs sm:text-sm font-medium min-w-[3.5rem] text-center">
+              {Math.round(scale * 100)}%
+            </span>
+            <button
+              type="button"
+              onClick={zoomIn}
+              className="px-4 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 active:bg-slate-500 text-xl sm:text-base font-bold min-w-[48px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
+              aria-label="Zoom in"
+            >
+              +
+            </button>
+          </div>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <button
+              type="button"
+              onClick={handleSave}
+              className="px-3 py-2 sm:px-4 sm:py-1 bg-green-600 rounded hover:bg-green-700 active:bg-green-800 text-xs sm:text-base font-medium min-w-[50px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
+              aria-label="Save PDF"
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="px-3 py-2 sm:px-4 sm:py-1 bg-blue-600 rounded hover:bg-blue-700 active:bg-blue-800 text-xs sm:text-base font-medium min-w-[50px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
+              aria-label="Print PDF"
+            >
+              Print
+            </button>
+          </div>
         </div>
       </div>
 
       {/* PDF Canvas */}
-      <div className="flex-1 overflow-auto flex items-center justify-center p-4">
-        <canvas ref={canvasRef} className="shadow-2xl bg-white" />
+      <div 
+        className="flex-1 overflow-x-auto overflow-y-auto p-2 sm:p-4"
+        style={{ touchAction: 'pan-x pan-y' }}
+      >
+        <div className="inline-flex items-center justify-center min-w-min">
+          <canvas ref={canvasRef} className="shadow-2xl bg-white" />
+        </div>
       </div>
     </div>
   );
