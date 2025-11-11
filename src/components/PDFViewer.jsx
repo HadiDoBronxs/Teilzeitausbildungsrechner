@@ -250,9 +250,9 @@ export default function PDFViewer({ pdfBytes, onClose }) {
    * 
    * @function attemptIframePrint
    * @param {HTMLIFrameElement} iframe - The iframe containing the PDF.
-   * @param {string} url - The blob URL of the PDF.
+   * @param {string} _url - The blob URL of the PDF (unused but kept for API consistency).
    */
-  function attemptIframePrint(iframe, url) {
+  function attemptIframePrint(iframe, _url) {
     try {
       if (iframe.contentWindow) {
         iframe.contentWindow.print();
@@ -286,7 +286,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         
         try {
           printWindow.close();
-        } catch (err) {
+        } catch (_err) {
           // Window might already be closed
         }
         URL.revokeObjectURL(url);
@@ -414,7 +414,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         
         // Trigger print dialog
         attemptIframePrint(iframe, url);
-      } catch (printErr) {
+      } catch (_printErr) {
         cleanupPrintResources(iframe, url);
         alert("Failed to print. Please use the Save button and print the saved file.");
       }

@@ -217,9 +217,9 @@ describe("PDFViewer", () => {
     
     await userEvent.click(zoomInButton);
     
-    // Scale should increase from 150% to 175%
+    // Scale should increase from 100% to 125%
     await waitFor(() => {
-      expect(screen.getByText("175%")).toBeInTheDocument();
+      expect(screen.getByText("125%")).toBeInTheDocument();
     });
   });
 
@@ -234,9 +234,9 @@ describe("PDFViewer", () => {
     
     await userEvent.click(zoomOutButton);
     
-    // Scale should decrease from 150% to 125%
+    // Scale should decrease from 100% to 75%
     await waitFor(() => {
-      expect(screen.getByText("125%")).toBeInTheDocument();
+      expect(screen.getByText("75%")).toBeInTheDocument();
     });
   });
 
