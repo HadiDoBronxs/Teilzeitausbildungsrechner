@@ -5,11 +5,27 @@ import readFormAndCalc from "../features/calcDuration/readFormAndCalc.js";
 const MAX_EXTENSION_MONTHS = 6;
 const DURATION_CAP_MULTIPLIER = 1.5;
 
+/**
+ * Converts a value to a number, returning a fallback if the value is not finite.
+ * 
+ * @param {*} value - The value to convert to a number.
+ * @param {number} [fallback=0] - The fallback value to return if conversion fails.
+ * @returns {number} The parsed number or the fallback value.
+ */
 function toNumber(value, fallback = 0) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
+/**
+ * Resolves the minimum training duration in months.
+ * If an override value is provided and valid, it is used; otherwise,
+ * the default is half of the full-time duration (minimum 0).
+ * 
+ * @param {number} fulltimeMonths - The full-time training duration in months.
+ * @param {number|string|undefined|null} override - Optional override value for minimum duration.
+ * @returns {number} The resolved minimum duration in months (always >= 0).
+ */
 function resolveMinDuration(fulltimeMonths, override) {
   const safeFull = Number.isFinite(fulltimeMonths) ? fulltimeMonths : 0;
   const fallback = Math.max(0, Math.floor(safeFull / 2));
@@ -23,6 +39,14 @@ function resolveMinDuration(fulltimeMonths, override) {
   return Math.max(0, parsed);
 }
 
+/**
+ * Formats a duration in months as a human-readable string with years and months.
+ * Uses the provided translation function to get localized labels.
+ * 
+ * @param {number} months - The duration in months to format.
+ * @param {Function} translateFn - The translation function (i18next t function).
+ * @returns {string} A formatted string like "2 Years 6 Months" or "1 Year 3 Months".
+ */
 function formatYearsMonths(months, translateFn) {
   const safeValue = Number.isFinite(months) ? months : 0;
   const rounded = Math.max(0, Math.round(safeValue));
@@ -33,6 +57,14 @@ function formatYearsMonths(months, translateFn) {
   return `${years} ${yearLabel} ${remaining} ${monthLabel}`;
 }
 
+/**
+ * Formats a number with a sign prefix (+ or -).
+ * Zero values are formatted without a sign prefix.
+ * 
+ * @param {number} value - The number to format.
+ * @param {Function} formatter - A function that formats a positive number (e.g., Intl.NumberFormat.format).
+ * @returns {string} A formatted string with sign prefix (e.g., "+5", "-3", "0").
+ */
 function formatSigned(value, formatter) {
   if (!Number.isFinite(value) || value === 0) {
     return formatter(0);
@@ -41,6 +73,13 @@ function formatSigned(value, formatter) {
   return `${prefix}${formatter(Math.abs(value))}`;
 }
 
+/**
+ * Formats a date using the specified locale.
+ * 
+ * @param {Date} date - The date to format.
+ * @param {string} locale - The locale code (e.g., "en", "de").
+ * @returns {string} A formatted date string (e.g., "January 15, 2024" or "15. Januar 2024").
+ */
 function formatDate(date, locale) {
   return new Intl.DateTimeFormat(locale, {
     year: "numeric",
@@ -49,7 +88,14 @@ function formatDate(date, locale) {
   }).format(date);
 }
 
-// Sanitize text to replace Unicode characters that can't be encoded in WinAnsi
+/**
+ * Sanitizes text by replacing Unicode characters that cannot be encoded in WinAnsi
+ * (the default encoding used by pdf-lib) with ASCII-safe equivalents.
+ * This prevents encoding errors when generating PDFs.
+ * 
+ * @param {string} text - The text to sanitize.
+ * @returns {string} The sanitized text with Unicode characters replaced by ASCII equivalents.
+ */
 function sanitizeForPDF(text) {
   if (!text || typeof text !== "string") {
     return String(text || "");
@@ -76,6 +122,36 @@ function sanitizeForPDF(text) {
     .replace(/'/g, "'");      // Right single quotation mark -> '
 }
 
+/**
+ * Generates a PDF document containing training calculation inputs, results, and transparency details.
+ * 
+ * The PDF includes:
+ * - Title and creation date
+ * - All input values (hours, duration, school degree, reductions)
+ * - Calculation results (factor, baseline, part-time duration, delta)
+ * - Detailed calculation transparency (all 6 steps)
+ * - Legal disclaimer
+ * 
+ * The document uses A4 page size and automatically handles page breaks when content exceeds page height.
+ * All text is sanitized to ensure compatibility with WinAnsi encoding.
+ * 
+ * @async
+ * @function generatePDF
+ * @param {Object} formValues - The form values object containing:
+ *   @param {number} formValues.weeklyFull - Full-time hours per week
+ *   @param {number} formValues.weeklyPart - Part-time hours per week
+ *   @param {number} formValues.fullDurationMonths - Regular training duration in months
+ *   @param {number} formValues.reductionMonths - Total reduction months
+ *   @param {number} formValues.degreeReductionMonths - Reduction months from school degree
+ *   @param {number} formValues.manualReductionMonths - Additional manual reduction months
+ *   @param {string|null} formValues.schoolDegreeId - School degree identifier
+ *   @param {string} formValues.schoolDegreeLabelKey - Translation key for school degree label
+ *   @param {string} [formValues.rounding="round"] - Rounding mode ("round", "ceil", "floor")
+ * @param {Function} t - The i18next translation function.
+ * @param {Object} i18n - The i18next instance with a `language` property.
+ * @returns {Promise<Uint8Array>} A promise that resolves to the PDF document bytes.
+ * @throws {Error} If formValues, t, or i18n are invalid, or if PDF generation fails.
+ */
 export async function generatePDF(formValues, t, i18n) {
   try {
     // Validate inputs
@@ -105,7 +181,13 @@ export async function generatePDF(formValues, t, i18n) {
   const headingSize = 14;
   const normalSize = 10;
 
-  // Helper function to check if we need a new page and create one if needed
+  /**
+   * Ensures there is enough vertical space on the current page for content.
+   * If insufficient space is available, creates a new page and resets the y-position.
+   * 
+   * @param {number} requiredSpace - The minimum vertical space required in points.
+   * @returns {boolean} True if a new page was created, false otherwise.
+   */
   function ensurePageSpace(requiredSpace) {
     if (yPosition < margin + requiredSpace) {
       page = doc.addPage([595, 842]);
@@ -115,7 +197,20 @@ export async function generatePDF(formValues, t, i18n) {
     return false;
   }
 
-  // Helper function to add text with word wrapping
+  /**
+   * Adds text to the PDF page with automatic word wrapping.
+   * Text is sanitized to ensure WinAnsi encoding compatibility.
+   * 
+   * @param {string} text - The text to add (will be sanitized automatically).
+   * @param {number} x - The x-coordinate for the text (left margin).
+   * @param {number} y - The starting y-coordinate for the text (top of page).
+   * @param {number} size - The font size in points.
+   * @param {PDFFont} fontToUse - The PDF font object to use for rendering.
+   * @param {rgb} [color=rgb(0, 0, 0)] - The text color (defaults to black).
+   * @param {number} [maxWidth=contentWidth] - The maximum width for text wrapping in points.
+   * @returns {number} The final y-coordinate after text has been drawn (for chaining).
+   * @throws {Error} If the page reference is invalid.
+   */
   function addText(text, x, y, size, fontToUse, color = rgb(0, 0, 0), maxWidth = contentWidth) {
     if (!text || text === null || text === undefined) {
       text = String(text || "");
@@ -191,7 +286,14 @@ export async function generatePDF(formValues, t, i18n) {
     labelKey: formValues?.schoolDegreeLabelKey,
   });
   
-  // Safe translation helper - use this for all translations
+  /**
+   * Safely translates a translation key, falling back to the key itself if translation fails.
+   * This prevents empty strings or errors from breaking PDF generation.
+   * 
+   * @param {string} key - The translation key to look up.
+   * @param {Object} [options={}] - Optional interpolation options for the translation.
+   * @returns {string} The translated string, or the key if translation fails or is missing.
+   */
   function safeTranslate(key, options = {}) {
     try {
       const result = t(key, options);

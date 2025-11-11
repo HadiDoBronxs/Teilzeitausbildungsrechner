@@ -120,6 +120,16 @@ function CalculatorApp() {
     schoolDegreeId,
   ]);
 
+  /**
+   * Handles the "Save as PDF" button click event.
+   * Generates a PDF document containing all form inputs, calculation results,
+   * and transparency details, then displays it in the PDF viewer.
+   * 
+   * @async
+   * @function handleSaveAsPDF
+   * @throws {Error} If PDF generation fails, displays an alert with error details
+   *                 and logs the error to the console.
+   */
   async function handleSaveAsPDF() {
     try {
       setIsGeneratingPDF(true);
@@ -135,6 +145,12 @@ function CalculatorApp() {
     }
   }
 
+  /**
+   * Closes the PDF viewer by clearing the PDF bytes state.
+   * This will unmount the PDFViewer component and return to the calculator view.
+   * 
+   * @function handleClosePDF
+   */
   function handleClosePDF() {
     setPdfBytes(null);
   }

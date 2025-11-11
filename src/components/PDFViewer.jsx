@@ -4,6 +4,25 @@ import * as pdfjsLib from "pdfjs-dist";
 // Set up PDF.js worker - use the worker file from public folder
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
+/**
+ * PDFViewer component that displays a PDF document in a modal overlay.
+ * 
+ * Features:
+ * - Page navigation (Previous/Next)
+ * - Zoom controls (zoom in/out)
+ * - Loading and error states
+ * - Automatic cleanup of blob URLs
+ * 
+ * The component uses pdfjs-dist to render PDF pages onto a canvas element.
+ * PDF bytes are converted to a Blob URL to avoid ArrayBuffer detachment issues
+ * when passing data to the Web Worker.
+ * 
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Uint8Array|ArrayBuffer} props.pdfBytes - The PDF document bytes to display.
+ * @param {Function} props.onClose - Callback function called when the viewer is closed.
+ * @returns {JSX.Element} The PDF viewer component with toolbar and canvas.
+ */
 export default function PDFViewer({ pdfBytes, onClose }) {
   const canvasRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,6 +33,15 @@ export default function PDFViewer({ pdfBytes, onClose }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    /**
+     * Loads the PDF document from the provided bytes.
+     * Converts the bytes to a Blob URL to avoid ArrayBuffer detachment issues
+     * when passing data to the PDF.js Web Worker.
+     * 
+     * @async
+     * @function loadPDF
+     * @throws {Error} If PDF loading fails, sets the error state with details.
+     */
     async function loadPDF() {
       try {
         setLoading(true);
@@ -72,6 +100,15 @@ export default function PDFViewer({ pdfBytes, onClose }) {
   }, [pdfBytes]);
 
   useEffect(() => {
+    /**
+     * Renders the current PDF page onto the canvas element.
+     * Updates the canvas dimensions based on the viewport and scale,
+     * then renders the page content.
+     * 
+     * @async
+     * @function renderPage
+     * @throws {Error} If page rendering fails, sets the error state.
+     */
     async function renderPage() {
       if (!pdfDoc || !canvasRef.current) return;
 
@@ -99,18 +136,42 @@ export default function PDFViewer({ pdfBytes, onClose }) {
     renderPage();
   }, [pdfDoc, currentPage, scale]);
 
+  /**
+   * Navigates to the previous page.
+   * Does nothing if already on the first page.
+   * 
+   * @function goToPreviousPage
+   */
   const goToPreviousPage = () => {
     setCurrentPage((prev) => Math.max(1, prev - 1));
   };
 
+  /**
+   * Navigates to the next page.
+   * Does nothing if already on the last page.
+   * 
+   * @function goToNextPage
+   */
   const goToNextPage = () => {
     setCurrentPage((prev) => Math.min(numPages, prev + 1));
   };
 
+  /**
+   * Increases the zoom level by 0.25 (25%).
+   * Maximum zoom is 300% (scale 3.0).
+   * 
+   * @function zoomIn
+   */
   const zoomIn = () => {
     setScale((prev) => Math.min(3, prev + 0.25));
   };
 
+  /**
+   * Decreases the zoom level by 0.25 (25%).
+   * Minimum zoom is 50% (scale 0.5).
+   * 
+   * @function zoomOut
+   */
   const zoomOut = () => {
     setScale((prev) => Math.max(0.5, prev - 0.25));
   };
