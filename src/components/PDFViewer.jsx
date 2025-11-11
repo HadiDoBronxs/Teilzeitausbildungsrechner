@@ -476,7 +476,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
                 window.removeEventListener('afterprint', handleAfterPrint);
                 URL.revokeObjectURL(url);
               }, 300000);
-            } catch (printErr) {
+            } catch (_printErr) {
               console.log("Auto-print not available on mobile. PDF opened in new tab - use browser menu to print.");
               // On mobile, if print() fails, the PDF is still open in a new tab
               // User can use browser menu to print/share

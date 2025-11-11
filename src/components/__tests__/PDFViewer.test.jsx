@@ -91,10 +91,16 @@ describe("PDFViewer", () => {
       expect(screen.queryByText("Loading PDF...")).not.toBeInTheDocument();
     });
     
-    // Should show page navigation
-    expect(screen.getByText(/Page 1 of 3/)).toBeInTheDocument();
-    expect(screen.getByText("Previous")).toBeInTheDocument();
-    expect(screen.getByText("Next")).toBeInTheDocument();
+    // Should show page navigation - check for page indicator format "1 / 3"
+    // The text is split across elements, so we check the span container
+    const pageIndicators = screen.getAllByText((content, element) => {
+      const text = element?.textContent?.trim() || "";
+      return /^\s*1\s*\/\s*3\s*$/.test(text);
+    });
+    expect(pageIndicators.length).toBeGreaterThan(0);
+    // Check buttons by aria-label since text is conditionally rendered
+    expect(screen.getByLabelText("Previous page")).toBeInTheDocument();
+    expect(screen.getByLabelText("Next page")).toBeInTheDocument();
   });
 
   it("displays error message when PDF loading fails", async () => {
@@ -129,7 +135,7 @@ describe("PDFViewer", () => {
       expect(screen.queryByText("Loading PDF...")).not.toBeInTheDocument();
     });
     
-    const closeButton = screen.getByText("Close");
+    const closeButton = screen.getByLabelText("Close viewer");
     await userEvent.click(closeButton);
     
     expect(mockOnClose).toHaveBeenCalledTimes(1);
@@ -142,11 +148,16 @@ describe("PDFViewer", () => {
       expect(screen.queryByText("Loading PDF...")).not.toBeInTheDocument();
     }, { timeout: 3000 });
     
-    const nextButton = screen.getByText("Next");
+    const nextButton = screen.getByLabelText("Next page");
     await userEvent.click(nextButton);
     
     await waitFor(() => {
-      expect(screen.getByText(/Page 2 of 3/)).toBeInTheDocument();
+      // Check for page 2 indicator - format is "2 / 3"
+      const pageIndicators = screen.getAllByText((content, element) => {
+        const text = element?.textContent?.trim() || "";
+        return /^\s*2\s*\/\s*3\s*$/.test(text);
+      });
+      expect(pageIndicators.length).toBeGreaterThan(0);
     });
   });
 
@@ -158,19 +169,29 @@ describe("PDFViewer", () => {
     }, { timeout: 3000 });
     
     // Go to page 2 first
-    const nextButton = screen.getByText("Next");
+    const nextButton = screen.getByLabelText("Next page");
     await userEvent.click(nextButton);
     
     await waitFor(() => {
-      expect(screen.getByText(/Page 2 of 3/)).toBeInTheDocument();
+      // Check for page 2 indicator - format is "2 / 3"
+      const pageIndicators = screen.getAllByText((content, element) => {
+        const text = element?.textContent?.trim() || "";
+        return /^\s*2\s*\/\s*3\s*$/.test(text);
+      });
+      expect(pageIndicators.length).toBeGreaterThan(0);
     });
     
     // Then go back
-    const prevButton = screen.getByText("Previous");
+    const prevButton = screen.getByLabelText("Previous page");
     await userEvent.click(prevButton);
     
     await waitFor(() => {
-      expect(screen.getByText(/Page 1 of 3/)).toBeInTheDocument();
+      // Check for page 1 indicator - format is "1 / 3"
+      const pageIndicators = screen.getAllByText((content, element) => {
+        const text = element?.textContent?.trim() || "";
+        return /^\s*1\s*\/\s*3\s*$/.test(text);
+      });
+      expect(pageIndicators.length).toBeGreaterThan(0);
     });
   });
 
@@ -181,7 +202,7 @@ describe("PDFViewer", () => {
       expect(screen.queryByText("Loading PDF...")).not.toBeInTheDocument();
     }, { timeout: 3000 });
     
-    const prevButton = screen.getByText("Previous");
+    const prevButton = screen.getByLabelText("Previous page");
     expect(prevButton).toBeDisabled();
   });
 
@@ -193,14 +214,24 @@ describe("PDFViewer", () => {
     }, { timeout: 3000 });
     
     // Navigate to last page
-    const nextButton = screen.getByText("Next");
+    const nextButton = screen.getByLabelText("Next page");
     await userEvent.click(nextButton); // Page 2
     await waitFor(() => {
-      expect(screen.getByText(/Page 2 of 3/)).toBeInTheDocument();
+      // Check for page 2 indicator - format is "2 / 3"
+      const pageIndicators = screen.getAllByText((content, element) => {
+        const text = element?.textContent?.trim() || "";
+        return /^\s*2\s*\/\s*3\s*$/.test(text);
+      });
+      expect(pageIndicators.length).toBeGreaterThan(0);
     });
     await userEvent.click(nextButton); // Page 3
     await waitFor(() => {
-      expect(screen.getByText(/Page 3 of 3/)).toBeInTheDocument();
+      // Check for page 3 indicator - format is "3 / 3"
+      const pageIndicators = screen.getAllByText((content, element) => {
+        const text = element?.textContent?.trim() || "";
+        return /^\s*3\s*\/\s*3\s*$/.test(text);
+      });
+      expect(pageIndicators.length).toBeGreaterThan(0);
     });
     
     expect(nextButton).toBeDisabled();
