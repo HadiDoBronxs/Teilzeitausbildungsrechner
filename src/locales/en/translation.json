@@ -10,7 +10,8 @@
     "help": "Allowed range: at least 50% and at most 80% of the full-time hours.",
     "error": "Please enter a value between {{min}} and {{max}} hours per week.",
     "factorText": "This is approximately {{percent}} % of full-time.",
-    "factorError": "Part-time must be at least 50% of the full-time hours. Less is not possible."
+    "factorError": "Part-time must be at least 50% of the full-time hours. Less is not possible.",
+    "avgDaily": "That’s {{hours}} hours per day."
   },
   "regularDuration": {
     "label": "How long is your usual training duration in months?",
