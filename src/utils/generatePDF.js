@@ -400,10 +400,33 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= sectionSpacing;
   }
 
-  // Ensure we have space for transparency section (start on new page)
-  ensurePageSpace(300);
+  // Ensure we have space for disclaimer section
+  ensurePageSpace(100);
 
-  // Transparency Section (on new page)
+  // Disclaimer Section (on first page, before transparency)
+  yPosition -= sectionSpacing;
+  yPosition = addText(
+    safeT("pdf.disclaimer"),
+    margin,
+    yPosition,
+    headingSize,
+    boldFont
+  );
+  yPosition -= lineHeight;
+  yPosition = addText(
+    safeT("pdf.disclaimerText"),
+    margin + 20,
+    yPosition,
+    normalSize - 1,
+    font,
+    rgb(0.4, 0.4, 0.4)
+  );
+
+  // Force a new page for transparency section (always start on dedicated page)
+  page = doc.addPage([595, 842]);
+  yPosition = pageHeight - margin;
+
+  // Transparency Section (on dedicated page)
   if (calculation && calculation.allowed) {
     yPosition = addText(
       safeT("pdf.transparency"),
@@ -672,28 +695,6 @@ export async function generatePDF(formValues, t, i18n) {
       yPosition -= lineHeight;
     }
   }
-
-  // Ensure we have space for disclaimer
-  ensurePageSpace(100);
-
-  // Disclaimer Section
-  yPosition -= sectionSpacing;
-  yPosition = addText(
-    safeT("pdf.disclaimer"),
-    margin,
-    yPosition,
-    headingSize,
-    boldFont
-  );
-  yPosition -= lineHeight;
-  yPosition = addText(
-    safeT("pdf.disclaimerText"),
-    margin + 20,
-    yPosition,
-    normalSize - 1,
-    font,
-    rgb(0.4, 0.4, 0.4)
-  );
 
     const pdfBytes = await doc.save();
     return pdfBytes;

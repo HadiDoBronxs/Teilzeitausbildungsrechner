@@ -10,6 +10,8 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
  * Features:
  * - Page navigation (Previous/Next)
  * - Zoom controls (zoom in/out)
+ * - Save PDF functionality
+ * - Print PDF functionality
  * - Loading and error states
  * - Automatic cleanup of blob URLs
  * 
@@ -28,7 +30,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(0);
   const [pdfDoc, setPdfDoc] = useState(null);
-  const [scale, setScale] = useState(1.5);
+  const [scale, setScale] = useState(1.0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -176,6 +178,287 @@ export default function PDFViewer({ pdfBytes, onClose }) {
     setScale((prev) => Math.max(0.5, prev - 0.25));
   };
 
+  /**
+   * Creates a Blob from the PDF bytes, handling different input types.
+   * 
+   * @function createPDFBlob
+   * @returns {Blob} A Blob object containing the PDF data.
+   */
+  function createPDFBlob() {
+    if (pdfBytes instanceof Uint8Array) {
+      return new Blob([pdfBytes], { type: 'application/pdf' });
+    } else if (pdfBytes instanceof ArrayBuffer) {
+      return new Blob([pdfBytes], { type: 'application/pdf' });
+    } else {
+      return new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
+    }
+  }
+
+  /**
+   * Cleans up resources after saving (revokes blob URL).
+   * 
+   * @function cleanupSaveResources
+   * @param {string} url - The blob URL to revoke.
+   */
+  function cleanupSaveResources(url) {
+    URL.revokeObjectURL(url);
+  }
+
+  /**
+   * Downloads the PDF file to the user's device.
+   * Creates a temporary download link and triggers it programmatically.
+   * 
+   * @function handleSave
+   */
+  function handleSave() {
+    try {
+      const blob = createPDFBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'part-time-training-calculation.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the blob URL after a short delay
+      setTimeout(cleanupSaveResources, 100, url);
+    } catch (err) {
+      console.error("Error saving PDF:", err);
+      alert("Failed to save PDF. Please try again.");
+    }
+  }
+
+  /**
+   * Cleans up print resources (removes iframe and revokes blob URL).
+   * 
+   * @function cleanupPrintResources
+   * @param {HTMLIFrameElement} iframe - The iframe element to remove.
+   * @param {string} url - The blob URL to revoke.
+   */
+  function cleanupPrintResources(iframe, url) {
+    if (iframe && document.body.contains(iframe)) {
+      document.body.removeChild(iframe);
+    }
+    if (url) {
+      URL.revokeObjectURL(url);
+    }
+  }
+
+  /**
+   * Attempts to print from an iframe.
+   * 
+   * @function attemptIframePrint
+   * @param {HTMLIFrameElement} iframe - The iframe containing the PDF.
+   * @param {string} url - The blob URL of the PDF.
+   */
+  function attemptIframePrint(iframe, url) {
+    try {
+      if (iframe.contentWindow) {
+        iframe.contentWindow.print();
+      }
+    } catch (printErr) {
+      console.error("Error triggering print:", printErr);
+      throw printErr;
+    }
+  }
+
+  /**
+   * Fallback print method using a new window.
+   * Sets up event listeners to clean up after printing.
+   * 
+   * @function printInNewWindow
+   * @param {string} url - The blob URL of the PDF.
+   */
+  function printInNewWindow(url) {
+    const printWindow = window.open(url, '_blank');
+    if (printWindow) {
+      let cleanupTimeout;
+      let hasCleanedUp = false;
+
+      function cleanupAfterPrint() {
+        if (hasCleanedUp) return;
+        hasCleanedUp = true;
+        
+        if (cleanupTimeout) {
+          clearTimeout(cleanupTimeout);
+        }
+        
+        try {
+          printWindow.close();
+        } catch (err) {
+          // Window might already be closed
+        }
+        URL.revokeObjectURL(url);
+      }
+
+      function handleAfterPrint() {
+        cleanupAfterPrint();
+      }
+
+      // Set up event listeners
+      window.addEventListener('afterprint', handleAfterPrint);
+      
+      // Fallback timeout: clean up after 5 minutes
+      cleanupTimeout = setTimeout(function fallbackCleanup() {
+        if (!hasCleanedUp) {
+          console.warn("Print events did not fire for new window, cleaning up after timeout");
+          cleanupAfterPrint();
+        }
+      }, 300000); // 5 minutes
+
+      setTimeout(function triggerPrint() {
+        try {
+          printWindow.print();
+        } catch (printErr) {
+          console.error("Error printing in new window:", printErr);
+          cleanupAfterPrint();
+        }
+      }, 500);
+    }
+  }
+
+  /**
+   * Sets up print event listeners to clean up resources after printing is complete.
+   * 
+   * @function setupPrintEventListeners
+   * @param {HTMLIFrameElement} iframe - The iframe element.
+   * @param {string} url - The blob URL of the PDF.
+   * @returns {Function} A cleanup function to remove event listeners.
+   */
+  function setupPrintEventListeners(iframe, url) {
+    let cleanupTimeout;
+    let hasCleanedUp = false;
+
+    function cleanupAfterPrint() {
+      if (hasCleanedUp) return;
+      hasCleanedUp = true;
+      
+      if (cleanupTimeout) {
+        clearTimeout(cleanupTimeout);
+      }
+      
+      cleanupPrintResources(iframe, url);
+    }
+
+    function handleAfterPrint() {
+      cleanupAfterPrint();
+    }
+
+    // Set up event listeners on the iframe's window
+    if (iframe.contentWindow) {
+      iframe.contentWindow.addEventListener('afterprint', handleAfterPrint);
+      
+      // Also listen on the main window as fallback
+      window.addEventListener('afterprint', handleAfterPrint);
+    }
+
+    // Fallback timeout: clean up after 5 minutes if events don't fire
+    // This is a safety net in case the browser doesn't support afterprint events
+    cleanupTimeout = setTimeout(function fallbackCleanup() {
+      if (!hasCleanedUp) {
+        console.warn("Print events did not fire, cleaning up after timeout");
+        cleanupAfterPrint();
+      }
+    }, 300000); // 5 minutes
+
+    // Return cleanup function to remove listeners
+    return function removeEventListeners() {
+      if (iframe.contentWindow) {
+        iframe.contentWindow.removeEventListener('afterprint', handleAfterPrint);
+      }
+      window.removeEventListener('afterprint', handleAfterPrint);
+      if (cleanupTimeout) {
+        clearTimeout(cleanupTimeout);
+      }
+    };
+  }
+
+  /**
+   * Handles the iframe load event for printing.
+   * Sets up print event listeners and triggers the print dialog.
+   * 
+   * @function handleIframeLoad
+   * @param {HTMLIFrameElement} iframe - The iframe element.
+   * @param {string} url - The blob URL of the PDF.
+   */
+  function handleIframeLoad(iframe, url) {
+    // Small delay to ensure PDF is fully loaded
+    setTimeout(function triggerPrintAfterLoad() {
+      try {
+        // Set up event listeners before triggering print
+        setupPrintEventListeners(iframe, url);
+        
+        // Trigger print dialog
+        attemptIframePrint(iframe, url);
+      } catch (printErr) {
+        console.error("Error triggering print:", printErr);
+        cleanupPrintResources(iframe, null);
+        printInNewWindow(url);
+      }
+    }, 500);
+  }
+
+  /**
+   * Fallback timeout handler in case iframe onload doesn't fire.
+   * 
+   * @function handlePrintTimeout
+   * @param {HTMLIFrameElement} iframe - The iframe element.
+   * @param {string} url - The blob URL of the PDF.
+   */
+  function handlePrintTimeout(iframe, url) {
+    if (document.body.contains(iframe)) {
+      try {
+        // Set up event listeners before triggering print
+        setupPrintEventListeners(iframe, url);
+        
+        // Trigger print dialog
+        attemptIframePrint(iframe, url);
+      } catch (printErr) {
+        cleanupPrintResources(iframe, url);
+        alert("Failed to print. Please use the Save button and print the saved file.");
+      }
+    }
+  }
+
+  /**
+   * Opens the PDF and triggers the browser's print dialog.
+   * Uses an iframe approach for better compatibility across browsers.
+   * 
+   * @function handlePrint
+   */
+  function handlePrint() {
+    try {
+      const blob = createPDFBlob();
+      const url = URL.createObjectURL(blob);
+      
+      // Create an iframe for printing
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'fixed';
+      iframe.style.right = '0';
+      iframe.style.bottom = '0';
+      iframe.style.width = '0';
+      iframe.style.height = '0';
+      iframe.style.border = 'none';
+      iframe.src = url;
+      
+      document.body.appendChild(iframe);
+      
+      // Wait for the PDF to load, then trigger print
+      iframe.onload = function onIframeLoad() {
+        handleIframeLoad(iframe, url);
+      };
+      
+      // Fallback timeout in case onload doesn't fire
+      setTimeout(function printTimeout() {
+        handlePrintTimeout(iframe, url);
+      }, 2000);
+    } catch (err) {
+      console.error("Error printing PDF:", err);
+      alert("Failed to print PDF. Please try saving and printing manually.");
+    }
+  }
+
   if (loading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50">
@@ -229,6 +512,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
           <button
             onClick={zoomOut}
             className="px-3 py-1 bg-slate-700 rounded hover:bg-slate-600"
+            title="Zoom out"
           >
             −
           </button>
@@ -236,12 +520,28 @@ export default function PDFViewer({ pdfBytes, onClose }) {
           <button
             onClick={zoomIn}
             className="px-3 py-1 bg-slate-700 rounded hover:bg-slate-600"
+            title="Zoom in"
           >
             +
           </button>
           <button
+            onClick={handleSave}
+            className="px-4 py-1 bg-green-600 rounded hover:bg-green-700"
+            title="Save PDF"
+          >
+            Save
+          </button>
+          <button
+            onClick={handlePrint}
+            className="px-4 py-1 bg-blue-600 rounded hover:bg-blue-700"
+            title="Print PDF"
+          >
+            Print
+          </button>
+          <button
             onClick={onClose}
             className="px-4 py-1 bg-red-600 rounded hover:bg-red-700"
+            title="Close viewer"
           >
             Close
           </button>
