@@ -21,10 +21,10 @@ const translators = {
   "reduction.question": () => "Was ist Ihr höchster Bildungsabschluss?",
   "reduction.selectPlaceholder": () => "Schulabschluss auswählen",
   "reduction.dropdownDescription": () =>
-    "Wähle deinen höchsten Schulabschluss aus. Die passende Verkürzung wird übernommen.",
+    "Wählen Sie Ihren höchsten Schulabschluss. Die passende Verkürzung übernehmen wir automatisch.",
   "reduction.why": () => "Warum kann ich verkürzen?",
   "reduction.whyText": () =>
-    "Manche Schulabschlüsse enthalten bereits Teile der Ausbildung. Deshalb kann die IHK oder HWK die Ausbildungszeit verkürzen. Kammer und Betrieb entscheiden gemeinsam. In manchen Regionen gelten andere Regeln.",
+    "Manche Abschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen.",
   "reduction.applied": (opts) =>
     `Verkürzung: −${opts?.months} Monate (${opts?.label})`,
   "reduction.totalApplied": (opts) =>
@@ -40,6 +40,55 @@ const translators = {
     "Fachoberschulreife / Mittlere Reife",
   "reductionOptions.fhr": () => "Fachhochschulreife",
   "reductionOptions.abi": () => "Hochschulreife",
+  "transparency.title": () => "Wie wird das berechnet?",
+  "transparency.close": () => "Schließen",
+  "transparency.intro": () =>
+    "So erklären wir jeden Schritt in einfacher Sprache.",
+  "transparency.ratio": (opts) =>
+    `Ihre ${opts?.part} Stunden pro Woche sind ${opts?.pct} % von ${opts?.full} Stunden.`,
+  "transparency.step1.title": () => "Schritt 1: Mindestanteil prüfen",
+  "transparency.step1.ok": () =>
+    "Das erfüllt die 50-%-Regel. Wir dürfen weiterrechnen.",
+  "transparency.step1.fail": () =>
+    "Das liegt unter 50 %. Bitte passen Sie die Stunden an oder sprechen Sie mit Ihrer Kammer.",
+  "transparency.step2.title": () => "Schritt 2: Teilzeit-Faktor",
+  "transparency.step2.text": (opts) =>
+    `Wir teilen ${opts?.part} Stunden durch ${opts?.full} Stunden. Daraus entsteht der Teilzeit-Faktor ${opts?.factor}.`,
+  "transparency.step3.title": () => "Schritt 3: Basisdauer",
+  "transparency.step3.text": (opts) =>
+    `Regeldauer ${opts?.fullM} Monate minus Schulabschluss ${opts?.degreeM} Monate und weitere Gründe ${opts?.manualM} Monate ergeben ${opts?.rawBase} Monate. Die Kammer verlangt mindestens ${opts?.minM} Monate, deshalb nutzen wir ${opts?.basis} Monate (${opts?.basisYM}).`,
+  "transparency.step4.title": () => "Schritt 4: Neue Teilzeitdauer",
+  "transparency.step4.text": (opts) =>
+    `Wir teilen die Basisdauer ${opts?.basis} Monate durch den Teilzeit-Faktor ${opts?.factor}. Daraus werden ${opts?.dtheo} Monate in Teilzeit.`,
+  "transparency.step5.title": () => "Schritt 5: Schutzregeln",
+  "transparency.step5.sixApplied": (opts) =>
+    `Die Verlängerung wäre ${opts?.extension} Monate. Wir begrenzen sie und bleiben bei ${opts?.limited} Monaten.`,
+  "transparency.step5.sixSkipped": (opts) =>
+    `Die Verlängerung beträgt ${opts?.extension} Monate. Keine Begrenzung nötig.`,
+  "transparency.step5.capApplied": (opts) =>
+    `Die Dauer nach Schritt 4 wären ${opts?.afterSix} Monate und damit mehr als 1,5 × der Regeldauer (${opts?.cap} Monate). Wir deckeln auf ${opts?.cap} Monate.`,
+  "transparency.step5.capSkipped": (opts) =>
+    `Die Dauer bleibt mit ${opts?.afterSix} Monaten unter dem Deckel von ${opts?.cap} Monaten.`,
+  "transparency.step6.title": () => "Schritt 6: Runden und Ergebnis",
+  "transparency.step6.text": (opts) =>
+    `Wir runden ${opts?.value} Monate mit ${opts?.rounding} und erhalten ${opts?.rounded} Monate (${opts?.roundedYM}).`,
+  "transparency.result": (opts) =>
+    `Finales Ergebnis: ${opts?.months} Monate (${opts?.yearsMonths}).`,
+  "transparency.delta.basis": (opts) =>
+    `Unterschied zur Basis: ${opts?.delta} Monate.`,
+  "transparency.delta.original": (opts) =>
+    `Unterschied zur ursprünglichen Vollzeit: ${opts?.delta} Monate.`,
+  "transparency.legal.title": () => "Rechtlicher Hinweis",
+  "transparency.legal.text": () =>
+    "Die Berechnung orientiert sich an § 7a BBiG (Teilzeitberufsausbildung).",
+  "transparency.legal.link": () => "Zum Gesetzestext",
+  "transparency.legal.url": () =>
+    "https://www.gesetze-im-internet.de/bbig_2005/__7a.html",
+  "transparency.rounding.round": () => "Mathematisches Runden",
+  "transparency.rounding.ceil": () => "Aufrunden",
+  "transparency.rounding.floor": () => "Abrunden",
+  "error.below50": () =>
+    "Die gewünschte Wochenarbeitszeit liegt unter 50 % der regulären Arbeitszeit. Bitte Eingaben prüfen.",
 };
 
 vi.mock("react-i18next", () => ({
@@ -47,6 +96,10 @@ vi.mock("react-i18next", () => ({
     t: (key, opts = {}) => {
       const translator = translators[key];
       return typeof translator === "function" ? translator(opts) : key;
+    },
+    i18n: {
+      language: "de",
+      changeLanguage: vi.fn(),
     },
   }),
 }));
