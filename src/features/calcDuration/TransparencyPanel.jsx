@@ -163,61 +163,25 @@ export default function TransparencyPanel({ formValues, onClose }) {
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
-<<<<<<< HEAD
-  // Use the same helper as the card so both views describe the same reductions.
   const reduction = buildReductionSummary({
     schoolDegreeId: formValues?.schoolDegreeId,
     degreeReductionMonths: formValues?.degreeReductionMonths,
     manualReductionMonths: formValues?.manualReductionMonths,
     labelKey: formValues?.schoolDegreeLabelKey,
   });
-  const totalReductionMonths = reduction.total;
-  const manualReductionMonths = reduction.manual;
   const degreeReductionMonths = reduction.degree;
-  const reductionLabel = reduction.labelKey ? t(reduction.labelKey) : null;
-=======
-  const degreeReductionMonths = Math.max(
-    0,
-    toNumber(formValues?.degreeReductionMonths, 0)
-  );
-  const manualReductionMonths = Math.max(
-    0,
-    toNumber(formValues?.manualReductionMonths, 0)
-  );
-  const totalReductionMonths = Math.max(
-    0,
-    toNumber(
-      formValues?.reductionMonths,
-      degreeReductionMonths + manualReductionMonths
-    )
-  );
->>>>>>> 4aee995 (feat: add transparency panel flow with tests #24)
+  const manualReductionMonths = reduction.manual;
+  const totalReductionMonths = reduction.total;
   const minDurationMonths = resolveMinDuration(
     fulltimeMonths,
     formValues?.minDurationMonths
   );
   const rawBase = Math.max(0, fulltimeMonths - totalReductionMonths);
-<<<<<<< HEAD
-
-  function buildNumberFormatter() {
-    return new Intl.NumberFormat(i18n.language, {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    });
-  }
-=======
   const formatter = useMemo(
     () => buildNumberFormatter(i18n.language),
     [i18n.language]
   );
   const formatNumber = (value) => formatter.format(value);
->>>>>>> 4aee995 (feat: add transparency panel flow with tests #24)
-
-  const formatter = useMemo(buildNumberFormatter, [i18n.language]);
-
-  function formatWithNumberFormatter(value) {
-    return formatter.format(value);
-  }
 
   // Factor describes the ratio between part-time and full-time weekly hours (either provided by calc or recomputed here).
   const factor =
@@ -226,34 +190,6 @@ export default function TransparencyPanel({ formValues, onClose }) {
       : weeklyFull > 0
       ? weeklyPart / weeklyFull
       : 0;
-<<<<<<< HEAD
-  const breakdownParts = [];
-  if (degreeReductionMonths > 0 && reductionLabel) {
-    // Explain the contribution from the selected school degree.
-    breakdownParts.push(
-      t("reduction.breakdown.degree", {
-        months: formatter.format(degreeReductionMonths),
-        label: reductionLabel,
-      })
-    );
-  }
-  if (manualReductionMonths > 0) {
-    // Mention any additional manual reduction the user entered.
-    breakdownParts.push(
-      t("reduction.breakdown.manual", {
-        months: formatter.format(manualReductionMonths),
-      })
-    );
-  }
-  const formattedReduction = formatter.format(totalReductionMonths);
-  // Compose a string like "18 (12 + 6)" so users see how the total reduction is built.
-  const reductionDisplay =
-    breakdownParts.length > 0
-      ? `${formattedReduction} (${breakdownParts.join(" + ")})`
-      : formattedReduction;
-
-=======
->>>>>>> 4aee995 (feat: add transparency panel flow with tests #24)
   const percent =
     weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
   const basis =
@@ -492,134 +428,7 @@ function renderShell(dialogRef, onClose, t, body) {
             {t("transparency.close")}
           </button>
         </header>
-<<<<<<< HEAD
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-5 space-y-6">
-          <section className="space-y-2">
-            <h3 className="text-lg font-semibold text-slate-900">
-              {t("transparency.step1.title")}
-            </h3>
-            <p className="text-sm text-slate-700">
-              {t("transparency.step1.text", step1Values)}
-            </p>
-            <p
-              className={`text-sm font-semibold ${
-                percent >= 50 ? "text-slate-900" : "text-red-700"
-              }`}
-            >
-              {t(
-                percent >= 50
-                  ? "transparency.step1.ok"
-                  : "transparency.step1.fail"
-              )}
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <h3 className="text-lg font-semibold text-slate-900">
-              {t("transparency.step2.title")}
-            </h3>
-            <p className="text-sm text-slate-700">
-              {t("transparency.step2.text", {
-                part: formatter.format(weeklyPart),
-                full: formatter.format(weeklyFull),
-                factor: formatter.format(factor),
-              })}
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <h3 className="text-lg font-semibold text-slate-900">
-              {t("transparency.step3.title")}
-            </h3>
-            <p className="text-sm text-slate-700">
-              {t("transparency.step3.text", {
-                fullM: formatter.format(fulltimeMonths),
-                redM: formattedReduction,
-                reductionText: reductionDisplay,
-                rawBase: formatter.format(rawBase),
-                minM: formatter.format(minDurationMonths),
-                basis: formatter.format(basis),
-                basisYM,
-              })}
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <h3 className="text-lg font-semibold text-slate-900">
-              {t("transparency.step4.title")}
-            </h3>
-            <p className="text-sm text-slate-700">
-              {t("transparency.step4.text", theoreticalValues)}
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <h3 className="text-lg font-semibold text-slate-900">
-              {t("transparency.step5.title")}
-            </h3>
-            <p className="text-sm text-slate-700">
-              {t("transparency.step5.six.text", {
-                ext: formatSigned(extension, formatWithNumberFormatter),
-                applied: t(
-                  sixMonthRuleApplied
-                    ? "transparency.step5.six.applied"
-                    : "transparency.step5.six.notApplied"
-                ),
-              })}
-            </p>
-            <p className="text-sm text-slate-700">
-              {t("transparency.step5.cap.text", {
-                cap: formatter.format(capLimit),
-                applied: t(
-                  capApplied
-                    ? "transparency.step5.cap.applied"
-                    : "transparency.step5.cap.notApplied"
-                ),
-              })}
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <h3 className="text-lg font-semibold text-slate-900">
-              {t("transparency.step6.title")}
-            </h3>
-            <p className="text-sm text-slate-700">
-              {t("transparency.step6.text", {
-                roundingFn: roundingFnLabel,
-                value: formatter.format(durationAfterCap),
-                rounded: formatter.format(roundedDuration),
-                roundedYM,
-              })}
-            </p>
-          </section>
-
-          <section className="space-y-2">
-            <p className="text-base font-semibold text-slate-900">
-              {t("transparency.result", {
-                finalM: formatter.format(roundedDuration),
-                finalYM: roundedYM,
-              })}
-            </p>
-            <p className="text-sm text-slate-700">
-              {t("transparency.delta.basis", {
-                delta: formatSigned(deltaVsBasis, formatWithNumberFormatter),
-              })}
-            </p>
-            {Number.isFinite(deltaVsOriginal) && deltaVsOriginal !== 0 && (
-              <p className="text-sm text-slate-700">
-                {t("transparency.delta.original", {
-                  delta: formatSigned(
-                    deltaVsOriginal,
-                    formatWithNumberFormatter
-                  ),
-                })}
-              </p>
-            )}
-          </section>
-        </div>
-=======
         <div className="max-h-[70vh] overflow-y-auto px-6 py-5">{body}</div>
->>>>>>> 4aee995 (feat: add transparency panel flow with tests #24)
       </div>
     </div>
   );
