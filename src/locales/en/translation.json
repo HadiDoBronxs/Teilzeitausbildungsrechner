@@ -89,68 +89,51 @@
   "transparency": {
     "title": "How is this calculated?",
     "close": "Close",
-    "subtitle": "This is how we calculate the result in plain language.",
+    "intro": "Here is the full calculation in plain language.",
+    "ratio": "Your {{part}} hours per week are {{pct}} % of {{full}} hours.",
     "step1": {
-      "title": "Step 1: 50% rule",
-      "text": "Requested weekly hours / regular weekly hours = {{part}} / {{full}} = {{pct}} %",
-      "ok": "Allowed (≥ 50%).",
-      "fail": "Not allowed (< 50%). The calculation stops here."
+      "title": "Step 1: Check the 50% rule",
+      "ok": "This meets the 50% rule. We can continue.",
+      "fail": "This is below 50%. Please adjust your hours or talk to your chamber."
     },
     "step2": {
       "title": "Step 2: Part-time factor",
-      "text": "F_tz = {{part}} / {{full}} = {{factor}}"
+      "text": "We divide {{part}} hours by {{full}} hours. That gives the part-time factor {{factor}}."
     },
     "step3": {
-      "title": "Step 3: Individual base duration",
-      "text": "Standard duration {{fullM}} − reduction {{reductionText}} = {{rawBase}} → minimum duration {{minM}} ⇒ basis = {{basis}} months ({{basisYM}})."
+      "title": "Step 3: Base duration",
+      "text": "Standard duration {{fullM}} months minus school reduction {{degreeM}} months and other reasons {{manualM}} months = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
     },
     "step4": {
-      "title": "Step 4: Theoretical new duration",
-      "text": "D_theo = basis / F_tz = {{basis}} / {{factor}} = {{dtheo}}"
+      "title": "Step 4: New part-time duration",
+      "text": "We divide the base duration {{basis}} months by the part-time factor {{factor}}. That results in {{dtheo}} months."
     },
     "step5": {
-      "title": "Step 5: Safeguards",
-      "six": {
-        "text": "6-month rule: extension = D_theo − basis = {{ext}} months → {{applied}}",
-        "applied": "applied (result stays at the basis)",
-        "notApplied": "not applied"
-      },
-      "cap": {
-        "text": "1.5× cap: max = {{cap}} months → {{applied}}",
-        "applied": "applied (clamped to the cap)",
-        "notApplied": "not applied"
-      }
+      "title": "Step 5: Protective rules",
+      "sixApplied": "The extension would be {{extension}} months. We limit it and stay at {{limited}} months.",
+      "sixSkipped": "The extension is {{extension}} months. No limit is needed.",
+      "capApplied": "After step 4 we would reach {{afterSix}} months, which is more than 1.5 × the standard duration ({{cap}} months). We cap it at {{cap}} months.",
+      "capSkipped": "The duration stays at {{afterSix}} months and remains below the cap of {{cap}} months."
     },
     "step6": {
-      "title": "Step 6: Round to whole months",
-      "text": "{{roundingFn}}({{value}}) = {{rounded}} months ({{roundedYM}})."
+      "title": "Step 6: Round and present",
+      "text": "We round {{value}} months with {{rounding}} and get {{rounded}} months ({{roundedYM}})."
     },
-    "result": "Final result: {{finalM}} months ({{finalYM}}).",
+    "result": "Final result: {{months}} months ({{yearsMonths}}).",
     "delta": {
-      "basis": "Change vs. basis: {{delta}} months.",
-      "original": "Change vs. original full-time: {{delta}} months."
+      "basis": "Difference vs base: {{delta}} months.",
+      "original": "Difference vs original full-time: {{delta}} months."
     },
-    "steps": {
-      "step1": {
-        "title": "Step 1: Subtract your reduction",
-        "text": "Take the normal full-time duration and subtract your reduction months. The result is the reduced full-time duration.",
-        "example": "Example: 36 months minus 6 months = 30 months."
-      },
-      "step2": {
-        "title": "Step 2: Find the factor",
-        "text": "Divide your part-time hours by the full-time hours. This gives you the part-time factor.",
-        "example": "Example: 30 hours divided by 40 hours = factor 0.75."
-      },
-      "step3": {
-        "title": "Step 3: Calculate the part-time duration",
-        "text": "Divide the reduced full-time duration by the factor and round to whole months.",
-        "example": "Example: 30 months divided by 0.75 = 40 months."
-      },
-      "step4": {
-        "title": "Step 4: Show the difference",
-        "text": "Compare the part-time duration with the reduced full-time duration to see if it is longer or shorter.",
-        "example": "Example: 40 months minus 30 months = +10 months (longer)."
-      }
+    "legal": {
+      "title": "Legal reference",
+      "text": "This calculation follows § 7a BBiG (part-time apprenticeship).",
+      "link": "Read the law",
+      "url": "https://www.gesetze-im-internet.de/bbig_2005/__7a.html"
+    },
+    "rounding": {
+      "round": "standard rounding",
+      "ceil": "round up",
+      "floor": "round down"
     }
   },
   "error": {

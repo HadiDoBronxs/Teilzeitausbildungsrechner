@@ -38,8 +38,8 @@ describe("SchoolDegreeReductionSelect", () => {
 
     const button = screen.getByRole("button", { name: "Warum kann ich verkürzen?" });
     await user.click(button);
-    expect(screen.getByRole("dialog")).toHaveTextContent(
-      "Deshalb kann die IHK oder HWK die Ausbildungszeit verkürzen."
+    expect(screen.getByRole("dialog").textContent).toContain(
+      "Manche Abschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen."
     );
 
     await user.keyboard("{Escape}");

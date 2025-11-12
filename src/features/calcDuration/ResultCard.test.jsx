@@ -1,5 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import ResultCard from "./ResultCard";
 
@@ -90,34 +91,56 @@ describe("ResultCard", () => {
     expect(screen.getByText("0 Monate")).toBeInTheDocument();
   });
 
-  it("shows total and breakdown when manual reduction is present", () => {
-    const result = buildResult({
-      effectiveFulltimeMonths: 24,
-      fulltimeMonths: 36,
-    });
+  it("opens and closes the transparency panel on demand", async () => {
+    const user = userEvent.setup();
+    const result = buildResult();
+    render(<ResultCard values={baseValues} result={result} />);
 
-    render(
-      <ResultCard
-        values={{
-          ...baseValues,
-          reductionMonths: 18,
-          degreeReductionMonths: 12,
-          manualReductionMonths: 6,
-          schoolDegreeId: "abi",
-          schoolDegreeLabelKey: "reductionOptions.abi",
-        }}
-        result={result}
-      />
+    await user.click(
+      screen.getByRole("button", { name: "Wie wird das berechnet?" })
+    );
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Schließen" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("shows the weekly ratio sentence inside the transparency panel", async () => {
+    const user = userEvent.setup();
+    const result = buildResult();
+    render(<ResultCard values={baseValues} result={result} />);
+
+    await user.click(
+      screen.getByRole("button", { name: "Wie wird das berechnet?" })
     );
 
     expect(
-      screen.getByText("Verkürzung gesamt: −18 Monate")
+      screen.getByText("Ihre 30 Stunden pro Woche sind 75 % von 40 Stunden.")
+    ).toBeInTheDocument();
+  });
+
+  it("explains the error path when the ratio is below fifty percent", async () => {
+    const user = userEvent.setup();
+    const values = {
+      ...baseValues,
+      weeklyPart: 10,
+    };
+    const result = buildResult({ allowed: false, errorCode: "minFactor" });
+    render(<ResultCard values={values} result={result} />);
+
+    await user.click(
+      screen.getByRole("button", { name: "Wie wird das berechnet?" })
+    );
+
+    expect(
+      screen.getByText(
+        "Die gewünschte Wochenarbeitszeit liegt unter 50 % der regulären Arbeitszeit. Bitte Eingaben prüfen."
+      )
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Verkürzung: −12 Monate (Hochschulreife)")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Zusätzliche Gründe: −6 Monate")
+      screen.getByText(
+        "Das liegt unter 50 %. Bitte passen Sie die Stunden an oder sprechen Sie mit Ihrer Kammer."
+      )
     ).toBeInTheDocument();
   });
 });

@@ -90,68 +90,51 @@
     "transparency": {
         "title": "Wie wird das berechnet?",
         "close": "Schließen",
-        "subtitle": "So funktioniert die Berechnung in einfacher Sprache.",
+        "intro": "So erklären wir jeden Schritt in einfacher Sprache.",
+        "ratio": "Ihre {{part}} Stunden pro Woche sind {{pct}} % von {{full}} Stunden.",
         "step1": {
-            "title": "Schritt 1: 50%-Regel",
-            "text": "Gewünschte Wochenstunden / Reguläre Wochenstunden = {{part}} / {{full}} = {{pct}} %",
-            "ok": "Zulässig (≥ 50 %).",
-            "fail": "Nicht zulässig (< 50 %). Die Berechnung wird gestoppt."
+            "title": "Schritt 1: Mindestanteil prüfen",
+            "ok": "Das erfüllt die 50-%-Regel. Wir dürfen weiterrechnen.",
+            "fail": "Das liegt unter 50 %. Bitte passen Sie die Stunden an oder sprechen Sie mit Ihrer Kammer."
         },
         "step2": {
             "title": "Schritt 2: Teilzeit-Faktor",
-            "text": "F_tz = {{part}} / {{full}} = {{factor}}"
+            "text": "Wir teilen {{part}} Stunden durch {{full}} Stunden. Daraus entsteht der Teilzeit-Faktor {{factor}}."
         },
         "step3": {
-            "title": "Schritt 3: Individuelle Basisdauer",
-            "text": "Regeldauer {{fullM}} − Verkürzung {{reductionText}} = {{rawBase}} → Mindestdauer {{minM}} ⇒ Basis = {{basis}} Monate ({{basisYM}})."
+            "title": "Schritt 3: Basisdauer",
+            "text": "Regeldauer {{fullM}} Monate minus Schulabschluss {{degreeM}} Monate und weitere Gründe {{manualM}} Monate ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
         },
         "step4": {
-            "title": "Schritt 4: Theoretische neue Dauer",
-            "text": "D_theo = Basis / F_tz = {{basis}} / {{factor}} = {{dtheo}}"
+            "title": "Schritt 4: Neue Teilzeitdauer",
+            "text": "Wir teilen die Basisdauer {{basis}} Monate durch den Teilzeit-Faktor {{factor}}. Daraus werden {{dtheo}} Monate in Teilzeit."
         },
         "step5": {
             "title": "Schritt 5: Schutzregeln",
-            "six": {
-                "text": "6-Monats-Regel: Verlängerung = D_theo − Basis = {{ext}} Monate → {{applied}}",
-                "applied": "angewendet (Ergebnis auf Basis gesetzt)",
-                "notApplied": "nicht angewendet"
-            },
-            "cap": {
-                "text": "1,5×-Deckel: max = {{cap}} Monate → {{applied}}",
-                "applied": "angewendet (auf max gekappt)",
-                "notApplied": "nicht angewendet"
-            }
+            "sixApplied": "Die Verlängerung wäre {{extension}} Monate. Wir begrenzen sie und bleiben bei {{limited}} Monaten.",
+            "sixSkipped": "Die Verlängerung beträgt {{extension}} Monate. Keine Begrenzung nötig.",
+            "capApplied": "Die Dauer nach Schritt 4 wären {{afterSix}} Monate und damit mehr als 1,5 × der Regeldauer ({{cap}} Monate). Wir deckeln auf {{cap}} Monate.",
+            "capSkipped": "Die Dauer bleibt mit {{afterSix}} Monaten unter dem Deckel von {{cap}} Monaten."
         },
         "step6": {
-            "title": "Schritt 6: Runden auf ganze Monate",
-            "text": "{{roundingFn}}({{value}}) = {{rounded}} Monate ({{roundedYM}})."
+            "title": "Schritt 6: Runden und Ergebnis",
+            "text": "Wir runden {{value}} Monate mit {{rounding}} und erhalten {{rounded}} Monate ({{roundedYM}})."
         },
-        "result": "Finales Ergebnis: {{finalM}} Monate ({{finalYM}}).",
+        "result": "Finales Ergebnis: {{months}} Monate ({{yearsMonths}}).",
         "delta": {
-            "basis": "Veränderung ggü. Basis: {{delta}} Monate.",
-            "original": "Veränderung ggü. ursprünglicher Vollzeit: {{delta}} Monate."
+            "basis": "Unterschied zur Basis: {{delta}} Monate.",
+            "original": "Unterschied zur ursprünglichen Vollzeit: {{delta}} Monate."
         },
-        "steps": {
-            "step1": {
-                "title": "Schritt 1: Verkürzung abziehen",
-                "text": "Ziehe deine Verkürzung in Monaten von der normalen Vollzeitdauer ab. Das Ergebnis ist die verkürzte Vollzeitdauer.",
-                "example": "Beispiel: 36 Monate minus 6 Monate = 30 Monate."
-            },
-            "step2": {
-                "title": "Schritt 2: Faktor berechnen",
-                "text": "Teile deine Teilzeitstunden durch die Vollzeitstunden. Dadurch entsteht der Teilzeit-Faktor.",
-                "example": "Beispiel: 30 Stunden geteilt durch 40 Stunden = Faktor 0,75."
-            },
-            "step3": {
-                "title": "Schritt 3: Teilzeitdauer finden",
-                "text": "Teile die verkürzte Vollzeitdauer durch den Faktor und runde auf volle Monate.",
-                "example": "Beispiel: 30 Monate geteilt durch 0,75 = 40 Monate."
-            },
-            "step4": {
-                "title": "Schritt 4: Unterschied anzeigen",
-                "text": "Vergleiche die Teilzeitdauer mit der verkürzten Vollzeitdauer. So siehst du, ob es länger oder kürzer wird.",
-                "example": "Beispiel: 40 Monate minus 30 Monate = +10 Monate (länger)."
-            }
+        "legal": {
+            "title": "Rechtlicher Hinweis",
+            "text": "Die Berechnung orientiert sich an § 7a BBiG (Teilzeitberufsausbildung).",
+            "link": "Zum Gesetzestext",
+            "url": "https://www.gesetze-im-internet.de/bbig_2005/__7a.html"
+        },
+        "rounding": {
+            "round": "Mathematisches Runden",
+            "ceil": "Aufrunden",
+            "floor": "Abrunden"
         }
     },
     "error": {
