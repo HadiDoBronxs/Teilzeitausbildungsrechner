@@ -119,7 +119,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       if (renderTaskRef.current) {
         try {
           renderTaskRef.current.cancel();
-        } catch (cancelErr) {
+        } catch (_cancelErr) {
           // Ignore cancellation errors - the task may have already completed
         }
         renderTaskRef.current = null;
@@ -166,7 +166,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       if (renderTaskRef.current) {
         try {
           renderTaskRef.current.cancel();
-        } catch (cancelErr) {
+        } catch (_cancelErr) {
           // Ignore cancellation errors
         }
         renderTaskRef.current = null;
