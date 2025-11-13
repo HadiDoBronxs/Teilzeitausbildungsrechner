@@ -27,6 +27,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
  */
 export default function PDFViewer({ pdfBytes, onClose }) {
   const canvasRef = useRef(null);
+  const renderTaskRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(0);
   const [pdfDoc, setPdfDoc] = useState(null);
@@ -114,6 +115,16 @@ export default function PDFViewer({ pdfBytes, onClose }) {
     async function renderPage() {
       if (!pdfDoc || !canvasRef.current) return;
 
+      // Cancel any previous render task
+      if (renderTaskRef.current) {
+        try {
+          renderTaskRef.current.cancel();
+        } catch (cancelErr) {
+          // Ignore cancellation errors - the task may have already completed
+        }
+        renderTaskRef.current = null;
+      }
+
       try {
         const page = await pdfDoc.getPage(currentPage);
         const canvas = canvasRef.current;
@@ -128,14 +139,39 @@ export default function PDFViewer({ pdfBytes, onClose }) {
           viewport: viewport,
         };
 
-        await page.render(renderContext).promise;
+        // Store the render task so we can cancel it if needed
+        const renderTask = page.render(renderContext);
+        renderTaskRef.current = renderTask;
+
+        await renderTask.promise;
+        
+        // Clear the ref after successful render
+        renderTaskRef.current = null;
       } catch (err) {
-        console.error("Error rendering page:", err);
-        setError("Failed to render PDF page");
+        // Clear the ref on error
+        renderTaskRef.current = null;
+        
+        // Only set error if it's not a cancellation error
+        if (err.name !== 'RenderingCancelledException') {
+          console.error("Error rendering page:", err);
+          setError("Failed to render PDF page");
+        }
       }
     }
 
     renderPage();
+
+    // Cleanup function to cancel render on unmount or dependency change
+    return () => {
+      if (renderTaskRef.current) {
+        try {
+          renderTaskRef.current.cancel();
+        } catch (cancelErr) {
+          // Ignore cancellation errors
+        }
+        renderTaskRef.current = null;
+      }
+    };
   }, [pdfDoc, currentPage, scale]);
 
   /**
