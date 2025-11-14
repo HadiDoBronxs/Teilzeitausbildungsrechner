@@ -6,8 +6,8 @@ import {
 } from "./qualificationOptions.js";
 
 /**
- * Computes the capped sum of all selected qualification reductions.
- * Returns both the raw sum and the capped value for display logic.
+ * Summiert alle ausgewählten Qualifikationsgründe und wendet direkt die Deckelung an.
+ * So bleibt die Berechnungslogik zentral und konsistent.
  */
 function summarizeQualifications(selectedIds) {
   const rawTotal = selectedIds.reduce((sum, id) => {
@@ -27,7 +27,7 @@ export default function QualificationReductions({ value = [], onChange }) {
   const exceedsCap = rawTotal > MAX_QUALIFICATION_REDUCTION;
 
   /**
-   * Toggles a qualification and informs the parent about the new selection.
+   * Handhabt das Aus- und Anwählen einer Checkbox und gibt die neue Auswahl nach oben.
    */
   const handleToggle = (id) => {
     const next = value.includes(id)

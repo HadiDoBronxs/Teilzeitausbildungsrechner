@@ -1,3 +1,4 @@
+// Enthält alle anerkannten Qualifikationsgründe samt maximaler Verkürzung.
 export const QUALIFICATION_OPTIONS = [
   { id: "familyCare", maxMonths: 12, labelKey: "qualifications.familyCare" },
   { id: "ageOver21", maxMonths: 12, labelKey: "qualifications.ageOver21" },
@@ -10,4 +11,5 @@ export const QUALIFICATION_OPTIONS = [
   { id: "foreignRecognition", maxMonths: 12, labelKey: "qualifications.foreignRecognition" }
 ];
 
+// Absolute Deckelung der Summe aus Qualifikationsgründen (laut Vorgabe 12 Monate).
 export const MAX_QUALIFICATION_REDUCTION = 12;
