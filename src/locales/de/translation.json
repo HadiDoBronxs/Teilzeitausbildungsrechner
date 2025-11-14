@@ -140,6 +140,22 @@
     "error": {
         "below50": "Die gewünschte Wochenarbeitszeit liegt unter 50 % der regulären Arbeitszeit. Bitte Eingaben prüfen."
     },
+    "qualifications": {
+        "title": "Weitere Qualifikationen",
+        "description": "Wähle alle Gründe aus, die auf dich zutreffen. Die maximale Gesamtverkürzung beträgt {{max}} Monate.",
+        "summary": "Angerechnete Qualifikationsverkürzung: {{months}} / {{max}} Monate",
+        "warning": "Die Auswahl ergibt rechnerisch {{raw}} Monate. Es werden jedoch höchstens {{max}} Monate berücksichtigt.",
+        "legalHint": "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig.",
+        "familyCare": "Familien- oder Pflegeverantwortung – bis zu {{months}} Monaten",
+        "ageOver21": "Alter über 21 Jahre – bis zu {{months}} Monaten",
+        "schoolIntermediate": "Schulabschluss: Mittlerer Abschluss/FHR – bis zu {{months}} Monaten",
+        "schoolAdvanced": "Schulabschluss: Allgemeine Hochschulreife – bis zu {{months}} Monaten",
+        "completedTraining": "Abgeschlossene Berufsausbildung – bis zu {{months}} Monaten",
+        "vocationalFoundation": "Einschlägige berufliche Grundbildung – bis zu {{months}} Monaten",
+        "vocationalExperience": "Einschlägige Berufstätigkeit/Berufserfahrung – bis zu {{months}} Monaten",
+        "academic": "Hochschulische bzw. akademische Leistungen – bis zu {{months}} Monaten",
+        "foreignRecognition": "Anerkennung ausländischer Berufsabschlüsse – bis zu {{months}} Monaten"
+    },
     "pdf": {
         "saveButton": "Als PDF speichern",
         "title": "Teilzeit-Ausbildungs-Berechnung",

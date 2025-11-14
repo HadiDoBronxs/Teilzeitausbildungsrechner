@@ -139,6 +139,22 @@
   "error": {
     "below50": "The requested weekly working time is below 50% of the regular working time. Please check your entries."
   },
+  "qualifications": {
+    "title": "Additional Qualifications",
+    "description": "Select every reason that applies. The overall reduction is capped at {{max}} months.",
+    "summary": "Applied qualification reduction: {{months}} / {{max}} months",
+    "warning": "Your selection adds up to {{raw}} months. Only {{max}} months can be taken into account.",
+    "legalHint": "Section 8 (3) BBiG: Reductions beyond six months require additional proof.",
+    "familyCare": "Family or care responsibilities – up to {{months}} months",
+    "ageOver21": "Age over 21 years – up to {{months}} months",
+    "schoolIntermediate": "School degree: intermediate/Fachhochschulreife – up to {{months}} months",
+    "schoolAdvanced": "School degree: general university entrance diploma – up to {{months}} months",
+    "completedTraining": "Completed vocational training – up to {{months}} months",
+    "vocationalFoundation": "Relevant basic vocational education – up to {{months}} months",
+    "vocationalExperience": "Relevant work experience – up to {{months}} months",
+    "academic": "Academic achievements – up to {{months}} months",
+    "foreignRecognition": "Recognition of foreign qualifications – up to {{months}} months"
+  },
   "pdf": {
     "saveButton": "Save as PDF",
     "title": "Part-time Training Calculation",
