@@ -138,5 +138,27 @@
   },
   "error": {
     "below50": "The requested weekly working time is below 50% of the regular working time. Please check your entries."
+  },
+  "pdf": {
+    "saveButton": "Save as PDF",
+    "title": "Part-time Training Calculation",
+    "inputs": "Input Values",
+    "results": "Calculation Results",
+    "transparency": "Calculation Transparency",
+    "date": "Date",
+    "fulltimeHours": "Full-time hours per week",
+    "parttimeHours": "Part-time hours per week",
+    "regularDuration": "Regular training duration (months)",
+    "schoolDegree": "School degree",
+    "degreeReduction": "Degree reduction (months)",
+    "manualReduction": "Additional reduction (months)",
+    "totalReduction": "Total reduction (months)",
+    "finalDuration": "Final training duration",
+    "baselineMonths": "Baseline duration (months)",
+    "parttimeMonths": "Part-time duration (months)",
+    "deltaMonths": "Change (months)",
+    "factor": "Part-time factor",
+    "disclaimer": "Disclaimer",
+    "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary."
   }
 }
