@@ -12,7 +12,6 @@
         "factorText": "Das entspricht etwa {{percent}} % der Vollzeit.",
         "factorError": "Die Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Weniger ist nicht möglich.",
         "avgDaily": "Das sind {{hours}} Stunden pro Tag."
-        
     },
     "regularDuration": {
         "label": "Wie lange dauert Ihre übliche Ausbildungszeit in Monaten?",
@@ -39,6 +38,7 @@
         "applied": "Verkürzung: −{{months}} Monate ({{label}})",
         "totalApplied": "Verkürzung gesamt: −{{months}} Monate",
         "manualApplied": "Zusätzliche Gründe: −{{months}} Monate",
+        "qualificationApplied": "Qualifikationen: −{{months}} Monate",
         "placeholder": "z. B. 6",
         "help": "Gib an, um wie viele Monate deine Ausbildung zusätzlich verkürzt werden soll (0, wenn keine weitere Verkürzung).",
         "error": {
@@ -47,7 +47,8 @@
         },
         "breakdown": {
             "degree": "{{label}} −{{months}} Monate",
-            "manual": "Weitere Gründe −{{months}} Monate"
+            "manual": "Weitere Gründe −{{months}} Monate",
+            "qualification": "Qualifikationen −{{months}} Monate"
         }
     },
     "reductionOptions": {
@@ -142,19 +143,43 @@
     },
     "qualifications": {
         "title": "Weitere Qualifikationen",
-        "description": "Wähle alle Gründe aus, die auf dich zutreffen. Die maximale Gesamtverkürzung beträgt {{max}} Monate.",
+        "description": "Beantworte die Fragen zu deinen weiteren Qualifikationen. Insgesamt sind höchstens {{max}} Monate möglich.",
         "summary": "Angerechnete Qualifikationsverkürzung: {{months}} / {{max}} Monate",
         "warning": "Die Auswahl ergibt rechnerisch {{raw}} Monate. Es werden jedoch höchstens {{max}} Monate berücksichtigt.",
+        "totalWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate.",
         "legalHint": "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig.",
-        "familyCare": "Familien- oder Pflegeverantwortung – bis zu {{months}} Monaten",
-        "ageOver21": "Alter über 21 Jahre – bis zu {{months}} Monaten",
-        "schoolIntermediate": "Schulabschluss: Mittlerer Abschluss/FHR – bis zu {{months}} Monaten",
-        "schoolAdvanced": "Schulabschluss: Allgemeine Hochschulreife – bis zu {{months}} Monaten",
-        "completedTraining": "Abgeschlossene Berufsausbildung – bis zu {{months}} Monaten",
-        "vocationalFoundation": "Einschlägige berufliche Grundbildung – bis zu {{months}} Monaten",
-        "vocationalExperience": "Einschlägige Berufstätigkeit/Berufserfahrung – bis zu {{months}} Monaten",
-        "academic": "Hochschulische bzw. akademische Leistungen – bis zu {{months}} Monaten",
-        "foreignRecognition": "Anerkennung ausländischer Berufsabschlüsse – bis zu {{months}} Monaten"
+        "answers": {
+            "yes": "Ja",
+            "no": "Nein"
+        },
+        "familyCare": {
+            "question": "Hast du Familien- oder Pflegeverantwortung?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "ageOver21": {
+            "question": "Bist du über 21 Jahre alt?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "completedTraining": {
+            "question": "Hast du bereits eine Berufsausbildung abgeschlossen?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "vocationalFoundation": {
+            "question": "Hast du eine einschlägige berufliche Grundbildung?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "vocationalExperience": {
+            "question": "Hast du einschlägige Berufserfahrung?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "academic": {
+            "question": "Hast du hochschulische bzw. akademische Leistungen erbracht?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "foreignRecognition": {
+            "question": "Wurde ein ausländischer Berufsabschluss anerkannt?",
+            "note": "bis zu {{months}} Monaten"
+        }
     },
     "pdf": {
         "saveButton": "Als PDF speichern",

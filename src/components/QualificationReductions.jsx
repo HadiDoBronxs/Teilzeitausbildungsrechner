@@ -1,85 +1,90 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
   QUALIFICATION_OPTIONS,
   MAX_QUALIFICATION_REDUCTION,
+  summarizeQualificationSelection,
 } from "./qualificationOptions.js";
 
-/**
- * Summiert alle ausgewählten Qualifikationsgründe und wendet direkt die Deckelung an.
- * So bleibt die Berechnungslogik zentral und konsistent.
- */
-function summarizeQualifications(selectedIds) {
-  const rawTotal = selectedIds.reduce((sum, id) => {
-    const option = QUALIFICATION_OPTIONS.find((item) => item.id === id);
-    return sum + (option?.maxMonths || 0);
-  }, 0);
-  const cappedTotal = Math.min(rawTotal, MAX_QUALIFICATION_REDUCTION);
-  return { rawTotal, cappedTotal };
-}
-
-export default function QualificationReductions({ value = [], onChange }) {
+export default function QualificationReductions({
+  value = [],
+  onChange,
+  onTotalChange,
+}) {
   const { t } = useTranslation();
   const { rawTotal, cappedTotal } = useMemo(
-    () => summarizeQualifications(value),
+    () => summarizeQualificationSelection(value),
     [value]
   );
   const exceedsCap = rawTotal > MAX_QUALIFICATION_REDUCTION;
 
+  useEffect(() => {
+    onTotalChange?.({ rawTotal, cappedTotal, exceedsCap });
+  }, [rawTotal, cappedTotal, exceedsCap, onTotalChange]);
+
   /**
-   * Handhabt das Aus- und Anwählen einer Checkbox und gibt die neue Auswahl nach oben.
+   * Setzt bewusst "Ja" oder "Nein" für eine Qualifikation.
    */
-  const handleToggle = (id) => {
-    const next = value.includes(id)
-      ? value.filter((item) => item !== id)
-      : [...value, id];
+  const handleAnswer = (id, shouldApply) => {
+    const next = shouldApply
+      ? Array.from(new Set([...value, id]))
+      : value.filter((item) => item !== id);
     onChange?.(next);
   };
 
   return (
-    <fieldset className="w-full max-w-sm mx-auto p-2 border border-slate-200 rounded-lg space-y-3">
-      <legend className="font-semibold text-gray-800">
-        {t("qualifications.title")}
-      </legend>
-      <p className="text-sm text-slate-600">{t("qualifications.description")}</p>
-      <div className="flex flex-col gap-2" role="group">
-        {QUALIFICATION_OPTIONS.map((option) => (
-          <label
+    <section className="w-full flex flex-col items-center gap-4">
+      {QUALIFICATION_OPTIONS.map((option) => {
+        const yesSelected = value.includes(option.id);
+        const selectId = `qualification-select-${option.id}`;
+        return (
+          <div
             key={option.id}
-            className="flex items-start gap-2 text-sm text-slate-800"
+            className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2"
           >
-            <input
-              type="checkbox"
-              className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-              checked={value.includes(option.id)}
-              onChange={() => handleToggle(option.id)}
-            />
-            <span>
-              {t(option.labelKey, { months: option.maxMonths })}
-            </span>
-          </label>
-        ))}
-      </div>
-      <p className="text-sm font-semibold text-slate-900">
-        {t("qualifications.summary", {
-          months: cappedTotal,
-          max: MAX_QUALIFICATION_REDUCTION,
-        })}
-      </p>
-      {exceedsCap && (
-        <p
-          role="alert"
-          className="text-sm font-semibold text-amber-700"
-        >
-          {t("qualifications.warning", {
-            raw: rawTotal,
+            <label
+              htmlFor={selectId}
+              className="text-lg font-semibold text-gray-900"
+            >
+              {t(`${option.labelKey}.question`)}
+            </label>
+            <select
+              id={selectId}
+              name={selectId}
+              className="w-full rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={yesSelected ? "yes" : "no"}
+              onChange={(event) =>
+                handleAnswer(option.id, event.target.value === "yes")
+              }
+            >
+              <option value="yes">{t("qualifications.answers.yes")}</option>
+              <option value="no">{t("qualifications.answers.no")}</option>
+            </select>
+            <p className="text-xs text-slate-600">
+              {t(`${option.labelKey}.note`, { months: option.maxMonths })}
+            </p>
+          </div>
+        );
+      })}
+      <div className="w-full max-w-sm mx-auto p-2 space-y-2">
+        <p className="text-sm font-semibold text-slate-900">
+          {t("qualifications.summary", {
+            months: cappedTotal,
             max: MAX_QUALIFICATION_REDUCTION,
           })}
         </p>
-      )}
-      <p className="text-xs text-slate-600">
-        {t("qualifications.legalHint")}
-      </p>
-    </fieldset>
+        {exceedsCap && (
+          <p role="alert" className="text-sm font-semibold text-amber-700">
+            {t("qualifications.warning", {
+              raw: rawTotal,
+              max: MAX_QUALIFICATION_REDUCTION,
+            })}
+          </p>
+        )}
+        <p className="text-xs text-slate-600">
+          {t("qualifications.legalHint")}
+        </p>
+      </div>
+    </section>
   );
 }

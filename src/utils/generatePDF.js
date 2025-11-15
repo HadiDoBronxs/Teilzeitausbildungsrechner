@@ -361,7 +361,9 @@ export async function generatePDF(formValues, t, i18n) {
     schoolDegreeId: formValues?.schoolDegreeId,
     degreeReductionMonths: formValues?.degreeReductionMonths,
     manualReductionMonths: formValues?.manualReductionMonths,
+    qualificationReductionMonths: formValues?.qualificationReductionRawMonths,
     labelKey: formValues?.schoolDegreeLabelKey,
+    maxTotalMonths: formValues?.maxTotalReduction ?? 12,
   });
   
   /**
@@ -804,4 +806,3 @@ export async function generatePDF(formValues, t, i18n) {
     throw new Error(`PDF generation failed: ${error.message || "Unknown error"}`);
   }
 }
-

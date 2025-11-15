@@ -107,7 +107,7 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
       <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={SELECT_ID}
-          className="font-semibold text-gray-800"
+          className="text-lg font-semibold text-gray-900"
         >
           {t("reduction.title")}
         </label>
@@ -131,9 +131,13 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
         </button>
       </div>
 
-      <p id={QUESTION_ID} className="text-sm text-slate-700">
+      <label
+        id={QUESTION_ID}
+        htmlFor={SELECT_ID}
+        className="text-lg font-semibold text-gray-900"
+      >
         {t("reduction.question")}
-      </p>
+      </label>
 
       <p id={DESCRIPTION_ID} className="sr-only">
         {t("reduction.dropdownDescription")}

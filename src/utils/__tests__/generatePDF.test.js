@@ -46,17 +46,32 @@ vi.mock("../../features/calcDuration/readFormAndCalc", () => ({
 
 // Mock reduction summary
 vi.mock("../../domain/schoolDegreeReductions", () => ({
-  buildReductionSummary: vi.fn(({ manualReductionMonths, degreeReductionMonths, schoolDegreeId }) => {
-    // If schoolDegreeId is null/undefined, no degree reduction
-    const degree = schoolDegreeId ? (degreeReductionMonths ?? 6) : 0;
-    const manual = manualReductionMonths || 0;
-    return {
-      total: degree + manual,
-      degree: degree,
-      manual: manual,
-      labelKey: schoolDegreeId ? "reductionOptions.mr" : null,
-    };
-  }),
+  buildReductionSummary: vi.fn(
+    ({
+      manualReductionMonths,
+      degreeReductionMonths,
+      qualificationReductionMonths,
+      schoolDegreeId,
+      maxTotalMonths = 12,
+    }) => {
+      const degree = schoolDegreeId ? (degreeReductionMonths ?? 6) : 0;
+      const manual = manualReductionMonths || 0;
+      const qualification = qualificationReductionMonths || 0;
+      const totalRaw = degree + manual + qualification;
+      const total = Math.min(maxTotalMonths, totalRaw);
+      const capExceeded = totalRaw > maxTotalMonths;
+      return {
+        total,
+        degree,
+        manual,
+        qualification,
+        qualificationRaw: qualification,
+        totalRaw,
+        capExceeded,
+        labelKey: schoolDegreeId ? "reductionOptions.mr" : null,
+      };
+    }
+  ),
 }));
 
 describe("generatePDF", () => {
@@ -104,6 +119,8 @@ describe("generatePDF", () => {
       "transparency.delta.original": "Change vs. original full-time: {{delta}} months.",
       "reduction.breakdown.degree": "{{label}} -{{months}} months",
       "reduction.breakdown.manual": "Other reasons -{{months}} months",
+      "reduction.breakdown.qualification": "Qualifications -{{months}} months",
+      "reduction.qualificationApplied": "Qualifications: -{{months}} months",
       "format.year": "Year",
       "format.years": "Years",
       "format.month": "Month",
@@ -349,4 +366,3 @@ describe("generatePDF", () => {
     // If page breaks weren't handled, the PDF generation might fail or truncate
   });
 });
-

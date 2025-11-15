@@ -55,7 +55,9 @@ export function buildReductionSummary({
   schoolDegreeId,
   manualReductionMonths,
   degreeReductionMonths,
+  qualificationReductionMonths,
   labelKey,
+  maxTotalMonths = 12,
 } = {}) {
   // Read the configured option so we can fall back to its label and months.
   const option = getSchoolDegreeOption(schoolDegreeId ?? null);
@@ -64,7 +66,22 @@ export function buildReductionSummary({
     degreeReductionMonths ?? option?.months ?? 0
   );
   const manual = normalizeReductionMonths(manualReductionMonths);
-  const total = degree + manual;
+  const qualificationRaw = normalizeReductionMonths(
+    qualificationReductionMonths
+  );
+
+  // Zuerst werden Abschluss + manuelle Verkürzung berücksichtigt, der Rest ist für Qualifikationen reserviert.
+  const remainingAfterDegreeAndManual = Math.max(
+    0,
+    maxTotalMonths - Math.min(maxTotalMonths, degree + manual)
+  );
+  const qualificationApplied = Math.min(
+    qualificationRaw,
+    remainingAfterDegreeAndManual
+  );
+  const totalRaw = degree + manual + qualificationRaw;
+  const total = Math.min(maxTotalMonths, totalRaw);
+  const capExceeded = totalRaw > maxTotalMonths;
 
   return {
     // Total months are used for the main calculation.
@@ -72,6 +89,10 @@ export function buildReductionSummary({
     // Degree and manual parts let the UI show a clear breakdown.
     degree,
     manual,
+    qualification: qualificationApplied,
+    qualificationRaw,
+    totalRaw,
+    capExceeded,
     labelKey: resolvedLabelKey,
   };
 }
