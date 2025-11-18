@@ -48,10 +48,9 @@ function formatFieldValue(value, formatType, formatter, translateFn) {
  * @param {Object} formValues - The form values object
  * @param {Object} reduction - The reduction summary object
  * @param {Function} safeT - Safe translation function
- * @param {Function} formatter - Number formatter function
  * @returns {Array<FieldConfig>} Array of field configurations
  */
-function buildInputFieldConfig(formValues, reduction, safeT, _formatter) {
+function buildInputFieldConfig(formValues, reduction, safeT) {
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
@@ -437,7 +436,7 @@ export async function generatePDF(formValues, t, i18n) {
     : safeT("reduction.selectPlaceholder");
 
   // Build input field configuration dynamically
-  const inputFieldConfigs = buildInputFieldConfig(formValues, reduction, safeT, formatter);
+  const inputFieldConfigs = buildInputFieldConfig(formValues, reduction, safeT);
 
   // Input Values Section
   yPosition = addText(
@@ -671,11 +670,6 @@ export async function generatePDF(formValues, t, i18n) {
         })
       );
     }
-    const formattedReduction = formatter.format(totalReductionMonths);
-    const _reductionDisplay =
-      breakdownParts.length > 0
-        ? `${formattedReduction} (${breakdownParts.join(" + ")})`
-        : formattedReduction;
 
     yPosition = addText(
       safeT("transparency.step3.title"),
