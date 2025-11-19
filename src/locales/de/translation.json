@@ -49,7 +49,8 @@
             "degree": "{{label}} −{{months}} Monate",
             "manual": "Weitere Gründe −{{months}} Monate",
             "qualification": "Qualifikationen −{{months}} Monate"
-        }
+        },
+        "capWarning": "Deine Auswahl ergibt {{total}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
     },
     "reductionOptions": {
         "hs": "Hauptschulabschluss",

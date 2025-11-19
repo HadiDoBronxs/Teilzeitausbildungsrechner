@@ -35,6 +35,7 @@ export default function ResultCard({ values, result: injectedResult }) {
   });
   // The summary keeps total, degree-based, and manual reductions in sync for the UI badges.
   const hasReduction = reduction.total > 0;
+  // Flags halten die UI-Logik übersichtlich und vermeiden doppelte Berechnungen im JSX.
   const hasDegreeReduction = reduction.degree > 0;
   const hasQualificationReduction = reduction.qualification > 0;
   const hasManualReduction = reduction.manual > 0;
@@ -155,6 +156,14 @@ export default function ResultCard({ values, result: injectedResult }) {
                 <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
                   {t("reduction.manualApplied", {
                     months: reduction.manual,
+                  })}
+                </div>
+              ) : null}
+              {reduction.capExceeded ? (
+                <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+                  {t("reduction.capWarning", {
+                    total: reduction.totalRaw,
+                    max: values?.maxTotalReduction ?? 12,
                   })}
                 </div>
               ) : null}

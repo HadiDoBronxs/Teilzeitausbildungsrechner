@@ -49,7 +49,8 @@
             "degree": "{{label}} −{{months}} months",
             "manual": "Other reasons −{{months}} months",
             "qualification": "Qualifications −{{months}} months"
-        }
+        },
+        "capWarning": "Your selection sums up to {{total}} months. Only {{max}} months are applied."
     },
     "reductionOptions": {
         "hs": "Lower secondary school certificate",
