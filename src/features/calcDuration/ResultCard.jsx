@@ -169,6 +169,11 @@ export default function ResultCard({ values, result: injectedResult }) {
               ) : null}
             </div>
           ) : null}
+          {reduction.capExceeded ? (
+            <p className="text-xs text-amber-700">
+              {t("qualifications.legalHint")}
+            </p>
+          ) : null}
         </header>
 
         <dl className="grid gap-5 sm:grid-cols-3">
