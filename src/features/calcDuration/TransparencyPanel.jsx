@@ -171,7 +171,6 @@ export default function TransparencyPanel({ formValues, onClose }) {
     labelKey: formValues?.schoolDegreeLabelKey,
   });
   const degreeReductionMonths = reduction.degree;
-  const manualReductionMonths = reduction.manual;
   const qualificationReductionMonths = reduction.qualification;
   const totalReductionMonths = reduction.total;
   const minDurationMonths = resolveMinDuration(

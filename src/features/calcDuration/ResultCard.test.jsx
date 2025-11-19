@@ -143,4 +143,52 @@ describe("ResultCard", () => {
       )
     ).toBeInTheDocument();
   });
+
+  it("zeigt die Qualifikations-Badge, wenn entsprechende Monate vorhanden sind", () => {
+    const result = buildResult({
+      effectiveFulltimeMonths: 32,
+      fulltimeMonths: 36,
+    });
+    render(
+      <ResultCard
+        values={{
+          ...baseValues,
+          reductionMonths: 4,
+          degreeReductionMonths: 0,
+          manualReductionMonths: 0,
+          qualificationReductionRawMonths: 4,
+          maxTotalReduction: 12,
+        }}
+        result={result}
+      />
+    );
+
+    expect(screen.getByText("Qualifikationen: −4 Monate")).toBeInTheDocument();
+  });
+
+  it("zeigt eine Warnung, wenn die Summe über der Kappungsgrenze liegt", () => {
+    const result = buildResult({
+      effectiveFulltimeMonths: 24,
+      fulltimeMonths: 36,
+    });
+    render(
+      <ResultCard
+        values={{
+          ...baseValues,
+          reductionMonths: 12,
+          degreeReductionMonths: 12,
+          manualReductionMonths: 2,
+          qualificationReductionRawMonths: 6,
+          maxTotalReduction: 12,
+        }}
+        result={result}
+      />
+    );
+
+    expect(
+      screen.getByText(
+        "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig."
+      )
+    ).toBeInTheDocument();
+  });
 });

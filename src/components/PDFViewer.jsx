@@ -113,7 +113,19 @@ export default function PDFViewer({ pdfBytes, onClose }) {
      * @throws {Error} If page rendering fails, sets the error state.
      */
     async function renderPage() {
-      if (!pdfDoc || !canvasRef.current) return;
+      if (!pdfDoc) {
+        return;
+      }
+
+      const canvas = canvasRef.current;
+      if (!canvas) {
+        return;
+      }
+
+      // In Testumgebungen kann getContext fehlen; dann beenden wir das Rendering frühzeitig.
+      if (typeof canvas.getContext !== "function") {
+        return;
+      }
 
       // Cancel any previous render task
       if (renderTaskRef.current) {
@@ -127,8 +139,10 @@ export default function PDFViewer({ pdfBytes, onClose }) {
 
       try {
         const page = await pdfDoc.getPage(currentPage);
-        const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
+        if (!context) {
+          return;
+        }
         const viewport = page.getViewport({ scale });
 
         canvas.height = viewport.height;
@@ -686,4 +700,3 @@ export default function PDFViewer({ pdfBytes, onClose }) {
     </div>
   );
 }
-
