@@ -75,10 +75,30 @@ function buildInputFieldConfig(formValues, reduction, safeT, formatter) {
     });
   }
 
+  if (reduction.qualification > 0) {
+    configs.push({
+      labelKey: "pdf.qualificationReduction",
+      getValue: () => `${formatter.format(reduction.qualification)}`,
+      conditional: true,
+    });
+  }
+
   if (reduction.total > 0) {
     configs.push({
       labelKey: "pdf.totalReduction",
       getValue: () => `${formatter.format(reduction.total)}`,
+      conditional: true,
+    });
+  }
+
+  if (reduction.capExceeded) {
+    configs.push({
+      labelKey: "pdf.totalReductionWarning",
+      getValue: () =>
+        safeT("pdf.totalReductionWarning", {
+          sum: formatter.format(reduction.totalRaw),
+          max: formatter.format(formValues?.maxTotalReduction ?? 12),
+        }),
       conditional: true,
     });
   }

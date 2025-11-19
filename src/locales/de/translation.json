@@ -202,6 +202,8 @@
         "deltaMonths": "Änderung (Monate)",
         "factor": "Teilzeit-Faktor",
         "disclaimer": "Haftungsausschluss",
-        "disclaimerText": "Diese Berechnung dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt. Regionale Regelungen können abweichen."
+        "disclaimerText": "Diese Berechnung dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt. Regionale Regelungen können abweichen.",
+        "qualificationReduction": "Qualifikationsverkürzung (Monate)",
+        "totalReductionWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
     }
 }

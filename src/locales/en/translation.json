@@ -202,6 +202,8 @@
         "deltaMonths": "Change (months)",
         "factor": "Part-time factor",
         "disclaimer": "Disclaimer",
-        "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary."
+        "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary.",
+        "qualificationReduction": "Qualification reduction (months)",
+        "totalReductionWarning": "Your answers sum up to {{sum}} months. Only {{max}} months count."
     }
 }
