@@ -148,6 +148,7 @@
     "date": "Date",
     "fulltimeHours": "Full-time hours per week",
     "parttimeHours": "Part-time hours per week",
+    "hoursPerWeek": "h/week",
     "regularDuration": "Regular training duration (months)",
     "schoolDegree": "School degree",
     "degreeReduction": "Degree reduction (months)",
@@ -160,5 +161,23 @@
     "factor": "Part-time factor",
     "disclaimer": "Disclaimer",
     "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary."
+  },
+  "pdfViewer": {
+    "loading": "Loading PDF...",
+    "close": "Close",
+    "closeViewer": "Close viewer",
+    "previous": "Previous",
+    "previousPage": "Previous page",
+    "next": "Next",
+    "nextPage": "Next page",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "save": "Save",
+    "savePDF": "Save PDF",
+    "print": "Print",
+    "printPDF": "Print PDF",
+    "saveError": "Failed to save PDF. Please try again.",
+    "printError": "Failed to print PDF. Please try saving and printing manually.",
+    "popupBlocked": "Please allow popups to print, or use the Save button and print the saved file."
   }
 }
