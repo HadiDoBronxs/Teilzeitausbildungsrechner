@@ -105,7 +105,7 @@
         },
         "step3": {
             "title": "Step 3: Base duration",
-            "text": "Standard duration {{fullM}} months minus school reduction {{degreeM}} months and other reasons {{manualM}} months = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
+            "text": "Standard duration {{fullM}} months minus school reduction {{degreeM}} months and qualifications {{qualificationM}} months = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
         },
         "step4": {
             "title": "Step 4: New part-time duration",

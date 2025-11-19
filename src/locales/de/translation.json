@@ -105,7 +105,7 @@
         },
         "step3": {
             "title": "Schritt 3: Basisdauer",
-            "text": "Regeldauer {{fullM}} Monate minus Schulabschluss {{degreeM}} Monate und weitere Gründe {{manualM}} Monate ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
+            "text": "Regeldauer {{fullM}} Monate minus Schulabschluss {{degreeM}} Monate und Qualifikationen {{qualificationM}} Monate ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
         },
         "step4": {
             "title": "Schritt 4: Neue Teilzeitdauer",

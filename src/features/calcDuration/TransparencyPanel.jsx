@@ -160,6 +160,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
     };
   }, [onClose]);
 
+  // Alle Eingaben werden defensiv in Zahlen verwandelt, damit spätere Rechnungen nicht NaN werden.
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
@@ -171,6 +172,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
   });
   const degreeReductionMonths = reduction.degree;
   const manualReductionMonths = reduction.manual;
+  const qualificationReductionMonths = reduction.qualification;
   const totalReductionMonths = reduction.total;
   const minDurationMonths = resolveMinDuration(
     fulltimeMonths,
@@ -230,6 +232,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
     : null;
   const basisYM = formatYearsMonths(basis, t);
   const roundedYM = formatYearsMonths(roundedDuration, t);
+  // Diese Mappings füllen die Schritt-Texte der Transparenzseite mit konkreten Zahlen.
   const ratioValues = {
     part: formatNumber(weeklyPart),
     full: formatNumber(weeklyFull),
@@ -240,10 +243,11 @@ export default function TransparencyPanel({ formValues, onClose }) {
     full: formatNumber(weeklyFull),
     factor: formatNumber(factor),
   };
+  // Schritt 3 zeigt jetzt explizit, wie viele Monate der Abschluss und wie viele Qualifikationen abziehen.
   const step3Values = {
     fullM: formatNumber(fulltimeMonths),
     degreeM: formatNumber(degreeReductionMonths),
-    manualM: formatNumber(manualReductionMonths),
+    qualificationM: formatNumber(qualificationReductionMonths),
     rawBase: formatNumber(rawBase),
     minM: formatNumber(minDurationMonths),
     basis: formatNumber(basis),
