@@ -112,6 +112,19 @@ const translators = {
   "transparency.rounding.floor": () => "Abrunden",
   "error.below50": () =>
     "Die gewünschte Wochenarbeitszeit liegt unter 50 % der regulären Arbeitszeit. Bitte Eingaben prüfen.",
+  "pdfViewer.loading": () => "Loading PDF...",
+  "pdfViewer.close": () => "Close",
+  "pdfViewer.closeViewer": () => "Close viewer",
+  "pdfViewer.previous": () => "Previous",
+  "pdfViewer.previousPage": () => "Previous page",
+  "pdfViewer.next": () => "Next",
+  "pdfViewer.nextPage": () => "Next page",
+  "pdfViewer.zoomIn": () => "Zoom in",
+  "pdfViewer.zoomOut": () => "Zoom out",
+  "pdfViewer.save": () => "Save",
+  "pdfViewer.savePDF": () => "Save PDF",
+  "pdfViewer.print": () => "Print",
+  "pdfViewer.printPDF": () => "Print PDF",
 };
 
 vi.mock("react-i18next", () => ({

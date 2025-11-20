@@ -1,7 +1,17 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import * as pdfjsLib from "pdfjs-dist";
 
-// Set up PDF.js worker - use the worker file from public folder
+/** 
+ * Set up PDF.js worker - use the worker file from public folder.
+ * 
+ * Firefox, for some reason, requires the worker already bundled.
+ * Using a generated worker file causes firefox to not load the
+ * viewer at all. All other browsers seem fine even without a bundled
+ * worker.
+ * 
+ * Might be fixed in a future version of firefox or pdfjs.
+ */
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
 /**
@@ -26,6 +36,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
  * @returns {JSX.Element} The PDF viewer component with toolbar and canvas.
  */
 export default function PDFViewer({ pdfBytes, onClose }) {
+  const { t } = useTranslation();
   const canvasRef = useRef(null);
   const renderTaskRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -275,7 +286,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       setTimeout(cleanupSaveResources, 100, url);
     } catch (err) {
       console.error("Error saving PDF:", err);
-      alert("Failed to save PDF. Please try again.");
+      alert(t("pdfViewer.saveError"));
     }
   }
 
@@ -466,7 +477,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         attemptIframePrint(iframe, url);
       } catch (_printErr) {
         cleanupPrintResources(iframe, url);
-        alert("Failed to print. Please use the Save button and print the saved file.");
+        alert(t("pdfViewer.printError"));
       }
     }
   }
@@ -547,7 +558,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         } else {
           // Popup blocked - fall back to save suggestion
           URL.revokeObjectURL(url);
-          alert("Please allow popups to print, or use the Save button and print the saved file.");
+          alert(t("pdfViewer.popupBlocked"));
         }
         return;
       }
@@ -575,7 +586,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       }, 2000);
     } catch (err) {
       console.error("Error printing PDF:", err);
-      alert("Failed to print PDF. Please try saving and printing manually.");
+      alert(t("pdfViewer.printError"));
     }
   }
 
@@ -583,7 +594,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50">
         <div className="bg-white rounded-lg p-6">
-          <p className="text-slate-700">Loading PDF...</p>
+          <p className="text-slate-700">{t("pdfViewer.loading")}</p>
         </div>
       </div>
     );
@@ -598,7 +609,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
             onClick={onClose}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Close
+            {t("pdfViewer.close")}
           </button>
         </div>
       </div>
@@ -616,9 +627,9 @@ export default function PDFViewer({ pdfBytes, onClose }) {
               onClick={goToPreviousPage}
               disabled={currentPage <= 1}
               className="px-3 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation"
-              aria-label="Previous page"
+              aria-label={t("pdfViewer.previousPage")}
             >
-              <span className="hidden sm:inline">Previous</span>
+              <span className="hidden sm:inline">{t("pdfViewer.previous")}</span>
               <span className="sm:hidden">‹</span>
             </button>
             <span className="text-xs sm:text-sm font-medium px-2 whitespace-nowrap">
@@ -628,18 +639,18 @@ export default function PDFViewer({ pdfBytes, onClose }) {
               onClick={goToNextPage}
               disabled={currentPage >= numPages}
               className="px-3 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation"
-              aria-label="Next page"
+              aria-label={t("pdfViewer.nextPage")}
             >
-              <span className="hidden sm:inline">Next</span>
+              <span className="hidden sm:inline">{t("pdfViewer.next")}</span>
               <span className="sm:hidden">›</span>
             </button>
           </div>
           <button
             onClick={onClose}
             className="px-3 py-2 sm:px-4 sm:py-1 bg-red-600 rounded hover:bg-red-700 text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation ml-2"
-            aria-label="Close viewer"
+            aria-label={t("pdfViewer.closeViewer")}
           >
-            <span className="hidden sm:inline">Close</span>
+            <span className="hidden sm:inline">{t("pdfViewer.close")}</span>
             <span className="sm:hidden">✕</span>
           </button>
         </div>
@@ -651,7 +662,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
               type="button"
               onClick={zoomOut}
               className="px-4 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 active:bg-slate-500 text-xl sm:text-base font-bold min-w-[48px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
-              aria-label="Zoom out"
+              aria-label={t("pdfViewer.zoomOut")}
             >
               −
             </button>
@@ -662,7 +673,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
               type="button"
               onClick={zoomIn}
               className="px-4 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 active:bg-slate-500 text-xl sm:text-base font-bold min-w-[48px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
-              aria-label="Zoom in"
+              aria-label={t("pdfViewer.zoomIn")}
             >
               +
             </button>
@@ -672,17 +683,17 @@ export default function PDFViewer({ pdfBytes, onClose }) {
               type="button"
               onClick={handleSave}
               className="px-3 py-2 sm:px-4 sm:py-1 bg-green-600 rounded hover:bg-green-700 active:bg-green-800 text-xs sm:text-base font-medium min-w-[50px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
-              aria-label="Save PDF"
+              aria-label={t("pdfViewer.savePDF")}
             >
-              Save
+              {t("pdfViewer.save")}
             </button>
             <button
               type="button"
               onClick={handlePrint}
               className="px-3 py-2 sm:px-4 sm:py-1 bg-blue-600 rounded hover:bg-blue-700 active:bg-blue-800 text-xs sm:text-base font-medium min-w-[50px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
-              aria-label="Print PDF"
+              aria-label={t("pdfViewer.printPDF")}
             >
-              Print
+              {t("pdfViewer.print")}
             </button>
           </div>
         </div>

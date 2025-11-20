@@ -12,10 +12,34 @@ const DURATION_CAP_MULTIPLIER = 1.5;
  * 
  * @typedef {Object} FieldConfig
  * @property {string} labelKey - Translation key for the field label
- * @property {Function} getValue - Function to extract and format the value from formValues
+ * @property {number|string} value - The raw value to display
+ * @property {string} formatType - Format type: "hours", "number", or "string"
  * @property {boolean} [required=false] - Whether this field is required (will show warning if missing)
  * @property {boolean} [conditional=false] - Whether this field should only be shown if value > 0
  */
+
+/**
+ * Formats a field value based on its format type.
+ * 
+ * @param {number|string} value - The raw value to format.
+ * @param {string} formatType - The format type: "hours", "number", or "string".
+ * @param {Function} formatter - Number formatter function (only used for numeric types).
+ * @param {Function} translateFn - Translation function to get localized unit labels.
+ * @returns {string} The formatted value string.
+ */
+function formatFieldValue(value, formatType, formatter, translateFn) {
+  if (formatType === "hours") {
+    const hoursLabel = translateFn("pdf.hoursPerWeek");
+    return `${formatter.format(value)} ${hoursLabel}`;
+  }
+  if (formatType === "number") {
+    return formatter.format(value);
+  }
+  if (formatType === "string") {
+    return String(value);
+  }
+  return String(value);
+}
 
 /**
  * Builds the field configuration for PDF input fields.
@@ -24,10 +48,9 @@ const DURATION_CAP_MULTIPLIER = 1.5;
  * @param {Object} formValues - The form values object
  * @param {Object} reduction - The reduction summary object
  * @param {Function} safeT - Safe translation function
- * @param {Function} formatter - Number formatter function
  * @returns {Array<FieldConfig>} Array of field configurations
  */
-function buildInputFieldConfig(formValues, reduction, safeT, formatter) {
+function buildInputFieldConfig(formValues, reduction, safeT) {
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
@@ -38,22 +61,26 @@ function buildInputFieldConfig(formValues, reduction, safeT, formatter) {
   const configs = [
     {
       labelKey: "pdf.fulltimeHours",
-      getValue: () => `${formatter.format(weeklyFull)} h/week`,
+      value: weeklyFull,
+      formatType: "hours",
       required: true,
     },
     {
       labelKey: "pdf.parttimeHours",
-      getValue: () => `${formatter.format(weeklyPart)} h/week`,
+      value: weeklyPart,
+      formatType: "hours",
       required: true,
     },
     {
       labelKey: "pdf.regularDuration",
-      getValue: () => `${formatter.format(fulltimeMonths)}`,
+      value: fulltimeMonths,
+      formatType: "number",
       required: true,
     },
     {
       labelKey: "pdf.schoolDegree",
-      getValue: () => schoolDegreeLabel,
+      value: schoolDegreeLabel,
+      formatType: "string",
       required: false,
     },
   ];
@@ -62,7 +89,8 @@ function buildInputFieldConfig(formValues, reduction, safeT, formatter) {
   if (reduction.degree > 0) {
     configs.push({
       labelKey: "pdf.degreeReduction",
-      getValue: () => `${formatter.format(reduction.degree)}`,
+      value: reduction.degree,
+      formatType: "number",
       conditional: true,
     });
   }
@@ -70,7 +98,8 @@ function buildInputFieldConfig(formValues, reduction, safeT, formatter) {
   if (reduction.manual > 0) {
     configs.push({
       labelKey: "pdf.manualReduction",
-      getValue: () => `${formatter.format(reduction.manual)}`,
+      value: reduction.manual,
+      formatType: "number",
       conditional: true,
     });
   }
@@ -86,7 +115,8 @@ function buildInputFieldConfig(formValues, reduction, safeT, formatter) {
   if (reduction.total > 0) {
     configs.push({
       labelKey: "pdf.totalReduction",
-      getValue: () => `${formatter.format(reduction.total)}`,
+      value: reduction.total,
+      formatType: "number",
       conditional: true,
     });
   }
@@ -203,6 +233,7 @@ function sanitizeForPDF(text) {
   }
   
   // Replace special Unicode characters with ASCII equivalents
+  // 
   return text
     .replace(/≥/g, ">=")      // Greater than or equal to
     .replace(/≤/g, "<=")      // Less than or equal to
@@ -427,7 +458,7 @@ export async function generatePDF(formValues, t, i18n) {
     : safeT("reduction.selectPlaceholder");
 
   // Build input field configuration dynamically
-  const inputFieldConfigs = buildInputFieldConfig(formValues, reduction, safeT, formatter);
+  const inputFieldConfigs = buildInputFieldConfig(formValues, reduction, safeT);
 
   // Input Values Section
   yPosition = addText(
@@ -440,31 +471,36 @@ export async function generatePDF(formValues, t, i18n) {
   yPosition -= lineHeight;
 
   // Build inputs array dynamically from configuration
-  const inputs = inputFieldConfigs.map((config) => {
+  const inputs = inputFieldConfigs.map(function mapConfigToInput(config) {
     try {
+      const formattedValue = formatFieldValue(config.value, config.formatType, formatter, safeT);
       return {
         label: safeT(config.labelKey),
-        value: config.getValue(),
+        value: formattedValue,
       };
     } catch (error) {
-      console.warn(`Failed to get value for field "${config.labelKey}":`, error);
+      console.warn(`Failed to format value for field "${config.labelKey}":`, error);
       return {
         label: safeT(config.labelKey),
         value: config.required ? "N/A" : "",
       };
     }
-  }).filter((input) => {
+  }).filter(function filterEmptyInputs(input) {
     // Filter out empty conditional fields
     return input.value !== "";
   });
 
   // Warn about missing required fields (but don't fail)
+  const hoursLabel = safeT("pdf.hoursPerWeek");
+  const zeroHoursPattern = `0 ${hoursLabel}`;
   const missingRequiredFields = inputFieldConfigs
-    .filter((config) => config.required)
-    .filter((config) => {
+    .filter(function filterRequired(config) {
+      return config.required;
+    })
+    .filter(function checkMissingValue(config) {
       try {
-        const value = config.getValue();
-        return !value || value === "0" || value === "0 h/week";
+        const formattedValue = formatFieldValue(config.value, config.formatType, formatter, safeT);
+        return !formattedValue || formattedValue === "0" || formattedValue === zeroHoursPattern;
       } catch {
         return true;
       }
@@ -596,7 +632,7 @@ export async function generatePDF(formValues, t, i18n) {
     );
     yPosition -= lineHeight;
     yPosition = addText(
-      safeT("transparency.step1.text", {
+      safeT("transparency.ratio", {
         part: formatter.format(weeklyPart),
         full: formatter.format(weeklyFull),
         pct: formatter.format(percent),
@@ -656,11 +692,6 @@ export async function generatePDF(formValues, t, i18n) {
         })
       );
     }
-    const formattedReduction = formatter.format(totalReductionMonths);
-    const reductionDisplay =
-      breakdownParts.length > 0
-        ? `${formattedReduction} (${breakdownParts.join(" + ")})`
-        : formattedReduction;
 
     yPosition = addText(
       safeT("transparency.step3.title"),
@@ -673,8 +704,8 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition = addText(
       safeT("transparency.step3.text", {
         fullM: formatter.format(fulltimeMonths),
-        redM: formattedReduction,
-        reductionText: reductionDisplay,
+        degreeM: formatter.format(reduction.degree),
+        manualM: formatter.format(reduction.manual),
         rawBase: formatter.format(rawBase),
         minM: formatter.format(minDurationMonths),
         basis: formatter.format(basis),
@@ -719,14 +750,15 @@ export async function generatePDF(formValues, t, i18n) {
     );
     yPosition -= lineHeight;
     yPosition = addText(
-      safeT("transparency.step5.six.text", {
-        ext: formatSigned(extension, (v) => formatter.format(v)),
-        applied: safeT(
-          sixMonthRuleApplied
-            ? "transparency.step5.six.applied"
-            : "transparency.step5.six.notApplied"
-        ),
-      }),
+      safeT(
+        sixMonthRuleApplied
+          ? "transparency.step5.sixApplied"
+          : "transparency.step5.sixSkipped",
+        {
+          extension: formatSigned(extension, (v) => formatter.format(v)),
+          limited: formatter.format(basis),
+        }
+      ),
       margin + 20,
       yPosition,
       normalSize,
@@ -734,14 +766,15 @@ export async function generatePDF(formValues, t, i18n) {
     );
     yPosition -= lineHeight;
     yPosition = addText(
-      safeT("transparency.step5.cap.text", {
-        cap: formatter.format(capLimit),
-        applied: safeT(
-          capApplied
-            ? "transparency.step5.cap.applied"
-            : "transparency.step5.cap.notApplied"
-        ),
-      }),
+      safeT(
+        capApplied
+          ? "transparency.step5.capApplied"
+          : "transparency.step5.capSkipped",
+        {
+          afterSix: formatter.format(durationAfterSixMonths),
+          cap: formatter.format(capLimit),
+        }
+      ),
       margin + 20,
       yPosition,
       normalSize,
@@ -750,12 +783,7 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= sectionSpacing;
 
     // Step 6
-    const roundingFnLabel =
-      roundingMode === "ceil"
-        ? "ceil"
-        : roundingMode === "round"
-        ? "round"
-        : "floor";
+    const roundingFnLabel = safeT(`transparency.rounding.${roundingMode}`);
     yPosition = addText(
       safeT("transparency.step6.title"),
       margin,
@@ -766,7 +794,7 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= lineHeight;
     yPosition = addText(
       safeT("transparency.step6.text", {
-        roundingFn: roundingFnLabel,
+        rounding: roundingFnLabel,
         value: formatter.format(durationAfterCap),
         rounded: formatter.format(roundedDuration),
         roundedYM,
@@ -781,8 +809,8 @@ export async function generatePDF(formValues, t, i18n) {
     // Final Result
     yPosition = addText(
       safeT("transparency.result", {
-        finalM: formatter.format(roundedDuration),
-        finalYM: roundedYM,
+        months: formatter.format(roundedDuration),
+        yearsMonths: roundedYM,
       }),
       margin,
       yPosition,

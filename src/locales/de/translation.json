@@ -191,6 +191,7 @@
         "date": "Datum",
         "fulltimeHours": "Vollzeitstunden pro Woche",
         "parttimeHours": "Teilzeitstunden pro Woche",
+        "hoursPerWeek": "h/Woche",
         "regularDuration": "Reguläre Ausbildungsdauer (Monate)",
         "schoolDegree": "Schulabschluss",
         "degreeReduction": "Verkürzung durch Abschluss (Monate)",
@@ -205,5 +206,23 @@
         "disclaimerText": "Diese Berechnung dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt. Regionale Regelungen können abweichen.",
         "qualificationReduction": "Qualifikationsverkürzung (Monate)",
         "totalReductionWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
+    },
+    "pdfViewer": {
+        "loading": "PDF wird geladen...",
+        "close": "Schließen",
+        "closeViewer": "Viewer schließen",
+        "previous": "Zurück",
+        "previousPage": "Vorherige Seite",
+        "next": "Weiter",
+        "nextPage": "Nächste Seite",
+        "zoomIn": "Vergrößern",
+        "zoomOut": "Verkleinern",
+        "save": "Speichern",
+        "savePDF": "PDF speichern",
+        "print": "Drucken",
+        "printPDF": "PDF drucken",
+        "saveError": "PDF konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.",
+        "printError": "PDF konnte nicht gedruckt werden. Bitte speichern Sie das PDF und drucken Sie es manuell.",
+        "popupBlocked": "Bitte erlauben Sie Popups zum Drucken oder verwenden Sie die Schaltfläche Speichern und drucken Sie die gespeicherte Datei."
     }
 }
