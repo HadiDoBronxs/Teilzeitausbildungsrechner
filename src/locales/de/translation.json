@@ -7,7 +7,7 @@
     },
     "parttimeHours": {
         "label": "Wie viele Stunden wollen Sie pro Woche arbeiten?",
-        "help": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
+        "help": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
         "error": "Bitte gib einen Wert zwischen {{min}} und {{max}} Stunden pro Woche ein.",
         "factorText": "Das entspricht etwa {{percent}} % der Vollzeit.",
         "factorError": "Die Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Weniger ist nicht möglich.",
@@ -106,7 +106,7 @@
         },
         "step3": {
             "title": "Schritt 3: Basisdauer",
-            "text": "Regeldauer {{fullM}} Monate minus {{reductions}} ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
+            "text": "Regeldauer {{fullM}} Monate - {{reductions}} ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
         },
         "step4": {
             "title": "Schritt 4: Neue Teilzeitdauer",
@@ -206,6 +206,7 @@
         "disclaimer": "Haftungsausschluss",
         "disclaimerText": "Diese Berechnung dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt. Regionale Regelungen können abweichen.",
         "qualificationReduction": "Qualifikationsverkürzung (Monate)",
+        "totalReductionWarningLabel": "Kappungshinweis",
         "totalReductionWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
     },
     "pdfViewer": {

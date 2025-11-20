@@ -127,7 +127,8 @@ function buildInputFieldConfig(formValues, reduction, safeT, formatNumber) {
 
   if (reduction.capExceeded) {
     configs.push({
-      labelKey: "pdf.totalReductionWarning",
+      // Separate label avoids duplicating the interpolated sentence.
+      labelKey: "pdf.totalReductionWarningLabel",
       value: safeT("pdf.totalReductionWarning", {
         sum: formatNumber(reduction.totalRaw),
         max: formatNumber(formValues?.maxTotalReduction ?? 12),

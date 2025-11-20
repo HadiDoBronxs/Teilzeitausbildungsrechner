@@ -7,7 +7,7 @@
   },
   "parttimeHours": {
     "label": "How many hours do you want to work per week?",
-    "help": "Allowed range: at least 50% and at most 80% of the full-time hours.",
+    "help": "Allowed range: at least 50 % and at most 80 % of the full-time hours.",
     "error": "Please enter a value between {{min}} and {{max}} hours per week.",
     "factorText": "This is approximately {{percent}} % of full-time.",
     "factorError": "Part-time must be at least 50% of the full-time hours. Less is not possible.",
@@ -206,6 +206,7 @@
     "disclaimer": "Disclaimer",
     "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary.",
     "qualificationReduction": "Qualification reduction (months)",
+    "totalReductionWarningLabel": "Cap notice",
     "totalReductionWarning": "Your answers sum up to {{sum}} months. Only {{max}} months count."
   },
   "pdfViewer": {

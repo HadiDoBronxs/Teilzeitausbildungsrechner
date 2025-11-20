@@ -32,6 +32,7 @@ export default function QualificationReductions({
 
   return (
     <section className="w-full flex flex-col items-center gap-4">
+      {/* Each qualification renders as a simple yes/no selector; we intentionally skip “up to X months” helper text to reduce clutter. */}
       {QUALIFICATION_OPTIONS.map((option) => {
         const yesSelected = value.includes(option.id);
         const selectId = `qualification-select-${option.id}`;
@@ -42,7 +43,7 @@ export default function QualificationReductions({
           >
             <label
               htmlFor={selectId}
-              className="text-lg font-semibold text-gray-900"
+              className="text-lg font-semibold text-gray-900 whitespace-nowrap"
             >
               {t(`${option.labelKey}.question`)}
             </label>
@@ -58,9 +59,6 @@ export default function QualificationReductions({
               <option value="yes">{t("qualifications.answers.yes")}</option>
               <option value="no">{t("qualifications.answers.no")}</option>
             </select>
-            <p className="text-xs text-slate-600">
-              {t(`${option.labelKey}.note`, { months: option.maxMonths })}
-            </p>
           </div>
         );
       })}
