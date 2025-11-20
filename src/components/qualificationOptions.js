@@ -1,4 +1,4 @@
-// Enthält alle anerkannten Qualifikationsgründe samt maximaler Verkürzung.
+// Contains all recognized qualification reasons together with their maximum reduction.
 export const QUALIFICATION_OPTIONS = [
   { id: "familyCare", maxMonths: 12, labelKey: "qualifications.familyCare" },
   { id: "ageOver21", maxMonths: 12, labelKey: "qualifications.ageOver21" },
@@ -9,12 +9,12 @@ export const QUALIFICATION_OPTIONS = [
   { id: "foreignRecognition", maxMonths: 12, labelKey: "qualifications.foreignRecognition" }
 ];
 
-// Absolute Deckelung der Summe aus Qualifikationsgründen (laut Vorgabe 12 Monate).
+// Absolute cap for all qualification-based reductions (specified as 12 months).
 export const MAX_QUALIFICATION_REDUCTION = 12;
 
 /**
- * Summiert die ausgewählten Qualifikationen und liefert sowohl die Rohsumme als
- * auch den gedeckelten Wert zurück. So steht die Logik zentral zur Verfügung.
+ * Sums up the selected qualifications and returns both the raw and capped totals.
+ * Keeping this in one place prevents divergent calculations across the UI.
  */
 export function summarizeQualificationSelection(selectedIds = []) {
   const rawTotal = selectedIds.reduce((sum, id) => {

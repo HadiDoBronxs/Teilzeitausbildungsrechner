@@ -133,7 +133,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         return;
       }
 
-      // In Testumgebungen kann getContext fehlen; dann beenden wir das Rendering frühzeitig.
+      // In test environments canvas.getContext may be missing; bail out early in that case.
       if (typeof canvas.getContext !== "function") {
         return;
       }

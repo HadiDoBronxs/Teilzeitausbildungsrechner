@@ -160,7 +160,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
     };
   }, [onClose]);
 
-  // Alle Eingaben werden defensiv in Zahlen verwandelt, damit spätere Rechnungen nicht NaN werden.
+  // Convert all inputs defensively to numbers so later calculations never see NaN.
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
@@ -170,8 +170,6 @@ export default function TransparencyPanel({ formValues, onClose }) {
     manualReductionMonths: formValues?.manualReductionMonths,
     labelKey: formValues?.schoolDegreeLabelKey,
   });
-  const degreeReductionMonths = reduction.degree;
-  const qualificationReductionMonths = reduction.qualification;
   const totalReductionMonths = reduction.total;
   const minDurationMonths = resolveMinDuration(
     fulltimeMonths,
@@ -231,7 +229,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
     : null;
   const basisYM = formatYearsMonths(basis, t);
   const roundedYM = formatYearsMonths(roundedDuration, t);
-  // Diese Mappings füllen die Schritt-Texte der Transparenzseite mit konkreten Zahlen.
+  // These mappings fill the transparency step texts with concrete numbers.
   const ratioValues = {
     part: formatNumber(weeklyPart),
     full: formatNumber(weeklyFull),
@@ -242,11 +240,39 @@ export default function TransparencyPanel({ formValues, onClose }) {
     full: formatNumber(weeklyFull),
     factor: formatNumber(factor),
   };
-  // Schritt 3 zeigt jetzt explizit, wie viele Monate der Abschluss und wie viele Qualifikationen abziehen.
+
+  const reductionLabel = reduction.labelKey ? t(reduction.labelKey) : null;
+  const reductionBreakdownParts = [];
+  if (reduction.degree > 0) {
+    reductionBreakdownParts.push(
+      t("reduction.breakdown.degree", {
+        months: formatNumber(reduction.degree),
+        label: reductionLabel ?? t("reduction.selectPlaceholder"),
+      })
+    );
+  }
+  if (reduction.manual > 0) {
+    reductionBreakdownParts.push(
+      t("reduction.breakdown.manual", {
+        months: formatNumber(reduction.manual),
+      })
+    );
+  }
+  if (reduction.qualification > 0) {
+    reductionBreakdownParts.push(
+      t("reduction.breakdown.qualification", {
+        months: formatNumber(reduction.qualification),
+      })
+    );
+  }
+  const reductionBreakdown =
+    reductionBreakdownParts.length > 0
+      ? reductionBreakdownParts.join(", ")
+      : t("reduction.breakdown.none");
+
   const step3Values = {
     fullM: formatNumber(fulltimeMonths),
-    degreeM: formatNumber(degreeReductionMonths),
-    qualificationM: formatNumber(qualificationReductionMonths),
+    reductions: reductionBreakdown,
     rawBase: formatNumber(rawBase),
     minM: formatNumber(minDurationMonths),
     basis: formatNumber(basis),

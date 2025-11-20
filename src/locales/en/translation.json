@@ -48,7 +48,8 @@
     "breakdown": {
       "degree": "{{label}} −{{months}} months",
       "manual": "Other reasons −{{months}} months",
-      "qualification": "Qualifications −{{months}} months"
+      "qualification": "Qualifications −{{months}} months",
+      "none": "No reduction (0 months)"
     },
     "capWarning": "Your selection sums up to {{total}} months. Only {{max}} months are applied."
   },
@@ -105,7 +106,7 @@
     },
     "step3": {
       "title": "Step 3: Base duration",
-      "text": "Standard duration {{fullM}} months minus school reduction {{degreeM}} months and qualifications {{qualificationM}} months = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
+      "text": "Standard duration {{fullM}} months minus {{reductions}} = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
     },
     "step4": {
       "title": "Step 4: New part-time duration",

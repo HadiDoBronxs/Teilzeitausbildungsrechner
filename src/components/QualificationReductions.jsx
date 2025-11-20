@@ -22,9 +22,7 @@ export default function QualificationReductions({
     onTotalChange?.({ rawTotal, cappedTotal, exceedsCap });
   }, [rawTotal, cappedTotal, exceedsCap, onTotalChange]);
 
-  /**
-   * Setzt bewusst "Ja" oder "Nein" für eine Qualifikation.
-   */
+  // Explicitly toggles a qualification to keep the selection deterministic.
   const handleAnswer = (id, shouldApply) => {
     const next = shouldApply
       ? Array.from(new Set([...value, id]))
@@ -72,17 +70,6 @@ export default function QualificationReductions({
             months: cappedTotal,
             max: MAX_QUALIFICATION_REDUCTION,
           })}
-        </p>
-        {exceedsCap && (
-          <p role="alert" className="text-sm font-semibold text-amber-700">
-            {t("qualifications.warning", {
-              raw: rawTotal,
-              max: MAX_QUALIFICATION_REDUCTION,
-            })}
-          </p>
-        )}
-        <p className="text-xs text-slate-600">
-          {t("qualifications.legalHint")}
         </p>
       </div>
     </section>

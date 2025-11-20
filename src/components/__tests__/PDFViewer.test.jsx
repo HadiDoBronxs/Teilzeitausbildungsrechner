@@ -4,7 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PDFViewer from "../PDFViewer";
 
-// pdfjs-dist muss komplett simuliert werden, damit Vitest ohne echten Worker läuft.
+// Fully mock pdfjs-dist so Vitest can run without a real worker.
 vi.mock("pdfjs-dist", () => {
   const mockPage = {
     getViewport: vi.fn(() => ({
@@ -52,7 +52,7 @@ describe("PDFViewer", () => {
   let mockPdf;
 
   beforeEach(async () => {
-    // Wir importieren das gemockte Modul dynamisch, damit die Referenzen aktuell bleiben.
+    // Dynamically import the mocked module so the references stay up to date.
     const pdfjsModule = await import("pdfjs-dist");
     mockGetDocument = pdfjsModule.__TEST_MOCKS.getDocument;
     mockPdf = pdfjsModule.__TEST_MOCKS.pdf;
@@ -72,7 +72,7 @@ describe("PDFViewer", () => {
     
     expect(screen.getByText("Loading PDF...")).toBeInTheDocument();
     
-    // Warten, bis der asynchrone Ladevorgang mindestens einmal gestartet wurde.
+    // Wait until the async load kicked off at least once.
     await waitFor(() => {
       expect(mockCreateObjectURL).toHaveBeenCalled();
     });

@@ -20,8 +20,9 @@ const DEFAULT_DEGREE_ID = "hs";
 const DEFAULT_FULLTIME_HOURS = 40;
 const DEFAULT_PARTTIME_HOURS = 30;
 const DEFAULT_DURATION_MONTHS = 36;
-// Gesetzliche Deckelung der Gesamtverkürzung (laut Vorgabe maximal 12 Monate).
+// Statutory cap for total reduction (spec says max 12 months).
 const MAX_TOTAL_REDUCTION = 12;
+const LEGAL_HINT_THRESHOLD = 6;
 
 const isTransparencyPath =
   typeof window !== "undefined" &&
@@ -116,6 +117,10 @@ function CalculatorApp() {
       schoolDegreeId,
     ]
   );
+  const showCapWarning =
+    reductionSummary?.totalRaw > MAX_TOTAL_REDUCTION ||
+    reductionSummary?.capExceeded;
+  const showLegalHint = (reductionSummary?.total ?? 0) > LEGAL_HINT_THRESHOLD;
 
   /**
    * Handles the "Save as PDF" button click event.
@@ -185,12 +190,17 @@ function CalculatorApp() {
           onChange={setQualificationSelection}
           onTotalChange={setQualificationTotals}
         />
-        {reductionSummary.capExceeded && (
+        {showCapWarning && (
           <p className="text-sm font-semibold text-amber-700" role="alert">
-            {t("qualifications.totalWarning", {
-              sum: reductionSummary.totalRaw,
+            {t("qualifications.warning", {
+              raw: reductionSummary.totalRaw,
               max: MAX_TOTAL_REDUCTION,
             })}
+          </p>
+        )}
+        {showLegalHint && (
+          <p className="text-xs text-amber-700" role="note">
+            {t("qualifications.legalHint")}
           </p>
         )}
         <ResultCard values={formValues} />

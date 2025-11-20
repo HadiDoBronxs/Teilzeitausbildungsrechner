@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { buildReductionSummary } from "../schoolDegreeReductions.js";
 
 /**
- * Prüft wiederkehrende Inputs auf den Cap-Mechanismus von buildReductionSummary.
+ * Verifies recurring inputs against the cap logic of buildReductionSummary.
  */
 function summarizeReduction({
   schoolDegreeId = null,
@@ -21,7 +21,7 @@ function summarizeReduction({
 describe("buildReductionSummary", () => {
   it("deckt die Gesamtsumme bei 12 Monaten und markiert capExceeded", () => {
     const summary = summarizeReduction({
-      schoolDegreeId: "abi", // 12 Monate durch Abschluss
+      schoolDegreeId: "abi", // 12 months applied via degree
       manualReductionMonths: 2,
       qualificationReductionMonths: 5,
     });
@@ -36,14 +36,14 @@ describe("buildReductionSummary", () => {
 
   it("verteilt Qualifikationen auf den verbleibenden Rest unter der Cap", () => {
     const summary = summarizeReduction({
-      schoolDegreeId: "mr", // 6 Monate
+      schoolDegreeId: "mr", // 6 months via degree
       manualReductionMonths: 3,
       qualificationReductionMonths: 10,
     });
 
     expect(summary.degree).toBe(6);
     expect(summary.manual).toBe(3);
-    expect(summary.qualification).toBe(3); // nur 3 Monate übrig bis 12
+    expect(summary.qualification).toBe(3); // only 3 months left until the cap
     expect(summary.total).toBe(12);
     expect(summary.totalRaw).toBe(19);
     expect(summary.capExceeded).toBe(true);
@@ -51,7 +51,7 @@ describe("buildReductionSummary", () => {
 
   it("lässt Qualifikationen voll zählen, wenn noch Platz unter der Cap ist", () => {
     const summary = summarizeReduction({
-      schoolDegreeId: "hs", // 0 Monate
+      schoolDegreeId: "hs", // 0 months via degree
       manualReductionMonths: 2,
       qualificationReductionMonths: 5,
     });

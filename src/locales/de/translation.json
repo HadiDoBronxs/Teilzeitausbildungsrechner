@@ -48,7 +48,8 @@
         "breakdown": {
             "degree": "{{label}} −{{months}} Monate",
             "manual": "Weitere Gründe −{{months}} Monate",
-            "qualification": "Qualifikationen −{{months}} Monate"
+            "qualification": "Qualifikationen −{{months}} Monate",
+            "none": "Keine Verkürzung (0 Monate)"
         },
         "capWarning": "Deine Auswahl ergibt {{total}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
     },
@@ -105,7 +106,7 @@
         },
         "step3": {
             "title": "Schritt 3: Basisdauer",
-            "text": "Regeldauer {{fullM}} Monate minus Schulabschluss {{degreeM}} Monate und Qualifikationen {{qualificationM}} Monate ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
+            "text": "Regeldauer {{fullM}} Monate minus {{reductions}} ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
         },
         "step4": {
             "title": "Schritt 4: Neue Teilzeitdauer",

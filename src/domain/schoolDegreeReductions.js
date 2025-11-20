@@ -70,7 +70,7 @@ export function buildReductionSummary({
     qualificationReductionMonths
   );
 
-  // Zuerst werden Abschluss + manuelle Verkürzung berücksichtigt, der Rest ist für Qualifikationen reserviert.
+  // Degree + manual reductions are applied first, remaining headroom is left for qualifications.
   const remainingAfterDegreeAndManual = Math.max(
     0,
     maxTotalMonths - Math.min(maxTotalMonths, degree + manual)

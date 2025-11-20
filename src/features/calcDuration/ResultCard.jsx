@@ -35,7 +35,7 @@ export default function ResultCard({ values, result: injectedResult }) {
   });
   // The summary keeps total, degree-based, and manual reductions in sync for the UI badges.
   const hasReduction = reduction.total > 0;
-  // Flags halten die UI-Logik übersichtlich und vermeiden doppelte Berechnungen im JSX.
+  // Flags keep the JSX readable and avoid repeated calculations.
   const hasDegreeReduction = reduction.degree > 0;
   const hasQualificationReduction = reduction.qualification > 0;
   const hasManualReduction = reduction.manual > 0;
@@ -168,11 +168,6 @@ export default function ResultCard({ values, result: injectedResult }) {
                 </div>
               ) : null}
             </div>
-          ) : null}
-          {reduction.capExceeded ? (
-            <p className="text-xs text-amber-700">
-              {t("qualifications.legalHint")}
-            </p>
           ) : null}
         </header>
 

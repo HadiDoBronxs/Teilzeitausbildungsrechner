@@ -187,8 +187,13 @@ describe("ResultCard", () => {
 
     expect(
       screen.getByText(
-        "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig."
+        "Deine Auswahl ergibt 20 Monate. Berücksichtigt werden höchstens 12 Monate."
       )
     ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig."
+      )
+    ).not.toBeInTheDocument();
   });
 });
