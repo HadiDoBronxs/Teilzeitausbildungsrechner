@@ -2,6 +2,9 @@ import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { buildReductionSummary } from "../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "../features/calcDuration/readFormAndCalc.js";
 
+const formatter = (value) => new Intl.NumberFormat("de-DE").format(value);
+
+
 const MAX_EXTENSION_MONTHS = 6;
 const DURATION_CAP_MULTIPLIER = 1.5;
 
