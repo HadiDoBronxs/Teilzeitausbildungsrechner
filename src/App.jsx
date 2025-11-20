@@ -22,6 +22,7 @@ const DEFAULT_PARTTIME_HOURS = 30;
 const DEFAULT_DURATION_MONTHS = 36;
 // Statutory cap for total reduction (spec says max 12 months).
 const MAX_TOTAL_REDUCTION = 12;
+// §8 BBiG threshold: show the legal note only when reductions exceed 6 months.
 const LEGAL_HINT_THRESHOLD = 6;
 
 const isTransparencyPath =
@@ -93,6 +94,7 @@ function CalculatorApp() {
     [schoolDegreeId, qualificationTotals.rawTotal]
   );
 
+  // Aggregate all downstream calculation inputs in one place to keep ResultCard and PDF export consistent.
   const formValues = useMemo(
     () => ({
       weeklyFull: fulltimeHours,
@@ -117,9 +119,7 @@ function CalculatorApp() {
       schoolDegreeId,
     ]
   );
-  const showCapWarning =
-    reductionSummary?.totalRaw > MAX_TOTAL_REDUCTION ||
-    reductionSummary?.capExceeded;
+  // Keep the BBiG hint only here to avoid duplicate notices in the UI.
   const showLegalHint = (reductionSummary?.total ?? 0) > LEGAL_HINT_THRESHOLD;
 
   /**
@@ -190,14 +190,6 @@ function CalculatorApp() {
           onChange={setQualificationSelection}
           onTotalChange={setQualificationTotals}
         />
-        {showCapWarning && (
-          <p className="text-sm font-semibold text-amber-700" role="alert">
-            {t("qualifications.warning", {
-              raw: reductionSummary.totalRaw,
-              max: MAX_TOTAL_REDUCTION,
-            })}
-          </p>
-        )}
         {showLegalHint && (
           <p className="text-xs text-amber-700" role="note">
             {t("qualifications.legalHint")}

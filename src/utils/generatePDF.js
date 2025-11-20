@@ -60,6 +60,7 @@ function buildInputFieldConfig(formValues, reduction, safeT, formatNumber) {
     ? safeT(reduction.labelKey) 
     : safeT("reduction.selectPlaceholder");
 
+  // Hours labels are localized (pdf.hoursPerWeek) so English exports do not mix in German units.
   const configs = [
     {
       labelKey: "pdf.fulltimeHours",

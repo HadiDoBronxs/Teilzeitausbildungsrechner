@@ -149,7 +149,7 @@
     "summary": "Applied qualification reduction: {{months}} / {{max}} months",
     "warning": "Your selection adds up to {{raw}} months. Only {{max}} months can be taken into account.",
     "totalWarning": "Your answers add up to {{sum}} months. Only {{max}} months are applied.",
-    "legalHint": "Section 8 (3) BBiG: Reductions beyond six months require additional proof.",
+    "legalHint": "For reductions over 6 months, an extra proof of suitability is required.",
     "answers": {
       "yes": "Yes",
       "no": "No"
@@ -192,6 +192,7 @@
     "date": "Date",
     "fulltimeHours": "Full-time hours per week",
     "parttimeHours": "Part-time hours per week",
+    "hoursPerWeek": "h/week",
     "regularDuration": "Regular training duration (months)",
     "schoolDegree": "School degree",
     "degreeReduction": "Degree reduction (months)",

@@ -149,7 +149,7 @@
         "summary": "Angerechnete Qualifikationsverkürzung: {{months}} / {{max}} Monate",
         "warning": "Die Auswahl ergibt rechnerisch {{raw}} Monate. Es werden jedoch höchstens {{max}} Monate berücksichtigt.",
         "totalWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate.",
-        "legalHint": "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig.",
+        "legalHint": "Bei Verkürzungen über 6 Monate ist ein zusätzlicher Nachweis deiner Eignung erforderlich.",
         "answers": {
             "yes": "Ja",
             "no": "Nein"

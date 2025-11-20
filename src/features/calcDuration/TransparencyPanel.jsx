@@ -265,6 +265,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
       })
     );
   }
+  // Human-readable sentence listing all applied reductions; used by the step 3 text.
   const reductionBreakdown =
     reductionBreakdownParts.length > 0
       ? reductionBreakdownParts.join(", ")
