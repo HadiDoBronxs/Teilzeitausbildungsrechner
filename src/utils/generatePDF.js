@@ -2,6 +2,7 @@ import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { buildReductionSummary } from "../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "../features/calcDuration/readFormAndCalc.js";
 
+
 const MAX_EXTENSION_MONTHS = 6;
 const DURATION_CAP_MULTIPLIER = 1.5;
 
@@ -23,20 +24,20 @@ const DURATION_CAP_MULTIPLIER = 1.5;
  * 
  * @param {number|string} value - The raw value to format.
  * @param {string} formatType - The format type: "hours", "number", or "string".
- * @param {Function} formatter - Number formatter function (only used for numeric types).
+ * @param {Intl.NumberFormat} numberFormatter - Number formatter instance.
  * @param {Function} translateFn - Translation function to get localized unit labels.
  * @returns {string} The formatted value string.
  */
-function formatFieldValue(value, formatType, formatter, translateFn) {
-  if (formatType === "hours") {
+function formatFieldValue(value, formatType, numberFormatter, translateFn) {
+  const resolvedType =
+    formatType ?? (typeof value === "number" ? "number" : "string");
+
+  if (resolvedType === "hours") {
     const hoursLabel = translateFn("pdf.hoursPerWeek");
-    return `${formatter.format(value)} ${hoursLabel}`;
+    return `${numberFormatter.format(value)} ${hoursLabel}`;
   }
-  if (formatType === "number") {
-    return formatter.format(value);
-  }
-  if (formatType === "string") {
-    return String(value);
+  if (resolvedType === "number") {
+    return numberFormatter.format(value);
   }
   return String(value);
 }
@@ -48,9 +49,10 @@ function formatFieldValue(value, formatType, formatter, translateFn) {
  * @param {Object} formValues - The form values object
  * @param {Object} reduction - The reduction summary object
  * @param {Function} safeT - Safe translation function
+ * @param {Function} formatNumber - Localized number formatter
  * @returns {Array<FieldConfig>} Array of field configurations
  */
-function buildInputFieldConfig(formValues, reduction, safeT) {
+function buildInputFieldConfig(formValues, reduction, safeT, formatNumber) {
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
@@ -58,6 +60,7 @@ function buildInputFieldConfig(formValues, reduction, safeT) {
     ? safeT(reduction.labelKey) 
     : safeT("reduction.selectPlaceholder");
 
+  // Hours labels are localized (pdf.hoursPerWeek) so English exports do not mix in German units.
   const configs = [
     {
       labelKey: "pdf.fulltimeHours",
@@ -104,11 +107,33 @@ function buildInputFieldConfig(formValues, reduction, safeT) {
     });
   }
 
+  if (reduction.qualification > 0) {
+    configs.push({
+      labelKey: "pdf.qualificationReduction",
+      value: reduction.qualification,
+      formatType: "number",
+      conditional: true,
+    });
+  }
+
   if (reduction.total > 0) {
     configs.push({
       labelKey: "pdf.totalReduction",
       value: reduction.total,
       formatType: "number",
+      conditional: true,
+    });
+  }
+
+  if (reduction.capExceeded) {
+    configs.push({
+      // Separate label avoids duplicating the interpolated sentence.
+      labelKey: "pdf.totalReductionWarningLabel",
+      value: safeT("pdf.totalReductionWarning", {
+        sum: formatNumber(reduction.totalRaw),
+        max: formatNumber(formValues?.maxTotalReduction ?? 12),
+      }),
+      formatType: "string",
       conditional: true,
     });
   }
@@ -392,7 +417,9 @@ export async function generatePDF(formValues, t, i18n) {
     schoolDegreeId: formValues?.schoolDegreeId,
     degreeReductionMonths: formValues?.degreeReductionMonths,
     manualReductionMonths: formValues?.manualReductionMonths,
+    qualificationReductionMonths: formValues?.qualificationReductionRawMonths,
     labelKey: formValues?.schoolDegreeLabelKey,
+    maxTotalMonths: formValues?.maxTotalReduction ?? 12,
   });
   
   /**
@@ -420,10 +447,11 @@ export async function generatePDF(formValues, t, i18n) {
   // Replace t with safeTranslate for the rest of the function
   const safeT = safeTranslate;
 
-  const formatter = new Intl.NumberFormat(i18n.language, {
+  const numberFormatter = new Intl.NumberFormat(i18n.language, {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   });
+  const formatNumber = (value) => numberFormatter.format(value);
 
   // Extract inputs for use in calculations
   const weeklyFull = toNumber(formValues?.weeklyFull);
@@ -436,7 +464,12 @@ export async function generatePDF(formValues, t, i18n) {
     : safeT("reduction.selectPlaceholder");
 
   // Build input field configuration dynamically
-  const inputFieldConfigs = buildInputFieldConfig(formValues, reduction, safeT);
+  const inputFieldConfigs = buildInputFieldConfig(
+    formValues,
+    reduction,
+    safeT,
+    formatNumber
+  );
 
   // Input Values Section
   yPosition = addText(
@@ -451,7 +484,12 @@ export async function generatePDF(formValues, t, i18n) {
   // Build inputs array dynamically from configuration
   const inputs = inputFieldConfigs.map(function mapConfigToInput(config) {
     try {
-      const formattedValue = formatFieldValue(config.value, config.formatType, formatter, safeT);
+      const formattedValue = formatFieldValue(
+        config.value,
+        config.formatType,
+        numberFormatter,
+        safeT
+      );
       return {
         label: safeT(config.labelKey),
         value: formattedValue,
@@ -477,7 +515,12 @@ export async function generatePDF(formValues, t, i18n) {
     })
     .filter(function checkMissingValue(config) {
       try {
-        const formattedValue = formatFieldValue(config.value, config.formatType, formatter, safeT);
+        const formattedValue = formatFieldValue(
+          config.value,
+          config.formatType,
+          numberFormatter,
+          safeT
+        );
         return !formattedValue || formattedValue === "0" || formattedValue === zeroHoursPattern;
       } catch {
         return true;
@@ -517,10 +560,13 @@ export async function generatePDF(formValues, t, i18n) {
       : calculation.fulltimeMonths;
 
     const results = [
-      { label: safeT("pdf.factor"), value: `${formatter.format(factor * 100)}%` },
-      { label: safeT("pdf.baselineMonths"), value: `${formatter.format(baselineMonths)}` },
-      { label: safeT("pdf.parttimeMonths"), value: `${formatter.format(calculation.parttimeFinalMonths)}` },
-      { label: safeT("pdf.deltaMonths"), value: `${formatSigned(calculation.deltaMonths, (v) => formatter.format(v))}` },
+      { label: safeT("pdf.factor"), value: `${formatNumber(factor * 100)}%` },
+      { label: safeT("pdf.baselineMonths"), value: `${formatNumber(baselineMonths)}` },
+      { label: safeT("pdf.parttimeMonths"), value: `${formatNumber(calculation.parttimeFinalMonths)}` },
+      {
+        label: safeT("pdf.deltaMonths"),
+        value: `${formatSigned(calculation.deltaMonths, (v) => formatNumber(v))}`,
+      },
     ];
 
     results.forEach((result) => {
@@ -596,7 +642,8 @@ export async function generatePDF(formValues, t, i18n) {
     const deltaVsBasis = calculation.deltaMonths || (roundedDuration - basis);
     const deltaVsOriginal = calculation.deltaVsOriginal || null;
 
-    const percent = weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
+    const percent =
+      weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
     const basisYM = formatYearsMonths(basis, safeT);
     const roundedYM = formatYearsMonths(roundedDuration, safeT);
 
@@ -611,9 +658,9 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= lineHeight;
     yPosition = addText(
       safeT("transparency.ratio", {
-        part: formatter.format(weeklyPart),
-        full: formatter.format(weeklyFull),
-        pct: formatter.format(percent),
+        part: formatNumber(weeklyPart),
+        full: formatNumber(weeklyFull),
+        pct: formatNumber(percent),
       }),
       margin + 20,
       yPosition,
@@ -642,9 +689,9 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= lineHeight;
     yPosition = addText(
       safeT("transparency.step2.text", {
-        part: formatter.format(weeklyPart),
-        full: formatter.format(weeklyFull),
-        factor: formatter.format(factor),
+        part: formatNumber(weeklyPart),
+        full: formatNumber(weeklyFull),
+        factor: formatNumber(factor),
       }),
       margin + 20,
       yPosition,
@@ -654,23 +701,33 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= sectionSpacing;
 
     // Step 3
-    const breakdownParts = [];
+    const reductionBreakdownParts = [];
     if (reduction.degree > 0 && reduction.labelKey) {
-      breakdownParts.push(
+      reductionBreakdownParts.push(
         safeT("reduction.breakdown.degree", {
-          months: formatter.format(reduction.degree),
+          months: formatNumber(reduction.degree),
           label: schoolDegreeLabel,
         })
       );
     }
     if (reduction.manual > 0) {
-      breakdownParts.push(
+      reductionBreakdownParts.push(
         safeT("reduction.breakdown.manual", {
-          months: formatter.format(reduction.manual),
+          months: formatNumber(reduction.manual),
         })
       );
     }
-
+    if (reduction.qualification > 0) {
+      reductionBreakdownParts.push(
+        safeT("reduction.breakdown.qualification", {
+          months: formatNumber(reduction.qualification),
+        })
+      );
+    }
+    const reductionBreakdown =
+      reductionBreakdownParts.length > 0
+        ? reductionBreakdownParts.join(", ")
+        : safeT("reduction.breakdown.none");
     yPosition = addText(
       safeT("transparency.step3.title"),
       margin,
@@ -681,12 +738,11 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= lineHeight;
     yPosition = addText(
       safeT("transparency.step3.text", {
-        fullM: formatter.format(fulltimeMonths),
-        degreeM: formatter.format(reduction.degree),
-        manualM: formatter.format(reduction.manual),
-        rawBase: formatter.format(rawBase),
-        minM: formatter.format(minDurationMonths),
-        basis: formatter.format(basis),
+        fullM: formatNumber(fulltimeMonths),
+        reductions: reductionBreakdown,
+        rawBase: formatNumber(rawBase),
+        minM: formatNumber(minDurationMonths),
+        basis: formatNumber(basis),
         basisYM,
       }),
       margin + 20,
@@ -707,9 +763,9 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= lineHeight;
     yPosition = addText(
       safeT("transparency.step4.text", {
-        basis: formatter.format(basis),
-        factor: formatter.format(factor),
-        dtheo: formatter.format(theoretical),
+        basis: formatNumber(basis),
+        factor: formatNumber(factor),
+        dtheo: formatNumber(theoretical),
       }),
       margin + 20,
       yPosition,
@@ -733,8 +789,8 @@ export async function generatePDF(formValues, t, i18n) {
           ? "transparency.step5.sixApplied"
           : "transparency.step5.sixSkipped",
         {
-          extension: formatSigned(extension, (v) => formatter.format(v)),
-          limited: formatter.format(basis),
+          extension: formatSigned(extension, (v) => formatNumber(v)),
+          limited: formatNumber(basis),
         }
       ),
       margin + 20,
@@ -749,8 +805,8 @@ export async function generatePDF(formValues, t, i18n) {
           ? "transparency.step5.capApplied"
           : "transparency.step5.capSkipped",
         {
-          afterSix: formatter.format(durationAfterSixMonths),
-          cap: formatter.format(capLimit),
+          afterSix: formatNumber(durationAfterSixMonths),
+          cap: formatNumber(capLimit),
         }
       ),
       margin + 20,
@@ -773,8 +829,8 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition = addText(
       safeT("transparency.step6.text", {
         rounding: roundingFnLabel,
-        value: formatter.format(durationAfterCap),
-        rounded: formatter.format(roundedDuration),
+        value: formatNumber(durationAfterCap),
+        rounded: formatNumber(roundedDuration),
         roundedYM,
       }),
       margin + 20,
@@ -787,7 +843,7 @@ export async function generatePDF(formValues, t, i18n) {
     // Final Result
     yPosition = addText(
       safeT("transparency.result", {
-        months: formatter.format(roundedDuration),
+        months: formatNumber(roundedDuration),
         yearsMonths: roundedYM,
       }),
       margin,
@@ -798,7 +854,7 @@ export async function generatePDF(formValues, t, i18n) {
     yPosition -= lineHeight;
     yPosition = addText(
       safeT("transparency.delta.basis", {
-        delta: formatSigned(deltaVsBasis, (v) => formatter.format(v)),
+        delta: formatSigned(deltaVsBasis, (v) => formatNumber(v)),
       }),
       margin + 20,
       yPosition,
@@ -809,7 +865,7 @@ export async function generatePDF(formValues, t, i18n) {
     if (Number.isFinite(deltaVsOriginal) && deltaVsOriginal !== 0) {
       yPosition = addText(
         safeT("transparency.delta.original", {
-          delta: formatSigned(deltaVsOriginal, (v) => formatter.format(v)),
+          delta: formatSigned(deltaVsOriginal, (v) => formatNumber(v)),
         }),
         margin + 20,
         yPosition,
@@ -832,4 +888,3 @@ export async function generatePDF(formValues, t, i18n) {
     throw new Error(`PDF generation failed: ${error.message || "Unknown error"}`);
   }
 }
-

@@ -4,8 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PDFViewer from "../PDFViewer";
 
-// Mock pdfjs-dist - must be before component import
-// Note: vi.mock is hoisted, so we need to define mocks inside the factory
+// Fully mock pdfjs-dist so Vitest can run without a real worker.
 vi.mock("pdfjs-dist", () => {
   const mockPage = {
     getViewport: vi.fn(() => ({
@@ -28,11 +27,14 @@ vi.mock("pdfjs-dist", () => {
 
   return {
     GlobalWorkerOptions: {
-      workerSrc: "",
+      workerSrc: "mock-worker",
     },
     getDocument: mockGetDocument,
-    __mockGetDocument: mockGetDocument, // Export for test access
-    __mockPdf: mockPdf, // Export for test access
+    __TEST_MOCKS: {
+      getDocument: mockGetDocument,
+      pdf: mockPdf,
+      page: mockPage,
+    },
   };
 });
 
@@ -50,13 +52,12 @@ describe("PDFViewer", () => {
   let mockPdf;
 
   beforeEach(async () => {
-    // Get the mocked functions
+    // Dynamically import the mocked module so the references stay up to date.
     const pdfjsModule = await import("pdfjs-dist");
-    mockGetDocument = pdfjsModule.getDocument;
-    mockPdf = pdfjsModule.__mockPdf;
-    
+    mockGetDocument = pdfjsModule.__TEST_MOCKS.getDocument;
+    mockPdf = pdfjsModule.__TEST_MOCKS.pdf;
+
     vi.clearAllMocks();
-    // Reset mock to default success behavior
     mockGetDocument.mockReturnValue({
       promise: Promise.resolve(mockPdf),
     });
@@ -66,10 +67,15 @@ describe("PDFViewer", () => {
     vi.clearAllMocks();
   });
 
-  it("renders loading state initially", () => {
+  it("renders loading state initially", async () => {
     render(<PDFViewer pdfBytes={mockPdfBytes} onClose={mockOnClose} />);
     
     expect(screen.getByText("Loading PDF...")).toBeInTheDocument();
+    
+    // Wait until the async load kicked off at least once.
+    await waitFor(() => {
+      expect(mockCreateObjectURL).toHaveBeenCalled();
+    });
   });
 
   it("creates blob URL from PDF bytes", async () => {
@@ -106,8 +112,8 @@ describe("PDFViewer", () => {
   it("displays error message when PDF loading fails", async () => {
     if (!mockGetDocument) {
       const pdfjsModule = await import("pdfjs-dist");
-      mockGetDocument = pdfjsModule.getDocument;
-      mockPdf = pdfjsModule.__mockPdf;
+      mockGetDocument = pdfjsModule.__TEST_MOCKS.getDocument;
+      mockPdf = pdfjsModule.__TEST_MOCKS.pdf;
     }
     
     mockGetDocument.mockReturnValueOnce({
@@ -309,4 +315,3 @@ describe("PDFViewer", () => {
     });
   });
 });
-

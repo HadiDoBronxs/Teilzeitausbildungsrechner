@@ -1,6 +1,23 @@
 import "@testing-library/jest-dom/vitest";
 import { vi } from "vitest";
 
+// Canvas-Kontext steht in jsdom nicht zur Verfügung, daher simulieren wir ihn global.
+if (typeof HTMLCanvasElement !== "undefined") {
+  HTMLCanvasElement.prototype.getContext = vi.fn(() => ({
+    fillRect: vi.fn(),
+    drawImage: vi.fn(),
+    getImageData: vi.fn(() => ({ data: new Uint8ClampedArray() })),
+    putImageData: vi.fn(),
+    clearRect: vi.fn(),
+    beginPath: vi.fn(),
+    moveTo: vi.fn(),
+    lineTo: vi.fn(),
+    stroke: vi.fn(),
+    save: vi.fn(),
+    restore: vi.fn(),
+  }));
+}
+
 const translators = {
   "fulltimeHours.error": (opts) => `ERR ${opts?.min}-${opts?.max}`,
   "parttimeHours.error": (opts) => `ERR ${opts?.min}-${opts?.max}`,
@@ -31,15 +48,22 @@ const translators = {
     `Verkürzung gesamt: −${opts?.months} Monate`,
   "reduction.manualApplied": (opts) =>
     `Zusätzliche Gründe: −${opts?.months} Monate`,
+  "reduction.qualificationApplied": (opts) =>
+    `Qualifikationen: −${opts?.months} Monate`,
+  "reduction.capWarning": (opts) =>
+    `Deine Auswahl ergibt ${opts?.total} Monate. Berücksichtigt werden höchstens ${opts?.max} Monate.`,
   "reduction.breakdown.degree": (opts) =>
-    `${opts?.label} −${opts?.months} Monate`,
+    `${opts?.label} (${opts?.months} Monate)`,
   "reduction.breakdown.manual": (opts) =>
-    `Weitere Gründe −${opts?.months} Monate`,
+    `Weitere Gründe (${opts?.months} Monate)`,
+  "qualifications.legalHint": () =>
+    "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig.",
   "reductionOptions.hs": () => "Hauptschulabschluss",
   "reductionOptions.mr": () =>
     "Fachoberschulreife / Mittlere Reife",
   "reductionOptions.fhr": () => "Fachhochschulreife",
   "reductionOptions.abi": () => "Hochschulreife",
+  "reductionOptions.other": () => "Sonstiger Abschluss",
   "transparency.title": () => "Wie wird das berechnet?",
   "transparency.close": () => "Schließen",
   "transparency.intro": () =>

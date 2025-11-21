@@ -7,7 +7,7 @@
   },
   "parttimeHours": {
     "label": "How many hours do you want to work per week?",
-    "help": "Allowed range: at least 50% and at most 80% of the full-time hours.",
+    "help": "Allowed range: at least 50 % and at most 80 % of the full-time hours.",
     "error": "Please enter a value between {{min}} and {{max}} hours per week.",
     "factorText": "This is approximately {{percent}} % of full-time.",
     "factorError": "Part-time must be at least 50% of the full-time hours. Less is not possible.",
@@ -38,6 +38,7 @@
     "applied": "Reduction: −{{months}} months ({{label}})",
     "totalApplied": "Total reduction: −{{months}} months",
     "manualApplied": "Additional reasons: −{{months}} months",
+    "qualificationApplied": "Qualifications: −{{months}} months",
     "placeholder": "e.g. 6",
     "help": "Enter how many months your training is shortened for other reasons (0 if none).",
     "error": {
@@ -45,15 +46,19 @@
       "maxValue": "The reduction may not exceed {{max}} months."
     },
     "breakdown": {
-      "degree": "{{label}} −{{months}} months",
-      "manual": "Other reasons −{{months}} months"
-    }
+      "degree": "{{label}} ({{months}} months)",
+      "manual": "Other reasons ({{months}} months)",
+      "qualification": "Qualifications ({{months}} months)",
+      "none": "No reduction (0 months)"
+    },
+    "capWarning": "Your selection sums up to {{total}} months. Only {{max}} months are applied."
   },
   "reductionOptions": {
     "hs": "Lower secondary school certificate",
     "mr": "Secondary school certificate (GCSE equivalent)",
     "fhr": "Advanced technical college entrance qualification",
-    "abi": "General higher education entrance qualification"
+    "abi": "General higher education entrance qualification",
+    "other": "Other degree"
   },
   "app": {
     "title": "Part-time Training Calculator",
@@ -102,7 +107,7 @@
     },
     "step3": {
       "title": "Step 3: Base duration",
-      "text": "Standard duration {{fullM}} months minus school reduction {{degreeM}} months and other reasons {{manualM}} months = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
+      "text": "Standard duration {{fullM}} months - {{reductions}} = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
     },
     "step4": {
       "title": "Step 4: New part-time duration",
@@ -139,6 +144,46 @@
   "error": {
     "below50": "The requested weekly working time is below 50% of the regular working time. Please check your entries."
   },
+  "qualifications": {
+    "title": "Additional Qualifications",
+    "description": "Answer the questions about additional qualifications. The overall reduction is capped at {{max}} months.",
+    "summary": "Applied qualification reduction: {{months}} / {{max}} months",
+    "warning": "Your selection adds up to {{raw}} months. Only {{max}} months can be taken into account.",
+    "totalWarning": "Your answers add up to {{sum}} months. Only {{max}} months are applied.",
+    "legalHint": "For reductions over 6 months, an extra proof of suitability is required.",
+    "answers": {
+      "yes": "Yes",
+      "no": "No"
+    },
+    "familyCare": {
+      "question": "Do you have family or care responsibilities?",
+      "note": "up to {{months}} months"
+    },
+    "ageOver21": {
+      "question": "Are you older than 21 years?",
+      "note": "up to {{months}} months"
+    },
+    "completedTraining": {
+      "question": "Have you completed a vocational training program?",
+      "note": "up to {{months}} months"
+    },
+    "vocationalFoundation": {
+      "question": "Do you have relevant basic vocational education?",
+      "note": "up to {{months}} months"
+    },
+    "vocationalExperience": {
+      "question": "Do you already have relevant work experience?",
+      "note": "up to {{months}} months"
+    },
+    "academic": {
+      "question": "Have you completed academic or university achievements?",
+      "note": "up to {{months}} months"
+    },
+    "foreignRecognition": {
+      "question": "Has a foreign qualification been recognized?",
+      "note": "up to {{months}} months"
+    }
+  },
   "pdf": {
     "saveButton": "Save as PDF",
     "title": "Part-time Training Calculation",
@@ -160,7 +205,10 @@
     "deltaMonths": "Change (months)",
     "factor": "Part-time factor",
     "disclaimer": "Disclaimer",
-    "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary."
+    "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary.",
+    "qualificationReduction": "Qualification reduction (months)",
+    "totalReductionWarningLabel": "Cap notice",
+    "totalReductionWarning": "Your answers sum up to {{sum}} months. Only {{max}} months count."
   },
   "pdfViewer": {
     "loading": "Loading PDF...",

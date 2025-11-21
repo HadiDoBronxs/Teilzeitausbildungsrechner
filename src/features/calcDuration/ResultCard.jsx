@@ -29,11 +29,15 @@ export default function ResultCard({ values, result: injectedResult }) {
     schoolDegreeId: values?.schoolDegreeId,
     degreeReductionMonths: values?.degreeReductionMonths,
     manualReductionMonths: values?.manualReductionMonths,
+    qualificationReductionMonths: values?.qualificationReductionRawMonths,
     labelKey: values?.schoolDegreeLabelKey,
+    maxTotalMonths: values?.maxTotalReduction ?? 12,
   });
   // The summary keeps total, degree-based, and manual reductions in sync for the UI badges.
   const hasReduction = reduction.total > 0;
+  // Flags keep the JSX readable and avoid repeated calculations.
   const hasDegreeReduction = reduction.degree > 0;
+  const hasQualificationReduction = reduction.qualification > 0;
   const hasManualReduction = reduction.manual > 0;
   const reductionLabel = reduction.labelKey ? t(reduction.labelKey) : null;
   const errorKey = result?.errorCode
@@ -141,10 +145,25 @@ export default function ResultCard({ values, result: injectedResult }) {
                   })}
                 </div>
               ) : null}
+              {hasQualificationReduction ? (
+                <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+                  {t("reduction.qualificationApplied", {
+                    months: reduction.qualification,
+                  })}
+                </div>
+              ) : null}
               {hasManualReduction ? (
                 <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
                   {t("reduction.manualApplied", {
                     months: reduction.manual,
+                  })}
+                </div>
+              ) : null}
+              {reduction.capExceeded ? (
+                <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+                  {t("reduction.capWarning", {
+                    total: reduction.totalRaw,
+                    max: values?.maxTotalReduction ?? 12,
                   })}
                 </div>
               ) : null}

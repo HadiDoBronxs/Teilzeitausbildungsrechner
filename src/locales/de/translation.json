@@ -7,12 +7,11 @@
     },
     "parttimeHours": {
         "label": "Wie viele Stunden wollen Sie pro Woche arbeiten?",
-        "help": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
+        "help": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
         "error": "Bitte gib einen Wert zwischen {{min}} und {{max}} Stunden pro Woche ein.",
         "factorText": "Das entspricht etwa {{percent}} % der Vollzeit.",
         "factorError": "Die Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Weniger ist nicht möglich.",
         "avgDaily": "Das sind {{hours}} Stunden pro Tag."
-        
     },
     "regularDuration": {
         "label": "Wie lange dauert Ihre übliche Ausbildungszeit in Monaten?",
@@ -39,6 +38,7 @@
         "applied": "Verkürzung: −{{months}} Monate ({{label}})",
         "totalApplied": "Verkürzung gesamt: −{{months}} Monate",
         "manualApplied": "Zusätzliche Gründe: −{{months}} Monate",
+        "qualificationApplied": "Qualifikationen: −{{months}} Monate",
         "placeholder": "z. B. 6",
         "help": "Gib an, um wie viele Monate deine Ausbildung zusätzlich verkürzt werden soll (0, wenn keine weitere Verkürzung).",
         "error": {
@@ -46,15 +46,19 @@
             "maxValue": "Die Verkürzung darf nicht größer als {{max}} Monate sein."
         },
         "breakdown": {
-            "degree": "{{label}} −{{months}} Monate",
-            "manual": "Weitere Gründe −{{months}} Monate"
-        }
+            "degree": "{{label}} ({{months}} Monate)",
+            "manual": "Weitere Gründe ({{months}} Monate)",
+            "qualification": "Qualifikationen ({{months}} Monate)",
+            "none": "Keine Verkürzung (0 Monate)"
+        },
+        "capWarning": "Deine Auswahl ergibt {{total}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
     },
     "reductionOptions": {
         "hs": "Hauptschulabschluss",
         "mr": "Fachoberschulreife / Mittlere Reife",
         "fhr": "Fachhochschulreife",
-        "abi": "Hochschulreife"
+        "abi": "Hochschulreife",
+        "other": "Sonstiger Abschluss"
     },
     "app": {
         "title": "Teilzeit-Ausbildungs-Rechner",
@@ -103,7 +107,7 @@
         },
         "step3": {
             "title": "Schritt 3: Basisdauer",
-            "text": "Regeldauer {{fullM}} Monate minus Schulabschluss {{degreeM}} Monate und weitere Gründe {{manualM}} Monate ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
+            "text": "Regeldauer {{fullM}} Monate - {{reductions}} ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
         },
         "step4": {
             "title": "Schritt 4: Neue Teilzeitdauer",
@@ -140,6 +144,46 @@
     "error": {
         "below50": "Die gewünschte Wochenarbeitszeit liegt unter 50 % der regulären Arbeitszeit. Bitte Eingaben prüfen."
     },
+    "qualifications": {
+        "title": "Weitere Qualifikationen",
+        "description": "Beantworten Sie die Fragen zu Ihren weiteren Qualifikationen. Insgesamt sind höchstens {{max}} Monate möglich.",
+        "summary": "Angerechnete Qualifikationsverkürzung: {{months}} / {{max}} Monate",
+        "warning": "Die Auswahl ergibt rechnerisch {{raw}} Monate. Es werden jedoch höchstens {{max}} Monate berücksichtigt.",
+        "totalWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate.",
+        "legalHint": "Bei Verkürzungen über 6 Monate ist ein zusätzlicher Nachweis deiner Eignung erforderlich.",
+        "answers": {
+            "yes": "Ja",
+            "no": "Nein"
+        },
+        "familyCare": {
+            "question": "Haben Sie Familien- oder Pflegeverantwortung?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "ageOver21": {
+            "question": "Sind Sie über 21 Jahre alt?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "completedTraining": {
+            "question": "Haben Sie bereits eine Berufsausbildung abgeschlossen?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "vocationalFoundation": {
+            "question": "Haben Sie eine einschlägige berufliche Grundbildung?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "vocationalExperience": {
+            "question": "Haben Sie einschlägige Berufserfahrung?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "academic": {
+            "question": "Haben Sie hochschulische bzw. akademische Leistungen erbracht?",
+            "note": "bis zu {{months}} Monaten"
+        },
+        "foreignRecognition": {
+            "question": "Wurde ein ausländischer Berufsabschluss anerkannt?",
+            "note": "bis zu {{months}} Monaten"
+        }
+    },
     "pdf": {
         "saveButton": "Als PDF speichern",
         "title": "Teilzeit-Ausbildungs-Berechnung",
@@ -161,7 +205,10 @@
         "deltaMonths": "Änderung (Monate)",
         "factor": "Teilzeit-Faktor",
         "disclaimer": "Haftungsausschluss",
-        "disclaimerText": "Diese Berechnung dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt. Regionale Regelungen können abweichen."
+        "disclaimerText": "Diese Berechnung dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt. Regionale Regelungen können abweichen.",
+        "qualificationReduction": "Qualifikationsverkürzung (Monate)",
+        "totalReductionWarningLabel": "Kappungshinweis",
+        "totalReductionWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
     },
     "pdfViewer": {
         "loading": "PDF wird geladen...",

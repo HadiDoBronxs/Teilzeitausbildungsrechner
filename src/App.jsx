@@ -4,8 +4,8 @@ import "./App.css";
 import FulltimeHoursInput from "./components/FulltimeHoursInput.jsx";
 import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx";
 import RegularDurationInput from "./components/RegularDurationInput.jsx";
-import ReductionMonthsInput from "./components/ReductionMonthsInput.jsx";
 import SchoolDegreeReductionSelect from "./components/SchoolDegreeReductionSelect.jsx";
+import QualificationReductions from "./components/QualificationReductions.jsx";
 import LanguageToggle from "./components/LanguageToggle.jsx";
 import ResultCard from "./features/calcDuration/ResultCard.jsx";
 import Transparenz from "./routes/transparenz.jsx";
@@ -20,6 +20,10 @@ const DEFAULT_DEGREE_ID = "hs";
 const DEFAULT_FULLTIME_HOURS = 40;
 const DEFAULT_PARTTIME_HOURS = 30;
 const DEFAULT_DURATION_MONTHS = 36;
+// Statutory cap for total reduction (spec says max 12 months).
+const MAX_TOTAL_REDUCTION = 12;
+// §8 BBiG threshold: show the legal note only when reductions exceed 6 months.
+const LEGAL_HINT_THRESHOLD = 6;
 
 const isTransparencyPath =
   typeof window !== "undefined" &&
@@ -28,18 +32,6 @@ const isTransparencyPath =
 // Treat empty strings, null, and undefined the same to simplify input handling.
 function isEmptyValue(value) {
   return value === "" || value === null || value === undefined;
-}
-
-// Convert the manual reduction input into a safe, non-negative integer.
-function sanitizeManualReduction(raw) {
-  if (isEmptyValue(raw)) {
-    return undefined;
-  }
-  const parsed = Number.parseInt(raw, 10);
-  if (Number.isNaN(parsed)) {
-    return undefined;
-  }
-  return Math.max(0, parsed);
 }
 
 export default function App() {
@@ -57,14 +49,14 @@ function CalculatorApp() {
   const [parttimeHours, setParttimeHours] = useState(DEFAULT_PARTTIME_HOURS);
   const [fullDurationMonths, setFullDurationMonths] =
     useState(DEFAULT_DURATION_MONTHS);
-  const [manualReductionMonths, setManualReductionMonths] = useState();
+  const [qualificationSelection, setQualificationSelection] = useState([]);
+  const [qualificationTotals, setQualificationTotals] = useState({
+    rawTotal: 0,
+    cappedTotal: 0,
+    exceedsCap: false,
+  });
   const [pdfBytes, setPdfBytes] = useState(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
-
-  // Keep the manual reduction state clean whenever the user types: no NaN, no negatives.
-  function handleReductionChange(raw) {
-    setManualReductionMonths(sanitizeManualReduction(raw));
-  }
 
   // Persist the selected degree ID (or null when the placeholder is chosen) so the downstream calculation can reference it.
   function handleSchoolDegreeSelect(nextId) {
@@ -91,34 +83,44 @@ function CalculatorApp() {
     setParttimeHours(Number.isNaN(parsed) ? DEFAULT_PARTTIME_HOURS : parsed);
   }
 
-  function buildFormValues() {
-    // Assemble all pieces that the calculation feature needs in one place.
-    const reductionSummary = buildReductionSummary({
-      schoolDegreeId,
-      manualReductionMonths,
-    });
+  const reductionSummary = useMemo(
+    () =>
+      buildReductionSummary({
+        schoolDegreeId,
+        manualReductionMonths: 0,
+        qualificationReductionMonths: qualificationTotals.rawTotal,
+        maxTotalMonths: MAX_TOTAL_REDUCTION,
+      }),
+    [schoolDegreeId, qualificationTotals.rawTotal]
+  );
 
-    return {
-      // These keys are consumed by readFormAndCalc. Changing them would break the calculator.
+  // Aggregate all downstream calculation inputs in one place to keep ResultCard and PDF export consistent.
+  const formValues = useMemo(
+    () => ({
       weeklyFull: fulltimeHours,
       weeklyPart: parttimeHours,
       fullDurationMonths,
       reductionMonths: reductionSummary.total,
       degreeReductionMonths: reductionSummary.degree,
       manualReductionMonths: reductionSummary.manual,
+      qualificationReductionMonths: reductionSummary.qualification,
+      qualificationReductionRawMonths: reductionSummary.qualificationRaw,
+      reductionCapExceeded: reductionSummary.capExceeded,
       schoolDegreeId,
       schoolDegreeLabelKey: reductionSummary.labelKey,
+      maxTotalReduction: MAX_TOTAL_REDUCTION,
       rounding: "round",
-    };
-  }
-
-  const formValues = useMemo(buildFormValues, [
-    fulltimeHours,
-    parttimeHours,
-    fullDurationMonths,
-    manualReductionMonths,
-    schoolDegreeId,
-  ]);
+    }),
+    [
+      fulltimeHours,
+      parttimeHours,
+      fullDurationMonths,
+      reductionSummary,
+      schoolDegreeId,
+    ]
+  );
+  // Keep the BBiG hint only here to avoid duplicate notices in the UI.
+  const showLegalHint = (reductionSummary?.total ?? 0) > LEGAL_HINT_THRESHOLD;
 
   /**
    * Handles the "Save as PDF" button click event.
@@ -183,12 +185,16 @@ function CalculatorApp() {
           value={schoolDegreeId ?? ""}
           onChange={handleSchoolDegreeSelect}
         />
-        {/* Manual reduction captures any additional reasons (e.g. Berufsschule performance). */}
-        <ReductionMonthsInput
-          value={manualReductionMonths}
-          onChange={handleReductionChange}
-          min={0}
+        <QualificationReductions
+          value={qualificationSelection}
+          onChange={setQualificationSelection}
+          onTotalChange={setQualificationTotals}
         />
+        {showLegalHint && (
+          <p className="text-xs text-amber-700" role="note">
+            {t("qualifications.legalHint")}
+          </p>
+        )}
         <ResultCard values={formValues} />
         <button
           type="button"
