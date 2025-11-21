@@ -58,7 +58,7 @@
         "mr": "Fachoberschulreife / Mittlere Reife",
         "fhr": "Fachhochschulreife",
         "abi": "Hochschulreife",
-        "other": "Sonstiger Abschluss (keine Verkürzung)"
+        "other": "Sonstiger Abschluss"
     },
     "app": {
         "title": "Teilzeit-Ausbildungs-Rechner",

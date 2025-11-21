@@ -58,7 +58,7 @@
     "mr": "Secondary school certificate (GCSE equivalent)",
     "fhr": "Advanced technical college entrance qualification",
     "abi": "General higher education entrance qualification",
-    "other": "Other degree (no reduction)"
+    "other": "Other degree"
   },
   "app": {
     "title": "Part-time Training Calculator",
@@ -107,7 +107,7 @@
     },
     "step3": {
       "title": "Step 3: Base duration",
-      "text": "Standard duration {{fullM}} months minus {{reductions}} = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
+      "text": "Standard duration {{fullM}} months - {{reductions}} = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
     },
     "step4": {
       "title": "Step 4: New part-time duration",
