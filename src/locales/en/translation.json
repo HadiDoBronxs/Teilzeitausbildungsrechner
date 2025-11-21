@@ -57,7 +57,8 @@
     "hs": "Lower secondary school certificate",
     "mr": "Secondary school certificate (GCSE equivalent)",
     "fhr": "Advanced technical college entrance qualification",
-    "abi": "General higher education entrance qualification"
+    "abi": "General higher education entrance qualification",
+    "other": "Other degree (no reduction)"
   },
   "app": {
     "title": "Part-time Training Calculator",

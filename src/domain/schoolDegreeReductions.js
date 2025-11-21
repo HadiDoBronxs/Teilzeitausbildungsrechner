@@ -20,6 +20,11 @@ export const SCHOOL_DEGREE_OPTIONS = [
     months: 12,
     labelKey: "reductionOptions.abi",
   },
+  {
+    id: "other",
+    months: 0,
+    labelKey: "reductionOptions.other",
+  },
 ];
 
 // Handy lookup map so components/tests can grab a degree by id in O(1).

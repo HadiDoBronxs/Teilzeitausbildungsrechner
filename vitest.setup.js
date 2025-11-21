@@ -63,6 +63,7 @@ const translators = {
     "Fachoberschulreife / Mittlere Reife",
   "reductionOptions.fhr": () => "Fachhochschulreife",
   "reductionOptions.abi": () => "Hochschulreife",
+  "reductionOptions.other": () => "Sonstiger Abschluss (keine Verkürzung)",
   "transparency.title": () => "Wie wird das berechnet?",
   "transparency.close": () => "Schließen",
   "transparency.intro": () =>

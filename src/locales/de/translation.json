@@ -57,7 +57,8 @@
         "hs": "Hauptschulabschluss",
         "mr": "Fachoberschulreife / Mittlere Reife",
         "fhr": "Fachhochschulreife",
-        "abi": "Hochschulreife"
+        "abi": "Hochschulreife",
+        "other": "Sonstiger Abschluss (keine Verkürzung)"
     },
     "app": {
         "title": "Teilzeit-Ausbildungs-Rechner",
@@ -145,7 +146,7 @@
     },
     "qualifications": {
         "title": "Weitere Qualifikationen",
-        "description": "Beantworte die Fragen zu deinen weiteren Qualifikationen. Insgesamt sind höchstens {{max}} Monate möglich.",
+        "description": "Beantworten Sie die Fragen zu Ihren weiteren Qualifikationen. Insgesamt sind höchstens {{max}} Monate möglich.",
         "summary": "Angerechnete Qualifikationsverkürzung: {{months}} / {{max}} Monate",
         "warning": "Die Auswahl ergibt rechnerisch {{raw}} Monate. Es werden jedoch höchstens {{max}} Monate berücksichtigt.",
         "totalWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate.",
@@ -155,27 +156,27 @@
             "no": "Nein"
         },
         "familyCare": {
-            "question": "Hast du Familien- oder Pflegeverantwortung?",
+            "question": "Haben Sie Familien- oder Pflegeverantwortung?",
             "note": "bis zu {{months}} Monaten"
         },
         "ageOver21": {
-            "question": "Bist du über 21 Jahre alt?",
+            "question": "Sind Sie über 21 Jahre alt?",
             "note": "bis zu {{months}} Monaten"
         },
         "completedTraining": {
-            "question": "Hast du bereits eine Berufsausbildung abgeschlossen?",
+            "question": "Haben Sie bereits eine Berufsausbildung abgeschlossen?",
             "note": "bis zu {{months}} Monaten"
         },
         "vocationalFoundation": {
-            "question": "Hast du eine einschlägige berufliche Grundbildung?",
+            "question": "Haben Sie eine einschlägige berufliche Grundbildung?",
             "note": "bis zu {{months}} Monaten"
         },
         "vocationalExperience": {
-            "question": "Hast du einschlägige Berufserfahrung?",
+            "question": "Haben Sie einschlägige Berufserfahrung?",
             "note": "bis zu {{months}} Monaten"
         },
         "academic": {
-            "question": "Hast du hochschulische bzw. akademische Leistungen erbracht?",
+            "question": "Haben Sie hochschulische bzw. akademische Leistungen erbracht?",
             "note": "bis zu {{months}} Monaten"
         },
         "foreignRecognition": {
