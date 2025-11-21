@@ -46,9 +46,9 @@
       "maxValue": "The reduction may not exceed {{max}} months."
     },
     "breakdown": {
-      "degree": "{{label}} −{{months}} months",
-      "manual": "Other reasons −{{months}} months",
-      "qualification": "Qualifications −{{months}} months",
+      "degree": "{{label}} ({{months}} months)",
+      "manual": "Other reasons ({{months}} months)",
+      "qualification": "Qualifications ({{months}} months)",
       "none": "No reduction (0 months)"
     },
     "capWarning": "Your selection sums up to {{total}} months. Only {{max}} months are applied."

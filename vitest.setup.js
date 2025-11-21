@@ -53,9 +53,9 @@ const translators = {
   "reduction.capWarning": (opts) =>
     `Deine Auswahl ergibt ${opts?.total} Monate. Berücksichtigt werden höchstens ${opts?.max} Monate.`,
   "reduction.breakdown.degree": (opts) =>
-    `${opts?.label} −${opts?.months} Monate`,
+    `${opts?.label} (${opts?.months} Monate)`,
   "reduction.breakdown.manual": (opts) =>
-    `Weitere Gründe −${opts?.months} Monate`,
+    `Weitere Gründe (${opts?.months} Monate)`,
   "qualifications.legalHint": () =>
     "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig.",
   "reductionOptions.hs": () => "Hauptschulabschluss",

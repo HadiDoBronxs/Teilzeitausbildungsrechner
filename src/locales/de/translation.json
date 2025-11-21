@@ -46,9 +46,9 @@
             "maxValue": "Die Verkürzung darf nicht größer als {{max}} Monate sein."
         },
         "breakdown": {
-            "degree": "{{label}} −{{months}} Monate",
-            "manual": "Weitere Gründe −{{months}} Monate",
-            "qualification": "Qualifikationen −{{months}} Monate",
+            "degree": "{{label}} ({{months}} Monate)",
+            "manual": "Weitere Gründe ({{months}} Monate)",
+            "qualification": "Qualifikationen ({{months}} Monate)",
             "none": "Keine Verkürzung (0 Monate)"
         },
         "capWarning": "Deine Auswahl ergibt {{total}} Monate. Berücksichtigt werden höchstens {{max}} Monate."

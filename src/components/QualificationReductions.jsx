@@ -43,7 +43,7 @@ export default function QualificationReductions({
           >
             <label
               htmlFor={selectId}
-              className="text-lg font-semibold text-gray-900 whitespace-nowrap"
+              className="text-lg font-semibold text-gray-900"
             >
               {t(`${option.labelKey}.question`)}
             </label>
