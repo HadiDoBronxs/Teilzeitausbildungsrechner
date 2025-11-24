@@ -183,13 +183,13 @@
       "question": "Has a foreign qualification been recognized?",
       "note": "up to {{months}} months"
     }
-  },
-  "pdf": {
-    "saveButton": "Save as PDF",
-    "title": "Part-time Training Calculation",
-    "inputs": "Input Values",
-    "results": "Calculation Results",
-    "transparency": "Calculation Transparency",
+    },
+    "pdf": {
+        "saveButton": "Save as PDF",
+        "title": "Part-time Training Calculation",
+        "inputs": "Input Values",
+        "results": "Calculation Results",
+        "transparency": "Calculation Transparency",
     "date": "Date",
     "fulltimeHours": "Full-time hours per week",
     "parttimeHours": "Part-time hours per week",
@@ -205,15 +205,28 @@
     "deltaMonths": "Change (months)",
     "factor": "Part-time factor",
     "disclaimer": "Disclaimer",
-    "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary.",
-    "qualificationReduction": "Qualification reduction (months)",
-    "totalReductionWarningLabel": "Cap notice",
-    "totalReductionWarning": "Your answers sum up to {{sum}} months. Only {{max}} months count."
-  },
-  "pdfViewer": {
-    "loading": "Loading PDF...",
-    "close": "Close",
-    "closeViewer": "Close viewer",
+        "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary.",
+        "qualificationReduction": "Qualification reduction (months)",
+        "totalReductionWarningLabel": "Cap notice",
+        "totalReductionWarning": "Your answers sum up to {{sum}} months. Only {{max}} months count."
+    },
+    "legal": {
+        "title": "Legal basis",
+        "bbig7a": {
+            "heading": "§7a BBiG – Part-time vocational training",
+            "text1": "The company and the apprentices can agree to run the training in part-time. The regular weekly training hours are permanently reduced so that training and other commitments fit together.",
+            "text2": "Even with fewer weekly hours, the goal stays the same: all training content must be covered. This can extend the overall duration or the company adapts the plan to make up the missing time."
+        },
+        "hwo27b": {
+            "heading": "§27b HwO – Part-time training in crafts",
+            "text1": "In crafts, training can also be arranged as part-time. The company and apprentices decide together how many hours per week are reduced so that family, care, or other reasons are considered.",
+            "text2": "It remains crucial that all professional content is covered. The company plans the practical phases so that, despite fewer hours, full qualification is achieved."
+        }
+    },
+    "pdfViewer": {
+        "loading": "Loading PDF...",
+        "close": "Close",
+        "closeViewer": "Close viewer",
     "previous": "Previous",
     "previousPage": "Previous page",
     "next": "Next",

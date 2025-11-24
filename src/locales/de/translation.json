@@ -210,6 +210,19 @@
         "totalReductionWarningLabel": "Kappungshinweis",
         "totalReductionWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
     },
+    "legal": {
+        "title": "Gesetzesgrundlagen",
+        "bbig7a": {
+            "heading": "§7a BBiG – Teilzeitberufsausbildung",
+            "text1": "Der Betrieb und die Auszubildenden können gemeinsam vereinbaren, dass die Ausbildung in Teilzeit läuft. Die reguläre wöchentliche Ausbildungszeit wird dabei dauerhaft gekürzt, damit Ausbildung und andere Verpflichtungen zusammenpassen.",
+            "text2": "Trotz kürzerer Wochenstunden bleibt das Ziel gleich: Alle Inhalte der Ausbildung werden vermittelt. Deshalb kann sich die Gesamtdauer verlängern oder der Betrieb gleicht die fehlende Zeit mit einem angepassten Plan aus."
+        },
+        "hwo27b": {
+            "heading": "§27b HwO – Handwerkliche Teilzeitberufsausbildung",
+            "text1": "Auch im Handwerk kann die Ausbildung als Teilzeit vereinbart werden. Betrieb und Auszubildende legen gemeinsam fest, wie viele Stunden pro Woche reduziert werden, damit Familie, Pflege oder andere Gründe berücksichtigt werden.",
+            "text2": "Wichtig ist, dass alle fachlichen Inhalte vermittelt werden. Der Betrieb plant deshalb die Praxis so, dass trotz weniger Stunden eine vollständige Qualifizierung erreicht wird."
+        }
+    },
     "pdfViewer": {
         "loading": "PDF wird geladen...",
         "close": "Schließen",
