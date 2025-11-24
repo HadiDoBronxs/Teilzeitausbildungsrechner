@@ -15,8 +15,13 @@ function formatDelta(value) {
 export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
   const [showTransparency, setShowTransparency] = useState(false);
+  // Shared styling ensures both action buttons have identical sizing and colors.
+  // Shared styling ensures both action buttons have identical sizing and colors.
+  // - flex-1 + w-full sorgt dafür, dass beide Buttons im Row-Layout gleich breit sind.
+  // - !text-white stellt sicher, dass globale Link-Styles (z. B. a { @apply text-blue-500 }) nicht die Schriftfarbe überschreiben.
   const ACTION_BUTTON_CLASS =
-    "inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 min-w-[220px] text-sm md:text-base font-semibold text-white visited:text-white hover:text-white focus-visible:text-white no-underline shadow hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
+    "flex-1 inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-3 w-full text-sm md:text-base font-semibold text-white !text-white no-underline shadow hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
+
 
   function resolveResult() {
     return injectedResult ?? readFormAndCalc(values);
@@ -71,7 +76,6 @@ export default function ResultCard({ values, result: injectedResult }) {
       href="/legal"
       className={ACTION_BUTTON_CLASS}
       role="button"
-      style={{ textDecoration: "none" }}
     >
       {t("legal.title")}
     </a>
