@@ -16,7 +16,7 @@ export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
   const [showTransparency, setShowTransparency] = useState(false);
   const ACTION_BUTTON_CLASS =
-    "inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 min-w-[220px] text-sm md:text-base font-semibold text-white visited:text-white no-underline shadow hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
+    "inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 min-w-[220px] text-sm md:text-base font-semibold text-white visited:text-white hover:text-white focus-visible:text-white no-underline shadow hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
 
   function resolveResult() {
     return injectedResult ?? readFormAndCalc(values);

@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import LanguageToggle from "../components/LanguageToggle.jsx";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
@@ -20,9 +21,12 @@ export default function LegalBasisPage() {
         className="min-h-screen bg-slate-50 text-slate-900 px-4 py-12 sm:py-16"
       >
         <div className="max-w-3xl mx-auto bg-white shadow rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-8 sm:space-y-10">
-          <h2 id={MAIN_HEADING_ID} className="text-3xl md:text-4xl font-bold">
-            {t("legal.title")}
-          </h2>
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h2 id={MAIN_HEADING_ID} className="text-3xl md:text-4xl font-bold">
+              {t("legal.title")}
+            </h2>
+            <LanguageToggle />
+          </div>
 
           {/* Sections expose their headings via aria-labelledby for screen reader navigation. */}
           <section
@@ -85,43 +89,6 @@ export default function LegalBasisPage() {
               {t("legal.notice.heading")}
             </h3>
             <p className={PARAGRAPH_CLASS}>{t("legal.notice.text")}</p>
-            <div className="space-y-2">
-              <h4 className="text-lg font-semibold text-slate-900">
-                {t("legal.links.title")}
-              </h4>
-              <ul className="list-disc list-inside space-y-1 text-base md:text-lg leading-relaxed text-blue-800">
-                <li>
-                  <a
-                    className="underline hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                    href="https://www.arbeitsagentur.de/ausbildung/studium/teilzeitberufsausbildung"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    {t("legal.links.arbeitsagentur")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="underline hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                    href="https://www.ihk.de/"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    {t("legal.links.ihk")}
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="underline hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                    href="https://www.bmbf.de/bmbf/de/home/home_node.html"
-                    target="_blank"
-                    rel="noreferrer noopener"
-                  >
-                    {t("legal.links.bmbf")}
-                  </a>
-                </li>
-              </ul>
-            </div>
           </section>
         </div>
       </main>
