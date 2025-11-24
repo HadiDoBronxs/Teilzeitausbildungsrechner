@@ -167,10 +167,6 @@
             "question": "Haben Sie bereits eine Berufsausbildung abgeschlossen?",
             "note": "bis zu {{months}} Monaten"
         },
-        "vocationalFoundation": {
-            "question": "Haben Sie eine einschlägige berufliche Grundbildung?",
-            "note": "bis zu {{months}} Monaten"
-        },
         "vocationalExperience": {
             "question": "Haben Sie einschlägige Berufserfahrung?",
             "note": "bis zu {{months}} Monaten"

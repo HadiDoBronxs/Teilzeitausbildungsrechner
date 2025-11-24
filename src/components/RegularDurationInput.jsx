@@ -77,19 +77,6 @@ export default function RegularDurationInput({ onValueChange }) {
         </p>
       )}
 
-      {isValid && (
-        <p
-          className="text-sm font-semibold text-slate-900 bg-slate-100 border border-slate-300 rounded-md px-3 py-2"
-          aria-live="polite"
-        >
-          {t("regularDuration.resultPrefix")}{" "}
-          {t("regularDuration.durationText", {
-            months: Number(months),
-            years: Math.floor(Number(months) / 12),
-            remainingMonths: Number(months) % 12,
-          })}
-        </p>
-      )}
     </div>
   );
 }
