@@ -15,6 +15,8 @@ function formatDelta(value) {
 export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
   const [showTransparency, setShowTransparency] = useState(false);
+  const ACTION_BUTTON_CLASS =
+    "inline-flex items-center justify-center rounded-xl bg-slate-900 px-4 py-2 min-w-[220px] text-sm md:text-base font-semibold text-white visited:text-white no-underline shadow hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
 
   function resolveResult() {
     return injectedResult ?? readFormAndCalc(values);
@@ -55,13 +57,24 @@ export default function ResultCard({ values, result: injectedResult }) {
   const transparencyButton = (
     <button
       type="button"
-      className="text-blue-600 underline font-semibold inline-block focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+      className={ACTION_BUTTON_CLASS}
       onClick={openTransparency}
       aria-haspopup="dialog"
       aria-expanded={showTransparency}
     >
       {t("result.howCalculated")}
     </button>
+  );
+
+  const legalButton = (
+    <a
+      href="/legal"
+      className={ACTION_BUTTON_CLASS}
+      role="button"
+      style={{ textDecoration: "none" }}
+    >
+      {t("legal.title")}
+    </a>
   );
 
   // When the calculation reports "not allowed" we skip the regular summary and show the error details.
@@ -73,7 +86,9 @@ export default function ResultCard({ values, result: injectedResult }) {
             {t("result.error.title")}
           </h2>
           <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
-          {transparencyButton}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            {transparencyButton}
+          </div>
         </section>
         {showTransparency && (
           <TransparencyPanel formValues={values} onClose={closeTransparency} />
@@ -175,7 +190,11 @@ export default function ResultCard({ values, result: injectedResult }) {
           {metrics.map(renderMetric)}
         </dl>
 
-        <div>{transparencyButton}</div>
+        {/* Button stack stays readable on mobile, aligns horizontally on wider screens. */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          {transparencyButton}
+          {legalButton}
+        </div>
       </section>
       {showTransparency && (
         <TransparencyPanel formValues={values} onClose={closeTransparency} />

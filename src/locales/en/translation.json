@@ -221,6 +221,24 @@
             "heading": "§27b HwO – Part-time training in crafts",
             "text1": "In crafts, training can also be arranged as part-time. The company and apprentices decide together how many hours per week are reduced so that family, care, or other reasons are considered.",
             "text2": "It remains crucial that all professional content is covered. The company plans the practical phases so that, despite fewer hours, full qualification is achieved."
+        },
+        "easy": {
+            "heading": "In simple language",
+            "point1": "Part-time training means fewer hours per week than usual.",
+            "point2": "The total duration can become longer because you learn fewer hours each week.",
+            "point3": "The company and apprentices decide together how much to reduce.",
+            "point4": "The chamber checks and approves so everything is official.",
+            "point5": "All important learning content stays the same."
+        },
+        "notice": {
+            "heading": "Important notice",
+            "text": "This information does not replace legal advice. The responsible chamber always decides on reductions and process.",
+            "links": {
+                "title": "Official information",
+                "arbeitsagentur": "Federal Employment Agency – Part-time vocational training",
+                "ihk": "Chambers of Industry and Commerce (IHK)",
+                "bmbf": "Federal Ministry of Education and Research (BMBF)"
+            }
         }
     },
     "pdfViewer": {

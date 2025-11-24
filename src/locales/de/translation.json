@@ -221,6 +221,24 @@
             "heading": "§27b HwO – Handwerkliche Teilzeitberufsausbildung",
             "text1": "Auch im Handwerk kann die Ausbildung als Teilzeit vereinbart werden. Betrieb und Auszubildende legen gemeinsam fest, wie viele Stunden pro Woche reduziert werden, damit Familie, Pflege oder andere Gründe berücksichtigt werden.",
             "text2": "Wichtig ist, dass alle fachlichen Inhalte vermittelt werden. Der Betrieb plant deshalb die Praxis so, dass trotz weniger Stunden eine vollständige Qualifizierung erreicht wird."
+        },
+        "easy": {
+            "heading": "In einfacher Sprache",
+            "point1": "Teilzeit-Ausbildung heißt: weniger Stunden pro Woche als normal.",
+            "point2": "Die Gesamtzeit kann länger werden, weil weniger Stunden pro Woche gelernt wird.",
+            "point3": "Betrieb und Auszubildende entscheiden zusammen, wie viel verkürzt wird.",
+            "point4": "Die Kammer prüft und stimmt zu, damit alles offiziell passt.",
+            "point5": "Alle wichtigen Lerninhalte bleiben trotzdem gleich."
+        },
+        "notice": {
+            "heading": "Wichtiger Hinweis",
+            "text": "Diese Informationen ersetzen keine Rechtsberatung. Über Verkürzungen und Abläufe entscheidet immer die zuständige Kammer.",
+            "links": {
+                "title": "Offizielle Informationen",
+                "arbeitsagentur": "Agentur für Arbeit – Teilzeitberufsausbildung",
+                "ihk": "Industrie- und Handelskammern",
+                "bmbf": "Bundesministerium für Bildung und Forschung"
+            }
         }
     },
     "pdfViewer": {
