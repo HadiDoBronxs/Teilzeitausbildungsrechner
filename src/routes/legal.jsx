@@ -2,10 +2,11 @@ import { useTranslation } from "react-i18next";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
+const PARAGRAPH_CLASS = "text-lg leading-relaxed";
 
 export default function LegalBasisPage() {
   const { t } = useTranslation();
-  // All text now comes from i18n so DE/EN versions stay in sync.
+  // Text is fully driven by i18n to keep DE/EN aligned.
   return (
     <>
       <a className="skip-link" href={`#${MAIN_ID}`}>
@@ -23,29 +24,19 @@ export default function LegalBasisPage() {
           </h2>
 
           <section className="space-y-3">
-            {/* §7a BBiG: Regelt die Teilzeitberufsausbildung im Berufsbildungsgesetz. */}
             <h3 className="text-2xl font-semibold">
               {t("legal.bbig7a.heading")}
             </h3>
-            <p className="text-lg leading-relaxed">
-              {t("legal.bbig7a.text1")}
-            </p>
-            <p className="text-lg leading-relaxed">
-              {t("legal.bbig7a.text2")}
-            </p>
+            <p className={PARAGRAPH_CLASS}>{t("legal.bbig7a.text1")}</p>
+            <p className={PARAGRAPH_CLASS}>{t("legal.bbig7a.text2")}</p>
           </section>
 
           <section className="space-y-3">
-            {/* §27b HwO: Regelt die Teilzeitberufsausbildung im Handwerk nach Handwerksordnung. */}
             <h3 className="text-2xl font-semibold">
               {t("legal.hwo27b.heading")}
             </h3>
-            <p className="text-lg leading-relaxed">
-              {t("legal.hwo27b.text1")}
-            </p>
-            <p className="text-lg leading-relaxed">
-              {t("legal.hwo27b.text2")}
-            </p>
+            <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text1")}</p>
+            <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text2")}</p>
           </section>
         </div>
       </main>
