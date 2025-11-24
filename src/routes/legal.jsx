@@ -38,6 +38,18 @@ export default function LegalBasisPage() {
             <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text1")}</p>
             <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text2")}</p>
           </section>
+
+          <section className="space-y-3">
+            {/* Vereinfachter Überblick für leicht verständliche Sprache. */}
+            <h3 className="text-2xl font-semibold">In einfacher Sprache</h3>
+            <ul className="list-disc list-inside space-y-2 text-lg leading-relaxed">
+              <li>Teilzeit-Ausbildung heißt: weniger Stunden pro Woche als normal.</li>
+              <li>Die Gesamtzeit kann länger werden, weil weniger Stunden pro Woche gelernt wird.</li>
+              <li>Betrieb und Auszubildende entscheiden zusammen, wie viel verkürzt wird.</li>
+              <li>Die Kammer prüft und stimmt zu, damit alles offiziell passt.</li>
+              <li>Alle wichtigen Lerninhalte bleiben trotzdem gleich.</li>
+            </ul>
+          </section>
         </div>
       </main>
     </>
