@@ -5,30 +5,30 @@ import {
   PARTTIME_ERROR_ID,
   computeParttimeBounds,
   isParttimeHoursValid,
-  PARTTIME_HELP_ID,
 } from "./ParttimeHoursInput.helpers";
+import NumberInput from "./ui/NumberInput";
+import Tooltip from "./InfoTooltip";
 
 /**
  * React component that renders a numeric input for weekly
  * part-time hours and provides validation and contextual info.
- * 
+ *
  * Responsibilities:
  * - Compute valid min/max bounds from a given fulltime hours value
  *   (via computeParttimeBounds).
  * - Maintain an internal string state for the input value and notify the
  *   parent via onValueChange whenever it changes.
  * - Validate the value with isParttimeHoursValid and provide accessible
- *   error/help text and live region feedback.
- * - Display a percentage-of-fulltime indicator and an average daily hours
- *   readout (5 working days).
- * 
+ *   error text and live region feedback.
+ * - Display a percentage-of-fulltime indicator.
+ *
  * @param {object} props
  * @param {number} [props.fulltimeHours=40] - Full-time hours used to compute
  *   valid part-time bounds and percent factor. If 0 or negative, factor
  *   information is suppressed.
  * @param {(value: string) => void} [props.onValueChange] - Optional callback
  *   invoked whenever the text value changes (receives the raw string).
- * 
+ *
  * Notes:
  * - The internal input state is stored as a string to preserve partial user
  *   edits such as "" or "-" while typing.
@@ -80,13 +80,7 @@ export default function ParttimeHoursInput({
     ? numericHours / fulltimeNumeric >= 0.5
     : true;
 
-
-  // Calculate average daily working hours
-  const avgDailyHours =
-  numericHours && numericHours > 0 ? (numericHours / 5).toFixed(1) : null;
-
-
-  // Notify parent when hours change
+  // Notify parent when hours change.
   useEffect(() => {
     if (typeof onValueChange === "function") {
       onValueChange(hours);
@@ -111,39 +105,33 @@ export default function ParttimeHoursInput({
     });
   }, [computedMin, computedMax]);
 
-  const describedBy = [PARTTIME_HELP_ID, !isValid ? PARTTIME_ERROR_ID : null]
-    .filter(Boolean).join(" ");
+  const describedBy = (!isValid ? PARTTIME_ERROR_ID : null) || undefined;
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      <label
-        htmlFor={PARTTIME_INPUT_NAME}
-        className="font-semibold text-gray-800"
-      >
-        {t("parttimeHours.label")}
-      </label>
+      {/* Tooltip zum Label */}
+      <div className="flex items-center gap-2">
+        <label
+          htmlFor={PARTTIME_INPUT_NAME}
+          className="font-semibold text-gray-800"
+        >
+          {t("parttimeHours.label")}
+        </label>
+        <Tooltip contentKey="tooltip.parttimeHours" />
+      </div>
 
-      <input
+      <NumberInput
         id={PARTTIME_INPUT_NAME}
         name={PARTTIME_INPUT_NAME}
         data-testid={PARTTIME_INPUT_NAME}
-        type="number"
-        inputMode="numeric"
         min={computedMin}
         max={computedMax}
         step={0.5}
         value={hours}
         onChange={(e) => setHours(e.target.value)}
         aria-invalid={!isValid}
-        aria-describedby={describedBy || undefined}
-        className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-          !isValid ? "border-red-500" : "border-gray-300"
-        }`}
+        aria-describedby={describedBy}
       />
-
-      <p id={PARTTIME_HELP_ID} className="text-sm text-slate-600">
-        {t("parttimeHours.help")}
-      </p>
 
       {!isValid && (
         <p
@@ -174,22 +162,6 @@ export default function ParttimeHoursInput({
             : t("parttimeHours.factorError")}
         </div>
       )}
-
-    {/* 
-      Display the calculated average daily working hours below the input field.
-      The text updates automatically whenever the weekly part-time hours change.
-      Shown only if a valid number is entered (avgDailyHours != null).
-    */}
-    {avgDailyHours && (
-      <p
-        role="status"
-        aria-live="polite"
-        className="text-sm text-slate-800 font-medium mt-1"
-      >
-        {t("parttimeHours.avgDaily", { hours: avgDailyHours })}
-      </p>
-    )}
-
     </div>
   );
 }

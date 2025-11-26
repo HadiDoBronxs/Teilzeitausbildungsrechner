@@ -3,6 +3,9 @@ import { useTranslation } from "react-i18next";
 import { buildReductionSummary } from "../../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "./readFormAndCalc";
 import TransparencyPanel from "./TransparencyPanel";
+import Button from "../../components/ui/Button.jsx";
+import Card from "../../components/ui/Card.jsx";
+import StatItem from "../../components/ui/StatItem.jsx";
 
 function formatDelta(value) {
   if (value === 0) {
@@ -15,13 +18,6 @@ function formatDelta(value) {
 export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
   const [showTransparency, setShowTransparency] = useState(false);
-  // Shared styling ensures both action buttons have identical sizing and colors.
-  // Shared styling ensures both action buttons have identical sizing and colors.
-  // - flex-1 + w-full sorgt dafür, dass beide Buttons im Row-Layout gleich breit sind.
-  // - !text-white stellt sicher, dass globale Link-Styles (z. B. a { @apply text-blue-500 }) nicht die Schriftfarbe überschreiben.
-  const ACTION_BUTTON_CLASS =
-    "flex-1 inline-flex items-center justify-center rounded-2xl bg-slate-900 px-6 py-3 w-full text-sm md:text-base font-semibold text-white !text-white no-underline shadow hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
-
 
   function resolveResult() {
     return injectedResult ?? readFormAndCalc(values);
@@ -31,7 +27,7 @@ export default function ResultCard({ values, result: injectedResult }) {
   if (!result) {
     return null;
   }
-  // Gather the reduction data once so the rendering logic stays focused on layout.
+
   const reduction = buildReductionSummary({
     schoolDegreeId: values?.schoolDegreeId,
     degreeReductionMonths: values?.degreeReductionMonths,
@@ -40,9 +36,8 @@ export default function ResultCard({ values, result: injectedResult }) {
     labelKey: values?.schoolDegreeLabelKey,
     maxTotalMonths: values?.maxTotalReduction ?? 12,
   });
-  // The summary keeps total, degree-based, and manual reductions in sync for the UI badges.
+
   const hasReduction = reduction.total > 0;
-  // Flags keep the JSX readable and avoid repeated calculations.
   const hasDegreeReduction = reduction.degree > 0;
   const hasQualificationReduction = reduction.qualification > 0;
   const hasManualReduction = reduction.manual > 0;
@@ -59,41 +54,49 @@ export default function ResultCard({ values, result: injectedResult }) {
     setShowTransparency(false);
   }
 
+  // 🔹 Beide Buttons bekommen EXAKT die gleichen Styles
   const transparencyButton = (
-    <button
+    <Button
       type="button"
-      className={ACTION_BUTTON_CLASS}
+      variant="primary"
+      size="md"
+      className="w-full sm:flex-1"
       onClick={openTransparency}
-      aria-haspopup="dialog"
-      aria-expanded={showTransparency}
+      ariaHaspopup="dialog"
+      ariaExpanded={showTransparency}
     >
       {t("result.howCalculated")}
-    </button>
+    </Button>
   );
 
   const legalButton = (
-    <a
-      href="/legal"
-      className={ACTION_BUTTON_CLASS}
-      role="button"
+    <Button
+      type="button"
+      variant="primary"
+      size="md"
+      className="w-full sm:flex-1"
+      onClick={() => {
+        window.location.href = "/legal";
+      }}
     >
       {t("legal.title")}
-    </a>
+    </Button>
   );
 
-  // When the calculation reports "not allowed" we skip the regular summary and show the error details.
+  // Wenn nicht erlaubt, Fehlerkarte anzeigen
   if (result && result.allowed === false) {
     return (
       <>
-        <section className="w-full max-w-2xl bg-white rounded-xl border border-red-200 shadow-sm p-4 space-y-4" role="status">
-          <h2 className="text-2xl md:text-3xl font-bold text-red-700">
-            {t("result.error.title")}
-          </h2>
-          <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <Card className="w-full max-w-2xl" variant="error" role="status">
+          <div className="space-y-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-red-700">
+              {t("result.error.title")}
+            </h2>
+            <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
             {transparencyButton}
+            {/* Wenn du willst, kannst du hier optional auch legalButton anzeigen */}
           </div>
-        </section>
+        </Card>
         {showTransparency && (
           <TransparencyPanel formValues={values} onClose={closeTransparency} />
         )}
@@ -101,17 +104,18 @@ export default function ResultCard({ values, result: injectedResult }) {
     );
   }
 
-  // Baseline is what the apprentice would do in full-time after reductions; without reductions it equals the original duration.
   const baselineMonths = hasReduction
     ? result.effectiveFulltimeMonths
     : result.fulltimeMonths;
 
-  // Build the three key figures the card shows underneath the headline.
   const metrics = [
     {
       key: "full",
       label: t("result.labels.full"),
-      value: t("result.months", { count: baselineMonths, value: baselineMonths }),
+      value: t("result.months", {
+        count: baselineMonths,
+        value: baselineMonths,
+      }),
     },
     {
       key: "part",
@@ -131,7 +135,6 @@ export default function ResultCard({ values, result: injectedResult }) {
     },
   ];
 
-  // Prefer the formatted string coming from the calculator (already localized), otherwise fall back to a simple months string.
   const formattedParttime =
     result.formatted?.parttime ??
     t("result.months", {
@@ -141,81 +144,72 @@ export default function ResultCard({ values, result: injectedResult }) {
 
   return (
     <>
-      <section
-        className="w-full max-w-2xl bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6"
-        role="status"
-      >
-        <header className="space-y-3">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-            {t("result.headline", { value: formattedParttime })}
-          </h2>
-          {hasReduction ? (
-            <div className="flex flex-wrap items-start gap-2">
-              <div className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-800">
-                {t("reduction.totalApplied", {
-                  months: reduction.total,
-                })}
+      <Card className="w-full max-w-2xl" role="status">
+        <div className="space-y-6">
+          <header className="space-y-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
+              {t("result.headline", { value: formattedParttime })}
+            </h2>
+            {hasReduction ? (
+              <div className="flex flex-wrap items-start gap-2">
+                <div className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-800">
+                  {t("reduction.totalApplied", {
+                    months: reduction.total,
+                  })}
+                </div>
+                {hasDegreeReduction && reductionLabel ? (
+                  <div className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                    {t("reduction.applied", {
+                      months: reduction.degree,
+                      label: reductionLabel,
+                    })}
+                  </div>
+                ) : null}
+                {hasQualificationReduction ? (
+                  <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+                    {t("reduction.qualificationApplied", {
+                      months: reduction.qualification,
+                    })}
+                  </div>
+                ) : null}
+                {hasManualReduction ? (
+                  <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+                    {t("reduction.manualApplied", {
+                      months: reduction.manual,
+                    })}
+                  </div>
+                ) : null}
+                {reduction.capExceeded ? (
+                  <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
+                    {t("reduction.capWarning", {
+                      total: reduction.totalRaw,
+                      max: values?.maxTotalReduction ?? 12,
+                    })}
+                  </div>
+                ) : null}
               </div>
-              {hasDegreeReduction && reductionLabel ? (
-                <div className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
-                  {t("reduction.applied", {
-                    months: reduction.degree,
-                    label: reductionLabel,
-                  })}
-                </div>
-              ) : null}
-              {hasQualificationReduction ? (
-                <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
-                  {t("reduction.qualificationApplied", {
-                    months: reduction.qualification,
-                  })}
-                </div>
-              ) : null}
-              {hasManualReduction ? (
-                <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-                  {t("reduction.manualApplied", {
-                    months: reduction.manual,
-                  })}
-                </div>
-              ) : null}
-              {reduction.capExceeded ? (
-                <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
-                  {t("reduction.capWarning", {
-                    total: reduction.totalRaw,
-                    max: values?.maxTotalReduction ?? 12,
-                  })}
-                </div>
-              ) : null}
-            </div>
-          ) : null}
-        </header>
+            ) : null}
+          </header>
 
-        <dl className="grid gap-5 sm:grid-cols-3">
-          {metrics.map(renderMetric)}
-        </dl>
+          <div className="grid gap-5 sm:grid-cols-3">
+            {metrics.map((metric) => (
+              <StatItem
+                key={metric.key}
+                label={metric.label}
+                value={metric.value}
+              />
+            ))}
+          </div>
 
-        {/* Button stack stays readable on mobile, aligns horizontally on wider screens. */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          {transparencyButton}
-          {legalButton}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            {transparencyButton}
+            {legalButton}
+          </div>
         </div>
-      </section>
+      </Card>
       {showTransparency && (
         <TransparencyPanel formValues={values} onClose={closeTransparency} />
       )}
     </>
   );
-
-  function renderMetric(metric) {
-    return (
-      <div key={metric.key} className="space-y-1">
-        <dt className="text-sm text-slate-600 font-medium">
-          {metric.label}
-        </dt>
-        <dd className="text-3xl md:text-4xl font-extrabold text-slate-900">
-          {metric.value}
-        </dd>
-      </div>
-    );
-  }
 }

@@ -6,52 +6,53 @@ import {
   FULLTIME_MIN,
   FULLTIME_MAX,
   isFulltimeHoursValid,
-  FULLTIME_HELP_ID,
 } from "./FulltimeHoursInput.constants";
+
+import NumberInput from "./ui/NumberInput";
+import Tooltip from "./InfoTooltip";
 
 export default function FulltimeHoursInput({ onValueChange }) {
   const { t } = useTranslation();
   const [hours, setHours] = useState(40); // Default 40 hours
   const isValid = isFulltimeHoursValid(hours);
+
   useEffect(() => {
     if (typeof onValueChange === "function") {
       onValueChange(hours);
     }
   }, [hours, onValueChange]);
 
-  const describedBy = [FULLTIME_HELP_ID, !isValid ? FULLTIME_ERROR_ID : null]
-  .filter(Boolean).join(" ");
+  const describedBy = (!isValid ? FULLTIME_ERROR_ID : null) || undefined;
 
   return (
     <div className="flex flex-col w-full gap-4 px-4 py-3 mx-auto sm:max-w-sm sm:px-0">
-      <label
-        htmlFor={FULLTIME_INPUT_NAME}
-        className="font-semibold text-gray-800"
-      >
-        {t("fulltimeHours.label")}
-      </label>
+      {/* Tooltip zum Label */}
+      <div className="flex items-center gap-2">
+        <label
+          htmlFor={FULLTIME_INPUT_NAME}
+          className="font-semibold text-gray-800"
+        >
+          {t("fulltimeHours.label")}
+        </label>
 
-      <input
+        <Tooltip contentKey="tooltip.fulltimeHours" />
+      </div>
+
+      <NumberInput
         id={FULLTIME_INPUT_NAME}
         name={FULLTIME_INPUT_NAME}
         data-testid={FULLTIME_INPUT_NAME}
-        type="number"
-        inputMode="numeric"
         min={FULLTIME_MIN}
         max={FULLTIME_MAX}
         step={0.5}
         value={hours}
-        onChange={(e) => setHours(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          setHours(value === "" ? "" : Number(value));
+        }}
         aria-invalid={!isValid}
-        aria-describedby={describedBy || undefined}
-        className={`border rounded-xl h-14 px-6 text-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 sm:h-12 sm:text-base sm:px-4 ${
-          !isValid ? "border-red-500" : "border-gray-300"
-        }`}
+        aria-describedby={describedBy}
       />
-
-      <p id={FULLTIME_HELP_ID} className="text-sm text-slate-600">
-        {t("fulltimeHours.help", { min: FULLTIME_MIN, max: FULLTIME_MAX })}
-      </p>
 
       {!isValid && (
         <p

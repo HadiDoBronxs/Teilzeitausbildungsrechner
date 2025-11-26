@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import NumberInput from "./ui/NumberInput";
 
 export const REDUCTION_INPUT_NAME = "reduction-months-input";
 export const REDUCTION_ERROR_ID = `${REDUCTION_INPUT_NAME}-error`;
@@ -43,25 +44,23 @@ export default function ReductionMonthsInput({
       <label htmlFor={REDUCTION_INPUT_NAME} className="font-semibold text-gray-800">
         {t("reduction.label")}
       </label>
-      <input
+      <NumberInput
         id={REDUCTION_INPUT_NAME}
         name={REDUCTION_INPUT_NAME}
         data-testid={REDUCTION_INPUT_NAME}
-        type="number"
-        inputMode="numeric"
         min={min}
         max={max}
         step={1}
         placeholder={isFocused ? "" : t("reduction.placeholder")}
         value={stringValue}
-        onChange={(e) => onChange?.(e.target.value)}
+        onChange={(e) => {
+          const newValue = e.target.value;
+          onChange?.(newValue === "" ? "" : Number(newValue));
+        }}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         aria-invalid={!isValid}
         aria-describedby={describedBy || undefined}
-        className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-          !isValid ? "border-red-500" : "border-gray-300"
-        }`}
       />
       <p
         id={REDUCTION_HELP_ID}

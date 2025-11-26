@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { LANGUAGES } from "../i18n/languages.js";
+import Button from "./ui/Button";
 
 export default function LanguageToggle() {
   const { t, i18n } = useTranslation();
@@ -23,14 +24,14 @@ export default function LanguageToggle() {
       <span className="text-sm font-medium text-gray-700">
         {t("app.languages")}:
       </span>
-      <button
+      <Button
         onClick={handleLanguageToggle}
-        className="px-3 py-1 text-sm rounded-md transition-colors bg-blue-600 text-white font-semibold hover:bg-blue-700"
-        aria-label={`Switch to next language, currently ${t(currentLanguageConfig.nameKey)}`}
+        variant="pill"
+        size="sm"
+        ariaLabel={`Switch to next language, currently ${t(currentLanguageConfig.nameKey)}`}
       >
         {t(currentLanguageConfig.nameKey)}
-      </button>
+      </Button>
     </div>
   );
 }
-

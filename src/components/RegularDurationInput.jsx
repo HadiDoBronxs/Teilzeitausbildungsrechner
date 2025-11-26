@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   REGULAR_DURATION_NAME,
   REGULAR_DURATION_ERROR_ID,
-  REGULAR_DURATION_HINT_ID,
-  REGULAR_DURATION_TOOLTIP_ID,
   DURATION_MIN,
   DURATION_MAX,
   isRegularDurationValid,
 } from "./RegularDurationInput.constants";
+import NumberInput from "./ui/NumberInput";
+import Tooltip from "./InfoTooltip";
 
 export default function RegularDurationInput({ onValueChange }) {
   const { t } = useTranslation();
@@ -21,29 +21,26 @@ export default function RegularDurationInput({ onValueChange }) {
     }
   }, [months, onValueChange]);
 
-  const baseDescribedBy = [REGULAR_DURATION_HINT_ID];
-  const ariaDescribedBy = [
-    ...baseDescribedBy,
-    !isValid ? REGULAR_DURATION_ERROR_ID : null,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const ariaDescribedBy =
+    (!isValid ? REGULAR_DURATION_ERROR_ID : null) || undefined;
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      <label
-        htmlFor={REGULAR_DURATION_NAME}
-        className="font-semibold text-gray-800"
-      >
-        {t("regularDuration.label")}
-      </label>
+      {/* Tooltip zum Label */}
+      <div className="flex items-center gap-2">
+        <label
+          htmlFor={REGULAR_DURATION_NAME}
+          className="font-semibold text-gray-800"
+        >
+          {t("regularDuration.label")}
+        </label>
+        <Tooltip contentKey="tooltip.regularDuration" />
+      </div>
 
-      <input
+      <NumberInput
         id={REGULAR_DURATION_NAME}
         name={REGULAR_DURATION_NAME}
         data-testid={REGULAR_DURATION_NAME}
-        type="number"
-        inputMode="numeric"
         min={DURATION_MIN}
         max={DURATION_MAX}
         step={1}
@@ -54,17 +51,7 @@ export default function RegularDurationInput({ onValueChange }) {
         }}
         aria-invalid={!isValid}
         aria-describedby={ariaDescribedBy}
-        className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-          !isValid ? "border-red-500" : "border-gray-300"
-        }`}
       />
-
-      <p
-        id={REGULAR_DURATION_HINT_ID}
-        className="text-sm font-medium text-slate-700"
-      >
-        {t("regularDuration.hintPrefix")} {t("regularDuration.minHint", { min: DURATION_MIN })}
-      </p>
 
       {!isValid && (
         <p
