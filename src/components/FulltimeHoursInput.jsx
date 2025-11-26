@@ -7,12 +7,15 @@ import {
   FULLTIME_MAX,
   isFulltimeHoursValid,
 } from "./FulltimeHoursInput.constants";
-import Tooltip from "./InfoTooltip"; 
+
+import NumberInput from "./ui/NumberInput";
+import Tooltip from "./InfoTooltip";
 
 export default function FulltimeHoursInput({ onValueChange }) {
   const { t } = useTranslation();
   const [hours, setHours] = useState(40); // Default 40 hours
   const isValid = isFulltimeHoursValid(hours);
+
   useEffect(() => {
     if (typeof onValueChange === "function") {
       onValueChange(hours);
@@ -23,7 +26,7 @@ export default function FulltimeHoursInput({ onValueChange }) {
 
   return (
     <div className="flex flex-col w-full gap-4 px-4 py-3 mx-auto sm:max-w-sm sm:px-0">
-      {/*Tooltip zum Label hinzufügen */}
+      {/* Tooltip zum Label */}
       <div className="flex items-center gap-2">
         <label
           htmlFor={FULLTIME_INPUT_NAME}
@@ -31,25 +34,24 @@ export default function FulltimeHoursInput({ onValueChange }) {
         >
           {t("fulltimeHours.label")}
         </label>
+
         <Tooltip contentKey="tooltip.fulltimeHours" />
       </div>
 
-      <input
+      <NumberInput
         id={FULLTIME_INPUT_NAME}
         name={FULLTIME_INPUT_NAME}
         data-testid={FULLTIME_INPUT_NAME}
-        type="number"
-        inputMode="numeric"
         min={FULLTIME_MIN}
         max={FULLTIME_MAX}
         step={0.5}
         value={hours}
-        onChange={(e) => setHours(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          setHours(value === "" ? "" : Number(value));
+        }}
         aria-invalid={!isValid}
-        aria-describedby={describedBy || undefined}
-        className={`border rounded-xl h-14 px-6 text-lg text-center focus:outline-none focus:ring-2 focus:ring-blue-500 sm:h-12 sm:text-base sm:px-4 ${
-          !isValid ? "border-red-500" : "border-gray-300"
-        }`}
+        aria-describedby={describedBy}
       />
 
       {!isValid && (
