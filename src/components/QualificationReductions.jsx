@@ -5,6 +5,7 @@ import {
   MAX_QUALIFICATION_REDUCTION,
   summarizeQualificationSelection,
 } from "./qualificationOptions.js";
+import Tooltip from "./InfoTooltip"; 
 
 export default function QualificationReductions({
   value = [],
@@ -22,7 +23,6 @@ export default function QualificationReductions({
     onTotalChange?.({ rawTotal, cappedTotal, exceedsCap });
   }, [rawTotal, cappedTotal, exceedsCap, onTotalChange]);
 
-  // Explicitly toggles a qualification to keep the selection deterministic.
   const handleAnswer = (id, shouldApply) => {
     const next = shouldApply
       ? Array.from(new Set([...value, id]))
@@ -32,7 +32,7 @@ export default function QualificationReductions({
 
   return (
     <section className="w-full flex flex-col items-center gap-4">
-      {/* Each qualification renders as a simple yes/no selector; we intentionally skip “up to X months” helper text to reduce clutter. */}
+      {/* Jede Qualifikation mit eigenem Tooltip */}
       {QUALIFICATION_OPTIONS.map((option) => {
         const yesSelected = value.includes(option.id);
         const selectId = `qualification-select-${option.id}`;
@@ -41,12 +41,17 @@ export default function QualificationReductions({
             key={option.id}
             className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2"
           >
-            <label
-              htmlFor={selectId}
-              className="text-lg font-semibold text-gray-900"
-            >
-              {t(`${option.labelKey}.question`)}
-            </label>
+            {/* Tooltip zu jeder Qualifikationsfrage */}
+            <div className="flex items-center justify-between gap-2">
+              <label
+                htmlFor={selectId}
+                className="text-lg font-semibold text-gray-900 text-center flex-1"
+              >
+                {t(`${option.labelKey}.question`)}
+              </label>
+              <Tooltip contentKey={`tooltip.qualification.${option.id}`} />
+            </div>
+            
             <select
               id={selectId}
               name={selectId}

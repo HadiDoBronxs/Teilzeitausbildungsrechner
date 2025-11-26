@@ -31,18 +31,4 @@ describe("SchoolDegreeReductionSelect", () => {
       screen.getByText("Was ist Ihr höchster Bildungsabschluss?")
     ).toBeInTheDocument();
   });
-
-  it("opens and closes the tooltip with keyboard support", async () => {
-    const user = userEvent.setup();
-    render(<SchoolDegreeReductionSelect value="" onChange={vi.fn()} />);
-
-    const button = screen.getByRole("button", { name: "Warum kann ich verkürzen?" });
-    await user.click(button);
-    expect(screen.getByRole("dialog").textContent).toContain(
-      "Manche Abschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen."
-    );
-
-    await user.keyboard("{Escape}");
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-  });
 });

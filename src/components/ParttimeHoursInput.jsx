@@ -5,8 +5,8 @@ import {
   PARTTIME_ERROR_ID,
   computeParttimeBounds,
   isParttimeHoursValid,
-  PARTTIME_HELP_ID,
 } from "./ParttimeHoursInput.helpers";
+import Tooltip from "./InfoTooltip"; 
 
 /**
  * React component that renders a numeric input for weekly
@@ -18,9 +18,8 @@ import {
  * - Maintain an internal string state for the input value and notify the
  *   parent via onValueChange whenever it changes.
  * - Validate the value with isParttimeHoursValid and provide accessible
- *   error/help text and live region feedback.
- * - Display a percentage-of-fulltime indicator and an average daily hours
- *   readout (5 working days).
+ *   error text and live region feedback.
+ * - Display a percentage-of-fulltime indicator.
  * 
  * @param {object} props
  * @param {number} [props.fulltimeHours=40] - Full-time hours used to compute
@@ -80,12 +79,6 @@ export default function ParttimeHoursInput({
     ? numericHours / fulltimeNumeric >= 0.5
     : true;
 
-
-  // Calculate average daily working hours
-  const avgDailyHours =
-  numericHours && numericHours > 0 ? (numericHours / 5).toFixed(1) : null;
-
-
   // Notify parent when hours change
   useEffect(() => {
     if (typeof onValueChange === "function") {
@@ -111,17 +104,20 @@ export default function ParttimeHoursInput({
     });
   }, [computedMin, computedMax]);
 
-  const describedBy = [PARTTIME_HELP_ID, !isValid ? PARTTIME_ERROR_ID : null]
-    .filter(Boolean).join(" ");
+  const describedBy = (!isValid ? PARTTIME_ERROR_ID : null) || undefined;
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      <label
-        htmlFor={PARTTIME_INPUT_NAME}
-        className="font-semibold text-gray-800"
-      >
-        {t("parttimeHours.label")}
-      </label>
+      {/* Tooltip zum Label hinzufügen */}
+      <div className="flex items-center gap-2">
+        <label
+          htmlFor={PARTTIME_INPUT_NAME}
+          className="font-semibold text-gray-800"
+        >
+          {t("parttimeHours.label")}
+        </label>
+        <Tooltip contentKey="tooltip.parttimeHours" />
+      </div>
 
       <input
         id={PARTTIME_INPUT_NAME}
@@ -140,10 +136,6 @@ export default function ParttimeHoursInput({
           !isValid ? "border-red-500" : "border-gray-300"
         }`}
       />
-
-      <p id={PARTTIME_HELP_ID} className="text-sm text-slate-600">
-        {t("parttimeHours.help")}
-      </p>
 
       {!isValid && (
         <p
@@ -174,21 +166,6 @@ export default function ParttimeHoursInput({
             : t("parttimeHours.factorError")}
         </div>
       )}
-
-    {/* 
-      Display the calculated average daily working hours below the input field.
-      The text updates automatically whenever the weekly part-time hours change.
-      Shown only if a valid number is entered (avgDailyHours != null).
-    */}
-    {avgDailyHours && (
-      <p
-        role="status"
-        aria-live="polite"
-        className="text-sm text-slate-800 font-medium mt-1"
-      >
-        {t("parttimeHours.avgDaily", { hours: avgDailyHours })}
-      </p>
-    )}
 
     </div>
   );

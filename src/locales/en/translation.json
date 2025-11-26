@@ -227,5 +227,36 @@
     "saveError": "Failed to save PDF. Please try again.",
     "printError": "Failed to print PDF. Please try saving and printing manually.",
     "popupBlocked": "Please allow popups to print, or use the Save button and print the saved file."
-  }
+  },
+
+
+"tooltip": {
+  "info": "Information",
+"fulltimeHours": "In many companies full-time ranges between 35 and 48 hours per week.",
+"parttimeHours": "Allowed range: at least 50% and at most 80% of the full-time hours.",
+  "regularDuration": "At least 12 months.",
+  "schoolDegree": "Some school degrees already cover training content. That’s why the chamber can shorten the duration. The chamber and the company decide together.",
+  "qualifications": "Here you can indicate whether you have additional experience or qualifications that may shorten the training time.",
+
+  "qualificationMax": "This qualification can shorten the training by up to 12 months.",
+
+  "reduction": {
+    "hs": "Lower secondary school certificate: Usually no reduction.",
+    "mr": "Intermediate school certificate: Often up to 6 months shorter.",
+    "fhr": "Advanced technical college entrance qualification: Often up to 12 months shorter.",
+    "abi": "General higher education entrance qualification: Often up to 12 months shorter."
+  },
+
+"qualification": {
+    "familyCare": "Select this if you care for children or dependent family members. This qualification can shorten the training by up to 12 months.",
+    "ageOver21": "Select this if you are over 21 years old when starting your training. This qualification can shorten the training by up to 12 months.",
+    "completedTraining": "Select this if you have already completed a vocational training program. This qualification can shorten the training by up to 12 months.",
+    "vocationalFoundation": "Select this if you have completed a basic vocational training year. This qualification can shorten the training by up to 12 months.",
+    "vocationalExperience": "Select this if you already have relevant work experience. This qualification can shorten the training by up to 12 months.",
+    "academic": "Select this if you have a university or college degree. This qualification can shorten the training by up to 12 months.",
+    "foreignRecognition": "Select this if a foreign vocational or educational qualification has been officially recognized. This qualification can shorten the training by up to 12 months."
+        }
+    }
+
+
 }
