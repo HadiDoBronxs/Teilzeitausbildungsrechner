@@ -5,7 +5,8 @@ import {
   getReductionMonthsForDegree,
   getSchoolDegreeOption,
 } from "../domain/schoolDegreeReductions.js";
-import Tooltip from "./InfoTooltip"; 
+import SelectField from "./ui/SelectField";
+import Tooltip from "./InfoTooltip";
 
 const SELECT_ID = "school-degree-select";
 const DESCRIPTION_ID = `${SELECT_ID}-description`;
@@ -42,16 +43,16 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
   const selectedOption = getSchoolDegreeOption(value);
 
   return (
-  <div className="flex w-full max-w-sm flex-col gap-2 p-2">
-    <div className="flex items-center justify-center gap-2">
-      <label
-        htmlFor={SELECT_ID}
-        className="text-lg font-semibold text-gray-900 text-center"
-      >
-        {t("reduction.title")}
-      </label>
-      <Tooltip contentKey="tooltip.schoolDegree" />
-    </div>
+    <div className="flex w-full max-w-sm flex-col gap-2 p-2">
+      <div className="flex items-center gap-2">
+        <label
+          htmlFor={SELECT_ID}
+          className="text-lg font-semibold text-gray-900"
+        >
+          {t("reduction.title")}
+        </label>
+        <Tooltip contentKey="tooltip.schoolDegree" />
+      </div>
 
       <label
         id={QUESTION_ID}
@@ -65,18 +66,17 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
         {t("reduction.dropdownDescription")}
       </p>
 
-      <select
+      <SelectField
         id={SELECT_ID}
         name={SELECT_ID}
         data-testid={SELECT_ID}
-        className="w-full rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         value={value ?? ""}
         onChange={handleSelectChange}
         aria-describedby={`${QUESTION_ID} ${DESCRIPTION_ID}`}
       >
         <option value="">{t("reduction.selectPlaceholder")}</option>
         {options.map(renderOption)}
-      </select>
+      </SelectField>
 
       {selectedOption && selectedOption.months > 0 ? (
         <p className="text-sm text-slate-600" aria-live="polite">

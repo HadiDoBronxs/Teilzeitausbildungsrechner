@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { buildReductionSummary } from "../../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "./readFormAndCalc";
+import Dialog from "../../components/ui/Dialog";
+import NoticeBox from "../../components/ui/NoticeBox";
 
 const MAX_EXTENSION_MONTHS = 6;
 const DURATION_CAP_MULTIPLIER = 1.5;
-const FOCUSABLE_SELECTORS =
-  'a[href], button:not([disabled]), textarea, input, select, details summary, [tabindex]:not([tabindex="-1"])';
-const DIALOG_TITLE_ID = "dialog-title";
 
 function toNumber(value, fallback = 0) {
   const parsed = Number(value);
@@ -64,118 +63,28 @@ function resolveRoundingLabelKey(mode) {
 
 export default function TransparencyPanel({ formValues, onClose }) {
   const { t, i18n } = useTranslation();
-  const dialogRef = useRef(null);
-  const lastFocusedElement = useRef(null);
   const calculation = useMemo(() => readFormAndCalc(formValues), [formValues]);
 
-  useEffect(function setupDialogFocusManagement() {
-    const dialog = dialogRef.current;
-    if (!dialog) {
-      return undefined;
-    }
-
-    if (
-      !lastFocusedElement.current &&
-      document.activeElement instanceof HTMLElement &&
-      document.activeElement !== document.body
-    ) {
-      lastFocusedElement.current = document.activeElement;
-    }
-
-    function getFocusableElements() {
-      return Array.from(dialog.querySelectorAll(FOCUSABLE_SELECTORS)).filter(
-        (element) =>
-          !element.hasAttribute("disabled") &&
-          element.getAttribute("aria-hidden") !== "true" &&
-          element.tabIndex !== -1 &&
-          (element.offsetParent !== null ||
-            getComputedStyle(element).position === "fixed")
-      );
-    }
-    function focusInitialElement() {
-      const focusable = getFocusableElements();
-      if (focusable.length > 0) {
-        focusable[0].focus();
-      } else {
-        dialog.focus();
-      }
-    }
-
-    function handleKeyDown(event) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        onClose?.();
-        return;
-      }
-
-      if (event.key !== "Tab") {
-        return;
-      }
-
-      const focusable = getFocusableElements();
-      if (focusable.length === 0) {
-        event.preventDefault();
-        dialog.focus();
-        return;
-      }
-
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      const active = document.activeElement;
-
-      if (event.shiftKey) {
-        if (active === first || !dialog.contains(active)) {
-          event.preventDefault();
-          last.focus();
-        }
-        return;
-      }
-
-      if (active === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    function handlePointerDown(event) {
-      if (!dialog.contains(event.target)) {
-        onClose?.();
-      }
-    }
-
-    focusInitialElement();
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("pointerdown", handlePointerDown);
-
-    return function cleanupFocusTrap() {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("pointerdown", handlePointerDown);
-      if (
-        lastFocusedElement.current &&
-        typeof lastFocusedElement.current.focus === "function"
-      ) {
-        lastFocusedElement.current.focus();
-      }
-      lastFocusedElement.current = null;
-    };
-  }, [onClose]);
-
-  // Convert all inputs defensively to numbers so later calculations never see NaN.
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
+
   const reduction = buildReductionSummary({
     schoolDegreeId: formValues?.schoolDegreeId,
     degreeReductionMonths: formValues?.degreeReductionMonths,
     manualReductionMonths: formValues?.manualReductionMonths,
+    qualificationReductionMonths: formValues?.qualificationReductionRawMonths,
     labelKey: formValues?.schoolDegreeLabelKey,
+    maxTotalMonths: formValues?.maxTotalReduction ?? 12,
   });
+
   const totalReductionMonths = reduction.total;
   const minDurationMonths = resolveMinDuration(
     fulltimeMonths,
     formValues?.minDurationMonths
   );
   const rawBase = Math.max(0, fulltimeMonths - totalReductionMonths);
+
   const formatter = useMemo(
     () => buildNumberFormatter(i18n.language),
     [i18n.language]
@@ -189,13 +98,16 @@ export default function TransparencyPanel({ formValues, onClose }) {
       : weeklyFull > 0
       ? weeklyPart / weeklyFull
       : 0;
+
   const percent =
     weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
+
   const basis =
     Number.isFinite(calculation?.effectiveFulltimeMonths) &&
     calculation.effectiveFulltimeMonths >= 0
       ? calculation.effectiveFulltimeMonths
       : Math.max(rawBase, minDurationMonths);
+
   const theoretical =
     Number.isFinite(calculation?.theoreticalDuration) &&
     calculation.theoreticalDuration >= 0
@@ -203,38 +115,47 @@ export default function TransparencyPanel({ formValues, onClose }) {
       : factor > 0
       ? basis / factor
       : basis;
+
   const extension = Math.max(0, theoretical - basis);
   const sixMonthRuleApplied =
     extension > 0 && extension <= MAX_EXTENSION_MONTHS;
   const durationAfterSixMonths = sixMonthRuleApplied ? basis : theoretical;
+
   const capLimit = fulltimeMonths * DURATION_CAP_MULTIPLIER;
   const capApplied =
     Number.isFinite(durationAfterSixMonths) &&
     Number.isFinite(capLimit) &&
     durationAfterSixMonths > capLimit &&
     capLimit > 0;
+
   const durationAfterCap = capApplied ? capLimit : durationAfterSixMonths;
+
   const roundingMode = formValues?.rounding ?? "round";
   const roundedDuration =
     Number.isFinite(calculation?.parttimeFinalMonths) &&
     calculation.parttimeFinalMonths >= 0
       ? calculation.parttimeFinalMonths
       : Math.floor(durationAfterCap);
+
   const deltaVsBasis =
     Number.isFinite(calculation?.deltaMonths) && calculation?.allowed
       ? calculation.deltaMonths
       : roundedDuration - basis;
+
   const deltaVsOriginal = Number.isFinite(calculation?.deltaVsOriginal)
     ? calculation.deltaVsOriginal
     : null;
+
   const basisYM = formatYearsMonths(basis, t);
   const roundedYM = formatYearsMonths(roundedDuration, t);
+
   // These mappings fill the transparency step texts with concrete numbers.
   const ratioValues = {
     part: formatNumber(weeklyPart),
     full: formatNumber(weeklyFull),
     pct: formatNumber(percent),
   };
+
   const step2Values = {
     part: formatNumber(weeklyPart),
     full: formatNumber(weeklyFull),
@@ -243,6 +164,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
 
   const reductionLabel = reduction.labelKey ? t(reduction.labelKey) : null;
   const reductionBreakdownParts = [];
+
   if (reduction.degree > 0) {
     reductionBreakdownParts.push(
       t("reduction.breakdown.degree", {
@@ -251,6 +173,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
       })
     );
   }
+
   if (reduction.manual > 0) {
     reductionBreakdownParts.push(
       t("reduction.breakdown.manual", {
@@ -258,6 +181,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
       })
     );
   }
+
   if (reduction.qualification > 0) {
     reductionBreakdownParts.push(
       t("reduction.breakdown.qualification", {
@@ -265,6 +189,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
       })
     );
   }
+
   // Human-readable sentence listing all applied reductions; used by the step 3 text.
   const reductionBreakdown =
     reductionBreakdownParts.length > 0
@@ -279,30 +204,35 @@ export default function TransparencyPanel({ formValues, onClose }) {
     basis: formatNumber(basis),
     basisYM,
   };
+
   const step4Values = {
     basis: formatNumber(basis),
     factor: formatNumber(factor),
     dtheo: formatNumber(theoretical),
   };
+
   const roundingLabel = t(resolveRoundingLabelKey(roundingMode));
+
   const step6Values = {
     value: formatNumber(durationAfterCap),
     rounding: roundingLabel,
     rounded: formatNumber(roundedDuration),
     roundedYM,
   };
+
   const protectionValues = {
     extension: formatNumber(extension),
     limited: formatNumber(durationAfterSixMonths),
     afterSix: formatNumber(durationAfterSixMonths),
     cap: formatNumber(capLimit),
   };
+
   const showBelowFiftyError =
-    !calculation?.allowed && (percent < 50 || calculation?.errorCode === "minFactor");
+    !calculation?.allowed &&
+    (percent < 50 || calculation?.errorCode === "minFactor");
 
   if (showBelowFiftyError) {
     return renderShell(
-      dialogRef,
       onClose,
       t,
       <div className="space-y-4">
@@ -322,8 +252,8 @@ export default function TransparencyPanel({ formValues, onClose }) {
     const errorKey = calculation?.errorCode
       ? `result.error.${calculation.errorCode}`
       : "result.error.generic";
+
     return renderShell(
-      dialogRef,
       onClose,
       t,
       <div className="space-y-4">
@@ -340,9 +270,11 @@ export default function TransparencyPanel({ formValues, onClose }) {
   const content = (
     <div className="space-y-6">
       <p className="text-sm text-slate-700">{t("transparency.intro")}</p>
+
       <div className="rounded-lg bg-blue-50 px-4 py-3 text-sm font-semibold text-slate-900">
         {t("transparency.ratio", ratioValues)}
       </div>
+
       <section className="space-y-2">
         <h3 className="text-lg font-semibold text-slate-900">
           {t("transparency.step1.title")}
@@ -355,6 +287,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
           )}
         </p>
       </section>
+
       <section className="space-y-2">
         <h3 className="text-lg font-semibold text-slate-900">
           {t("transparency.step2.title")}
@@ -363,6 +296,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
           {t("transparency.step2.text", step2Values)}
         </p>
       </section>
+
       <section className="space-y-2">
         <h3 className="text-lg font-semibold text-slate-900">
           {t("transparency.step3.title")}
@@ -371,6 +305,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
           {t("transparency.step3.text", step3Values)}
         </p>
       </section>
+
       <section className="space-y-2">
         <h3 className="text-lg font-semibold text-slate-900">
           {t("transparency.step4.title")}
@@ -379,6 +314,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
           {t("transparency.step4.text", step4Values)}
         </p>
       </section>
+
       <section className="space-y-2">
         <h3 className="text-lg font-semibold text-slate-900">
           {t("transparency.step5.title")}
@@ -400,6 +336,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
           )}
         </p>
       </section>
+
       <section className="space-y-2">
         <h3 className="text-lg font-semibold text-slate-900">
           {t("transparency.step6.title")}
@@ -408,6 +345,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
           {t("transparency.step6.text", step6Values)}
         </p>
       </section>
+
       <section className="space-y-2">
         <p className="text-base font-semibold text-slate-900">
           {t("transparency.result", {
@@ -428,58 +366,39 @@ export default function TransparencyPanel({ formValues, onClose }) {
           </p>
         )}
       </section>
+
       {renderLegalHint(t)}
     </div>
   );
 
-  return renderShell(dialogRef, onClose, t, content);
+  return renderShell(onClose, t, content);
 }
 
-function renderShell(dialogRef, onClose, t, body) {
+function renderShell(onClose, t, body) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
-      <div
-        ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={DIALOG_TITLE_ID}
-        tabIndex={-1}
-        className="relative w-full max-w-3xl rounded-2xl bg-white shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-      >
-        <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
-          <h2 id={DIALOG_TITLE_ID} className="text-xl font-semibold text-slate-900">
-            {t("transparency.title")}
-          </h2>
-          <button
-            type="button"
-            className="text-slate-600 font-semibold transition hover:text-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-            onClick={onClose}
-          >
-            {t("transparency.close")}
-          </button>
-        </header>
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-5">{body}</div>
-      </div>
-    </div>
+    <Dialog
+      title={t("transparency.title")}
+      isOpen
+      onClose={onClose}
+      maxWidth="max-w-3xl"
+      bodyClassName="max-h-[70vh] overflow-y-auto px-6 py-5"
+      closeLabel={t("transparency.close")}
+    >
+      {body}
+    </Dialog>
   );
 }
 
 function renderLegalHint(t) {
   const legalUrl = t("transparency.legal.url");
   return (
-    <section className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 space-y-2">
-      <h3 className="text-sm font-semibold text-slate-900">
-        {t("transparency.legal.title")}
-      </h3>
-      <p className="text-sm text-slate-700">{t("transparency.legal.text")}</p>
-      <a
-        className="text-sm font-semibold text-blue-700 underline"
-        href={legalUrl}
-        target="_blank"
-        rel="noreferrer"
-      >
-        {t("transparency.legal.link")}
-      </a>
-    </section>
+    <NoticeBox
+      title={t("transparency.legal.title")}
+      href={legalUrl}
+      linkLabel={t("transparency.legal.link")}
+      variant="legal"
+    >
+      {t("transparency.legal.text")}
+    </NoticeBox>
   );
 }

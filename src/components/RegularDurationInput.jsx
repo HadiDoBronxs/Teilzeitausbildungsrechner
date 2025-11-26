@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   REGULAR_DURATION_NAME,
@@ -7,7 +7,8 @@ import {
   DURATION_MAX,
   isRegularDurationValid,
 } from "./RegularDurationInput.constants";
-import Tooltip from "./InfoTooltip"; 
+import NumberInput from "./ui/NumberInput";
+import Tooltip from "./InfoTooltip";
 
 export default function RegularDurationInput({ onValueChange }) {
   const { t } = useTranslation();
@@ -20,11 +21,12 @@ export default function RegularDurationInput({ onValueChange }) {
     }
   }, [months, onValueChange]);
 
-  const ariaDescribedBy = (!isValid ? REGULAR_DURATION_ERROR_ID : null) || undefined;
+  const ariaDescribedBy =
+    (!isValid ? REGULAR_DURATION_ERROR_ID : null) || undefined;
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      {/* Tooltip zum Label hinzufügen */}
+      {/* Tooltip zum Label */}
       <div className="flex items-center gap-2">
         <label
           htmlFor={REGULAR_DURATION_NAME}
@@ -35,12 +37,10 @@ export default function RegularDurationInput({ onValueChange }) {
         <Tooltip contentKey="tooltip.regularDuration" />
       </div>
 
-      <input
+      <NumberInput
         id={REGULAR_DURATION_NAME}
         name={REGULAR_DURATION_NAME}
         data-testid={REGULAR_DURATION_NAME}
-        type="number"
-        inputMode="numeric"
         min={DURATION_MIN}
         max={DURATION_MAX}
         step={1}
@@ -51,9 +51,6 @@ export default function RegularDurationInput({ onValueChange }) {
         }}
         aria-invalid={!isValid}
         aria-describedby={ariaDescribedBy}
-        className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-          !isValid ? "border-red-500" : "border-gray-300"
-        }`}
       />
 
       {!isValid && (

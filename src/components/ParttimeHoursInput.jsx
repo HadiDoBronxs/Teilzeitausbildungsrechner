@@ -6,12 +6,13 @@ import {
   computeParttimeBounds,
   isParttimeHoursValid,
 } from "./ParttimeHoursInput.helpers";
-import Tooltip from "./InfoTooltip"; 
+import NumberInput from "./ui/NumberInput";
+import Tooltip from "./InfoTooltip";
 
 /**
  * React component that renders a numeric input for weekly
  * part-time hours and provides validation and contextual info.
- * 
+ *
  * Responsibilities:
  * - Compute valid min/max bounds from a given fulltime hours value
  *   (via computeParttimeBounds).
@@ -20,14 +21,14 @@ import Tooltip from "./InfoTooltip";
  * - Validate the value with isParttimeHoursValid and provide accessible
  *   error text and live region feedback.
  * - Display a percentage-of-fulltime indicator.
- * 
+ *
  * @param {object} props
  * @param {number} [props.fulltimeHours=40] - Full-time hours used to compute
  *   valid part-time bounds and percent factor. If 0 or negative, factor
  *   information is suppressed.
  * @param {(value: string) => void} [props.onValueChange] - Optional callback
  *   invoked whenever the text value changes (receives the raw string).
- * 
+ *
  * Notes:
  * - The internal input state is stored as a string to preserve partial user
  *   edits such as "" or "-" while typing.
@@ -79,7 +80,7 @@ export default function ParttimeHoursInput({
     ? numericHours / fulltimeNumeric >= 0.5
     : true;
 
-  // Notify parent when hours change
+  // Notify parent when hours change.
   useEffect(() => {
     if (typeof onValueChange === "function") {
       onValueChange(hours);
@@ -108,7 +109,7 @@ export default function ParttimeHoursInput({
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      {/* Tooltip zum Label hinzufügen */}
+      {/* Tooltip zum Label */}
       <div className="flex items-center gap-2">
         <label
           htmlFor={PARTTIME_INPUT_NAME}
@@ -119,22 +120,17 @@ export default function ParttimeHoursInput({
         <Tooltip contentKey="tooltip.parttimeHours" />
       </div>
 
-      <input
+      <NumberInput
         id={PARTTIME_INPUT_NAME}
         name={PARTTIME_INPUT_NAME}
         data-testid={PARTTIME_INPUT_NAME}
-        type="number"
-        inputMode="numeric"
         min={computedMin}
         max={computedMax}
         step={0.5}
         value={hours}
         onChange={(e) => setHours(e.target.value)}
         aria-invalid={!isValid}
-        aria-describedby={describedBy || undefined}
-        className={`border rounded-lg p-2 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-          !isValid ? "border-red-500" : "border-gray-300"
-        }`}
+        aria-describedby={describedBy}
       />
 
       {!isValid && (
@@ -166,7 +162,6 @@ export default function ParttimeHoursInput({
             : t("parttimeHours.factorError")}
         </div>
       )}
-
     </div>
   );
 }
