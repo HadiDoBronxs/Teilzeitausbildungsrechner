@@ -3,12 +3,11 @@ import { useTranslation } from "react-i18next";
 import {
   REGULAR_DURATION_NAME,
   REGULAR_DURATION_ERROR_ID,
-  REGULAR_DURATION_HINT_ID,
-  REGULAR_DURATION_TOOLTIP_ID,
   DURATION_MIN,
   DURATION_MAX,
   isRegularDurationValid,
 } from "./RegularDurationInput.constants";
+import Tooltip from "./InfoTooltip"; 
 
 export default function RegularDurationInput({ onValueChange }) {
   const { t } = useTranslation();
@@ -21,22 +20,20 @@ export default function RegularDurationInput({ onValueChange }) {
     }
   }, [months, onValueChange]);
 
-  const baseDescribedBy = [REGULAR_DURATION_HINT_ID];
-  const ariaDescribedBy = [
-    ...baseDescribedBy,
-    !isValid ? REGULAR_DURATION_ERROR_ID : null,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const ariaDescribedBy = (!isValid ? REGULAR_DURATION_ERROR_ID : null) || undefined;
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      <label
-        htmlFor={REGULAR_DURATION_NAME}
-        className="font-semibold text-gray-800"
-      >
-        {t("regularDuration.label")}
-      </label>
+      {/* Tooltip zum Label hinzufügen */}
+      <div className="flex items-center gap-2">
+        <label
+          htmlFor={REGULAR_DURATION_NAME}
+          className="font-semibold text-gray-800"
+        >
+          {t("regularDuration.label")}
+        </label>
+        <Tooltip contentKey="tooltip.regularDuration" />
+      </div>
 
       <input
         id={REGULAR_DURATION_NAME}
@@ -58,13 +55,6 @@ export default function RegularDurationInput({ onValueChange }) {
           !isValid ? "border-red-500" : "border-gray-300"
         }`}
       />
-
-      <p
-        id={REGULAR_DURATION_HINT_ID}
-        className="text-sm font-medium text-slate-700"
-      >
-        {t("regularDuration.hintPrefix")} {t("regularDuration.minHint", { min: DURATION_MIN })}
-      </p>
 
       {!isValid && (
         <p

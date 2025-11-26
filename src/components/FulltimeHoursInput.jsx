@@ -6,8 +6,8 @@ import {
   FULLTIME_MIN,
   FULLTIME_MAX,
   isFulltimeHoursValid,
-  FULLTIME_HELP_ID,
 } from "./FulltimeHoursInput.constants";
+import Tooltip from "./InfoTooltip"; 
 
 export default function FulltimeHoursInput({ onValueChange }) {
   const { t } = useTranslation();
@@ -19,17 +19,20 @@ export default function FulltimeHoursInput({ onValueChange }) {
     }
   }, [hours, onValueChange]);
 
-  const describedBy = [FULLTIME_HELP_ID, !isValid ? FULLTIME_ERROR_ID : null]
-  .filter(Boolean).join(" ");
+  const describedBy = (!isValid ? FULLTIME_ERROR_ID : null) || undefined;
 
   return (
     <div className="flex flex-col w-full gap-4 px-4 py-3 mx-auto sm:max-w-sm sm:px-0">
-      <label
-        htmlFor={FULLTIME_INPUT_NAME}
-        className="font-semibold text-gray-800"
-      >
-        {t("fulltimeHours.label")}
-      </label>
+      {/*Tooltip zum Label hinzufügen */}
+      <div className="flex items-center gap-2">
+        <label
+          htmlFor={FULLTIME_INPUT_NAME}
+          className="font-semibold text-gray-800"
+        >
+          {t("fulltimeHours.label")}
+        </label>
+        <Tooltip contentKey="tooltip.fulltimeHours" />
+      </div>
 
       <input
         id={FULLTIME_INPUT_NAME}
@@ -48,10 +51,6 @@ export default function FulltimeHoursInput({ onValueChange }) {
           !isValid ? "border-red-500" : "border-gray-300"
         }`}
       />
-
-      <p id={FULLTIME_HELP_ID} className="text-sm text-slate-600">
-        {t("fulltimeHours.help", { min: FULLTIME_MIN, max: FULLTIME_MAX })}
-      </p>
 
       {!isValid && (
         <p
