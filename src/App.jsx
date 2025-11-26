@@ -8,6 +8,7 @@ import SchoolDegreeReductionSelect from "./components/SchoolDegreeReductionSelec
 import QualificationReductions from "./components/QualificationReductions.jsx";
 import LanguageToggle from "./components/LanguageToggle.jsx";
 import ResultCard from "./features/calcDuration/ResultCard.jsx";
+import LegalBasisPage from "./routes/legal.jsx";
 import Transparenz from "./routes/transparenz.jsx";
 import { buildReductionSummary } from "./domain/schoolDegreeReductions.js";
 import { generatePDF } from "./utils/generatePDF.js";
@@ -28,6 +29,8 @@ const LEGAL_HINT_THRESHOLD = 6;
 const isTransparencyPath =
   typeof window !== "undefined" &&
   window.location.pathname.startsWith("/transparenz");
+const isLegalPath =
+  typeof window !== "undefined" && window.location.pathname.startsWith("/legal");
 
 // Treat empty strings, null, and undefined the same to simplify input handling.
 function isEmptyValue(value) {
@@ -38,6 +41,10 @@ export default function App() {
   // Render the dedicated transparency route when accessed directly, otherwise fall back to the calculator.
   if (isTransparencyPath) {
     return <Transparenz />;
+  }
+  // Serve the legal basis placeholder on /legal so the link can ship ahead of the finalized content.
+  if (isLegalPath) {
+    return <LegalBasisPage />;
   }
   return <CalculatorApp />;
 }

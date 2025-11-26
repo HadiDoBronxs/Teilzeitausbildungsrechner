@@ -8,7 +8,7 @@ const BASE_CLASS =
 // variant -> visual treatment. primary = filled blue CTA, text = inline link, pill = rounded badge-like action, ghost = subtle icon/text button.
 const VARIANT_STYLES = {
   primary:
-    "justify-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-sm hover:bg-blue-700 disabled:bg-blue-300",
+    "justify-center rounded-md bg-slate-950 px-4 py-2 text-white shadow-sm hover:bg-slate-900 disabled:bg-slate-700",
   text:
     "gap-1 rounded-none bg-transparent px-0 py-0 text-blue-700 underline underline-offset-2 hover:text-blue-900 disabled:text-blue-300",
   pill:

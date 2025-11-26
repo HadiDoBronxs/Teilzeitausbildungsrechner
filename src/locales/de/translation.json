@@ -167,10 +167,6 @@
             "question": "Haben Sie bereits eine Berufsausbildung abgeschlossen?",
             "note": "bis zu {{months}} Monaten"
         },
-        "vocationalFoundation": {
-            "question": "Haben Sie eine einschlägige berufliche Grundbildung?",
-            "note": "bis zu {{months}} Monaten"
-        },
         "vocationalExperience": {
             "question": "Haben Sie einschlägige Berufserfahrung?",
             "note": "bis zu {{months}} Monaten"
@@ -209,6 +205,37 @@
         "qualificationReduction": "Qualifikationsverkürzung (Monate)",
         "totalReductionWarningLabel": "Kappungshinweis",
         "totalReductionWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate."
+    },
+    "legal": {
+        "title": "Gesetzesgrundlagen",
+        "bbig7a": {
+            "heading": "§7a BBiG – Teilzeitberufsausbildung",
+            "text1": "Der Betrieb und die Auszubildenden können gemeinsam vereinbaren, dass die Ausbildung in Teilzeit läuft. Die reguläre wöchentliche Ausbildungszeit wird dabei dauerhaft gekürzt, damit Ausbildung und andere Verpflichtungen zusammenpassen.",
+            "text2": "Trotz kürzerer Wochenstunden bleibt das Ziel gleich: Alle Inhalte der Ausbildung werden vermittelt. Deshalb kann sich die Gesamtdauer verlängern oder der Betrieb gleicht die fehlende Zeit mit einem angepassten Plan aus."
+        },
+        "hwo27b": {
+            "heading": "§27b HwO – Handwerkliche Teilzeitberufsausbildung",
+            "text1": "Auch im Handwerk kann die Ausbildung als Teilzeit vereinbart werden. Betrieb und Auszubildende legen gemeinsam fest, wie viele Stunden pro Woche reduziert werden, damit Familie, Pflege oder andere Gründe berücksichtigt werden.",
+            "text2": "Wichtig ist, dass alle fachlichen Inhalte vermittelt werden. Der Betrieb plant deshalb die Praxis so, dass trotz weniger Stunden eine vollständige Qualifizierung erreicht wird."
+        },
+        "easy": {
+            "heading": "In einfacher Sprache",
+            "point1": "Teilzeit-Ausbildung heißt: weniger Stunden pro Woche als normal.",
+            "point2": "Die Gesamtzeit kann länger werden, weil weniger Stunden pro Woche gelernt wird.",
+            "point3": "Betrieb und Auszubildende entscheiden zusammen, wie viel verkürzt wird.",
+            "point4": "Die Kammer prüft und stimmt zu, damit alles offiziell passt.",
+            "point5": "Alle wichtigen Lerninhalte bleiben trotzdem gleich."
+        },
+        "notice": {
+            "heading": "Wichtiger Hinweis",
+            "text": "Diese Informationen ersetzen keine Rechtsberatung. Über Verkürzungen und Abläufe entscheidet immer die zuständige Kammer.",
+            "links": {
+                "title": "Offizielle Informationen",
+                "arbeitsagentur": "Agentur für Arbeit – Teilzeitberufsausbildung",
+                "ihk": "Industrie- und Handelskammern",
+                "bmbf": "Bundesministerium für Bildung und Forschung"
+            }
+        }
     },
     "pdfViewer": {
         "loading": "PDF wird geladen...",

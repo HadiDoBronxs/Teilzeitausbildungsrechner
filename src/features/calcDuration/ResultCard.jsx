@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { buildReductionSummary } from "../../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "./readFormAndCalc";
 import TransparencyPanel from "./TransparencyPanel";
-import Button from "../../components/ui/Button";
-import Card from "../../components/ui/Card";
-import StatItem from "../../components/ui/StatItem";
+import Button from "../../components/ui/Button.jsx";
+import Card from "../../components/ui/Card.jsx";
+import StatItem from "../../components/ui/StatItem.jsx";
 
 function formatDelta(value) {
   if (value === 0) {
@@ -28,7 +28,6 @@ export default function ResultCard({ values, result: injectedResult }) {
     return null;
   }
 
-  // Gather the reduction data once so the rendering logic stays focused on layout.
   const reduction = buildReductionSummary({
     schoolDegreeId: values?.schoolDegreeId,
     degreeReductionMonths: values?.degreeReductionMonths,
@@ -38,7 +37,6 @@ export default function ResultCard({ values, result: injectedResult }) {
     maxTotalMonths: values?.maxTotalReduction ?? 12,
   });
 
-  // The summary keeps total, degree-based, qualification-based and manual reductions in sync for the UI badges.
   const hasReduction = reduction.total > 0;
   const hasDegreeReduction = reduction.degree > 0;
   const hasQualificationReduction = reduction.qualification > 0;
@@ -56,11 +54,13 @@ export default function ResultCard({ values, result: injectedResult }) {
     setShowTransparency(false);
   }
 
+  // 🔹 Beide Buttons bekommen EXAKT die gleichen Styles
   const transparencyButton = (
     <Button
       type="button"
-      variant="text"
+      variant="primary"
       size="md"
+      className="w-full sm:flex-1"
       onClick={openTransparency}
       ariaHaspopup="dialog"
       ariaExpanded={showTransparency}
@@ -69,21 +69,32 @@ export default function ResultCard({ values, result: injectedResult }) {
     </Button>
   );
 
-  // When the calculation reports "not allowed" we skip the regular summary and show the error details.
+  const legalButton = (
+    <Button
+      type="button"
+      variant="primary"
+      size="md"
+      className="w-full sm:flex-1"
+      onClick={() => {
+        window.location.href = "/legal";
+      }}
+    >
+      {t("legal.title")}
+    </Button>
+  );
+
+  // Wenn nicht erlaubt, Fehlerkarte anzeigen
   if (result && result.allowed === false) {
     return (
       <>
-        <Card
-          className="w-full max-w-2xl"
-          variant="error"
-          role="status"
-        >
+        <Card className="w-full max-w-2xl" variant="error" role="status">
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold text-red-700">
               {t("result.error.title")}
             </h2>
             <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
             {transparencyButton}
+            {/* Wenn du willst, kannst du hier optional auch legalButton anzeigen */}
           </div>
         </Card>
         {showTransparency && (
@@ -93,12 +104,10 @@ export default function ResultCard({ values, result: injectedResult }) {
     );
   }
 
-  // Baseline is what the apprentice would do in full-time after reductions; without reductions it equals the original duration.
   const baselineMonths = hasReduction
     ? result.effectiveFulltimeMonths
     : result.fulltimeMonths;
 
-  // Build the three key figures the card shows underneath the headline.
   const metrics = [
     {
       key: "full",
@@ -126,7 +135,6 @@ export default function ResultCard({ values, result: injectedResult }) {
     },
   ];
 
-  // Prefer the formatted string coming from the calculator (already localized), otherwise fall back to a simple months string.
   const formattedParttime =
     result.formatted?.parttime ??
     t("result.months", {
@@ -193,7 +201,10 @@ export default function ResultCard({ values, result: injectedResult }) {
             ))}
           </div>
 
-          <div>{transparencyButton}</div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            {transparencyButton}
+            {legalButton}
+          </div>
         </div>
       </Card>
       {showTransparency && (
