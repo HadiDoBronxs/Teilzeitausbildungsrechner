@@ -1,11 +1,13 @@
 import { useTranslation } from "react-i18next";
 import Button from "../ui/Button.jsx";
+import Card from "../ui/Card.jsx";
 
 const PARAGRAPH_CLASS = "text-base md:text-lg leading-relaxed text-slate-800";
 
 /**
  * Reusable legal basis content for the calculator and modal.
  * Renders the BBiG/HwO explanations and the simplified overview.
+ * All outbound links open in a new tab so users stay inside TZR.
  */
 export default function LegalContent({ className = "" }) {
   const { t } = useTranslation();
@@ -25,6 +27,7 @@ export default function LegalContent({ className = "" }) {
         </h3>
         <p className={PARAGRAPH_CLASS}>{t("legal.bbig7a.text1")}</p>
         <p className={PARAGRAPH_CLASS}>{t("legal.bbig7a.text2")}</p>
+        {/* Opens official §7a BBiG law text in new tab. */}
         <Button
           variant="text"
           size="sm"
@@ -47,6 +50,7 @@ export default function LegalContent({ className = "" }) {
         </h3>
         <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text1")}</p>
         <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text2")}</p>
+        {/* Opens official §27b HwO law text in new tab. */}
         <Button
           variant="text"
           size="sm"
@@ -88,7 +92,12 @@ export default function LegalContent({ className = "" }) {
       </section>
 
       {/* Additional official sources (only those provided) open in a new tab. */}
-      <section className="space-y-3" aria-labelledby="legal-sources-heading">
+      <Card
+        as="section"
+        className="space-y-3 border-slate-200 bg-slate-50"
+        padding="p-4 sm:p-5"
+        aria-labelledby="legal-sources-heading"
+      >
         <h3
           id="legal-sources-heading"
           className="text-xl md:text-2xl font-semibold text-slate-900"
@@ -97,6 +106,7 @@ export default function LegalContent({ className = "" }) {
         </h3>
         <ul className="space-y-2">
           <li>
+            {/* Full BBiG overview page. */}
             <Button
               variant="text"
               size="sm"
@@ -109,6 +119,7 @@ export default function LegalContent({ className = "" }) {
             </Button>
           </li>
           <li>
+            {/* Full HwO overview page. */}
             <Button
               variant="text"
               size="sm"
@@ -121,6 +132,7 @@ export default function LegalContent({ className = "" }) {
             </Button>
           </li>
           <li>
+            {/* Official BMBF PDF provided by the user. */}
             <Button
               variant="text"
               size="sm"
@@ -133,7 +145,7 @@ export default function LegalContent({ className = "" }) {
             </Button>
           </li>
         </ul>
-      </section>
+      </Card>
     </div>
   );
 }

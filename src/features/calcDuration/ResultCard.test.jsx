@@ -1,10 +1,12 @@
-// Tests the ResultCard interactions, including the in-app legal modal behavior.
+// Tests the ResultCard interactions, including transparency panel and legal modal/link behavior.
+// Focus: renders, reductions, dialog toggles, official links/targets.
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
 import ResultCard from "./ResultCard";
 
+// Default form values fixture for most tests.
 const baseValues = {
   weeklyFull: 40,
   weeklyPart: 30,
@@ -28,6 +30,7 @@ const buildResult = (overrides = {}) => ({
 });
 
 describe("ResultCard", () => {
+  // Core rendering without technical jargon.
   it("renders the headline and metrics without technical jargon", () => {
     const result = buildResult();
     render(<ResultCard values={baseValues} result={result} />);
@@ -46,6 +49,7 @@ describe("ResultCard", () => {
     expect(statusRegion.textContent).not.toMatch(/Faktor|D_theo|\\/i);
   });
 
+  // Baseline uses effective months when reductions apply.
   it("uses the effective full-time months when a reduction is applied", () => {
     const result = buildResult({
       effectiveFulltimeMonths: 30,
@@ -77,6 +81,7 @@ describe("ResultCard", () => {
     ).not.toBeInTheDocument();
   });
 
+  // Zero delta is rendered without a sign.
   it("displays zero change correctly", () => {
     const result = buildResult({
       formatted: { parttime: "2 Jahre 6 Monate" },
@@ -92,6 +97,7 @@ describe("ResultCard", () => {
     expect(screen.getByText("0 Monate")).toBeInTheDocument();
   });
 
+  // Transparency dialog toggles on/off.
   it("opens and closes the transparency panel on demand", async () => {
     const user = userEvent.setup();
     const result = buildResult();
@@ -106,6 +112,7 @@ describe("ResultCard", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  // Official source links stay in-app and open new tab with correct URLs/targets.
   it("shows official source links that open in a new tab", async () => {
     const user = userEvent.setup();
     const result = buildResult();
@@ -144,6 +151,7 @@ describe("ResultCard", () => {
     });
   });
 
+  // Legal modal contains the provided BBiG text and closes via button.
   it("opens the legal modal instead of navigating away", async () => {
     const user = userEvent.setup();
     const result = buildResult();
@@ -162,6 +170,7 @@ describe("ResultCard", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  // Ratio sentence appears when transparency dialog is open.
   it("shows the weekly ratio sentence inside the transparency panel", async () => {
     const user = userEvent.setup();
     const result = buildResult();
@@ -176,6 +185,7 @@ describe("ResultCard", () => {
     ).toBeInTheDocument();
   });
 
+  // Error path when below 50% factor shows both high-level and step text.
   it("explains the error path when the ratio is below fifty percent", async () => {
     const user = userEvent.setup();
     const values = {
@@ -201,6 +211,7 @@ describe("ResultCard", () => {
     ).toBeInTheDocument();
   });
 
+  // Qualifikations-Badge appears when qualification months are present.
   it("zeigt die Qualifikations-Badge, wenn entsprechende Monate vorhanden sind", () => {
     const result = buildResult({
       effectiveFulltimeMonths: 32,
@@ -223,6 +234,7 @@ describe("ResultCard", () => {
     expect(screen.getByText("Qualifikationen: −4 Monate")).toBeInTheDocument();
   });
 
+  // Warn user when reductions exceed cap.
   it("zeigt eine Warnung, wenn die Summe über der Kappungsgrenze liegt", () => {
     const result = buildResult({
       effectiveFulltimeMonths: 24,

@@ -11,6 +11,7 @@ export default function LegalBasisPage() {
   // Text is fully driven by i18n to keep DE/EN aligned.
   return (
     <>
+      {/* Skip link for screen readers and keyboard users to jump to content. */}
       <a className="skip-link" href={`#${MAIN_ID}`}>
         {t("skipToMain")}
       </a>
@@ -20,6 +21,7 @@ export default function LegalBasisPage() {
         aria-labelledby={MAIN_HEADING_ID}
         className="min-h-screen bg-slate-50 text-slate-900 px-4 py-12 sm:py-16"
       >
+        {/* Centered container with language toggle and legal content. */}
         <div className="max-w-3xl mx-auto bg-white shadow rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-8 sm:space-y-10">
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h2 id={MAIN_HEADING_ID} className="text-3xl md:text-4xl font-bold">

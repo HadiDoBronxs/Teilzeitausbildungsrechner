@@ -25,14 +25,17 @@ export default function ResultCard({ values, result: injectedResult }) {
   const [showLegal, setShowLegal] = useState(false);
 
   function resolveResult() {
+    // Prefer injectedResult (tests), otherwise compute from form values.
     return injectedResult ?? readFormAndCalc(values);
   }
 
   const result = useMemo(resolveResult, [values, injectedResult]);
   if (!result) {
+    // Render nothing when calculation cannot run (e.g., missing inputs).
     return null;
   }
 
+  // Derive reduction badges textually so UI stays decoupled from calculation internals.
   const reduction = buildReductionSummary({
     schoolDegreeId: values?.schoolDegreeId,
     degreeReductionMonths: values?.degreeReductionMonths,
@@ -203,6 +206,7 @@ export default function ResultCard({ values, result: injectedResult }) {
             ) : null}
           </header>
 
+          {/* Primary metrics row (full/part/change). */}
           <div className="grid gap-5 sm:grid-cols-3">
             {metrics.map((metric) => (
               <StatItem
@@ -213,12 +217,14 @@ export default function ResultCard({ values, result: injectedResult }) {
             ))}
           </div>
 
+          {/* Actions: transparency dialog + legal dialog (same visual weight). */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             {transparencyButton}
             {legalButton}
           </div>
         </div>
       </Card>
+      {/* Overlays stay mounted at root to avoid clipping inside Card. */}
       {showLegal && <LegalPanel onClose={closeLegal} />}
       {showTransparency && (
         <TransparencyPanel formValues={values} onClose={closeTransparency} />
