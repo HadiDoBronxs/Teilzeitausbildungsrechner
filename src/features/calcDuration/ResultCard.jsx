@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { buildReductionSummary } from "../../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "./readFormAndCalc";
+import LegalPanel from "./LegalPanel.jsx";
 import TransparencyPanel from "./TransparencyPanel";
 import Button from "../../components/ui/Button.jsx";
 import Card from "../../components/ui/Card.jsx";
@@ -18,6 +19,7 @@ function formatDelta(value) {
 export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
   const [showTransparency, setShowTransparency] = useState(false);
+  const [showLegal, setShowLegal] = useState(false);
 
   function resolveResult() {
     return injectedResult ?? readFormAndCalc(values);
@@ -54,6 +56,14 @@ export default function ResultCard({ values, result: injectedResult }) {
     setShowTransparency(false);
   }
 
+  function openLegal() {
+    setShowLegal(true);
+  }
+
+  function closeLegal() {
+    setShowLegal(false);
+  }
+
   // 🔹 Beide Buttons bekommen EXAKT die gleichen Styles
   const transparencyButton = (
     <Button
@@ -75,9 +85,9 @@ export default function ResultCard({ values, result: injectedResult }) {
       variant="primary"
       size="md"
       className="w-full sm:flex-1"
-      onClick={() => {
-        window.location.href = "/legal";
-      }}
+      onClick={openLegal}
+      ariaHaspopup="dialog"
+      ariaExpanded={showLegal}
     >
       {t("legal.title")}
     </Button>
@@ -207,6 +217,7 @@ export default function ResultCard({ values, result: injectedResult }) {
           </div>
         </div>
       </Card>
+      {showLegal && <LegalPanel onClose={closeLegal} />}
       {showTransparency && (
         <TransparencyPanel formValues={values} onClose={closeTransparency} />
       )}

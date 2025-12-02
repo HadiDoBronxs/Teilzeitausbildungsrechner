@@ -105,6 +105,23 @@ describe("ResultCard", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  it("opens the legal modal instead of navigating away", async () => {
+    const user = userEvent.setup();
+    const result = buildResult();
+    render(<ResultCard values={baseValues} result={result} />);
+
+    await user.click(
+      screen.getByRole("button", { name: "Gesetzesgrundlagen" })
+    );
+
+    expect(
+      screen.getByText("§7a BBiG – Teilzeitberufsausbildung")
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Schließen" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
   it("shows the weekly ratio sentence inside the transparency panel", async () => {
     const user = userEvent.setup();
     const result = buildResult();

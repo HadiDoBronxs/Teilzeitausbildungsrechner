@@ -56,6 +56,32 @@ const translators = {
     `${opts?.label} (${opts?.months} Monate)`,
   "reduction.breakdown.manual": (opts) =>
     `Weitere Gründe (${opts?.months} Monate)`,
+  "legal.title": () => "Gesetzesgrundlagen",
+  "legal.bbig7a.heading": () => "§7a BBiG – Teilzeitberufsausbildung",
+  "legal.bbig7a.text1": () =>
+    "Der Betrieb und die Auszubildenden können gemeinsam vereinbaren, dass die Ausbildung in Teilzeit läuft. Die reguläre wöchentliche Ausbildungszeit wird dabei dauerhaft gekürzt, damit Ausbildung und andere Verpflichtungen zusammenpassen.",
+  "legal.bbig7a.text2": () =>
+    "Trotz kürzerer Wochenstunden bleibt das Ziel gleich: Alle Inhalte der Ausbildung werden vermittelt. Deshalb kann sich die Gesamtdauer verlängern oder der Betrieb gleicht die fehlende Zeit mit einem angepassten Plan aus.",
+  "legal.hwo27b.heading": () =>
+    "§27b HwO – Handwerkliche Teilzeitberufsausbildung",
+  "legal.hwo27b.text1": () =>
+    "Auch im Handwerk kann die Ausbildung als Teilzeit vereinbart werden. Betrieb und Auszubildende legen gemeinsam fest, wie viele Stunden pro Woche reduziert werden, damit Familie, Pflege oder andere Gründe berücksichtigt werden.",
+  "legal.hwo27b.text2": () =>
+    "Wichtig ist, dass alle fachlichen Inhalte vermittelt werden. Der Betrieb plant deshalb die Praxis so, dass trotz weniger Stunden eine vollständige Qualifizierung erreicht wird.",
+  "legal.easy.heading": () => "In einfacher Sprache",
+  "legal.easy.point1": () =>
+    "Teilzeit-Ausbildung heißt: weniger Stunden pro Woche als normal.",
+  "legal.easy.point2": () =>
+    "Die Gesamtzeit kann länger werden, weil weniger Stunden pro Woche gelernt wird.",
+  "legal.easy.point3": () =>
+    "Betrieb und Auszubildende entscheiden zusammen, wie viel verkürzt wird.",
+  "legal.easy.point4": () =>
+    "Die Kammer prüft und stimmt zu, damit alles offiziell passt.",
+  "legal.easy.point5": () =>
+    "Alle wichtigen Lerninhalte bleiben trotzdem gleich.",
+  "legal.notice.heading": () => "Wichtiger Hinweis",
+  "legal.notice.text": () =>
+    "Diese Informationen ersetzen keine Rechtsberatung. Über Verkürzungen und Abläufe entscheidet immer die zuständige Kammer.",
   "qualifications.legalHint": () =>
     "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig.",
   "reductionOptions.hs": () => "Hauptschulabschluss",
