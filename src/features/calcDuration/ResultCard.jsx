@@ -96,7 +96,6 @@ export default function ResultCard({ values, result: injectedResult }) {
     </Button>
   );
 
-  // Wenn nicht erlaubt, Fehlerkarte anzeigen
   if (result && result.allowed === false) {
     return (
       <>
@@ -107,7 +106,7 @@ export default function ResultCard({ values, result: injectedResult }) {
             </h2>
             <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
             {transparencyButton}
-            {/* Wenn du willst, kannst du hier optional auch legalButton anzeigen */}
+            {}
           </div>
         </Card>
         {showTransparency && (
