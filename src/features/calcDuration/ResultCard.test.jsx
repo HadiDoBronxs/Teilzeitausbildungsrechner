@@ -106,6 +106,44 @@ describe("ResultCard", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  it("shows official source links that open in a new tab", async () => {
+    const user = userEvent.setup();
+    const result = buildResult();
+    render(<ResultCard values={baseValues} result={result} />);
+
+    await user.click(
+      screen.getByRole("button", { name: "Gesetzesgrundlagen" })
+    );
+
+    const bbigLink = screen.getByRole("link", {
+      name: "BBiG – Gesetzesübersicht",
+    });
+    const hwoLink = screen.getByRole("link", {
+      name: "HwO – Gesetzesübersicht",
+    });
+    const bmbfLink = screen.getByRole("link", {
+      name: "BMBF: Berufsausbildung in Teilzeit (PDF)",
+    });
+
+    expect(bbigLink).toHaveAttribute(
+      "href",
+      "https://www.gesetze-im-internet.de/bbig_2005/"
+    );
+    expect(hwoLink).toHaveAttribute(
+      "href",
+      "https://www.gesetze-im-internet.de/hwo/"
+    );
+    expect(bmbfLink).toHaveAttribute(
+      "href",
+      "https://www.bmbfsfj.bund.de/resource/blob/267912/41b921035a480044dee7ffb4c00683bf/berufsausbildung-in-teilzeit-data.pdf"
+    );
+
+    [bbigLink, hwoLink, bmbfLink].forEach((link) => {
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noreferrer");
+    });
+  });
+
   it("opens the legal modal instead of navigating away", async () => {
     const user = userEvent.setup();
     const result = buildResult();
