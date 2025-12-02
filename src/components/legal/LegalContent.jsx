@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import Button from "../ui/Button.jsx";
 
 const PARAGRAPH_CLASS = "text-base md:text-lg leading-relaxed text-slate-800";
 
@@ -24,6 +25,16 @@ export default function LegalContent({ className = "" }) {
         </h3>
         <p className={PARAGRAPH_CLASS}>{t("legal.bbig7a.text1")}</p>
         <p className={PARAGRAPH_CLASS}>{t("legal.bbig7a.text2")}</p>
+        <Button
+          variant="text"
+          size="sm"
+          as="a"
+          href="https://www.gesetze-im-internet.de/bbig_2005/__7a.html"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {t("legal.openLaw")}
+        </Button>
       </section>
 
       {/* HwO anchor text for crafts training. */}

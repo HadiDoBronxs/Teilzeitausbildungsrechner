@@ -57,6 +57,7 @@ const translators = {
   "reduction.breakdown.manual": (opts) =>
     `Weitere Gründe (${opts?.months} Monate)`,
   "legal.title": () => "Gesetzesgrundlagen",
+  "legal.openLaw": () => "Gesetzestext öffnen",
   "legal.bbig7a.heading": () => "§7a BBiG – Teilzeitberufsausbildung",
   "legal.bbig7a.text1": () =>
     "Der Betrieb und die Auszubildenden können gemeinsam vereinbaren, dass die Ausbildung in Teilzeit läuft. Die reguläre wöchentliche Ausbildungszeit wird dabei dauerhaft gekürzt, damit Ausbildung und andere Verpflichtungen zusammenpassen.",

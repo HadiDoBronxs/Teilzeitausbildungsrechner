@@ -67,7 +67,6 @@ export default function ResultCard({ values, result: injectedResult }) {
     setShowLegal(false);
   }
 
-  // 🔹 Beide Buttons bekommen EXAKT die gleichen Styles
   const transparencyButton = (
     <Button
       type="button"

@@ -208,6 +208,7 @@
     },
     "legal": {
         "title": "Gesetzesgrundlagen",
+        "openLaw": "Gesetzestext öffnen",
         "bbig7a": {
             "heading": "§7a BBiG – Teilzeitberufsausbildung",
             "text1": "Der Betrieb und die Auszubildenden können gemeinsam vereinbaren, dass die Ausbildung in Teilzeit läuft. Die reguläre wöchentliche Ausbildungszeit wird dabei dauerhaft gekürzt, damit Ausbildung und andere Verpflichtungen zusammenpassen.",
