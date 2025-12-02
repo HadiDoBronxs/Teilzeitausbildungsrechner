@@ -83,6 +83,11 @@ const translators = {
   "legal.notice.heading": () => "Wichtiger Hinweis",
   "legal.notice.text": () =>
     "Diese Informationen ersetzen keine Rechtsberatung. Über Verkürzungen und Abläufe entscheidet immer die zuständige Kammer.",
+  "legal.sources.heading": () => "Weitere offizielle Quellen",
+  "legal.sources.bbig": () => "BBiG – Gesetzesübersicht",
+  "legal.sources.hwo": () => "HwO – Gesetzesübersicht",
+  "legal.sources.bmbf": () =>
+    "BMBF: Berufsausbildung in Teilzeit (PDF)",
   "qualifications.legalHint": () =>
     "§ 8 Abs. 3 BBiG: Bei einer Unterschreitung um mehr als 6 Monate sind zusätzliche Nachweise notwendig.",
   "reductionOptions.hs": () => "Hauptschulabschluss",

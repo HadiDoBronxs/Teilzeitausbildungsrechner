@@ -236,6 +236,12 @@
                 "ihk": "Industrie- und Handelskammern",
                 "bmbf": "Bundesministerium für Bildung und Forschung"
             }
+        },
+        "sources": {
+            "heading": "Weitere offizielle Quellen",
+            "bbig": "BBiG – Gesetzesübersicht",
+            "hwo": "HwO – Gesetzesübersicht",
+            "bmbf": "BMBF: Berufsausbildung in Teilzeit (PDF)"
         }
     },
     "pdfViewer": {

@@ -86,6 +86,54 @@ export default function LegalContent({ className = "" }) {
         </h3>
         <p className={PARAGRAPH_CLASS}>{t("legal.notice.text")}</p>
       </section>
+
+      {/* Additional official sources (only those provided) open in a new tab. */}
+      <section className="space-y-3" aria-labelledby="legal-sources-heading">
+        <h3
+          id="legal-sources-heading"
+          className="text-xl md:text-2xl font-semibold text-slate-900"
+        >
+          {t("legal.sources.heading")}
+        </h3>
+        <ul className="space-y-2">
+          <li>
+            <Button
+              variant="text"
+              size="sm"
+              as="a"
+              href="https://www.gesetze-im-internet.de/bbig_2005/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t("legal.sources.bbig")}
+            </Button>
+          </li>
+          <li>
+            <Button
+              variant="text"
+              size="sm"
+              as="a"
+              href="https://www.gesetze-im-internet.de/hwo/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t("legal.sources.hwo")}
+            </Button>
+          </li>
+          <li>
+            <Button
+              variant="text"
+              size="sm"
+              as="a"
+              href="https://www.bmbfsfj.bund.de/resource/blob/267912/41b921035a480044dee7ffb4c00683bf/berufsausbildung-in-teilzeit-data.pdf"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t("legal.sources.bmbf")}
+            </Button>
+          </li>
+        </ul>
+      </section>
     </div>
   );
 }
