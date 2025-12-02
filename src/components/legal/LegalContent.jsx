@@ -47,6 +47,16 @@ export default function LegalContent({ className = "" }) {
         </h3>
         <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text1")}</p>
         <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text2")}</p>
+        <Button
+          variant="text"
+          size="sm"
+          as="a"
+          href="https://www.gesetze-im-internet.de/hwo/__27b.html"
+          target="_blank"
+          rel="noreferrer"
+        >
+          {t("legal.openLaw")}
+        </Button>
       </section>
 
       {/* Simplified list for easy language users. */}
