@@ -14,6 +14,7 @@ export default function LegalContent({ className = "" }) {
 
   return (
     <div className={wrapperClass}>
+      {/* BBiG anchor with plain-language explanation. */}
       <section className="space-y-3" aria-labelledby="legal-bbig7a-heading">
         <h3
           id="legal-bbig7a-heading"
@@ -25,6 +26,7 @@ export default function LegalContent({ className = "" }) {
         <p className={PARAGRAPH_CLASS}>{t("legal.bbig7a.text2")}</p>
       </section>
 
+      {/* HwO anchor text for crafts training. */}
       <section className="space-y-3" aria-labelledby="legal-hwo27b-heading">
         <h3
           id="legal-hwo27b-heading"
@@ -36,6 +38,7 @@ export default function LegalContent({ className = "" }) {
         <p className={PARAGRAPH_CLASS}>{t("legal.hwo27b.text2")}</p>
       </section>
 
+      {/* Simplified list for easy language users. */}
       <section className="space-y-3" aria-labelledby="legal-easy-heading">
         <h3
           id="legal-easy-heading"
@@ -52,6 +55,7 @@ export default function LegalContent({ className = "" }) {
         </ul>
       </section>
 
+      {/* Neutral notice clarifying non-binding info. */}
       <section className="space-y-4" aria-labelledby="legal-notice-heading">
         <h3
           id="legal-notice-heading"

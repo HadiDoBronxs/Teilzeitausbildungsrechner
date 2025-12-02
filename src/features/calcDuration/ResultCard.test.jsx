@@ -1,3 +1,4 @@
+// Tests the ResultCard interactions, including the in-app legal modal behavior.
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -110,6 +111,7 @@ describe("ResultCard", () => {
     const result = buildResult();
     render(<ResultCard values={baseValues} result={result} />);
 
+    // Expect in-app dialog instead of location change when clicking the legal button.
     await user.click(
       screen.getByRole("button", { name: "Gesetzesgrundlagen" })
     );

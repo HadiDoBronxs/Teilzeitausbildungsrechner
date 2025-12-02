@@ -7,6 +7,7 @@ const MAIN_HEADING_ID = "main-heading";
 
 export default function LegalBasisPage() {
   const { t } = useTranslation();
+  // Standalone page rendering the same legal sections as the in-app modal, wrapped with layout and language switcher.
   // Text is fully driven by i18n to keep DE/EN aligned.
   return (
     <>
@@ -27,6 +28,7 @@ export default function LegalBasisPage() {
             <LanguageToggle />
           </div>
 
+          {/* Reuse the shared legal content so text stays in sync with the modal. */}
           <LegalContent />
         </div>
       </main>

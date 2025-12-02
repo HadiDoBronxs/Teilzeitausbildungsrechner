@@ -8,6 +8,7 @@ import Button from "../../components/ui/Button.jsx";
 import Card from "../../components/ui/Card.jsx";
 import StatItem from "../../components/ui/StatItem.jsx";
 
+// Helper to display delta months with an explicit sign for readability.
 function formatDelta(value) {
   if (value === 0) {
     return "0";
@@ -17,7 +18,9 @@ function formatDelta(value) {
 }
 
 export default function ResultCard({ values, result: injectedResult }) {
+  // Central output card that shows calculated durations and opens transparency/legal dialogs.
   const { t } = useTranslation();
+  // Local UI state only controls overlay visibility; calculations stay pure.
   const [showTransparency, setShowTransparency] = useState(false);
   const [showLegal, setShowLegal] = useState(false);
 
@@ -118,6 +121,7 @@ export default function ResultCard({ values, result: injectedResult }) {
     ? result.effectiveFulltimeMonths
     : result.fulltimeMonths;
 
+  // Three-column metric summary matches the visual layout in the card.
   const metrics = [
     {
       key: "full",
