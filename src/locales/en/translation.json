@@ -208,6 +208,7 @@
     },
     "legal": {
         "title": "Legal basis",
+        "openLaw": "Open law text",
         "bbig7a": {
             "heading": "§7a BBiG – Part-time vocational training",
             "text1": "The company and the apprentices can agree to run the training in part-time. The regular weekly training hours are permanently reduced so that training and other commitments fit together.",
@@ -235,6 +236,12 @@
                 "ihk": "Chambers of Industry and Commerce (IHK)",
                 "bmbf": "Federal Ministry of Education and Research (BMBF)"
             }
+        },
+        "sources": {
+            "heading": "Additional official sources",
+            "bbig": "BBiG – law overview",
+            "hwo": "HwO – law overview",
+            "bmbf": "BMBF: Part-time vocational training (PDF)"
         }
     },
     "pdfViewer": {

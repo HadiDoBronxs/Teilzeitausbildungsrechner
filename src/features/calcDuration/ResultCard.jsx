@@ -2,11 +2,13 @@ import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { buildReductionSummary } from "../../domain/schoolDegreeReductions.js";
 import readFormAndCalc from "./readFormAndCalc";
+import LegalPanel from "./LegalPanel.jsx";
 import TransparencyPanel from "./TransparencyPanel";
 import Button from "../../components/ui/Button.jsx";
 import Card from "../../components/ui/Card.jsx";
 import StatItem from "../../components/ui/StatItem.jsx";
 
+// Helper to display delta months with an explicit sign for readability.
 function formatDelta(value) {
   if (value === 0) {
     return "0";
@@ -16,18 +18,24 @@ function formatDelta(value) {
 }
 
 export default function ResultCard({ values, result: injectedResult }) {
+  // Central output card that shows calculated durations and opens transparency/legal dialogs.
   const { t } = useTranslation();
+  // Local UI state only controls overlay visibility; calculations stay pure.
   const [showTransparency, setShowTransparency] = useState(false);
+  const [showLegal, setShowLegal] = useState(false);
 
   function resolveResult() {
+    // Prefer injectedResult (tests), otherwise compute from form values.
     return injectedResult ?? readFormAndCalc(values);
   }
 
   const result = useMemo(resolveResult, [values, injectedResult]);
   if (!result) {
+    // Render nothing when calculation cannot run (e.g., missing inputs).
     return null;
   }
 
+  // Derive reduction badges textually so UI stays decoupled from calculation internals.
   const reduction = buildReductionSummary({
     schoolDegreeId: values?.schoolDegreeId,
     degreeReductionMonths: values?.degreeReductionMonths,
@@ -54,7 +62,14 @@ export default function ResultCard({ values, result: injectedResult }) {
     setShowTransparency(false);
   }
 
-  // 🔹 Beide Buttons bekommen EXAKT die gleichen Styles
+  function openLegal() {
+    setShowLegal(true);
+  }
+
+  function closeLegal() {
+    setShowLegal(false);
+  }
+
   const transparencyButton = (
     <Button
       type="button"
@@ -75,15 +90,14 @@ export default function ResultCard({ values, result: injectedResult }) {
       variant="primary"
       size="md"
       className="w-full sm:flex-1"
-      onClick={() => {
-        window.location.href = "/legal";
-      }}
+      onClick={openLegal}
+      ariaHaspopup="dialog"
+      ariaExpanded={showLegal}
     >
       {t("legal.title")}
     </Button>
   );
 
-  // Wenn nicht erlaubt, Fehlerkarte anzeigen
   if (result && result.allowed === false) {
     return (
       <>
@@ -94,7 +108,7 @@ export default function ResultCard({ values, result: injectedResult }) {
             </h2>
             <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
             {transparencyButton}
-            {/* Wenn du willst, kannst du hier optional auch legalButton anzeigen */}
+            {}
           </div>
         </Card>
         {showTransparency && (
@@ -108,6 +122,7 @@ export default function ResultCard({ values, result: injectedResult }) {
     ? result.effectiveFulltimeMonths
     : result.fulltimeMonths;
 
+  // Three-column metric summary matches the visual layout in the card.
   const metrics = [
     {
       key: "full",
@@ -191,6 +206,7 @@ export default function ResultCard({ values, result: injectedResult }) {
             ) : null}
           </header>
 
+          {/* Primary metrics row (full/part/change). */}
           <div className="grid gap-5 sm:grid-cols-3">
             {metrics.map((metric) => (
               <StatItem
@@ -201,12 +217,15 @@ export default function ResultCard({ values, result: injectedResult }) {
             ))}
           </div>
 
+          {/* Actions: transparency dialog + legal dialog (same visual weight). */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             {transparencyButton}
             {legalButton}
           </div>
         </div>
       </Card>
+      {/* Overlays stay mounted at root to avoid clipping inside Card. */}
+      {showLegal && <LegalPanel onClose={closeLegal} />}
       {showTransparency && (
         <TransparencyPanel formValues={values} onClose={closeTransparency} />
       )}
