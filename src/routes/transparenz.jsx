@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import LanguageToggle from "../components/LanguageToggle.jsx";
+import Card from "../components/ui/Card.jsx";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
@@ -18,14 +19,14 @@ export default function Transparenz() {
         aria-labelledby={MAIN_HEADING_ID}
         className="min-h-screen bg-slate-50 text-slate-900 px-4 py-12"
       >
-        <article className="max-w-3xl mx-auto bg-white shadow rounded-2xl p-6 space-y-4">
-        <div className="flex flex-col gap-4">
-          <h1 id={MAIN_HEADING_ID} className="text-3xl font-bold">
-            {t("transparency.title")}
-          </h1>
+        <Card as="article" className="max-w-3xl mx-auto space-y-4">
+          <div className="flex flex-col gap-4">
+            <h1 id={MAIN_HEADING_ID} className="text-3xl font-bold">
+              {t("transparency.title")}
+            </h1>
             <LanguageToggle />
-        </div>
-        <section id="berechnung" className="space-y-6">
+          </div>
+          <section id="berechnung" className="space-y-6">
             <p className="text-lg text-slate-700">
               {t("transparency.subtitle")}
             </p>
@@ -43,7 +44,7 @@ export default function Transparenz() {
               ))}
             </ol>
           </section>
-        </article>
+        </Card>
       </main>
     </>
   );

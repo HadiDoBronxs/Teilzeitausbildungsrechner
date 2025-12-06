@@ -15,6 +15,16 @@ const VARIANT_STYLES = {
     "rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-800 shadow-sm hover:bg-slate-100",
   ghost:
     "gap-1 rounded-md px-3 py-1 text-slate-700 hover:bg-slate-100 disabled:text-slate-400",
+  icon:
+    "justify-center rounded-full p-2 text-slate-700 hover:bg-slate-100 disabled:text-slate-400 focus-visible:ring-2 focus-visible:ring-blue-500",
+  secondary:
+    "justify-center rounded-md bg-slate-700 px-4 py-2 text-white shadow-sm hover:bg-slate-600 disabled:bg-slate-600",
+  destructive:
+    "justify-center rounded-md bg-red-600 px-4 py-2 text-white shadow-sm hover:bg-red-700 disabled:bg-red-400",
+  success:
+    "justify-center rounded-md bg-green-600 px-4 py-2 text-white shadow-sm hover:bg-green-700 disabled:bg-green-400",
+  brand:
+    "justify-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-sm hover:bg-blue-700 disabled:bg-blue-400",
 };
 
 // size prop only adjusts font sizing so spacing stays defined by variants.
@@ -26,7 +36,8 @@ const SIZE_STYLES = {
 
 /**
  * Props:
- * - variant: "primary" (CTA), "text" (inline link), "pill" (badge-like), "ghost" (subtle utility).
+ * - variant: "primary" (CTA), "text" (inline link), "pill" (badge-like), "ghost" (subtle utility),
+ *            "icon" (circular), "secondary" (slate), "destructive" (red), "success" (green), "brand" (blue).
  * - size: "sm" | "md" | "lg" to tweak typography.
  * - as: optional element override (e.g. "a" for link-style buttons).
  * - icon: optional React node rendered with the label and marked aria-hidden.
