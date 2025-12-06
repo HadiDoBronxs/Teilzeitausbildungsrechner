@@ -105,7 +105,7 @@ describe("ResultSidebar", () => {
     expect(screen.getByRole("status")).toBeInTheDocument();
   });
 
-  it("is hidden on mobile via Tailwind classes", () => {
+  it("renders sidebar component (visibility controlled by parent)", () => {
     const validValues = {
       weeklyFull: 40,
       weeklyPart: 30,
@@ -114,6 +114,9 @@ describe("ResultSidebar", () => {
     };
     const { container } = render(<ResultSidebar values={validValues} />);
     const aside = container.querySelector("aside");
-    expect(aside).toHaveClass("hidden", "lg:block");
+    // ResultSidebar itself doesn't control visibility - that's handled by the wrapper in CompactView
+    // We just verify the component renders correctly
+    expect(aside).toBeInTheDocument();
+    expect(aside).toHaveClass("w-full", "min-w-0");
   });
 });

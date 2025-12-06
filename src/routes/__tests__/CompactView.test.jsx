@@ -2,6 +2,19 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
+// Mock pdfjs-dist before importing CompactView (which imports PDFViewer)
+vi.mock("../../components/PDFViewer.jsx", () => ({
+  default: vi.fn(({ pdfBytes, onClose }) => {
+    if (!pdfBytes) return null;
+    return (
+      <div data-testid="pdf-viewer">
+        <button onClick={onClose}>Close PDF</button>
+      </div>
+    );
+  }),
+}));
+
 import CompactView from "../CompactView.jsx";
 
 // Mock useCalculator hook
