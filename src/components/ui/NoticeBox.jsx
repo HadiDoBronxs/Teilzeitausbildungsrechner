@@ -1,5 +1,6 @@
 // NoticeBox.jsx – Info/legal hint box reused across transparency and info pages.
 import React from "react";
+import Button from "./Button";
 
 // variant toggles palette: info (blue highlight) vs legal (neutral slate).
 const VARIANT_CLASS = {
@@ -20,14 +21,16 @@ function NoticeBox({ title, children, linkLabel, href, variant = "info", classNa
       {title ? <h3 className="text-sm font-semibold">{title}</h3> : null}
       <div className="text-sm">{children}</div>
       {linkLabel && href ? (
-        <a
-          className="inline-flex items-center text-sm font-semibold text-blue-700 underline"
+        <Button
+          as="a"
+          variant="text"
           href={href}
           target="_blank"
           rel="noreferrer"
+          className="inline-flex items-center text-sm font-semibold"
         >
           {linkLabel}
-        </a>
+        </Button>
       ) : null}
     </section>
   );

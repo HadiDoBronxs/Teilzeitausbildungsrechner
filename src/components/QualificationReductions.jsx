@@ -5,7 +5,8 @@ import {
   MAX_QUALIFICATION_REDUCTION,
   summarizeQualificationSelection,
 } from "./qualificationOptions.js";
-import Tooltip from "./InfoTooltip"; 
+import Tooltip from "./InfoTooltip";
+import SelectField from "./ui/SelectField";
 
 export default function QualificationReductions({
   value = [],
@@ -51,11 +52,10 @@ export default function QualificationReductions({
               </label>
               <Tooltip contentKey={`tooltip.qualification.${option.id}`} />
             </div>
-            
-            <select
+
+            <SelectField
               id={selectId}
               name={selectId}
-              className="w-full rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={yesSelected ? "yes" : "no"}
               onChange={(event) =>
                 handleAnswer(option.id, event.target.value === "yes")
@@ -63,7 +63,7 @@ export default function QualificationReductions({
             >
               <option value="yes">{t("qualifications.answers.yes")}</option>
               <option value="no">{t("qualifications.answers.no")}</option>
-            </select>
+            </SelectField>
           </div>
         );
       })}

@@ -1,5 +1,6 @@
 // Dialog.jsx – Accessible modal shell for overlays like TransparencyPanel, handles focus trap + Escape + focus restore.
 import React, { useEffect, useId, useRef } from "react";
+import Button from "./Button";
 
 // Focus trap selector mimics the one we already use in TransparencyPanel.
 const FOCUSABLE_SELECTOR =
@@ -122,14 +123,14 @@ function Dialog({
               {title}
             </h2>
           ) : null}
-          <button
-            type="button"
-            className="text-sm font-semibold text-slate-600 transition hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+          <Button
+            variant="ghost"
             onClick={onClose}
-            aria-label={closeLabel}
+            ariaLabel={closeLabel}
+            className="text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-transparent"
           >
             {closeLabel}
-          </button>
+          </Button>
         </header>
         <div className={`max-h-[70vh] overflow-y-auto px-6 py-5 ${bodyClassName}`}>
           {children}

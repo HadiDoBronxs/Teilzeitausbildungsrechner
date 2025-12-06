@@ -13,6 +13,7 @@ import Transparenz from "./routes/transparenz.jsx";
 import { buildReductionSummary } from "./domain/schoolDegreeReductions.js";
 import { generatePDF } from "./utils/generatePDF.js";
 import PDFViewer from "./components/PDFViewer.jsx";
+import Button from "./components/ui/Button.jsx";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
@@ -203,14 +204,15 @@ function CalculatorApp() {
           </p>
         )}
         <ResultCard values={formValues} />
-        <button
-          type="button"
+        <Button
           onClick={handleSaveAsPDF}
           disabled={isGeneratingPDF}
-          className="w-full max-w-2xl px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          variant="brand"
+          size="lg"
+          className="w-full max-w-2xl rounded-xl"
         >
           {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
-        </button>
+        </Button>
       </main>
       {pdfBytes && <PDFViewer pdfBytes={pdfBytes} onClose={handleClosePDF} />}
     </>
