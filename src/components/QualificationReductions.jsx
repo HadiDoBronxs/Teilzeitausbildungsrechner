@@ -7,6 +7,7 @@ import {
 } from "./qualificationOptions.js";
 import Tooltip from "./InfoTooltip";
 import SelectField from "./ui/SelectField";
+import ReductionInfo from "./ui/ReductionInfo.jsx";
 
 export default function QualificationReductions({
   value = [],
@@ -46,7 +47,7 @@ export default function QualificationReductions({
             <div className="flex items-center justify-between gap-2">
               <label
                 htmlFor={selectId}
-                className="text-lg font-semibold text-gray-900 text-center flex-1"
+                className="font-semibold text-gray-800 text-center flex-1"
               >
                 {t(`${option.labelKey}.question`)}
               </label>
@@ -64,6 +65,12 @@ export default function QualificationReductions({
               <option value="yes">{t("qualifications.answers.yes")}</option>
               <option value="no">{t("qualifications.answers.no")}</option>
             </SelectField>
+            {yesSelected && (
+              <ReductionInfo
+                months={option.maxMonths}
+                translationKey="reduction.qualificationApplied"
+              />
+            )}
           </div>
         );
       })}

@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import NumberInput from "./ui/NumberInput";
+import ReductionInfo from "./ui/ReductionInfo.jsx";
 
 export const REDUCTION_INPUT_NAME = "reduction-months-input";
 export const REDUCTION_ERROR_ID = `${REDUCTION_INPUT_NAME}-error`;
@@ -26,6 +27,14 @@ export default function ReductionMonthsInput({
 
   const stringValue =
     value === undefined || value === null ? "" : String(value);
+
+  const numericValue = useMemo(() => {
+    if (stringValue === "" || stringValue === undefined || stringValue === null) {
+      return 0;
+    }
+    const num = Number(stringValue);
+    return Number.isNaN(num) ? 0 : num;
+  }, [stringValue]);
 
   const isValid = useMemo(
     () => isValidInteger(stringValue, min, max),
@@ -78,6 +87,10 @@ export default function ReductionMonthsInput({
           {t("reduction.error.nonNegative")}
         </p>
       )}
+      <ReductionInfo
+        months={numericValue}
+        translationKey="reduction.manualApplied"
+      />
     </div>
   );
 }
