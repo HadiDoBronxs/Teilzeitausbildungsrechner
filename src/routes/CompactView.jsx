@@ -1,5 +1,4 @@
 // CompactView.jsx – Compact design mode showing all inputs in a single view.
-// Uses the same useCalculator hook and input components as the original calculator.
 // Desktop: Shows results in a sidebar. Mobile: Shows results in a bottom bar when ResultCard is not visible.
 import FulltimeHoursInput from "../components/FulltimeHoursInput.jsx";
 import ParttimeHoursInput from "../components/ParttimeHoursInput.jsx";
@@ -103,7 +102,7 @@ export default function CompactView() {
               onValueChange={handleParttimeHoursChange}
             />
             <RegularDurationInput onValueChange={setFullDurationMonths} />
-            {/* Degree select provides the automatic IHK/HWK reduction months. */}
+            {/* Degree select provides the automatic reduction months. */}
             <SchoolDegreeReductionSelect
               value={schoolDegreeId ?? ""}
               onChange={handleSchoolDegreeSelect}

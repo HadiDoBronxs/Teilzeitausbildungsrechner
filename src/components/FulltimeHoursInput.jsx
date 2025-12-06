@@ -11,6 +11,23 @@ import {
 import NumberInput from "./ui/NumberInput";
 import Tooltip from "./InfoTooltip";
 
+/**
+ * FulltimeHoursInput component - Input field for entering fulltime working hours per week.
+ *
+ * This component provides:
+ * - Number input with validation (min/max constraints)
+ * - Real-time validation feedback with error messages
+ * - Tooltip with additional information
+ * - Automatic notification to parent component when value changes
+ *
+ * The component maintains its own internal state and notifies the parent via the
+ * onValueChange callback whenever the value changes. This pattern allows the parent
+ * to react to changes without tightly coupling to the input's internal implementation.
+ *
+ * @param {Object} props - Component props
+ * @param {Function} [props.onValueChange] - Optional callback function called when hours value changes
+ * @returns {JSX.Element} FulltimeHoursInput component
+ */
 export default function FulltimeHoursInput({ onValueChange }) {
   const { t } = useTranslation();
   const [hours, setHours] = useState(40); // Default 40 hours
@@ -26,7 +43,7 @@ export default function FulltimeHoursInput({ onValueChange }) {
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      {/* Tooltip zum Label */}
+      {/* Tooltip for the fulltime hours label */}
       <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={FULLTIME_INPUT_NAME}

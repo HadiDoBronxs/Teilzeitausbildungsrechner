@@ -19,6 +19,7 @@ export default function ReductionInfo({ months, translationKey, label }) {
     return null;
   }
 
+  // If label is provided, use it in the translation. Otherwise, use the months only.
   const translationParams = label
     ? { months: numericMonths, label }
     : { months: numericMonths };

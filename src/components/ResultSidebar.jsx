@@ -8,13 +8,111 @@ import Card from "./ui/Card.jsx";
 import StatItem from "./ui/StatItem.jsx";
 import Button from "./ui/Button.jsx";
 
-// Helper to display delta months with an explicit sign for readability.
+/**
+ * Formats delta months with an explicit sign for readability.
+ * Positive values get a "+" prefix, zero returns "0", negative values keep their "-" sign.
+ *
+ * @param {number} value - The delta value to format
+ * @returns {string} Formatted delta string (e.g., "+12", "0", "-5")
+ */
 function formatDelta(value) {
   if (value === 0) {
     return "0";
   }
   const sign = value > 0 ? "+" : "";
   return `${sign}${value}`;
+}
+
+/**
+ * Calculates the training duration result from form values.
+ * Returns null if values are not provided, otherwise performs the calculation.
+ *
+ * @param {Object|null} formValues - Form values object from useCalculator hook
+ * @returns {Object|null} Calculation result object or null if values are missing
+ */
+function calculateResult(formValues) {
+  if (!formValues) {
+    return null;
+  }
+  return readFormAndCalc(formValues);
+}
+
+/**
+ * Gets the baseline fulltime months from the calculation result.
+ * Prefers effectiveFulltimeMonths if available, otherwise falls back to fulltimeMonths.
+ *
+ * @param {Object} result - Calculation result object
+ * @returns {number} Baseline fulltime months value
+ */
+function getBaselineMonths(result) {
+  return result.effectiveFulltimeMonths ?? result.fulltimeMonths;
+}
+
+/**
+ * Formats the parttime months value for display.
+ * Uses pre-formatted value if available, otherwise generates formatted string via translation.
+ *
+ * @param {Object} result - Calculation result object
+ * @param {Function} translate - Translation function from useTranslation hook
+ * @returns {string} Formatted parttime months string (e.g., "48 months")
+ */
+function formatParttimeMonths(result, translate) {
+  // Check if result already contains a formatted parttime value
+  if (result.formatted?.parttime) {
+    return result.formatted.parttime;
+  }
+
+  // Otherwise, generate formatted string using translation function
+  return translate("result.months", {
+    count: result.parttimeFinalMonths,
+    value: result.parttimeFinalMonths,
+  });
+}
+
+/**
+ * Formats a numeric month value using the translation system.
+ *
+ * @param {number} months - Number of months to format
+ * @param {Function} translate - Translation function from useTranslation hook
+ * @returns {string} Formatted months string (e.g., "36 months")
+ */
+function formatMonths(months, translate) {
+  return translate("result.months", {
+    count: months,
+    value: months,
+  });
+}
+
+/**
+ * Builds the metrics array for display in the sidebar.
+ * Creates metric objects for fulltime, parttime, and change (delta) values.
+ *
+ * @param {Object} result - Calculation result object
+ * @param {number} baselineMonths - Baseline fulltime months value
+ * @param {Function} translate - Translation function from useTranslation hook
+ * @returns {Array<Object>} Array of metric objects with key, label, and value properties
+ */
+function buildMetrics(result, baselineMonths, translate) {
+  return [
+    {
+      key: "full",
+      label: translate("result.labels.full"),
+      value: formatMonths(baselineMonths, translate),
+    },
+    {
+      key: "part",
+      label: translate("result.labels.part"),
+      value: formatMonths(result.parttimeFinalMonths, translate),
+    },
+    {
+      key: "change",
+      label: translate("result.labels.change"),
+      value: translate("result.months", {
+        count: Math.abs(result.deltaMonths),
+        value: formatDelta(result.deltaMonths),
+      }),
+    },
+  ];
 }
 
 /**
@@ -29,51 +127,22 @@ function formatDelta(value) {
 export default function ResultSidebar({ values }) {
   const { t } = useTranslation();
 
-  const result = useMemo(() => {
-    if (!values) return null;
-    return readFormAndCalc(values);
-  }, [values]);
+  // Calculate result from form values, memoized to avoid unnecessary recalculations
+  const result = useMemo(() => calculateResult(values), [values]);
 
+  // Early return if calculation is invalid or not allowed
   if (!result || result.allowed === false) {
-    // Don't show sidebar if calculation is invalid
     return null;
   }
 
-  const baselineMonths = result.effectiveFulltimeMonths ?? result.fulltimeMonths;
+  // Extract baseline months (preferring effective over standard fulltime months)
+  const baselineMonths = getBaselineMonths(result);
 
-  const formattedParttime =
-    result.formatted?.parttime ??
-    t("result.months", {
-      count: result.parttimeFinalMonths,
-      value: result.parttimeFinalMonths,
-    });
+  // Format parttime months for display in headline and aria-label
+  const formattedParttime = formatParttimeMonths(result, t);
 
-  const metrics = [
-    {
-      key: "full",
-      label: t("result.labels.full"),
-      value: t("result.months", {
-        count: baselineMonths,
-        value: baselineMonths,
-      }),
-    },
-    {
-      key: "part",
-      label: t("result.labels.part"),
-      value: t("result.months", {
-        count: result.parttimeFinalMonths,
-        value: result.parttimeFinalMonths,
-      }),
-    },
-    {
-      key: "change",
-      label: t("result.labels.change"),
-      value: t("result.months", {
-        count: Math.abs(result.deltaMonths),
-        value: formatDelta(result.deltaMonths),
-      }),
-    },
-  ];
+  // Build metrics array for the sidebar display
+  const metrics = buildMetrics(result, baselineMonths, t);
 
   return (
     <aside
