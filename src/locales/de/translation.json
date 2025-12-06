@@ -69,8 +69,8 @@
         }
     },
     "welcome": {
-        "title": "Teilzeit-Ausbildungs-Rechner",
-        "intro": "Willkommen beim Teilzeit-Ausbildungs-Rechner. Wählen Sie das Design, das am besten zu Ihnen passt.",
+        "title": "Teilzeitausbildungsrechner",
+        "intro": "Willkommen beim Teilzeitausbildungsrechner. Wählen Sie das Design, das am besten zu Ihnen passt.",
         "question": "Wollen Sie das kompakte Design nutzen oder das geführte Design?",
         "designs": {
             "compact": "Kompaktes Design",

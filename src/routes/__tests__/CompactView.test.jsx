@@ -2,9 +2,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { useTranslation } from "react-i18next";
 import CompactView from "../CompactView.jsx";
-import { useCalculator } from "../../features/calcDuration/useCalculator.js";
 
 // Mock useCalculator hook
 const mockUseCalculator = {

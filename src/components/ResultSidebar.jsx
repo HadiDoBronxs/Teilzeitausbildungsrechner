@@ -76,7 +76,7 @@ export default function ResultSidebar({ values }) {
 
   return (
     <aside
-      className="hidden lg:block lg:sticky lg:top-8 lg:self-start lg:w-80"
+      className="w-full"
       aria-label={t("result.headline", { value: formattedParttime })}
     >
       <Card className="space-y-6" padding="p-6" role="status">

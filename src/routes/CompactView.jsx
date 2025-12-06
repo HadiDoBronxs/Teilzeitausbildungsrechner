@@ -1,7 +1,6 @@
 // CompactView.jsx – Compact design mode showing all inputs in a single view.
 // Uses the same useCalculator hook and input components as the original calculator.
 // Desktop: Shows results in a sidebar. Mobile: Shows results in a bottom bar when ResultCard is not visible.
-import { useTranslation } from "react-i18next";
 import FulltimeHoursInput from "../components/FulltimeHoursInput.jsx";
 import ParttimeHoursInput from "../components/ParttimeHoursInput.jsx";
 import RegularDurationInput from "../components/RegularDurationInput.jsx";
@@ -58,10 +57,13 @@ export default function CompactView() {
         aria-labelledby={MAIN_HEADING_ID}
         className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
       >
-        {/* Desktop layout: main content + sidebar */}
-        <div className="w-full max-w-7xl flex flex-col lg:flex-row lg:items-start lg:gap-8">
-          {/* Main content area */}
-          <div className="w-full max-w-2xl flex flex-col items-center gap-4 lg:max-w-none lg:flex-1">
+        {/* Desktop layout: grid with centered calculator and sticky sidebar */}
+        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[320px_1fr_320px] lg:gap-8">
+          {/* Left spacer column (empty on desktop, matches sidebar width) */}
+          <div className="hidden lg:block" />
+
+          {/* Main content area - centered calculator */}
+          <div className="w-full max-w-2xl flex flex-col items-center gap-4 mx-auto">
             <div className="w-full max-w-2xl flex flex-col items-center gap-4">
               <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
                 {t("app.title")}
@@ -103,8 +105,10 @@ export default function CompactView() {
             </Button>
           </div>
 
-          {/* Desktop sidebar with simplified results */}
-          <ResultSidebar values={formValues} />
+          {/* Desktop sidebar with simplified results - sticky */}
+          <div className="hidden lg:block lg:sticky lg:top-8 lg:self-start lg:h-fit">
+            <ResultSidebar values={formValues} />
+          </div>
         </div>
 
         {/* Mobile bottom bar (only shows when ResultCard is not visible) */}

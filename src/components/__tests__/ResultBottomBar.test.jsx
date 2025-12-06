@@ -2,9 +2,7 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { useTranslation } from "react-i18next";
 import ResultBottomBar from "../ResultBottomBar.jsx";
-import readFormAndCalc from "../../features/calcDuration/readFormAndCalc.js";
 
 // Mock react-i18next
 const mockT = (key, opts = {}) => {
