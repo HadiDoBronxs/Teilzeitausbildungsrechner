@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import LanguageToggle from "../components/LanguageToggle.jsx";
+import Card from "../components/ui/Card.jsx";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
@@ -20,7 +21,7 @@ export default function LegalBasisPage() {
         aria-labelledby={MAIN_HEADING_ID}
         className="min-h-screen bg-slate-50 text-slate-900 px-4 py-12 sm:py-16"
       >
-        <div className="max-w-3xl mx-auto bg-white shadow rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-8 sm:space-y-10">
+        <Card className="max-w-3xl mx-auto space-y-8 sm:space-y-10" padding="p-6 sm:p-8">
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h2 id={MAIN_HEADING_ID} className="text-3xl md:text-4xl font-bold">
               {t("legal.title")}
@@ -90,7 +91,7 @@ export default function LegalBasisPage() {
             </h3>
             <p className={PARAGRAPH_CLASS}>{t("legal.notice.text")}</p>
           </section>
-        </div>
+        </Card>
       </main>
     </>
   );
