@@ -68,6 +68,20 @@
       "en": "English"
     }
   },
+  "welcome": {
+    "title": "Part-time Training Calculator",
+    "intro": "Welcome to the Part-time Training Calculator. Choose the design that best suits you.",
+    "question": "Do you want to use the compact design or the guided design?",
+    "designs": {
+      "compact": "Compact Design",
+      "tour": "Guided Design"
+    },
+    "legalDisclaimer": "Note: This calculator is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company.",
+    "faqPlaceholder": "FAQ Area (to be implemented later)"
+  },
+  "tour": {
+    "comingSoon": "The guided design will be available soon."
+  },
   "result": {
     "headline": "Your training takes {{value}}.",
     "compare": {

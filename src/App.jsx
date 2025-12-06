@@ -1,28 +1,12 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import "./App.css";
-import FulltimeHoursInput from "./components/FulltimeHoursInput.jsx";
-import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx";
-import RegularDurationInput from "./components/RegularDurationInput.jsx";
-import SchoolDegreeReductionSelect from "./components/SchoolDegreeReductionSelect.jsx";
-import QualificationReductions from "./components/QualificationReductions.jsx";
-import LanguageToggle from "./components/LanguageToggle.jsx";
-import ResultCard from "./features/calcDuration/ResultCard.jsx";
-import PDFViewer from "./components/PDFViewer.jsx";
-import Button from "./components/ui/Button.jsx";
-import { useCalculator } from "./features/calcDuration/useCalculator.js";
 
-// Lazy load the "satellite" pages to reduce the initial bundle size for the main calculator.
+// Lazy load route components to reduce initial bundle size
 const LegalBasisPage = lazy(() => import("./routes/legal.jsx"));
 const Transparenz = lazy(() => import("./routes/transparenz.jsx"));
-
-const MAIN_ID = "main";
-const MAIN_HEADING_ID = "main-heading";
-
-const isTransparencyPath =
-  typeof window !== "undefined" &&
-  window.location.pathname.startsWith("/transparenz");
-const isLegalPath =
-  typeof window !== "undefined" && window.location.pathname.startsWith("/legal");
+const WelcomePage = lazy(() => import("./routes/WelcomePage.jsx"));
+const CompactView = lazy(() => import("./routes/CompactView.jsx"));
+const TourView = lazy(() => import("./routes/TourView.jsx"));
 
 // Minimal loading fallback
 const LoadingFallback = () => (
@@ -31,99 +15,98 @@ const LoadingFallback = () => (
   </div>
 );
 
+/**
+ * App component - Main routing logic using hash-based routing.
+ * Supports:
+ * - Pathname-based routes: /transparenz, /legal (for direct access)
+ * - Hash-based routes: #compact, #tour (for design mode selection)
+ * - Default: Welcome page (when no hash is present)
+ * Hash-based routing works well in iframe environments and doesn't require React Router.
+ */
 export default function App() {
-  // Render the dedicated transparency route when accessed directly, otherwise fall back to the calculator.
-  if (isTransparencyPath) {
+  const [currentRoute, setCurrentRoute] = useState(() => {
+    // Check pathname first for legacy routes
+    if (typeof window !== "undefined") {
+      if (window.location.pathname.startsWith("/transparenz")) {
+        return "transparenz";
+      }
+      if (window.location.pathname.startsWith("/legal")) {
+        return "legal";
+      }
+      // Check hash for new routing
+      const hash = window.location.hash.slice(1); // Remove #
+      if (hash === "compact") return "compact";
+      if (hash === "tour") return "tour";
+    }
+    return "welcome";
+  });
+
+  // Listen for hash changes
+  useEffect(() => {
+    function handleHashChange() {
+      if (typeof window !== "undefined") {
+        // Check pathname first (legacy routes take precedence)
+        if (window.location.pathname.startsWith("/transparenz")) {
+          setCurrentRoute("transparenz");
+          return;
+        }
+        if (window.location.pathname.startsWith("/legal")) {
+          setCurrentRoute("legal");
+          return;
+        }
+        // Check hash
+        const hash = window.location.hash.slice(1);
+        if (hash === "compact") {
+          setCurrentRoute("compact");
+        } else if (hash === "tour") {
+          setCurrentRoute("tour");
+        } else {
+          setCurrentRoute("welcome");
+        }
+      }
+    }
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
+
+  // Render based on current route
+  if (currentRoute === "transparenz") {
     return (
       <Suspense fallback={<LoadingFallback />}>
         <Transparenz />
       </Suspense>
     );
   }
-  // Serve the legal basis placeholder on /legal so the link can ship ahead of the finalized content.
-  if (isLegalPath) {
+
+  if (currentRoute === "legal") {
     return (
       <Suspense fallback={<LoadingFallback />}>
         <LegalBasisPage />
       </Suspense>
     );
   }
-  return <CalculatorApp />;
-}
 
-function CalculatorApp() {
-  const {
-    t,
-    schoolDegreeId,
-    fulltimeHours,
-    // (parttimeHours is handled inside, but we need it if we wanted to show it ?)
-    // actually ParttimeHoursInput needs onValueChange, not value usually, but let's check
-    // Hook returns: handleParttimeHoursChange
-    handleSchoolDegreeSelect,
-    handleFulltimeHoursChange,
-    handleParttimeHoursChange,
-    setFullDurationMonths,
-    qualificationSelection,
-    setQualificationSelection,
-    setQualificationTotals,
-    formValues,
-    showLegalHint,
-    pdfBytes,
-    isGeneratingPDF,
-    handleSaveAsPDF,
-    handleClosePDF,
-  } = useCalculator();
+  if (currentRoute === "compact") {
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <CompactView />
+      </Suspense>
+    );
+  }
 
+  if (currentRoute === "tour") {
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <TourView />
+      </Suspense>
+    );
+  }
+
+  // Default: welcome page
   return (
-    <>
-      <a className="skip-link" href={`#${MAIN_ID}`}>
-        {t("skipToMain")}
-      </a>
-      <main
-        id={MAIN_ID}
-        tabIndex="-1"
-        aria-labelledby={MAIN_HEADING_ID}
-        className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
-      >
-        <div className="w-full max-w-2xl flex flex-col items-center gap-4">
-          <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
-            {t("app.title")}
-          </h1>
-          <LanguageToggle />
-        </div>
-        <FulltimeHoursInput onValueChange={handleFulltimeHoursChange} />
-        <ParttimeHoursInput
-          fulltimeHours={fulltimeHours}
-          onValueChange={handleParttimeHoursChange}
-        />
-        <RegularDurationInput onValueChange={setFullDurationMonths} />
-        {/* Degree select provides the automatic IHK/HWK reduction months. */}
-        <SchoolDegreeReductionSelect
-          value={schoolDegreeId ?? ""}
-          onChange={handleSchoolDegreeSelect}
-        />
-        <QualificationReductions
-          value={qualificationSelection}
-          onChange={setQualificationSelection}
-          onTotalChange={setQualificationTotals}
-        />
-        {showLegalHint && (
-          <p className="text-xs text-amber-700" role="note">
-            {t("qualifications.legalHint")}
-          </p>
-        )}
-        <ResultCard values={formValues} />
-        <Button
-          onClick={handleSaveAsPDF}
-          disabled={isGeneratingPDF}
-          variant="brand"
-          size="lg"
-          className="w-full max-w-2xl rounded-xl"
-        >
-          {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
-        </Button>
-      </main>
-      {pdfBytes && <PDFViewer pdfBytes={pdfBytes} onClose={handleClosePDF} />}
-    </>
+    <Suspense fallback={<LoadingFallback />}>
+      <WelcomePage />
+    </Suspense>
   );
 }

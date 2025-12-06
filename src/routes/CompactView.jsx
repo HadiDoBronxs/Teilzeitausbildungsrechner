@@ -1,0 +1,117 @@
+// CompactView.jsx – Compact design mode showing all inputs in a single view.
+// Uses the same useCalculator hook and input components as the original calculator.
+// Desktop: Shows results in a sidebar. Mobile: Shows results in a bottom bar when ResultCard is not visible.
+import { useTranslation } from "react-i18next";
+import FulltimeHoursInput from "../components/FulltimeHoursInput.jsx";
+import ParttimeHoursInput from "../components/ParttimeHoursInput.jsx";
+import RegularDurationInput from "../components/RegularDurationInput.jsx";
+import SchoolDegreeReductionSelect from "../components/SchoolDegreeReductionSelect.jsx";
+import QualificationReductions from "../components/QualificationReductions.jsx";
+import LanguageToggle from "../components/LanguageToggle.jsx";
+import ResultCard from "../features/calcDuration/ResultCard.jsx";
+import ResultSidebar from "../components/ResultSidebar.jsx";
+import ResultBottomBar from "../components/ResultBottomBar.jsx";
+import PDFViewer from "../components/PDFViewer.jsx";
+import Button from "../components/ui/Button.jsx";
+import { useCalculator } from "../features/calcDuration/useCalculator.js";
+
+const MAIN_ID = "main";
+const MAIN_HEADING_ID = "main-heading";
+const RESULT_CARD_ID = "result-card";
+
+/**
+ * CompactView component - compact design mode for the calculator.
+ * Displays all input fields in a single view, similar to the original calculator.
+ * Uses the shared useCalculator hook and input components (no logic duplication).
+ * Responsive layout:
+ * - Desktop: Main content + sidebar with simplified results
+ * - Mobile: Main content + bottom bar (when ResultCard not visible)
+ */
+export default function CompactView() {
+  const {
+    t,
+    schoolDegreeId,
+    fulltimeHours,
+    handleSchoolDegreeSelect,
+    handleFulltimeHoursChange,
+    handleParttimeHoursChange,
+    setFullDurationMonths,
+    qualificationSelection,
+    setQualificationSelection,
+    setQualificationTotals,
+    formValues,
+    showLegalHint,
+    pdfBytes,
+    isGeneratingPDF,
+    handleSaveAsPDF,
+    handleClosePDF,
+  } = useCalculator();
+
+  return (
+    <>
+      <a className="skip-link" href={`#${MAIN_ID}`}>
+        {t("skipToMain")}
+      </a>
+      <main
+        id={MAIN_ID}
+        tabIndex="-1"
+        aria-labelledby={MAIN_HEADING_ID}
+        className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
+      >
+        {/* Desktop layout: main content + sidebar */}
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row lg:items-start lg:gap-8">
+          {/* Main content area */}
+          <div className="w-full max-w-2xl flex flex-col items-center gap-4 lg:max-w-none lg:flex-1">
+            <div className="w-full max-w-2xl flex flex-col items-center gap-4">
+              <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
+                {t("app.title")}
+              </h1>
+              <LanguageToggle />
+            </div>
+            <FulltimeHoursInput onValueChange={handleFulltimeHoursChange} />
+            <ParttimeHoursInput
+              fulltimeHours={fulltimeHours}
+              onValueChange={handleParttimeHoursChange}
+            />
+            <RegularDurationInput onValueChange={setFullDurationMonths} />
+            {/* Degree select provides the automatic IHK/HWK reduction months. */}
+            <SchoolDegreeReductionSelect
+              value={schoolDegreeId ?? ""}
+              onChange={handleSchoolDegreeSelect}
+            />
+            <QualificationReductions
+              value={qualificationSelection}
+              onChange={setQualificationSelection}
+              onTotalChange={setQualificationTotals}
+            />
+            {showLegalHint && (
+              <p className="text-xs text-amber-700" role="note">
+                {t("qualifications.legalHint")}
+              </p>
+            )}
+            <div id={RESULT_CARD_ID} className="w-full max-w-2xl">
+              <ResultCard values={formValues} />
+            </div>
+            <Button
+              onClick={handleSaveAsPDF}
+              disabled={isGeneratingPDF}
+              variant="brand"
+              size="lg"
+              className="w-full max-w-2xl rounded-xl"
+            >
+              {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
+            </Button>
+          </div>
+
+          {/* Desktop sidebar with simplified results */}
+          <ResultSidebar values={formValues} />
+        </div>
+
+        {/* Mobile bottom bar (only shows when ResultCard is not visible) */}
+        <ResultBottomBar values={formValues} resultCardId={RESULT_CARD_ID} />
+      </main>
+      {pdfBytes && <PDFViewer pdfBytes={pdfBytes} onClose={handleClosePDF} />}
+    </>
+  );
+}
+

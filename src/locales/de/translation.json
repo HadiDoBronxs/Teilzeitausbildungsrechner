@@ -68,6 +68,20 @@
             "en": "Englisch"
         }
     },
+    "welcome": {
+        "title": "Teilzeit-Ausbildungs-Rechner",
+        "intro": "Willkommen beim Teilzeit-Ausbildungs-Rechner. Wählen Sie das Design, das am besten zu Ihnen passt.",
+        "question": "Wollen Sie das kompakte Design nutzen oder das geführte Design?",
+        "designs": {
+            "compact": "Kompaktes Design",
+            "tour": "Geführtes Design"
+        },
+        "legalDisclaimer": "Hinweis: Dieser Rechner dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt.",
+        "faqPlaceholder": "FAQ-Bereich (wird später implementiert)"
+    },
+    "tour": {
+        "comingSoon": "Das geführte Design wird bald verfügbar sein."
+    },
     "result": {
         "headline": "Ihre Ausbildung dauert {{value}}.",
         "compare": {
