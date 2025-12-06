@@ -130,9 +130,56 @@ export default function ResultSidebar({ values }) {
   // Calculate result from form values, memoized to avoid unnecessary recalculations
   const result = useMemo(() => calculateResult(values), [values]);
 
-  // Early return if calculation is invalid or not allowed
+  // Determine error message key based on result error code
+  // Falls back to generic error if no specific error code is provided
+  const errorKey = result?.errorCode
+    ? `result.error.${result.errorCode}`
+    : "result.error.generic";
+
+  // Render error state when calculation is not allowed (e.g., invalid inputs, calculation errors)
+  // This ensures navigation buttons remain accessible even when calculation fails
   if (!result || result.allowed === false) {
-    return null;
+    return (
+      <aside className="w-full min-w-0" aria-label={t("result.error.title")}>
+        <Card className="space-y-4 xl:space-y-6" padding="p-4 xl:p-6" variant="error" role="status">
+          <header className="space-y-2">
+            <h2 className="text-lg xl:text-xl 2xl:text-2xl font-bold text-red-700 break-words">
+              {t("result.error.title")}
+            </h2>
+            <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
+          </header>
+
+          {/* Navigation buttons (placeholder - not yet implemented) */}
+          {/* These remain visible even in error state to maintain accessibility */}
+          <div className="space-y-2 pt-4 border-t border-slate-200">
+            <Button
+              onClick={() => {
+                // Placeholder: Navigation to top will be implemented later
+              }}
+              variant="ghost"
+              size="sm"
+              disabled
+              ariaLabel={`${t("result.navigation.scrollToTop")} (${t("result.navigation.comingSoon")})`}
+              className="w-full justify-start"
+            >
+              ↑ {t("result.navigation.scrollToTop")}
+            </Button>
+            <Button
+              onClick={() => {
+                // Placeholder: Navigation to result card will be implemented later
+              }}
+              variant="ghost"
+              size="sm"
+              disabled
+              ariaLabel={`${t("result.navigation.scrollToResults")} (${t("result.navigation.comingSoon")})`}
+              className="w-full justify-start"
+            >
+              ↓ {t("result.navigation.scrollToResults")}
+            </Button>
+          </div>
+        </Card>
+      </aside>
+    );
   }
 
   // Extract baseline months (preferring effective over standard fulltime months)

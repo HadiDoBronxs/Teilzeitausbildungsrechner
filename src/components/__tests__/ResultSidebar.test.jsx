@@ -16,6 +16,13 @@ const mockT = (key, opts = {}) => {
   if (key === "result.months") {
     return `${opts.value} months`;
   }
+  if (key === "result.error.title") return "Calculation not possible";
+  if (key === "result.error.generic") return "Please check your inputs.";
+  if (key === "result.error.minFactor") return "Part-time must be at least 50% of full-time.";
+  if (key === "result.error.invalidHours") return "Please enter valid hour values for full-time and part-time.";
+  if (key === "result.navigation.scrollToTop") return "Scroll to top";
+  if (key === "result.navigation.scrollToResults") return "Scroll to results";
+  if (key === "result.navigation.comingSoon") return "Coming soon";
   return key;
 };
 
@@ -62,19 +69,29 @@ describe("ResultSidebar", () => {
     });
   });
 
-  it("renders nothing when values are not provided", () => {
-    const { container } = render(<ResultSidebar values={null} />);
-    expect(container.firstChild).toBeNull();
+  it("renders error state when values are not provided", () => {
+    render(<ResultSidebar values={null} />);
+    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(screen.getByText("Calculation not possible")).toBeInTheDocument();
+    expect(screen.getByText("Please check your inputs.")).toBeInTheDocument();
+    // Navigation buttons should still be visible
+    expect(screen.getByRole("button", { name: /Scroll to top/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Scroll to results/ })).toBeInTheDocument();
   });
 
-  it("renders nothing when calculation is invalid", () => {
+  it("renders error state when calculation is invalid", () => {
     const invalidValues = {
       weeklyFull: null,
       weeklyPart: null,
       fullDurationMonths: 36,
     };
-    const { container } = render(<ResultSidebar values={invalidValues} />);
-    expect(container.firstChild).toBeNull();
+    render(<ResultSidebar values={invalidValues} />);
+    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(screen.getByText("Calculation not possible")).toBeInTheDocument();
+    expect(screen.getByText("Please check your inputs.")).toBeInTheDocument();
+    // Navigation buttons should still be visible
+    expect(screen.getByRole("button", { name: /Scroll to top/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Scroll to results/ })).toBeInTheDocument();
   });
 
   it("renders sidebar with results when values are valid", () => {
@@ -157,5 +174,39 @@ describe("ResultSidebar", () => {
 
     // Should display "0 months" (not "+0 months")
     expect(screen.getByText("0 months")).toBeInTheDocument();
+  });
+
+  it("displays specific error message when errorCode is provided", () => {
+    vi.mocked(readFormAndCalc).mockReturnValueOnce({
+      allowed: false,
+      errorCode: "minFactor",
+    });
+
+    const invalidValues = {
+      weeklyFull: 40,
+      weeklyPart: 15, // Below 50% threshold
+      fullDurationMonths: 36,
+    };
+
+    render(<ResultSidebar values={invalidValues} />);
+    expect(screen.getByText("Calculation not possible")).toBeInTheDocument();
+    expect(screen.getByText("Part-time must be at least 50% of full-time.")).toBeInTheDocument();
+  });
+
+  it("displays navigation buttons in error state", () => {
+    const invalidValues = {
+      weeklyFull: null,
+      weeklyPart: null,
+      fullDurationMonths: 36,
+    };
+    render(<ResultSidebar values={invalidValues} />);
+
+    const navigationButtons = screen.getAllByRole("button");
+    expect(navigationButtons).toHaveLength(2);
+    expect(navigationButtons[0]).toHaveTextContent("Scroll to top");
+    expect(navigationButtons[1]).toHaveTextContent("Scroll to results");
+    // Both buttons should be disabled (placeholders)
+    expect(navigationButtons[0]).toBeDisabled();
+    expect(navigationButtons[1]).toBeDisabled();
   });
 });
