@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button from "./ui/Button";
 
 /**
  * Barrierefreier Tooltip für Erklärungen und Hilfetexte
  */
-export default function Tooltip({ 
-  contentKey, 
+export default function Tooltip({
+  contentKey,
   position = "top",
-  className = "" 
+  className = ""
 }) {
   const { t } = useTranslation();
   const [isVisible, setIsVisible] = useState(false);
@@ -20,7 +21,7 @@ export default function Tooltip({
 
     const handleClickOutside = (event) => {
       if (tooltipRef.current && !tooltipRef.current.contains(event.target) &&
-          triggerRef.current && !triggerRef.current.contains(event.target)) {
+        triggerRef.current && !triggerRef.current.contains(event.target)) {
         setIsVisible(false);
       }
     };
@@ -63,21 +64,21 @@ export default function Tooltip({
   return (
     <div className={`relative inline-block ${className}`}>
       {/* Trigger Button */}
-      <button
+      <Button
         ref={triggerRef}
-        type="button"
-        className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+        variant="icon"
+        className="w-5 h-5 bg-blue-100 text-blue-600 hover:bg-blue-200"
         aria-describedby={isVisible ? `tooltip-${contentKey}` : undefined}
         onClick={toggleTooltip}
         onMouseEnter={openTooltip}
         onMouseLeave={closeTooltip}
         onFocus={openTooltip}
         onBlur={closeTooltip}
-        aria-expanded={isVisible}
+        ariaExpanded={isVisible}
       >
         <span className="text-xs font-bold">i</span>
         <span className="sr-only">{t('tooltip.info')}</span>
-      </button>
+      </Button>
 
       {/* Tooltip Content */}
       {isVisible && (
@@ -92,7 +93,7 @@ export default function Tooltip({
           `}
         >
           <p>{t(contentKey)}</p>
-          
+
           {/* Tooltip Pfeil */}
           <div className={`
             absolute w-2 h-2 bg-slate-800 transform rotate-45

@@ -39,6 +39,8 @@ Der Container liefert den Produktionsbuild über Nginx aus und ist anschließend
 - `public/` – statische Assets
 - `vite.config.js` – Vite-Konfiguration mit React-Plugin
 
+Hinweis: Eine detaillierte Beschreibung der Architektur, der Ordnerstruktur und des Component-Designs findest du in [ARCHITECTURE.md](./ARCHITECTURE.md).
+
 ## Weiterführende Links
 - [Vite Dokumentation](https://vite.dev)
 - [React Dokumentation](https://react.dev)
