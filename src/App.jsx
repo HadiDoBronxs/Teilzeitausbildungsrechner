@@ -1,5 +1,4 @@
 import { Suspense, lazy } from "react";
-import { useTranslation } from "react-i18next";
 import "./App.css";
 import FulltimeHoursInput from "./components/FulltimeHoursInput.jsx";
 import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx";
