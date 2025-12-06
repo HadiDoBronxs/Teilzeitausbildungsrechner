@@ -38,8 +38,19 @@ export default function WelcomePage() {
       >
         <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
           {/* Header with title and language toggle */}
-          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h1 id={MAIN_HEADING_ID} className="text-3xl md:text-4xl font-bold">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h1 
+              id={MAIN_HEADING_ID} 
+              className="text-3xl md:text-4xl font-bold text-center sm:text-left min-h-[4.5rem] md:min-h-[5.5rem] max-w-xs sm:max-w-none mx-auto sm:mx-0 line-clamp-3"
+              style={{ 
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                wordBreak: 'break-word',
+                hyphens: 'auto'
+              }}
+            >
               {t("welcome.title")}
             </h1>
             <LanguageToggle />
@@ -54,7 +65,7 @@ export default function WelcomePage() {
 
           {/* Design selection question */}
           <Card className="space-y-6" padding="p-6 sm:p-8">
-            <h2 className="text-xl md:text-2xl font-semibold text-slate-900">
+            <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
               {t("welcome.question")}
             </h2>
 

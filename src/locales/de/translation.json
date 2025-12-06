@@ -61,17 +61,17 @@
         "other": "Sonstiger Abschluss"
     },
     "app": {
-        "title": "Teilzeit-Ausbildungs-Rechner",
+        "title": "Teilzeit- Ausbildungs- Rechner",
         "languages": "Sprache",
         "languageNames": {
-            "de": "Deutsch",
-            "en": "Englisch"
+            "de": "🇩🇪 Deutsch",
+            "en": "🇬🇧 Englisch"
         }
     },
     "welcome": {
-        "title": "Teilzeitausbildungsrechner",
+        "title": "Teilzeit\u00ADausbildungs\u00ADrechner",
         "intro": "Willkommen beim Teilzeitausbildungsrechner. Wählen Sie das Design, das am besten zu Ihnen passt.",
-        "question": "Wollen Sie das kompakte Design nutzen oder das geführte Design?",
+        "question": "Wollen Sie das kompakte Design nutzen oder das geführte Design? Für die meisten Nutzer*innen empfehlen wir das geführte Design.",
         "designs": {
             "compact": "Kompaktes Design",
             "tour": "Geführtes Design"

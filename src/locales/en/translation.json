@@ -64,14 +64,14 @@
     "title": "Part-time Training Calculator",
     "languages": "Language",
     "languageNames": {
-      "de": "German",
-      "en": "English"
+      "de": "🇩🇪 German",
+      "en": "🇬🇧 English"
     }
   },
   "welcome": {
     "title": "Part-time Training Calculator",
     "intro": "Welcome to the Part-time Training Calculator. Choose the design that best suits you.",
-    "question": "Do you want to use the compact design or the guided design?",
+    "question": "Do you want to use the compact design or the guided design? For most users we recommend the guided design.",
     "designs": {
       "compact": "Compact Design",
       "tour": "Guided Design"
