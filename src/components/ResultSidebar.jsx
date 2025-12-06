@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import readFormAndCalc from "../features/calcDuration/readFormAndCalc.js";
 import Card from "./ui/Card.jsx";
 import StatItem from "./ui/StatItem.jsx";
+import Button from "./ui/Button.jsx";
 
 // Helper to display delta months with an explicit sign for readability.
 function formatDelta(value) {
@@ -96,6 +97,34 @@ export default function ResultSidebar({ values }) {
               emphasisLevel="strong"
             />
           ))}
+        </div>
+
+        {/* Navigation buttons (placeholder - not yet implemented) */}
+        <div className="space-y-2 pt-4 border-t border-slate-200">
+          <Button
+            onClick={() => {
+              // Placeholder: Navigation to top will be implemented later
+            }}
+            variant="ghost"
+            size="sm"
+            disabled
+            ariaLabel={`${t("result.navigation.scrollToTop")} (${t("result.navigation.comingSoon")})`}
+            className="w-full justify-start"
+          >
+            ↑ {t("result.navigation.scrollToTop")}
+          </Button>
+          <Button
+            onClick={() => {
+              // Placeholder: Navigation to result card will be implemented later
+            }}
+            variant="ghost"
+            size="sm"
+            disabled
+            ariaLabel={`${t("result.navigation.scrollToResults")} (${t("result.navigation.comingSoon")})`}
+            className="w-full justify-start"
+          >
+            ↓ {t("result.navigation.scrollToResults")}
+          </Button>
         </div>
       </Card>
     </aside>

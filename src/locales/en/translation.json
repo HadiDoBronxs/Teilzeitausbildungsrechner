@@ -91,6 +91,11 @@
     },
     "factor": "Factor: {{pct}} %",
     "howCalculated": "How is this calculated?",
+    "navigation": {
+      "scrollToTop": "Scroll to top",
+      "scrollToResults": "Scroll to results",
+      "comingSoon": "Coming soon"
+    },
     "labels": {
       "full": "Full-time",
       "part": "Your part-time",

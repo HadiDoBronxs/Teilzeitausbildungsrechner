@@ -91,6 +91,11 @@
         },
         "factor": "Faktor: {{pct}} %",
         "howCalculated": "Wie wird das berechnet?",
+        "navigation": {
+            "scrollToTop": "Zum Anfang",
+            "scrollToResults": "Zu Ergebnissen",
+            "comingSoon": "Bald verfügbar"
+        },
         "labels": {
             "full": "Vollzeit",
             "part": "Ihre Teilzeit",
