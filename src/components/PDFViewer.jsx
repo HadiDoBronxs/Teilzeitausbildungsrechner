@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as pdfjsLib from "pdfjs-dist";
+import Button from "./ui/Button";
 
 /** 
  * Set up PDF.js worker - use the worker file from public folder.
@@ -60,7 +61,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       try {
         setLoading(true);
         setError(null);
-        
+
         // Convert PDF bytes to a Blob URL to avoid ArrayBuffer detachment issues
         // This approach creates a URL that can be loaded without transferring the buffer
         let blob;
@@ -71,23 +72,23 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         } else {
           blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
         }
-        
+
         const blobUrl = URL.createObjectURL(blob);
-        
+
         try {
-          const loadingTask = pdfjsLib.getDocument({ 
+          const loadingTask = pdfjsLib.getDocument({
             url: blobUrl,
             useWorkerFetch: false,
             isEvalSupported: false,
             verbosity: 0,
             useSystemFonts: false,
           });
-          
+
           const pdf = await loadingTask.promise;
           setPdfDoc(pdf);
           setNumPages(pdf.numPages);
           setCurrentPage(1);
-          
+
           // Clean up the blob URL after loading
           URL.revokeObjectURL(blobUrl);
         } catch (loadError) {
@@ -169,13 +170,13 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         renderTaskRef.current = renderTask;
 
         await renderTask.promise;
-        
+
         // Clear the ref after successful render
         renderTaskRef.current = null;
       } catch (err) {
         // Clear the ref on error
         renderTaskRef.current = null;
-        
+
         // Only set error if it's not a cancellation error
         if (err.name !== 'RenderingCancelledException') {
           console.error("Error rendering page:", err);
@@ -281,7 +282,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
+
       // Clean up the blob URL after a short delay
       setTimeout(cleanupSaveResources, 100, url);
     } catch (err) {
@@ -340,11 +341,11 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       function cleanupAfterPrint() {
         if (hasCleanedUp) return;
         hasCleanedUp = true;
-        
+
         if (cleanupTimeout) {
           clearTimeout(cleanupTimeout);
         }
-        
+
         try {
           printWindow.close();
         } catch (_err) {
@@ -359,7 +360,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
 
       // Set up event listeners
       window.addEventListener('afterprint', handleAfterPrint);
-      
+
       // Fallback timeout: clean up after 5 minutes
       cleanupTimeout = setTimeout(function fallbackCleanup() {
         if (!hasCleanedUp) {
@@ -394,11 +395,11 @@ export default function PDFViewer({ pdfBytes, onClose }) {
     function cleanupAfterPrint() {
       if (hasCleanedUp) return;
       hasCleanedUp = true;
-      
+
       if (cleanupTimeout) {
         clearTimeout(cleanupTimeout);
       }
-      
+
       cleanupPrintResources(iframe, url);
     }
 
@@ -409,7 +410,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
     // Set up event listeners on the iframe's window
     if (iframe.contentWindow) {
       iframe.contentWindow.addEventListener('afterprint', handleAfterPrint);
-      
+
       // Also listen on the main window as fallback
       window.addEventListener('afterprint', handleAfterPrint);
     }
@@ -449,7 +450,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       try {
         // Set up event listeners before triggering print
         setupPrintEventListeners(iframe, url);
-        
+
         // Trigger print dialog
         attemptIframePrint(iframe, url);
       } catch (printErr) {
@@ -472,7 +473,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       try {
         // Set up event listeners before triggering print
         setupPrintEventListeners(iframe, url);
-        
+
         // Trigger print dialog
         attemptIframePrint(iframe, url);
       } catch (_printErr) {
@@ -490,7 +491,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
    */
   function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-           (window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
+      (window.matchMedia && window.matchMedia('(max-width: 768px)').matches);
   }
 
   /**
@@ -503,22 +504,22 @@ export default function PDFViewer({ pdfBytes, onClose }) {
     try {
       const blob = createPDFBlob();
       const url = URL.createObjectURL(blob);
-      
+
       // On mobile devices, open PDF in new window/tab for better compatibility
       if (isMobileDevice()) {
         const printWindow = window.open(url, '_blank');
         if (printWindow) {
           // Try to trigger print after PDF loads
           let printAttempted = false;
-          
+
           function attemptMobilePrint() {
             if (printAttempted) return;
             printAttempted = true;
-            
+
             try {
               // Try to trigger print dialog
               printWindow.print();
-              
+
               // Set up cleanup after print
               function handleAfterPrint() {
                 try {
@@ -529,9 +530,9 @@ export default function PDFViewer({ pdfBytes, onClose }) {
                 URL.revokeObjectURL(url);
                 window.removeEventListener('afterprint', handleAfterPrint);
               }
-              
+
               window.addEventListener('afterprint', handleAfterPrint);
-              
+
               // Fallback cleanup after 5 minutes
               setTimeout(function fallbackCleanup() {
                 window.removeEventListener('afterprint', handleAfterPrint);
@@ -547,10 +548,10 @@ export default function PDFViewer({ pdfBytes, onClose }) {
               }, 60000);
             }
           }
-          
+
           // Try to print after a short delay to allow PDF to load
           setTimeout(attemptMobilePrint, 1000);
-          
+
           // Also try when window loads (if event is available)
           if (printWindow.addEventListener) {
             printWindow.addEventListener('load', attemptMobilePrint);
@@ -562,7 +563,7 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         }
         return;
       }
-      
+
       // Desktop: Use iframe approach
       const iframe = document.createElement('iframe');
       iframe.style.position = 'fixed';
@@ -572,14 +573,14 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       iframe.style.height = '0';
       iframe.style.border = 'none';
       iframe.src = url;
-      
+
       document.body.appendChild(iframe);
-      
+
       // Wait for the PDF to load, then trigger print
       iframe.onload = function onIframeLoad() {
         handleIframeLoad(iframe, url);
       };
-      
+
       // Fallback timeout in case onload doesn't fire
       setTimeout(function printTimeout() {
         handlePrintTimeout(iframe, url);
@@ -605,12 +606,12 @@ export default function PDFViewer({ pdfBytes, onClose }) {
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50">
         <div className="bg-white rounded-lg p-6 max-w-md">
           <p className="text-red-700 mb-4">{error}</p>
-          <button
+          <Button
             onClick={onClose}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            variant="brand"
           >
             {t("pdfViewer.close")}
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -623,84 +624,87 @@ export default function PDFViewer({ pdfBytes, onClose }) {
         {/* Top row: Page navigation and close button */}
         <div className="flex items-center justify-between px-2 py-2 sm:px-4">
           <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
-            <button
+            <Button
               onClick={goToPreviousPage}
               disabled={currentPage <= 1}
-              className="px-3 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation"
-              aria-label={t("pdfViewer.previousPage")}
+              variant="secondary"
+              className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 text-sm sm:text-base px-3"
+              ariaLabel={t("pdfViewer.previousPage")}
             >
               <span className="hidden sm:inline">{t("pdfViewer.previous")}</span>
               <span className="sm:hidden">‹</span>
-            </button>
+            </Button>
             <span className="text-xs sm:text-sm font-medium px-2 whitespace-nowrap">
               {currentPage} / {numPages}
             </span>
-            <button
+            <Button
               onClick={goToNextPage}
               disabled={currentPage >= numPages}
-              className="px-3 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation"
-              aria-label={t("pdfViewer.nextPage")}
+              variant="secondary"
+              className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 text-sm sm:text-base px-3"
+              ariaLabel={t("pdfViewer.nextPage")}
             >
               <span className="hidden sm:inline">{t("pdfViewer.next")}</span>
               <span className="sm:hidden">›</span>
-            </button>
+            </Button>
           </div>
-          <button
+          <Button
             onClick={onClose}
-            className="px-3 py-2 sm:px-4 sm:py-1 bg-red-600 rounded hover:bg-red-700 text-sm sm:text-base min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 touch-manipulation ml-2"
-            aria-label={t("pdfViewer.closeViewer")}
+            variant="destructive"
+            className="min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 text-sm sm:text-base px-3 ml-2"
+            ariaLabel={t("pdfViewer.closeViewer")}
           >
             <span className="hidden sm:inline">{t("pdfViewer.close")}</span>
             <span className="sm:hidden">✕</span>
-          </button>
+          </Button>
         </div>
-        
+
         {/* Bottom row: Zoom and actions */}
         <div className="flex items-center justify-between px-2 py-2 sm:px-4 border-t border-slate-700">
           <div className="flex items-center gap-2 sm:gap-4">
-            <button
-              type="button"
+            <Button
               onClick={zoomOut}
-              className="px-4 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 active:bg-slate-500 text-xl sm:text-base font-bold min-w-[48px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
-              aria-label={t("pdfViewer.zoomOut")}
+              variant="secondary"
+              className="min-w-[48px] min-h-[48px] sm:min-w-0 sm:min-h-0 text-xl sm:text-base font-bold px-3 select-none"
+              ariaLabel={t("pdfViewer.zoomOut")}
             >
               −
-            </button>
+            </Button>
             <span className="text-xs sm:text-sm font-medium min-w-[3.5rem] text-center">
               {Math.round(scale * 100)}%
             </span>
-            <button
-              type="button"
+            <Button
               onClick={zoomIn}
-              className="px-4 py-2 sm:px-3 sm:py-1 bg-slate-700 rounded hover:bg-slate-600 active:bg-slate-500 text-xl sm:text-base font-bold min-w-[48px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
-              aria-label={t("pdfViewer.zoomIn")}
+              variant="secondary"
+              className="min-w-[48px] min-h-[48px] sm:min-w-0 sm:min-h-0 text-xl sm:text-base font-bold px-3 select-none"
+              ariaLabel={t("pdfViewer.zoomIn")}
             >
               +
-            </button>
+            </Button>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
-            <button
-              type="button"
+            <Button
               onClick={handleSave}
-              className="px-3 py-2 sm:px-4 sm:py-1 bg-green-600 rounded hover:bg-green-700 active:bg-green-800 text-xs sm:text-base font-medium min-w-[50px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
-              aria-label={t("pdfViewer.savePDF")}
+              variant="success"
+              className="min-w-[50px] min-h-[48px] sm:min-w-0 sm:min-h-0 text-xs sm:text-base font-medium px-3 select-none"
+              ariaLabel={t("pdfViewer.savePDF")}
             >
               {t("pdfViewer.save")}
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
               onClick={handlePrint}
-              className="px-3 py-2 sm:px-4 sm:py-1 bg-blue-600 rounded hover:bg-blue-700 active:bg-blue-800 text-xs sm:text-base font-medium min-w-[50px] min-h-[48px] sm:min-w-0 sm:min-h-0 touch-manipulation select-none"
-              aria-label={t("pdfViewer.printPDF")}
+              variant="brand"
+              className="min-w-[50px] min-h-[48px] sm:min-w-0 sm:min-h-0 text-xs sm:text-base font-medium px-3 select-none"
+              ariaLabel={t("pdfViewer.printPDF")}
             >
               {t("pdfViewer.print")}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
 
       {/* PDF Canvas */}
-      <div 
+      <div
         className="flex-1 overflow-x-auto overflow-y-auto p-2 sm:p-4"
         style={{ touchAction: 'pan-x pan-y' }}
       >
