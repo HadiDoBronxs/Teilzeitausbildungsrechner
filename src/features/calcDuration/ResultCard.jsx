@@ -207,7 +207,8 @@ export default function ResultCard({ values, result: injectedResult }) {
           </header>
 
           {/* Primary metrics row (full/part/change). */}
-          <div className="grid gap-8 sm:grid-cols-3">
+          {/* Grid columns are equal width (1fr each) and items are centered within each cell */}
+          <div className="grid gap-8 sm:grid-cols-3 justify-items-center">
             {metrics.map((metric) => (
               <StatItem
                 key={metric.key}
