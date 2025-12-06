@@ -66,10 +66,24 @@ export default function CompactView() {
           {/* Main content area - centered calculator */}
           <div className="w-full flex flex-col items-center gap-4 mx-auto">
             <div className="w-full flex flex-col items-center gap-4">
+              {/* Back button above title */}
+              <div className="w-full flex items-center justify-between">
+                <Button
+                  onClick={() => {
+                    window.location.hash = "";
+                  }}
+                  variant="secondary"
+                  size="sm"
+                  ariaLabel={t("welcome.backButton")}
+                  className="self-start"
+                >
+                  ← {t("welcome.backButton")}
+                </Button>
+                <LanguageToggle />
+              </div>
               <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
                 {t("app.title")}
               </h1>
-              <LanguageToggle />
             </div>
             <FulltimeHoursInput onValueChange={handleFulltimeHoursChange} />
             <ParttimeHoursInput

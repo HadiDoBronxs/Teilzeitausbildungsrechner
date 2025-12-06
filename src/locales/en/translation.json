@@ -77,7 +77,8 @@
       "tour": "Guided Design"
     },
     "legalDisclaimer": "Note: This calculator is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company.",
-    "faqPlaceholder": "FAQ Area (to be implemented later)"
+    "faqPlaceholder": "FAQ Area (to be implemented later)",
+    "backButton": "Back to Welcome Page"
   },
   "tour": {
     "comingSoon": "The guided design will be available soon."

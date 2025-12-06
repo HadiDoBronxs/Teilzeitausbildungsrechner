@@ -77,7 +77,8 @@
             "tour": "Geführtes Design"
         },
         "legalDisclaimer": "Hinweis: Dieser Rechner dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt.",
-        "faqPlaceholder": "FAQ-Bereich (wird später implementiert)"
+        "faqPlaceholder": "FAQ-Bereich (wird später implementiert)",
+        "backButton": "Zurück zur Startseite"
     },
     "tour": {
         "comingSoon": "Das geführte Design wird bald verfügbar sein."
