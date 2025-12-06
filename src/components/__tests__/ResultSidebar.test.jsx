@@ -2,6 +2,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import readFormAndCalc from "../../features/calcDuration/readFormAndCalc.js";
 import ResultSidebar from "../ResultSidebar.jsx";
 
 // Mock react-i18next
@@ -25,7 +26,7 @@ vi.mock("react-i18next", () => ({
   })),
 }));
 
-// Mock readFormAndCalc
+// Mock readFormAndCalc - define mock function inline since vi.mock is hoisted
 vi.mock("../../features/calcDuration/readFormAndCalc.js", () => ({
   default: vi.fn((values) => {
     if (!values || !values.weeklyFull || !values.weeklyPart) {
@@ -45,6 +46,20 @@ vi.mock("../../features/calcDuration/readFormAndCalc.js", () => ({
 describe("ResultSidebar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Reset mock to default implementation
+    vi.mocked(readFormAndCalc).mockImplementation((values) => {
+      if (!values || !values.weeklyFull || !values.weeklyPart) {
+        return { allowed: false };
+      }
+      return {
+        allowed: true,
+        fulltimeMonths: 36,
+        effectiveFulltimeMonths: 36,
+        parttimeFinalMonths: 48,
+        deltaMonths: 12,
+        formatted: { parttime: "48 months" },
+      };
+    });
   });
 
   it("renders nothing when values are not provided", () => {
@@ -118,5 +133,29 @@ describe("ResultSidebar", () => {
     // We just verify the component renders correctly
     expect(aside).toBeInTheDocument();
     expect(aside).toHaveClass("w-full", "min-w-0");
+  });
+
+  it("displays zero delta correctly (formatDelta returns '0')", () => {
+    const validValues = {
+      weeklyFull: 40,
+      weeklyPart: 40, // Same hours = no change
+      fullDurationMonths: 36,
+      reductionMonths: 0,
+    };
+
+    // Mock readFormAndCalc to return deltaMonths: 0
+    vi.mocked(readFormAndCalc).mockReturnValueOnce({
+      allowed: true,
+      fulltimeMonths: 36,
+      effectiveFulltimeMonths: 36,
+      parttimeFinalMonths: 36,
+      deltaMonths: 0, // No change
+      formatted: { parttime: "36 months" },
+    });
+
+    render(<ResultSidebar values={validValues} />);
+
+    // Should display "0 months" (not "+0 months")
+    expect(screen.getByText("0 months")).toBeInTheDocument();
   });
 });

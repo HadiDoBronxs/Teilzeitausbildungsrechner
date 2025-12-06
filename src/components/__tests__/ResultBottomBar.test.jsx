@@ -177,4 +177,86 @@ describe("ResultBottomBar", () => {
       expect(mockGetElementById).toHaveBeenCalledWith("custom-card-id");
     });
   });
+
+  it("handles null element in visibility check", async () => {
+    mockGetElementById.mockReturnValue(null);
+
+    const validValues = {
+      weeklyFull: 40,
+      weeklyPart: 30,
+      fullDurationMonths: 36,
+      reductionMonths: 0,
+    };
+
+    const { container } = render(
+      <ResultBottomBar values={validValues} resultCardId="result-card" />
+    );
+
+    await waitFor(() => {
+      // When element is null, isElementVisible returns false, so bar should render
+      expect(screen.getByRole("status")).toBeInTheDocument();
+    });
+  });
+
+  it("handles window.innerWidth fallback to document.documentElement.clientWidth", async () => {
+    // Set window.innerWidth to undefined to trigger fallback
+    Object.defineProperty(window, "innerWidth", { value: undefined, writable: true });
+    Object.defineProperty(document.documentElement, "clientWidth", {
+      value: 1200,
+      writable: true,
+    });
+
+    mockGetBoundingClientRect.mockReturnValue({
+      top: -100, // Element not visible
+      left: 0,
+      bottom: -50,
+      right: 1000, // Less than clientWidth
+      width: 100,
+      height: 50,
+    });
+
+    const validValues = {
+      weeklyFull: 40,
+      weeklyPart: 30,
+      fullDurationMonths: 36,
+      reductionMonths: 0,
+    };
+
+    render(<ResultBottomBar values={validValues} resultCardId="result-card" />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("status")).toBeInTheDocument();
+    });
+  });
+
+  it("handles window.innerHeight fallback to document.documentElement.clientHeight", async () => {
+    // Set window.innerHeight to undefined to trigger fallback
+    Object.defineProperty(window, "innerHeight", { value: undefined, writable: true });
+    Object.defineProperty(document.documentElement, "clientHeight", {
+      value: 800,
+      writable: true,
+    });
+
+    mockGetBoundingClientRect.mockReturnValue({
+      top: -100, // Element not visible
+      left: 0,
+      bottom: -50, // Less than clientHeight
+      right: 100,
+      width: 100,
+      height: 50,
+    });
+
+    const validValues = {
+      weeklyFull: 40,
+      weeklyPart: 30,
+      fullDurationMonths: 36,
+      reductionMonths: 0,
+    };
+
+    render(<ResultBottomBar values={validValues} resultCardId="result-card" />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("status")).toBeInTheDocument();
+    });
+  });
 });

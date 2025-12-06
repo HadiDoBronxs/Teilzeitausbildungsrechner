@@ -126,4 +126,16 @@ describe("WelcomePage", () => {
     const skipLink = screen.getByText("Skip to main content");
     expect(skipLink).toHaveAttribute("href", "#main");
   });
+
+  it("does not navigate when tour design is clicked (disabled)", async () => {
+    const user = userEvent.setup();
+    const initialHash = window.location.hash;
+    render(<WelcomePage />);
+
+    const tourCard = screen.getByLabelText(/Guided Design/);
+    await user.click(tourCard);
+
+    // Hash should not change (tour is not implemented)
+    expect(window.location.hash).toBe(initialHash);
+  });
 });
