@@ -58,13 +58,14 @@ export default function CompactView() {
         className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
       >
         {/* Desktop layout: grid with centered calculator and sticky sidebar */}
-        {/* Sidebar columns use minmax to allow shrinking on smaller screens, calculator column is flexible */}
-        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[minmax(200px,280px)_1fr_minmax(200px,280px)] xl:grid-cols-[minmax(280px,320px)_1fr_minmax(280px,320px)] lg:gap-4 xl:gap-6 2xl:gap-8">
+        {/* Sidebar columns use minmax to allow shrinking on smaller screens, calculator column is constrained to prevent layout shift */}
+        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[minmax(200px,280px)_minmax(0,672px)_minmax(200px,280px)] xl:grid-cols-[minmax(280px,320px)_minmax(0,672px)_minmax(280px,320px)] lg:gap-4 xl:gap-6 2xl:gap-8">
           {/* Left spacer column (empty on desktop, matches sidebar width) */}
           <div className="hidden lg:block" />
 
           {/* Main content area - centered calculator */}
-          <div className="w-full flex flex-col items-center gap-4 mx-auto">
+          {/* Fixed max-width to prevent layout shift when switching languages */}
+          <div className="w-full max-w-2xl flex flex-col items-center gap-4 mx-auto">
             <div className="w-full flex flex-col items-center gap-4">
               {/* Back button above title */}
               <div className="w-full flex items-center justify-between">
