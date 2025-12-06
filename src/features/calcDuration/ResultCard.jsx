@@ -75,7 +75,7 @@ export default function ResultCard({ values, result: injectedResult }) {
       type="button"
       variant="primary"
       size="md"
-      className="w-full sm:flex-1"
+      className="w-full sm:flex-1 whitespace-nowrap"
       onClick={openTransparency}
       ariaHaspopup="dialog"
       ariaExpanded={showTransparency}
@@ -101,7 +101,7 @@ export default function ResultCard({ values, result: injectedResult }) {
   if (result && result.allowed === false) {
     return (
       <>
-        <Card className="w-full max-w-2xl" variant="error" role="status">
+        <Card className="w-full" variant="error" role="status">
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold text-red-700">
               {t("result.error.title")}
@@ -159,7 +159,7 @@ export default function ResultCard({ values, result: injectedResult }) {
 
   return (
     <>
-      <Card className="w-full max-w-2xl" role="status">
+      <Card className="w-full" role="status">
         <div className="space-y-6">
           <header className="space-y-3">
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
@@ -207,7 +207,7 @@ export default function ResultCard({ values, result: injectedResult }) {
           </header>
 
           {/* Primary metrics row (full/part/change). */}
-          <div className="grid gap-5 sm:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-3">
             {metrics.map((metric) => (
               <StatItem
                 key={metric.key}
@@ -218,7 +218,7 @@ export default function ResultCard({ values, result: injectedResult }) {
           </div>
 
           {/* Actions: transparency dialog + legal dialog (same visual weight). */}
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
             {transparencyButton}
             {legalButton}
           </div>

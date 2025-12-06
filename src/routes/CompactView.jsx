@@ -58,13 +58,14 @@ export default function CompactView() {
         className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
       >
         {/* Desktop layout: grid with centered calculator and sticky sidebar */}
-        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[320px_1fr_320px] lg:gap-8">
+        {/* Sidebar columns use minmax to allow shrinking on smaller screens, calculator column is flexible */}
+        <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[minmax(200px,280px)_1fr_minmax(200px,280px)] xl:grid-cols-[minmax(280px,320px)_1fr_minmax(280px,320px)] lg:gap-4 xl:gap-6 2xl:gap-8">
           {/* Left spacer column (empty on desktop, matches sidebar width) */}
           <div className="hidden lg:block" />
 
           {/* Main content area - centered calculator */}
-          <div className="w-full max-w-2xl flex flex-col items-center gap-4 mx-auto">
-            <div className="w-full max-w-2xl flex flex-col items-center gap-4">
+          <div className="w-full flex flex-col items-center gap-4 mx-auto">
+            <div className="w-full flex flex-col items-center gap-4">
               <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
                 {t("app.title")}
               </h1>
@@ -91,7 +92,7 @@ export default function CompactView() {
                 {t("qualifications.legalHint")}
               </p>
             )}
-            <div id={RESULT_CARD_ID} className="w-full max-w-2xl">
+            <div id={RESULT_CARD_ID} className="w-full">
               <ResultCard values={formValues} />
             </div>
             <Button
@@ -99,7 +100,7 @@ export default function CompactView() {
               disabled={isGeneratingPDF}
               variant="brand"
               size="lg"
-              className="w-full max-w-2xl rounded-xl"
+              className="w-full rounded-xl"
             >
               {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
             </Button>

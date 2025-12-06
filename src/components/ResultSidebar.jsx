@@ -76,12 +76,12 @@ export default function ResultSidebar({ values }) {
 
   return (
     <aside
-      className="w-full"
+      className="w-full min-w-0"
       aria-label={t("result.headline", { value: formattedParttime })}
     >
-      <Card className="space-y-6" padding="p-6" role="status">
+      <Card className="space-y-4 xl:space-y-6" padding="p-4 xl:p-6" role="status">
         <header className="space-y-2">
-          <h2 className="text-xl md:text-2xl font-bold text-slate-900">
+          <h2 className="text-lg xl:text-xl 2xl:text-2xl font-bold text-slate-900 break-words">
             {t("result.headline", { value: formattedParttime })}
           </h2>
         </header>
