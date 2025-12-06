@@ -188,9 +188,7 @@ describe("ResultBottomBar", () => {
       reductionMonths: 0,
     };
 
-    const { container } = render(
-      <ResultBottomBar values={validValues} resultCardId="result-card" />
-    );
+    render(<ResultBottomBar values={validValues} resultCardId="result-card" />);
 
     await waitFor(() => {
       // When element is null, isElementVisible returns false, so bar should render
