@@ -82,7 +82,18 @@ export default function CompactView() {
                 </Button>
                 <LanguageToggle />
               </div>
-              <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
+              <h1 
+                id={MAIN_HEADING_ID} 
+                className="text-2xl font-bold text-center min-h-[4.5rem] max-w-sm mx-auto line-clamp-3"
+                style={{ 
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  wordBreak: 'break-word',
+                  hyphens: 'auto'
+                }}
+              >
                 {t("app.title")}
               </h1>
             </div>
