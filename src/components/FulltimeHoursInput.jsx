@@ -25,9 +25,9 @@ export default function FulltimeHoursInput({ onValueChange }) {
   const describedBy = (!isValid ? FULLTIME_ERROR_ID : null) || undefined;
 
   return (
-    <div className="flex flex-col w-full gap-4 px-4 py-3 mx-auto sm:max-w-sm sm:px-0">
+    <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
       {/* Tooltip zum Label */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={FULLTIME_INPUT_NAME}
           className="font-semibold text-gray-800"

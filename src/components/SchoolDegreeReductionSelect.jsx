@@ -44,7 +44,7 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
 
   return (
     <div className="flex w-full max-w-sm flex-col gap-2 p-2">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={SELECT_ID}
           className="text-lg font-semibold text-gray-900"
