@@ -5,8 +5,10 @@ import Card from "../ui/Card.jsx";
 import LegalContent from "../legal/LegalContent.jsx";
 import TransparencyPanel from "../../features/calcDuration/TransparencyPanel.jsx";
 
+// DOM ID for the FAQ section (useful for skip links or programmatic scrolling)
 const FAQ_SECTION_ID = "faq";
 // Sample values to render the transparency dialog without needing live form inputs.
+// This allows users to see a full calculation explanation without filling in the form.
 const FAQ_SAMPLE_FORM = {
   weeklyFull: 40,
   weeklyPart: 30,
@@ -21,7 +23,9 @@ const FAQ_SAMPLE_FORM = {
   rounding: "round",
 };
 
-// Category -> item mapping keeps rendering logic simple and translation-driven.
+// FAQ category definitions.
+// Each category contains item keys which map to translation entries.
+// This keeps the FAQ fully translation-driven and easy to maintain.
 const FAQ_CATEGORIES = [
   {
     key: "calculation",
@@ -39,10 +43,15 @@ const FAQ_CATEGORIES = [
 
 export default function FAQSection() {
   const { t } = useTranslation();
+
+  // Tracks which FAQ items are expanded (accordion state)
   const [openIds, setOpenIds] = useState([]);
+
+  // Controls visibility of the legal and transparency dialogs
   const [showLegal, setShowLegal] = useState(false);
   const [showTransparency, setShowTransparency] = useState(false);
 
+  // Toggles a single FAQ accordion item
   function toggle(id) {
     setOpenIds((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
