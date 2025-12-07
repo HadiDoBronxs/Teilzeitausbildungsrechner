@@ -80,6 +80,8 @@
         "faqTitle": "FAQ",
         "faqIntro": "Kurze Antworten rund um den Teilzeitausbildungsrechner. Inklusive Leichter Sprache.",
         "faqAnchorLabel": "Zum FAQ-Bereich springen",
+        "faqLinkLegal": "Gesetzesgrundlage",
+        "faqLinkTransparency": "Wie wird das berechnet?",
         "faqPlaceholder": "FAQ-Bereich (wird später implementiert)",
         "backButton": "Zurück"
     },

@@ -1,8 +1,24 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import Dialog from "../ui/Dialog.jsx";
 import Card from "../ui/Card.jsx";
+import LegalContent from "../legal/LegalContent.jsx";
+import TransparencyPanel from "../../features/calcDuration/TransparencyPanel.jsx";
 
 const FAQ_SECTION_ID = "faq";
+const FAQ_SAMPLE_FORM = {
+  weeklyFull: 40,
+  weeklyPart: 30,
+  fullDurationMonths: 36,
+  reductionMonths: 6,
+  degreeReductionMonths: 6,
+  manualReductionMonths: 0,
+  qualificationReductionRawMonths: 0,
+  schoolDegreeLabelKey: "reductionOptions.abi",
+  maxTotalReduction: 12,
+  minDurationMonths: 18,
+  rounding: "round",
+};
 
 const FAQ_CATEGORIES = [
   {
@@ -22,6 +38,8 @@ const FAQ_CATEGORIES = [
 export default function FAQSection() {
   const { t } = useTranslation();
   const [openIds, setOpenIds] = useState([]);
+  const [showLegal, setShowLegal] = useState(false);
+  const [showTransparency, setShowTransparency] = useState(false);
 
   function toggle(id) {
     setOpenIds((prev) =>
@@ -47,6 +65,22 @@ export default function FAQSection() {
         <p className="text-sm text-slate-700 leading-relaxed">
           {t("welcome.faqIntro")}
         </p>
+        <div className="flex flex-wrap justify-center gap-3 pt-2">
+          <button
+            type="button"
+            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+            onClick={() => setShowLegal(true)}
+          >
+            {t("welcome.faqLinkLegal")}
+          </button>
+          <button
+            type="button"
+            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+            onClick={() => setShowTransparency(true)}
+          >
+            {t("welcome.faqLinkTransparency")}
+          </button>
+        </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
@@ -110,6 +144,31 @@ export default function FAQSection() {
           </section>
         ))}
       </div>
+
+      {showLegal ? <LegalDialog onClose={() => setShowLegal(false)} /> : null}
+      {showTransparency ? (
+        <TransparencyDialog onClose={() => setShowTransparency(false)} />
+      ) : null}
     </Card>
   );
+}
+
+function LegalDialog({ onClose }) {
+  const { t } = useTranslation();
+  return (
+    <Dialog
+      title={t("legal.title")}
+      isOpen
+      onClose={onClose}
+      maxWidth="max-w-4xl"
+      bodyClassName="max-h-[70vh] overflow-y-auto px-6 py-5"
+      closeLabel={t("transparency.close")}
+    >
+      <LegalContent />
+    </Dialog>
+  );
+}
+
+function TransparencyDialog({ onClose }) {
+  return <TransparencyPanel formValues={FAQ_SAMPLE_FORM} onClose={onClose} />;
 }
