@@ -6,6 +6,7 @@ import LegalContent from "../legal/LegalContent.jsx";
 import TransparencyPanel from "../../features/calcDuration/TransparencyPanel.jsx";
 
 const FAQ_SECTION_ID = "faq";
+// Sample values to render the transparency dialog without needing live form inputs.
 const FAQ_SAMPLE_FORM = {
   weeklyFull: 40,
   weeklyPart: 30,
@@ -20,6 +21,7 @@ const FAQ_SAMPLE_FORM = {
   rounding: "round",
 };
 
+// Category -> item mapping keeps rendering logic simple and translation-driven.
 const FAQ_CATEGORIES = [
   {
     key: "calculation",
@@ -110,6 +112,7 @@ export default function FAQSection() {
                       aria-controls={`faq-panel-${item}`}
                       id={`faq-trigger-${item}`}
                       onClick={() => toggle(item)}
+                      // Dark button for strong contrast; icon indicates state.
                       className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left rounded-xl bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 transition shadow-sm"
                     >
                       <span className="font-medium">
@@ -170,5 +173,7 @@ function LegalDialog({ onClose }) {
 }
 
 function TransparencyDialog({ onClose }) {
+  // Reuse the transparency panel from the calculator with fixed sample data,
+  // so FAQ users can see the full explanation without leaving the page.
   return <TransparencyPanel formValues={FAQ_SAMPLE_FORM} onClose={onClose} />;
 }
