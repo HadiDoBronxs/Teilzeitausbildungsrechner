@@ -35,10 +35,10 @@
         "dropdownDescription": "Wähle deinen höchsten Schulabschluss aus. Die passende Verkürzung wird übernommen.",
         "why": "Warum kann ich verkürzen?",
         "whyText": "Manche Schulabschlüsse enthalten bereits Teile der Ausbildung. Deshalb kann die IHK oder HWK die Ausbildungszeit verkürzen. Kammer und Betrieb entscheiden gemeinsam. In manchen Regionen gelten andere Regeln.",
-        "applied": "Verkürzung: −{{months}} Monate ({{label}})",
-        "totalApplied": "Verkürzung gesamt: −{{months}} Monate",
-        "manualApplied": "Zusätzliche Gründe: −{{months}} Monate",
-        "qualificationApplied": "Qualifikationen: −{{months}} Monate",
+        "applied": "Verkürzung: bis zu {{months}} Monate ({{label}})",
+        "totalApplied": "Verkürzung gesamt: bis zu {{months}} Monate",
+        "manualApplied": "Zusätzliche Gründe: bis zu {{months}} Monate",
+        "qualificationApplied": "Verkürzung: bis zu {{months}} Monate",
         "placeholder": "z. B. 6",
         "help": "Gib an, um wie viele Monate deine Ausbildung zusätzlich verkürzt werden soll (0, wenn keine weitere Verkürzung).",
         "error": {
@@ -61,12 +61,27 @@
         "other": "Sonstiger Abschluss"
     },
     "app": {
-        "title": "Teilzeit-Ausbildungs-Rechner",
+        "title": "Teilzeit- Ausbildungs- Rechner",
         "languages": "Sprache",
         "languageNames": {
-            "de": "Deutsch",
-            "en": "Englisch"
+            "de": "🇩🇪 Deutsch",
+            "en": "🇬🇧 Englisch"
         }
+    },
+    "welcome": {
+        "title": "Teilzeit\u00ADausbildungs\u00ADrechner",
+        "intro": "Willkommen beim Teilzeitausbildungsrechner. Wählen Sie das Design, das am besten zu Ihnen passt.",
+        "question": "Wollen Sie das kompakte Design nutzen oder das geführte Design? Für die meisten Nutzer*innen empfehlen wir das geführte Design.",
+        "designs": {
+            "compact": "Kompaktes Design",
+            "tour": "Geführtes Design"
+        },
+        "legalDisclaimer": "Hinweis: Dieser Rechner dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt.",
+        "faqPlaceholder": "FAQ-Bereich (wird später implementiert)",
+        "backButton": "Zurück"
+    },
+    "tour": {
+        "comingSoon": "Das geführte Design wird bald verfügbar sein."
     },
     "result": {
         "headline": "Ihre Ausbildung dauert {{value}}.",
@@ -76,6 +91,11 @@
         },
         "factor": "Faktor: {{pct}} %",
         "howCalculated": "Wie wird das berechnet?",
+        "navigation": {
+            "scrollToTop": "Zum Anfang",
+            "scrollToResults": "Zu Ergebnissen",
+            "comingSoon": "Bald verfügbar"
+        },
         "labels": {
             "full": "Vollzeit",
             "part": "Ihre Teilzeit",

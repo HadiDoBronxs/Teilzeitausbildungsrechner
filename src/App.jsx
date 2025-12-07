@@ -1,129 +1,98 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import "./App.css";
-import FulltimeHoursInput from "./components/FulltimeHoursInput.jsx";
-import ParttimeHoursInput from "./components/ParttimeHoursInput.jsx";
-import RegularDurationInput from "./components/RegularDurationInput.jsx";
-import SchoolDegreeReductionSelect from "./components/SchoolDegreeReductionSelect.jsx";
-import QualificationReductions from "./components/QualificationReductions.jsx";
-import LanguageToggle from "./components/LanguageToggle.jsx";
-import ResultCard from "./features/calcDuration/ResultCard.jsx";
-import PDFViewer from "./components/PDFViewer.jsx";
-import Button from "./components/ui/Button.jsx";
-import { useCalculator } from "./features/calcDuration/useCalculator.js";
+import { detectCurrentRoute } from "./utils/routing.js";
 
-// Lazy load the "satellite" pages to reduce the initial bundle size for the main calculator.
+// Lazy load route components to reduce initial bundle size and improve performance.
+// Components are only loaded when their route is accessed, not on initial page load.
 const LegalBasisPage = lazy(() => import("./routes/legal.jsx"));
 const Transparenz = lazy(() => import("./routes/transparenz.jsx"));
+const WelcomePage = lazy(() => import("./routes/WelcomePage.jsx"));
+const CompactView = lazy(() => import("./routes/CompactView.jsx"));
+const TourView = lazy(() => import("./routes/TourView.jsx"));
 
-const MAIN_ID = "main";
-const MAIN_HEADING_ID = "main-heading";
-
-const isTransparencyPath =
-  typeof window !== "undefined" &&
-  window.location.pathname.startsWith("/transparenz");
-const isLegalPath =
-  typeof window !== "undefined" && window.location.pathname.startsWith("/legal");
-
-// Minimal loading fallback
+/**
+ * Loading fallback component displayed while lazy-loaded route components are being fetched.
+ * Shows a centered loading message with a pulse animation to provide visual feedback.
+ * This is a simple fallback - more sophisticated loading states can be added per route if needed.
+ *
+ * @returns {JSX.Element} Loading indicator component
+ */
 const LoadingFallback = () => (
   <div className="flex h-screen items-center justify-center">
     <div className="text-slate-500 font-medium animate-pulse">Loading...</div>
   </div>
 );
 
-export default function App() {
-  // Render the dedicated transparency route when accessed directly, otherwise fall back to the calculator.
-  if (isTransparencyPath) {
-    return (
-      <Suspense fallback={<LoadingFallback />}>
-        <Transparenz />
-      </Suspense>
-    );
+/**
+ * Handles hash change events and updates the current route accordingly.
+ * Listens for browser navigation events (back/forward buttons, hash changes)
+ * and synchronizes the application state with the URL.
+ *
+ * @param {Function} setCurrentRoute - State setter function to update the current route
+ */
+function setupHashChangeListener(setCurrentRoute) {
+  function handleHashChange() {
+    // Re-detect route when hash changes (e.g., user clicks back/forward or changes hash)
+    const newRoute = detectCurrentRoute();
+    setCurrentRoute(newRoute);
   }
-  // Serve the legal basis placeholder on /legal so the link can ship ahead of the finalized content.
-  if (isLegalPath) {
-    return (
-      <Suspense fallback={<LoadingFallback />}>
-        <LegalBasisPage />
-      </Suspense>
-    );
-  }
-  return <CalculatorApp />;
+
+  // Listen for hash changes (browser navigation, programmatic hash changes)
+  window.addEventListener("hashchange", handleHashChange);
+
+  // Return cleanup function to remove event listener when component unmounts
+  return () => {
+    window.removeEventListener("hashchange", handleHashChange);
+  };
 }
 
-function CalculatorApp() {
-  const {
-    t,
-    schoolDegreeId,
-    fulltimeHours,
-    // (parttimeHours is handled inside, but we need it if we wanted to show it ?)
-    // actually ParttimeHoursInput needs onValueChange, not value usually, but let's check
-    // Hook returns: handleParttimeHoursChange
-    handleSchoolDegreeSelect,
-    handleFulltimeHoursChange,
-    handleParttimeHoursChange,
-    setFullDurationMonths,
-    qualificationSelection,
-    setQualificationSelection,
-    setQualificationTotals,
-    formValues,
-    showLegalHint,
-    pdfBytes,
-    isGeneratingPDF,
-    handleSaveAsPDF,
-    handleClosePDF,
-  } = useCalculator();
+/**
+ * Route configuration mapping route names to their corresponding components.
+ * This centralizes route-to-component mapping for easier maintenance.
+ */
+const ROUTE_COMPONENTS = {
+  transparenz: Transparenz,
+  legal: LegalBasisPage,
+  compact: CompactView,
+  tour: TourView,
+  welcome: WelcomePage,
+};
+
+/**
+ * App component - Main routing logic using hash-based routing.
+ *
+ * Routing Strategy:
+ * - Pathname-based routes: /transparenz, /legal (for direct access and legacy support)
+ * - Hash-based routes: #compact, #tour (for design mode selection)
+ * - Default: Welcome page (when no hash or pathname route is present)
+ *
+ * Why hash-based routing?
+ * - Works well in iframe environments (common for embedded calculators)
+ * - Doesn't require React Router dependency (reduces bundle size)
+ * - Simple to implement and maintain
+ * - Supports browser back/forward navigation
+ *
+ * Props: None (uses URL-based routing)
+ */
+export default function App() {
+  // Initialize route state by detecting the current route from URL
+  // Uses function form of useState to avoid recalculating on every render
+  const [currentRoute, setCurrentRoute] = useState(detectCurrentRoute);
+
+  // Set up hash change listener to update route when URL hash changes
+  // This enables browser back/forward buttons and programmatic navigation
+  useEffect(() => {
+    return setupHashChangeListener(setCurrentRoute);
+  }, []);
+
+  // Render the appropriate route component based on current route
+  // Check if route has a specific component mapping, otherwise default to welcome
+  // Wrap in Suspense for lazy loading with consistent loading fallback
+  const RouteComponent = ROUTE_COMPONENTS[currentRoute] || ROUTE_COMPONENTS.welcome;
 
   return (
-    <>
-      <a className="skip-link" href={`#${MAIN_ID}`}>
-        {t("skipToMain")}
-      </a>
-      <main
-        id={MAIN_ID}
-        tabIndex="-1"
-        aria-labelledby={MAIN_HEADING_ID}
-        className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
-      >
-        <div className="w-full max-w-2xl flex flex-col items-center gap-4">
-          <h1 id={MAIN_HEADING_ID} className="text-2xl font-bold text-center">
-            {t("app.title")}
-          </h1>
-          <LanguageToggle />
-        </div>
-        <FulltimeHoursInput onValueChange={handleFulltimeHoursChange} />
-        <ParttimeHoursInput
-          fulltimeHours={fulltimeHours}
-          onValueChange={handleParttimeHoursChange}
-        />
-        <RegularDurationInput onValueChange={setFullDurationMonths} />
-        {/* Degree select provides the automatic IHK/HWK reduction months. */}
-        <SchoolDegreeReductionSelect
-          value={schoolDegreeId ?? ""}
-          onChange={handleSchoolDegreeSelect}
-        />
-        <QualificationReductions
-          value={qualificationSelection}
-          onChange={setQualificationSelection}
-          onTotalChange={setQualificationTotals}
-        />
-        {showLegalHint && (
-          <p className="text-xs text-amber-700" role="note">
-            {t("qualifications.legalHint")}
-          </p>
-        )}
-        <ResultCard values={formValues} />
-        <Button
-          onClick={handleSaveAsPDF}
-          disabled={isGeneratingPDF}
-          variant="brand"
-          size="lg"
-          className="w-full max-w-2xl rounded-xl"
-        >
-          {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
-        </Button>
-      </main>
-      {pdfBytes && <PDFViewer pdfBytes={pdfBytes} onClose={handleClosePDF} />}
-    </>
+    <Suspense fallback={<LoadingFallback />}>
+      <RouteComponent />
+    </Suspense>
   );
 }

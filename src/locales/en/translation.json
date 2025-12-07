@@ -35,10 +35,10 @@
     "dropdownDescription": "Pick your highest school leaving certificate. The matching reduction will be applied automatically.",
     "why": "Why can I shorten?",
     "whyText": "Some school certificates already cover parts of the training. That is why the IHK or HWK can shorten the training time. The chamber and the company decide together. Regional rules may differ.",
-    "applied": "Reduction: −{{months}} months ({{label}})",
-    "totalApplied": "Total reduction: −{{months}} months",
-    "manualApplied": "Additional reasons: −{{months}} months",
-    "qualificationApplied": "Qualifications: −{{months}} months",
+    "applied": "Reduction: up to {{months}} months ({{label}})",
+    "totalApplied": "Total reduction: up to {{months}} months",
+    "manualApplied": "Additional reasons: up to {{months}} months",
+    "qualificationApplied": "Reduction: up to {{months}} months",
     "placeholder": "e.g. 6",
     "help": "Enter how many months your training is shortened for other reasons (0 if none).",
     "error": {
@@ -64,9 +64,24 @@
     "title": "Part-time Training Calculator",
     "languages": "Language",
     "languageNames": {
-      "de": "German",
-      "en": "English"
+      "de": "🇩🇪 German",
+      "en": "🇬🇧 English"
     }
+  },
+  "welcome": {
+    "title": "Part-time Training Calculator",
+    "intro": "Welcome to the Part-time Training Calculator. Choose the design that best suits you.",
+    "question": "Do you want to use the compact design or the guided design? For most users we recommend the guided design.",
+    "designs": {
+      "compact": "Compact Design",
+      "tour": "Guided Design"
+    },
+    "legalDisclaimer": "Note: This calculator is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company.",
+    "faqPlaceholder": "FAQ Area (to be implemented later)",
+    "backButton": "Back"
+  },
+  "tour": {
+    "comingSoon": "The guided design will be available soon."
   },
   "result": {
     "headline": "Your training takes {{value}}.",
@@ -76,6 +91,11 @@
     },
     "factor": "Factor: {{pct}} %",
     "howCalculated": "How is this calculated?",
+    "navigation": {
+      "scrollToTop": "Scroll to top",
+      "scrollToResults": "Scroll to results",
+      "comingSoon": "Coming soon"
+    },
     "labels": {
       "full": "Full-time",
       "part": "Your part-time",

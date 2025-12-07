@@ -12,8 +12,17 @@ import Button from "./ui/Button";
  * worker.
  * 
  * Might be fixed in a future version of firefox or pdfjs.
+ * 
+ * Using URL constructor to construct the path at runtime to avoid
+ * Vite trying to resolve the path during build/dev server startup.
  */
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+if (typeof window !== 'undefined') {
+  // Construct absolute URL at runtime to avoid Vite module resolution
+  pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+    '/pdf.worker.min.mjs',
+    window.location.origin
+  ).href;
+}
 
 /**
  * PDFViewer component that displays a PDF document in a modal overlay.

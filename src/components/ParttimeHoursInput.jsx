@@ -109,8 +109,8 @@ export default function ParttimeHoursInput({
 
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-      {/* Tooltip zum Label */}
-      <div className="flex items-center gap-2">
+      {/* Tooltip for the parttime hours label */}
+      <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={PARTTIME_INPUT_NAME}
           className="font-semibold text-gray-800"

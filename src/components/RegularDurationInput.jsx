@@ -27,7 +27,7 @@ export default function RegularDurationInput({ onValueChange }) {
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
       {/* Tooltip zum Label */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={REGULAR_DURATION_NAME}
           className="font-semibold text-gray-800"

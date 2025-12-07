@@ -8,7 +8,14 @@ import Button from "../../components/ui/Button.jsx";
 import Card from "../../components/ui/Card.jsx";
 import StatItem from "../../components/ui/StatItem.jsx";
 
-// Helper to display delta months with an explicit sign for readability.
+/**
+ * Formats delta months with an explicit sign for readability.
+ * Displays positive values with a "+" prefix, zero as "0", and negative values with their "-" sign.
+ * This makes it immediately clear whether the change is an increase or decrease.
+ *
+ * @param {number} value - The delta value to format (can be positive, negative, or zero)
+ * @returns {string} Formatted delta string (e.g., "+12", "0", "-5")
+ */
 function formatDelta(value) {
   if (value === 0) {
     return "0";
@@ -17,25 +24,68 @@ function formatDelta(value) {
   return `${sign}${value}`;
 }
 
+/**
+ * ResultCard component - Central output card displaying calculated training durations.
+ *
+ * This component serves as the main results display, showing:
+ * - Calculated fulltime and parttime training durations
+ * - Difference (delta) between fulltime and parttime
+ * - Reduction badges when reductions are applied
+ * - Action buttons to open transparency and legal information dialogs
+ *
+ * The component handles two rendering modes:
+ * 1. Success state: Shows calculated metrics and reduction information
+ * 2. Error state: Shows error message when calculation fails or is not allowed
+ *
+ * Design decisions:
+ * - Uses injectedResult prop for testing (allows injecting mock results)
+ * - Local UI state only controls dialog visibility (keeps calculations pure)
+ * - Reduction badges are derived textually to keep UI decoupled from calculation internals
+ * - Overlays are rendered outside the Card to avoid clipping issues
+ *
+ * @param {Object} props - Component props
+ * @param {Object} props.values - Form values object from useCalculator hook
+ * @param {Object} [props.result] - Optional pre-calculated result (used for testing)
+ * @returns {JSX.Element|null} ResultCard component or null if calculation cannot run
+ */
 export default function ResultCard({ values, result: injectedResult }) {
-  // Central output card that shows calculated durations and opens transparency/legal dialogs.
   const { t } = useTranslation();
-  // Local UI state only controls overlay visibility; calculations stay pure.
+
+  // Local UI state controls dialog visibility only - calculations remain pure functions
+  // This separation ensures calculations can be tested independently of UI state
   const [showTransparency, setShowTransparency] = useState(false);
   const [showLegal, setShowLegal] = useState(false);
 
+  /**
+   * Resolves the calculation result to use.
+   * Prefers injectedResult (for testing), otherwise computes from form values.
+   * This pattern allows tests to inject mock results without running actual calculations.
+   *
+   * @returns {Object|null} Calculation result object or null if values are missing
+   */
   function resolveResult() {
-    // Prefer injectedResult (tests), otherwise compute from form values.
     return injectedResult ?? readFormAndCalc(values);
   }
 
+  // Memoize result calculation to avoid unnecessary recalculations on re-renders
   const result = useMemo(resolveResult, [values, injectedResult]);
+
+  // Early return if calculation cannot run (e.g., missing required inputs)
   if (!result) {
-    // Render nothing when calculation cannot run (e.g., missing inputs).
     return null;
   }
 
-  // Derive reduction badges textually so UI stays decoupled from calculation internals.
+  /**
+   * Builds reduction summary from form values.
+   * Derives reduction badges textually so UI stays decoupled from calculation internals.
+   * This allows the UI to display reduction information without knowing calculation details.
+   *
+   * The summary includes:
+   * - Total reduction months (sum of all reduction types)
+   * - Individual reduction types (degree, qualification, manual)
+   * - Cap exceeded warning if total exceeds maximum allowed
+   * - Label key for degree reduction display
+   */
   const reduction = buildReductionSummary({
     schoolDegreeId: values?.schoolDegreeId,
     degreeReductionMonths: values?.degreeReductionMonths,
@@ -45,37 +95,63 @@ export default function ResultCard({ values, result: injectedResult }) {
     maxTotalMonths: values?.maxTotalReduction ?? 12,
   });
 
+  // Derive boolean flags for conditional rendering of reduction badges
+  // These flags make the JSX more readable and easier to maintain
   const hasReduction = reduction.total > 0;
   const hasDegreeReduction = reduction.degree > 0;
   const hasQualificationReduction = reduction.qualification > 0;
   const hasManualReduction = reduction.manual > 0;
+
+  // Get translated label for degree reduction (if available)
   const reductionLabel = reduction.labelKey ? t(reduction.labelKey) : null;
+
+  // Determine error message key based on result error code
+  // Falls back to generic error if no specific error code is provided
   const errorKey = result?.errorCode
     ? `result.error.${result.errorCode}`
     : "result.error.generic";
 
+  /**
+   * Opens the transparency dialog.
+   * Shows detailed calculation breakdown and step-by-step explanation.
+   */
   function openTransparency() {
     setShowTransparency(true);
   }
 
+  /**
+   * Closes the transparency dialog.
+   */
   function closeTransparency() {
     setShowTransparency(false);
   }
 
+  /**
+   * Opens the legal basis dialog.
+   * Shows legal information and regulations related to training duration calculations.
+   */
   function openLegal() {
     setShowLegal(true);
   }
 
+  /**
+   * Closes the legal basis dialog.
+   */
   function closeLegal() {
     setShowLegal(false);
   }
 
+  /**
+   * Transparency dialog button component.
+   * Opens a dialog showing detailed calculation breakdown and step-by-step explanation.
+   * Uses ARIA attributes for accessibility (dialog popup, expanded state).
+   */
   const transparencyButton = (
     <Button
       type="button"
       variant="primary"
       size="md"
-      className="w-full sm:flex-1"
+      className="w-full sm:flex-1 whitespace-nowrap"
       onClick={openTransparency}
       ariaHaspopup="dialog"
       ariaExpanded={showTransparency}
@@ -84,6 +160,11 @@ export default function ResultCard({ values, result: injectedResult }) {
     </Button>
   );
 
+  /**
+   * Legal basis dialog button component.
+   * Opens a dialog showing legal information and regulations related to training duration calculations.
+   * Uses ARIA attributes for accessibility (dialog popup, expanded state).
+   */
   const legalButton = (
     <Button
       type="button"
@@ -98,10 +179,12 @@ export default function ResultCard({ values, result: injectedResult }) {
     </Button>
   );
 
+  // Render error state when calculation is not allowed (e.g., invalid inputs, calculation errors)
+  // Still provides access to transparency dialog for users to understand why calculation failed
   if (result && result.allowed === false) {
     return (
       <>
-        <Card className="w-full max-w-2xl" variant="error" role="status">
+        <Card className="w-full" variant="error" role="status">
           <div className="space-y-4">
             <h2 className="text-2xl md:text-3xl font-bold text-red-700">
               {t("result.error.title")}
@@ -118,11 +201,25 @@ export default function ResultCard({ values, result: injectedResult }) {
     );
   }
 
+  /**
+   * Determines baseline fulltime months for display.
+   * Uses effectiveFulltimeMonths when reductions are applied (shows reduced baseline),
+   * otherwise uses standard fulltimeMonths (shows original baseline).
+   * This ensures users see the correct baseline that was used in the calculation.
+   */
   const baselineMonths = hasReduction
     ? result.effectiveFulltimeMonths
     : result.fulltimeMonths;
 
-  // Three-column metric summary matches the visual layout in the card.
+  /**
+   * Primary metrics array for the three-column display.
+   * Each metric represents a key calculation result:
+   * - Full: Baseline fulltime months (may be reduced if reductions applied)
+   * - Part: Calculated parttime months (final result)
+   * - Change: Delta between parttime and fulltime (shows increase/decrease)
+   *
+   * The three-column layout matches the visual grid structure in the card.
+   */
   const metrics = [
     {
       key: "full",
@@ -150,6 +247,12 @@ export default function ResultCard({ values, result: injectedResult }) {
     },
   ];
 
+  /**
+   * Formats parttime months for display in the headline.
+   * Uses pre-formatted value if available (from calculation result),
+   * otherwise generates formatted string via translation function.
+   * This value is used in both the main headline and aria-label for accessibility.
+   */
   const formattedParttime =
     result.formatted?.parttime ??
     t("result.months", {
@@ -159,19 +262,31 @@ export default function ResultCard({ values, result: injectedResult }) {
 
   return (
     <>
-      <Card className="w-full max-w-2xl" role="status">
+      <Card className="w-full" role="status">
         <div className="space-y-6">
           <header className="space-y-3">
+            {/* Main headline showing the calculated parttime training duration */}
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
               {t("result.headline", { value: formattedParttime })}
             </h2>
+
+            {/* Reduction badges section - only shown when reductions are applied */}
+            {/* Badges use color coding to distinguish reduction types:
+                - Emerald: Total reduction (always shown when reductions exist)
+                - Blue: Degree-based reduction (school degree reduction)
+                - Amber: Qualification reduction or cap warning
+                - Slate: Manual reduction (user-entered)
+            */}
             {hasReduction ? (
               <div className="flex flex-wrap items-start gap-2">
+                {/* Total reduction badge - shows sum of all reduction types */}
                 <div className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-800">
                   {t("reduction.totalApplied", {
                     months: reduction.total,
                   })}
                 </div>
+
+                {/* Degree reduction badge - shown when school degree reduction is applied */}
                 {hasDegreeReduction && reductionLabel ? (
                   <div className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
                     {t("reduction.applied", {
@@ -180,6 +295,8 @@ export default function ResultCard({ values, result: injectedResult }) {
                     })}
                   </div>
                 ) : null}
+
+                {/* Qualification reduction badge - shown when qualification reduction is applied */}
                 {hasQualificationReduction ? (
                   <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
                     {t("reduction.qualificationApplied", {
@@ -187,6 +304,8 @@ export default function ResultCard({ values, result: injectedResult }) {
                     })}
                   </div>
                 ) : null}
+
+                {/* Manual reduction badge - shown when user-entered manual reduction exists */}
                 {hasManualReduction ? (
                   <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
                     {t("reduction.manualApplied", {
@@ -194,6 +313,8 @@ export default function ResultCard({ values, result: injectedResult }) {
                     })}
                   </div>
                 ) : null}
+
+                {/* Cap warning badge - shown when total reduction exceeds maximum allowed */}
                 {reduction.capExceeded ? (
                   <div className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">
                     {t("reduction.capWarning", {
@@ -206,8 +327,10 @@ export default function ResultCard({ values, result: injectedResult }) {
             ) : null}
           </header>
 
-          {/* Primary metrics row (full/part/change). */}
-          <div className="grid gap-5 sm:grid-cols-3">
+          {/* Primary metrics row displaying fulltime, parttime, and change values */}
+          {/* Grid layout: 3 equal-width columns on small screens and up, single column on mobile */}
+          {/* Items are centered within each grid cell for consistent alignment */}
+          <div className="grid gap-8 sm:grid-cols-3 justify-items-center">
             {metrics.map((metric) => (
               <StatItem
                 key={metric.key}
@@ -217,14 +340,18 @@ export default function ResultCard({ values, result: injectedResult }) {
             ))}
           </div>
 
-          {/* Actions: transparency dialog + legal dialog (same visual weight). */}
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          {/* Action buttons row - transparency and legal dialogs */}
+          {/* Layout: Stacked on mobile, side-by-side on small screens and up */}
+          {/* Both buttons have equal visual weight (same variant and size) */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
             {transparencyButton}
             {legalButton}
           </div>
         </div>
       </Card>
-      {/* Overlays stay mounted at root to avoid clipping inside Card. */}
+
+      {/* Dialog overlays rendered outside Card to avoid clipping issues */}
+      {/* Rendering at root level ensures overlays can properly cover the entire viewport */}
       {showLegal && <LegalPanel onClose={closeLegal} />}
       {showTransparency && (
         <TransparencyPanel formValues={values} onClose={closeTransparency} />
