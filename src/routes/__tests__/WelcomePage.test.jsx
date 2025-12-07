@@ -19,7 +19,7 @@ const mockT = (key) => {
     "welcome.faqIntro": "Quick answers about the calculator.",
     "welcome.faqAnchorLabel": "Jump to FAQ section",
     "welcome.faqLinkLegal": "Legal basis",
-    "welcome.faqLinkTransparency": "How is this calculated?",
+    "welcome.faqLinkTransparency": "Result explanation",
     "tour.comingSoon": "The guided design will be available soon.",
     "faq.categories.calculation": "Calculation & Inputs",
     "faq.categories.rules": "Rules & Limits",
