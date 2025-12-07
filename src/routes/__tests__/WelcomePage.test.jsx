@@ -15,8 +15,37 @@ const mockT = (key) => {
     "welcome.designs.compact": "Compact Design",
     "welcome.designs.tour": "Guided Design",
     "welcome.legalDisclaimer": "Note: This calculator is for informational purposes only.",
-    "welcome.faqPlaceholder": "FAQ Area (to be implemented later)",
+    "welcome.faqTitle": "FAQ",
+    "welcome.faqIntro": "Quick answers about the calculator.",
+    "welcome.faqAnchorLabel": "Jump to FAQ section",
     "tour.comingSoon": "The guided design will be available soon.",
+    "faq.categories.calculation": "Calculation & Inputs",
+    "faq.categories.rules": "Rules & Limits",
+    "faq.categories.legal": "Legal",
+    "faq.items.calcHow.question": "How is the part-time duration calculated?",
+    "faq.items.calcHow.answer": "We divide and apply the factor.",
+    "faq.items.calcHow.easy": "In short: divide by full-time.",
+    "faq.items.rule50.question": "What does the 50% rule mean?",
+    "faq.items.rule50.answer": "At least half of full-time.",
+    "faq.items.rule50.easy": "In short: minimum half.",
+    "faq.items.adjustHours.question": "How do I change the full-time hours?",
+    "faq.items.adjustHours.answer": "Enter your real full-time hours.",
+    "faq.items.adjustHours.easy": "In short: enter the real number.",
+    "faq.items.invalid.question": "What happens if my inputs are invalid?",
+    "faq.items.invalid.answer": "We show an error.",
+    "faq.items.invalid.easy": "In short: error message.",
+    "faq.items.below50.question": "Can I work below 50%?",
+    "faq.items.below50.answer": "The calculator does not support it.",
+    "faq.items.below50.easy": "In short: not supported.",
+    "faq.items.capReduction.question": "Why is my reduction capped?",
+    "faq.items.capReduction.answer": "We apply limits.",
+    "faq.items.capReduction.easy": "In short: there are caps.",
+    "faq.items.binding.question": "Is the result binding?",
+    "faq.items.binding.answer": "No, it is guidance.",
+    "faq.items.binding.easy": "In short: guidance only.",
+    "faq.items.whoDecides.question": "Who decides about reduction and duration?",
+    "faq.items.whoDecides.answer": "Chamber and company together.",
+    "faq.items.whoDecides.easy": "In short: chamber and company.",
   };
   return translations[key] || key;
 };
@@ -113,7 +142,8 @@ describe("WelcomePage", () => {
   it("renders FAQ placeholder area", () => {
     render(<WelcomePage />);
 
-    expect(screen.getByText("FAQ Area (to be implemented later)")).toBeInTheDocument();
+    expect(screen.getByText("Jump to FAQ section")).toBeInTheDocument();
+    expect(screen.getByText("How is the part-time duration calculated?")).toBeInTheDocument();
   });
 
   it("has proper accessibility attributes", () => {

@@ -77,8 +77,60 @@
       "tour": "Guided Design"
     },
     "legalDisclaimer": "Note: This calculator is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company.",
+    "faqTitle": "FAQ",
+    "faqIntro": "Short answers about the part-time training calculator. Includes easy-to-read wording.",
+    "faqAnchorLabel": "Jump to FAQ section",
     "faqPlaceholder": "FAQ Area (to be implemented later)",
     "backButton": "Back"
+  },
+  "faq": {
+    "categories": {
+      "calculation": "Calculation & Inputs",
+      "rules": "Rules & Limits",
+      "legal": "Legal"
+    },
+    "items": {
+      "calcHow": {
+        "question": "How is the part-time duration calculated?",
+        "answer": "We divide your desired weekly hours by the full-time hours to get the part-time factor. We apply this factor to the base duration after all reductions and then check protection limits (at least the chamber minimum, at most 1.5 × the standard duration).",
+        "easy": "In short: Your hours divided by full-time, then we use that to compute the new duration."
+      },
+      "rule50": {
+        "question": "What does the 50% rule mean?",
+        "answer": "Part-time must be at least 50% of full-time hours. If you are below that, we cannot calculate and show an error.",
+        "easy": "In short: Below half of full-time we cannot calculate part-time."
+      },
+      "below50": {
+        "question": "Can I work below 50%?",
+        "answer": "The calculator does not support that because it is outside the usual rule. Please talk to your chamber and company if you plan less than 50%.",
+        "easy": "In short: Under 50% only works if chamber and company agree. The calculator cannot handle it."
+      },
+      "invalid": {
+        "question": "What happens if my inputs are invalid?",
+        "answer": "We stop the calculation and show a clear message, for example when values are outside the allowed range or missing.",
+        "easy": "In short: Wrong inputs are rejected and you see a hint about what is missing."
+      },
+      "adjustHours": {
+        "question": "How do I change the full-time hours if my company uses different numbers?",
+        "answer": "Enter the actual full-time hours of your company in the “Full-time hours per week” field. All dependent values update automatically.",
+        "easy": "In short: Enter the real full-time hours at the top; the rest adjusts automatically."
+      },
+      "capReduction": {
+        "question": "Why is my reduction capped?",
+        "answer": "We apply maximum reductions (for example 6 months) and a protection limit: part-time lasts at most 1.5 × the standard duration. This keeps results realistic and chamber-compliant.",
+        "easy": "In short: There are caps for reduction and extension so the result stays realistic."
+      },
+      "binding": {
+        "question": "Is the result binding?",
+        "answer": "No. The result is guidance. The final decision is made by your responsible chamber together with the training company.",
+        "easy": "In short: It’s guidance only. Chamber and company decide."
+      },
+      "whoDecides": {
+        "question": "Who decides about reduction and duration?",
+        "answer": "The responsible chamber (IHK/HWK) and your training company decide together. The calculator gives a transparent basis for the conversation.",
+        "easy": "In short: Chamber and company decide together. The calculator only shows a direction."
+      }
+    }
   },
   "tour": {
     "comingSoon": "The guided design will be available soon."
