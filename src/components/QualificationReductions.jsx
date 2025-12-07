@@ -121,6 +121,7 @@ export default function QualificationReductions({
               <option value="yes">{t("qualifications.answers.yes")}</option>
               <option value="no">{t("qualifications.answers.no")}</option>
             </SelectField>
+
             {yesSelected && (
               <ReductionInfo
                 months={option.maxMonths}

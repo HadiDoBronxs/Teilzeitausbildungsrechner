@@ -23,7 +23,6 @@ const LoadingFallback = () => (
   </div>
 );
 
-
 /**
  * Handles hash change events and updates the current route accordingly.
  * Listens for browser navigation events (back/forward buttons, hash changes)
