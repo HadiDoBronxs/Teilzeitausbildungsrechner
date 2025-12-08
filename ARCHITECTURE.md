@@ -11,21 +11,33 @@ It is intended for everyone working on the Teilzeitausbildungsrechner (TZR).
 Runtime and source code:
 
 - `src/main.jsx`  
-  - Bootstraps React, React Router, and the i18n setup.
+  - Bootstraps React and the i18n setup.
+- `src/App.jsx`  
+  - Main routing component using hash-based routing (no React Router dependency).
 - `src/routes/`  
-  - Page-level views (routing targets).
+  - Page-level views (routing targets):
+    - `WelcomePage.jsx` – Initial landing page with design selection (compact/tour).
+    - `CompactView.jsx` – Compact calculator view with all inputs in a single page.
+    - `TourView.jsx` – Placeholder for guided tour view (not yet implemented).
+    - `transparenz.jsx` – Transparency information page.
+    - `legal.jsx` – Legal basis information page.
 - `src/features/`  
   - Feature flows (e.g. calculator logic, transparency view).
 - `src/components/`  
   - Shared UI components and their tests.
   - `src/components/ui/` contains the **central UI primitives** (see below).
+  - `src/components/ResultSidebar.jsx` – Desktop sidebar displaying simplified results.
+  - `src/components/ResultBottomBar.jsx` – Mobile bottom bar showing part-time duration.
 - `src/domain/`  
   - Pure business logic (e.g. `trainingDuration`).
+- `src/utils/`  
+  - Utility functions:
+    - `routing.js` – Route detection and navigation utilities for hash-based routing.
 
 Other important folders/files:
 
 - `locales/` and `i18n/` – translation resources and i18n configuration.
-- `public/` – static assets.
+- `public/` – static assets (including PDF worker script).
 - `App.css`, `index.css` – global styling.
 - `vite.config.js`, `vitest.config.js`, `eslint.config.js` – tooling configuration.
 
@@ -78,6 +90,7 @@ At the moment, the core UI set includes:
 - `Dialog.jsx` – Accessible modal dialog for panels like the transparency view.
 - `StatItem.jsx` – Single metric block for key figures (label/value/description).
 - `NoticeBox.jsx` – Info/legal hint boxes with optional links.
+- `ReductionInfo.jsx` – Reusable component for displaying reduction information text.
 
 ### General Rules for UI Components
 
@@ -140,6 +153,48 @@ language skills, and different devices. The UI must therefore be:
 
 `Dialog.jsx` implements these patterns and should be used for modal flows such as
 the transparency panel.
+
+---
+
+## Routing
+
+TZR uses **hash-based routing**. This approach:
+
+- Works well in iframe environments (common for embedded calculators)
+- Reduces bundle size (no React Router dependency)
+- Is simple to implement and maintain
+- Supports browser back/forward navigation
+
+### Route Detection
+
+Route detection is handled by `src/utils/routing.js` via the `detectCurrentRoute()` function.
+Routes are determined in the following priority order:
+
+1. **Pathname-based routes** (legacy support):
+   - `/transparenz` → `transparenz` route
+   - `/legal` → `legal` route
+
+2. **Hash-based routes** (primary routing method):
+   - `#compact` → `compact` route (CompactView)
+   - `#tour` → `tour` route (TourView - placeholder)
+
+3. **Default route**:
+   - No hash or pathname match → `welcome` route (WelcomePage)
+
+### Navigation
+
+Navigation is performed by setting `window.location.hash`:
+
+```jsx
+// Navigate to compact view
+window.location.hash = "#compact";
+
+// Navigate back to welcome page
+window.location.hash = "";
+```
+
+The `App.jsx` component listens for hash changes and updates the rendered route accordingly.
+All route components are lazy-loaded to reduce initial bundle size.
 
 ---
 

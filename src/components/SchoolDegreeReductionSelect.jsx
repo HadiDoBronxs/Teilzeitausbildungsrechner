@@ -7,6 +7,7 @@ import {
 } from "../domain/schoolDegreeReductions.js";
 import SelectField from "./ui/SelectField";
 import Tooltip from "./InfoTooltip";
+import ReductionInfo from "./ui/ReductionInfo.jsx";
 
 const SELECT_ID = "school-degree-select";
 const DESCRIPTION_ID = `${SELECT_ID}-description`;
@@ -44,10 +45,10 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
 
   return (
     <div className="flex w-full max-w-sm flex-col gap-2 p-2">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={SELECT_ID}
-          className="text-lg font-semibold text-gray-900"
+          className="font-semibold text-gray-800"
         >
           {t("reduction.title")}
         </label>
@@ -57,7 +58,7 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
       <label
         id={QUESTION_ID}
         htmlFor={SELECT_ID}
-        className="text-lg font-semibold text-gray-900"
+        className="font-semibold text-gray-800"
       >
         {t("reduction.question")}
       </label>
@@ -78,14 +79,11 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
         {options.map(renderOption)}
       </SelectField>
 
-      {selectedOption && selectedOption.months > 0 ? (
-        <p className="text-sm text-slate-600" aria-live="polite">
-          {t("reduction.applied", {
-            months: selectedOption.months,
-            label: t(selectedOption.labelKey),
-          })}
-        </p>
-      ) : null}
+      <ReductionInfo
+        months={selectedOption?.months}
+        translationKey="reduction.applied"
+        label={selectedOption ? t(selectedOption.labelKey) : undefined}
+      />
     </div>
   );
 }

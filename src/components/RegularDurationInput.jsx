@@ -27,7 +27,7 @@ export default function RegularDurationInput({ onValueChange }) {
   return (
     <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
       {/* Tooltip zum Label */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={REGULAR_DURATION_NAME}
           className="font-semibold text-gray-800"
@@ -46,9 +46,36 @@ export default function RegularDurationInput({ onValueChange }) {
         step={1}
         value={months}
         onChange={(e) => {
-          const v = e.target.value;
-          setMonths(v === "" ? "" : Number(v));
-        }}
+        let v = e.target.value;
+
+        // Support comma input (German users)
+        v = v.replace(",", ".");
+
+        // Prevent more than one dot
+        const parts = v.split(".");
+        if (parts.length > 2) {
+          v = parts[0] + "." + parts.slice(1).join("");
+        }
+
+        // No decimals allowed → strip everything after the dot
+        if (parts[1]) {
+          v = parts[0];
+        }
+
+
+        // Allow empty value
+        if (v === "") {
+          setMonths("");
+          return;
+        }
+
+        // Convert sanitized string to number
+        const numeric = Number(v);
+        if (!Number.isNaN(numeric)) {
+          setMonths(numeric);
+        }
+      }}
+
         aria-invalid={!isValid}
         aria-describedby={ariaDescribedBy}
       />
