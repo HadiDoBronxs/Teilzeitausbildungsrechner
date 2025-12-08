@@ -43,6 +43,8 @@ export default function CompactView() {
     isGeneratingPDF,
     handleSaveAsPDF,
     handleClosePDF,
+    resetCount,
+    handleReset,
   } = useCalculator();
 
   return (
@@ -81,10 +83,10 @@ export default function CompactView() {
                 </Button>
                 <LanguageToggle />
               </div>
-              <h1 
-                id={MAIN_HEADING_ID} 
+              <h1
+                id={MAIN_HEADING_ID}
                 className="text-2xl font-bold text-center min-h-[4.5rem] max-w-sm mx-auto line-clamp-3"
-                style={{ 
+                style={{
                   display: '-webkit-box',
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: 'vertical',
@@ -96,12 +98,13 @@ export default function CompactView() {
                 {t("app.title")}
               </h1>
             </div>
-            <FulltimeHoursInput onValueChange={handleFulltimeHoursChange} />
+            <FulltimeHoursInput key={`ft-${resetCount}`} onValueChange={handleFulltimeHoursChange} />
             <ParttimeHoursInput
+              key={`pt-${resetCount}`}
               fulltimeHours={fulltimeHours}
               onValueChange={handleParttimeHoursChange}
             />
-            <RegularDurationInput onValueChange={setFullDurationMonths} />
+            <RegularDurationInput key={`rd-${resetCount}`} onValueChange={setFullDurationMonths} />
             {/* Degree select provides the automatic reduction months. */}
             <SchoolDegreeReductionSelect
               value={schoolDegreeId ?? ""}
@@ -128,6 +131,15 @@ export default function CompactView() {
               className="w-full rounded-xl"
             >
               {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
+            </Button>
+            <Button
+              onClick={handleReset}
+              variant="ghost"
+              size="md"
+              className="w-full text-slate-500 justify-center"
+              ariaLabel={t("app.reset_explained")}
+            >
+              {t("app.reset")}
             </Button>
           </div>
 
