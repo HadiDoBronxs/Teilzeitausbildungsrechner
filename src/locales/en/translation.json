@@ -55,9 +55,9 @@
   },
   "reductionOptions": {
     "hs": "Lower secondary school certificate",
-    "mr": "Secondary school certificate (GCSE equivalent)",
+    "mr": "Secondary school certificate",
     "fhr": "Advanced technical college entrance qualification",
-    "abi": "General higher education entrance qualification",
+    "abi": "High school diploma",
     "other": "Other degree"
   },
   "app": {
