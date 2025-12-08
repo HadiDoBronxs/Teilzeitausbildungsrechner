@@ -449,8 +449,9 @@ export async function generatePDF(formValues, t, i18n) {
 
   const numberFormatter = new Intl.NumberFormat(i18n.language, {
     minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 1,
   });
+
   const formatNumber = (value) => numberFormatter.format(value);
 
   // Extract inputs for use in calculations
