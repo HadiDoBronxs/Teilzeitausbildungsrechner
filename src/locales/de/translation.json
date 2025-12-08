@@ -55,9 +55,9 @@
     },
     "reductionOptions": {
         "hs": "Hauptschulabschluss",
-        "mr": "Fachoberschulreife / Mittlere Reife",
-        "fhr": "Fachhochschulreife",
-        "abi": "Hochschulreife",
+        "mr": "Mittlere Reife (Realschule)",
+        "fhr": "Fachhochschulreife (Berufskolleg)",
+        "abi": "Abitur (Gymnasium)",
         "other": "Sonstiger Abschluss"
     },
     "app": {
@@ -184,11 +184,11 @@
             "note": "bis zu {{months}} Monaten"
         },
         "completedTraining": {
-            "question": "Haben Sie bereits eine Berufsausbildung abgeschlossen?",
+            "question": "Haben Sie eine Berufsausbildung abgeschlossen?",
             "note": "bis zu {{months}} Monaten"
         },
         "vocationalExperience": {
-            "question": "Haben Sie einschlägige Berufserfahrung?",
+            "question": "Haben Sie Berufserfahrung gesammelt?",
             "note": "bis zu {{months}} Monaten"
         },
         "academic": {
