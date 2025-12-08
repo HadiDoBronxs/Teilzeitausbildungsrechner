@@ -58,6 +58,14 @@ export default function FAQSection() {
     );
   }
 
+  // Allow keyboard users to toggle with Enter/Space explicitly (in addition to native button behavior)
+  function handleKeyToggle(event, id) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggle(id);
+    }
+  }
+
   return (
     <Card
       id={FAQ_SECTION_ID}
@@ -121,6 +129,7 @@ export default function FAQSection() {
                       aria-controls={`faq-panel-${item}`}
                       id={`faq-trigger-${item}`}
                       onClick={() => toggle(item)}
+                      onKeyDown={(event) => handleKeyToggle(event, item)}
                       // Dark button for strong contrast; icon indicates state.
                       className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left rounded-xl bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 transition shadow-sm"
                     >
