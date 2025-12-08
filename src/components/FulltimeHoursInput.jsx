@@ -47,9 +47,35 @@ export default function FulltimeHoursInput({ onValueChange }) {
         step={0.5}
         value={hours}
         onChange={(e) => {
-          const value = e.target.value;
-          setHours(value === "" ? "" : Number(value));
-        }}
+        let v = e.target.value;
+
+        // Convert comma to dot so "4,3" works
+        v = v.replace(",", ".");
+
+        // If more than one dot → clean it
+        const parts = v.split(".");
+        if (parts.length > 2) {
+          v = parts[0] + "." + parts.slice(1).join("");
+        }
+
+        // Limit decimal digits to max 1
+        if (parts[1] && parts[1].length > 1) {
+          v = `${parts[0]}.${parts[1].slice(0, 1)}`;
+        }
+
+
+        // Allow empty field
+        if (v === "") {
+          setHours("");
+          return;
+        }
+
+        // Convert to number and update state
+        const numeric = Number(v);
+        if (!Number.isNaN(numeric)) {
+          setHours(numeric);
+        }
+      }}
         aria-invalid={!isValid}
         aria-describedby={describedBy}
       />

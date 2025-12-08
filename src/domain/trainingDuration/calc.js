@@ -2,6 +2,13 @@ const MIN_FACTOR = 0.5;
 const MAX_EXTENSION_MONTHS = 6;
 const DURATION_CAP_MULTIPLIER = 1.5;
 
+// -----------------------
+// Rounding helper
+// -----------------------
+function round(n, decimals = 2) {
+  return Number(Number(n).toFixed(decimals));
+}
+
 const clampRoundingMode = (mode) => {
   switch (mode) {
     case "ceil":
@@ -71,7 +78,8 @@ export function calculateDuration({
     });
   }
 
-  const factor = parttimeHours / fulltimeHours;
+  // ---- FIX: Round factor ----
+  const factor = round(parttimeHours / fulltimeHours, 4);
 
   if (!Number.isFinite(factor) || factor <= 0) {
     return buildErrorResult({
@@ -93,8 +101,12 @@ export function calculateDuration({
 
   const roundingFn = clampRoundingMode(rounding);
 
-  const theoreticalDuration = effectiveFulltimeMonths / factor;
-  const theoreticalDelta = theoreticalDuration - effectiveFulltimeMonths;
+  // ---- FIX: Round theoretical result ----
+  const theoreticalDuration = round(effectiveFulltimeMonths / factor, 2);
+  const theoreticalDelta = round(
+    theoreticalDuration - effectiveFulltimeMonths,
+    2
+  );
 
   let adjustedDuration = theoreticalDuration;
   if (theoreticalDelta <= MAX_EXTENSION_MONTHS) {
@@ -107,7 +119,13 @@ export function calculateDuration({
   }
 
   const parttimeFinalMonths = roundingFn(adjustedDuration);
-  const deltaMonths = parttimeFinalMonths - effectiveFulltimeMonths;
+
+  // ---- FIX: Round deltas ----
+  const deltaMonths = round(
+    parttimeFinalMonths - effectiveFulltimeMonths,
+    2
+  );
+
   const deltaDirection =
     deltaMonths > 0 ? "longer" : deltaMonths < 0 ? "shorter" : "same";
 
@@ -121,7 +139,7 @@ export function calculateDuration({
     deltaBeforeRounding: theoreticalDelta,
     deltaMonths,
     deltaDirection,
-    deltaVsOriginal: parttimeFinalMonths - fulltimeMonths,
+    deltaVsOriginal: round(parttimeFinalMonths - fulltimeMonths, 2),
   };
 }
 
