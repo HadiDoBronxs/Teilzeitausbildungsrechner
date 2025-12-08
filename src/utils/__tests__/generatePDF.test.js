@@ -249,7 +249,7 @@ describe("generatePDF", () => {
     // We expect 3 rectangles: Full-time (bg), Part-time (bg), Part-time (fill)
     // Access the mock page created
     const doc = await PDFDocument.create();
-    const page = doc.addPage();
+    doc.addPage();
     // Since create() is called inside generatePDF, we need to spy on the instance returned by the factory
     // But our mock creates a new object every time.
     // Wait, line 11: `vi.fn(() => Promise.resolve({ ... }))`

@@ -183,15 +183,15 @@ function resolveMinDuration(fulltimeMonths, override) {
  * @param {Function} translateFn - The translation function (i18next t function).
  * @returns {string} A formatted string like "2 Years 6 Months" or "1 Year 3 Months".
  */
-function formatYearsMonths(months, translateFn) {
-  const safeValue = Number.isFinite(months) ? months : 0;
-  const rounded = Math.max(0, Math.round(safeValue));
-  const years = Math.floor(rounded / 12);
-  const remaining = rounded % 12;
-  const yearLabel = years === 1 ? translateFn("format.year") : translateFn("format.years");
-  const monthLabel = remaining === 1 ? translateFn("format.month") : translateFn("format.months");
-  return `${years} ${yearLabel} ${remaining} ${monthLabel}`;
-}
+// function formatYearsMonths(months, translateFn) {
+//   const safeValue = Number.isFinite(months) ? months : 0;
+//   const rounded = Math.max(0, Math.round(safeValue));
+//   const years = Math.floor(rounded / 12);
+//   const remaining = rounded % 12;
+//   const yearLabel = years === 1 ? translateFn("format.year") : translateFn("format.years");
+//   const monthLabel = remaining === 1 ? translateFn("format.month") : translateFn("format.months");
+//   return `${years} ${yearLabel} ${remaining} ${monthLabel}`;
+// }
 
 /**
  * Formats a number with a sign prefix (+ or -).
@@ -459,9 +459,10 @@ export async function generatePDF(formValues, t, i18n) {
     const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
 
     // Get school degree label for use in transparency section
-    const schoolDegreeLabel = reduction.labelKey
-      ? safeT(reduction.labelKey)
-      : safeT("reduction.selectPlaceholder");
+    // (Unused in simplified view, removing to fix lint)
+    // const schoolDegreeLabel = reduction.labelKey
+    //   ? safeT(reduction.labelKey)
+    //   : safeT("reduction.selectPlaceholder");
 
     // Build input field configuration dynamically
     const inputFieldConfigs = buildInputFieldConfig(
@@ -641,8 +642,8 @@ export async function generatePDF(formValues, t, i18n) {
 
       const percent =
         weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
-      const basisYM = formatYearsMonths(basis, safeT);
-      const roundedYM = formatYearsMonths(roundedDuration, safeT);
+      // const basisYM = formatYearsMonths(basis, safeT);
+      // const roundedYM = formatYearsMonths(roundedDuration, safeT);
 
       // --- Diagram Section ---
       yPosition -= 10;
