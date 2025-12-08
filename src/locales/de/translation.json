@@ -77,8 +77,62 @@
             "tour": "Geführtes Design"
         },
         "legalDisclaimer": "Hinweis: Dieser Rechner dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt.",
+        "faqTitle": "FAQ",
+        "faqIntro": "Kurze Antworten rund um den Teilzeitausbildungsrechner. Inklusive Leichter Sprache.",
+        "faqAnchorLabel": "Zum FAQ-Bereich springen",
+        "faqLinkLegal": "Gesetzesgrundlage",
+        "faqLinkTransparency": "Ergebniserklärung",
         "faqPlaceholder": "FAQ-Bereich (wird später implementiert)",
         "backButton": "Zurück"
+    },
+    "faq": {
+        "categories": {
+            "calculation": "Berechnung & Eingaben",
+            "rules": "Regeln & Grenzen",
+            "legal": "Rechtliches"
+        },
+        "items": {
+            "calcHow": {
+                "question": "Wie berechnet ihr die Teilzeitdauer?",
+                "answer": "Wir teilen Ihre gewünschten Wochenstunden durch die Vollzeitstunden und erhalten den Teilzeit-Faktor. Diesen Faktor wenden wir auf die Basisdauer nach allen Verkürzungen an und prüfen Schutzgrenzen (mindestens Kammer-Mindestdauer, höchstens 1,5 × Regeldauer).",
+                "easy": "Kurz erklärt: Wir nehmen Ihre Stunden, teilen durch Vollzeit und rechnen damit die neue Dauer."
+            },
+            "rule50": {
+                "question": "Was bedeutet die 50%-Regel?",
+                "answer": "Teilzeit muss mindestens 50 % der Vollzeitstunden betragen. Liegen Sie darunter, dürfen wir nicht rechnen und zeigen eine Fehlermeldung.",
+                "easy": "Kurz erklärt: Unter der Hälfte der Vollzeit können wir keine Teilzeit berechnen."
+            },
+            "below50": {
+                "question": "Kann ich unter 50 % arbeiten?",
+                "answer": "Der Rechner unterstützt das nicht, weil es außerhalb der üblichen Regel liegt. Sprechen Sie mit Ihrer Kammer und Ihrem Betrieb, falls Sie weniger als 50 % planen.",
+                "easy": "Kurz erklärt: Unter 50 % geht nur, wenn Kammer und Betrieb zustimmen. Der Rechner kann das nicht berechnen."
+            },
+            "invalid": {
+                "question": "Was passiert, wenn meine Eingaben ungültig sind?",
+                "answer": "Wir stoppen die Berechnung und zeigen eine klare Meldung, zum Beispiel wenn Werte außerhalb des erlaubten Bereichs liegen oder fehlen.",
+                "easy": "Kurz erklärt: Falsche Eingaben werden abgelehnt und Sie sehen einen Hinweis, was fehlt."
+            },
+            "adjustHours": {
+                "question": "Wie ändere ich die Vollzeitstunden, wenn mein Betrieb anders rechnet?",
+                "answer": "Tragen Sie die realen Vollzeitstunden Ihres Betriebs in das Feld „Vollzeitstunden pro Woche“ ein. Alle weiteren Werte passen sich automatisch an.",
+                "easy": "Kurz erklärt: Geben Sie oben die echten Vollzeitstunden ein, der Rest rechnet sich mit."
+            },
+            "capReduction": {
+                "question": "Warum wird meine Verkürzung begrenzt?",
+                "answer": "Wir berücksichtigen maximale Verkürzungen (z. B. 6 Monate) und eine Schutzgrenze: Teilzeit dauert höchstens 1,5 × so lange wie die Regeldauer. So bleiben die Ergebnisse realistisch und kammerkonform.",
+                "easy": "Kurz erklärt: Es gibt Obergrenzen für Verkürzung und Verlängerung, damit das Ergebnis realistisch bleibt."
+            },
+            "binding": {
+                "question": "Ist das Ergebnis verbindlich?",
+                "answer": "Nein. Das Ergebnis ist eine Orientierung. Die verbindliche Entscheidung trifft Ihre zuständige Kammer zusammen mit dem Ausbildungsbetrieb.",
+                "easy": "Kurz erklärt: Das Ergebnis ist nur eine Hilfe. Kammer und Betrieb entscheiden endgültig."
+            },
+            "whoDecides": {
+                "question": "Wer entscheidet über Verkürzung und Dauer?",
+                "answer": "Die zuständige Kammer (IHK/HWK) und Ihr Ausbildungsbetrieb stimmen gemeinsam ab. Der Rechner liefert eine nachvollziehbare Grundlage für das Gespräch.",
+                "easy": "Kurz erklärt: Kammer und Betrieb entscheiden gemeinsam. Der Rechner zeigt nur eine Richtung."
+            }
+        }
     },
     "tour": {
         "comingSoon": "Das geführte Design wird bald verfügbar sein."

@@ -2,7 +2,7 @@
 import { useTranslation } from "react-i18next";
 import LanguageToggle from "../components/LanguageToggle.jsx";
 import Card from "../components/ui/Card.jsx";
-import Button from "../components/ui/Button.jsx";
+import FAQSection from "../components/faq/FAQSection.jsx";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
@@ -119,18 +119,18 @@ export default function WelcomePage() {
             </p>
           </Card>
 
-          {/* FAQ placeholder area */}
-          <section
-            aria-label="FAQ"
-            className="min-h-[200px] p-6 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50"
-          >
-            <p className="text-sm text-slate-500 text-center">
-              {t("welcome.faqPlaceholder")}
-            </p>
-          </section>
+          <div className="flex justify-end">
+            <a
+              href="#faq"
+              className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+            >
+              {t("welcome.faqAnchorLabel")}
+            </a>
+          </div>
+
+          <FAQSection />
         </div>
       </main>
     </>
   );
 }
-
