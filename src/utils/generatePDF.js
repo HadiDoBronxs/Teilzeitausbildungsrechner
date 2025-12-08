@@ -56,8 +56,8 @@ function buildInputFieldConfig(formValues, reduction, safeT, formatNumber) {
   const weeklyFull = toNumber(formValues?.weeklyFull);
   const weeklyPart = toNumber(formValues?.weeklyPart);
   const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
-  const schoolDegreeLabel = reduction.labelKey 
-    ? safeT(reduction.labelKey) 
+  const schoolDegreeLabel = reduction.labelKey
+    ? safeT(reduction.labelKey)
     : safeT("reduction.selectPlaceholder");
 
   // Hours labels are localized (pdf.hoursPerWeek) so English exports do not mix in German units.
@@ -236,7 +236,7 @@ function sanitizeForPDF(text) {
   if (!text || typeof text !== "string") {
     return String(text || "");
   }
-  
+
   // Replace special Unicode characters with ASCII equivalents
   // 
   return text
@@ -306,214 +306,183 @@ export async function generatePDF(formValues, t, i18n) {
     let page = doc.addPage([595, 842]); // A4 size in points
     const font = await doc.embedFont(StandardFonts.Helvetica);
     const boldFont = await doc.embedFont(StandardFonts.HelveticaBold);
-  
-  const margin = 50;
-  const pageWidth = page.getWidth();
-  const pageHeight = page.getHeight();
-  const contentWidth = pageWidth - 2 * margin;
-  let yPosition = pageHeight - margin;
-  const lineHeight = 14;
-  const sectionSpacing = 20;
-  const titleSize = 18;
-  const headingSize = 14;
-  const normalSize = 10;
 
-  /**
-   * Ensures there is enough vertical space on the current page for content.
-   * If insufficient space is available, creates a new page and resets the y-position.
-   * 
-   * @param {number} requiredSpace - The minimum vertical space required in points.
-   * @returns {boolean} True if a new page was created, false otherwise.
-   */
-  function ensurePageSpace(requiredSpace) {
-    if (yPosition < margin + requiredSpace) {
-      page = doc.addPage([595, 842]);
-      yPosition = pageHeight - margin;
-      return true;
-    }
-    return false;
-  }
+    const margin = 50;
+    const pageWidth = page.getWidth();
+    const pageHeight = page.getHeight();
+    const contentWidth = pageWidth - 2 * margin;
+    let yPosition = pageHeight - margin;
+    const lineHeight = 14;
+    const sectionSpacing = 20;
+    const titleSize = 18;
+    const headingSize = 14;
+    const normalSize = 10;
 
-  /**
-   * Adds text to the PDF page with automatic word wrapping.
-   * Text is sanitized to ensure WinAnsi encoding compatibility.
-   * 
-   * @param {string} text - The text to add (will be sanitized automatically).
-   * @param {number} x - The x-coordinate for the text (left margin).
-   * @param {number} y - The starting y-coordinate for the text (top of page).
-   * @param {number} size - The font size in points.
-   * @param {PDFFont} fontToUse - The PDF font object to use for rendering.
-   * @param {rgb} [color=rgb(0, 0, 0)] - The text color (defaults to black).
-   * @param {number} [maxWidth=contentWidth] - The maximum width for text wrapping in points.
-   * @returns {number} The final y-coordinate after text has been drawn (for chaining).
-   * @throws {Error} If the page reference is invalid.
-   */
-  function addText(text, x, y, size, fontToUse, color = rgb(0, 0, 0), maxWidth = contentWidth) {
-    if (!text || text === null || text === undefined) {
-      text = String(text || "");
+    /**
+     * Ensures there is enough vertical space on the current page for content.
+     * If insufficient space is available, creates a new page and resets the y-position.
+     * 
+     * @param {number} requiredSpace - The minimum vertical space required in points.
+     * @returns {boolean} True if a new page was created, false otherwise.
+     */
+    function ensurePageSpace(requiredSpace) {
+      if (yPosition < margin + requiredSpace) {
+        page = doc.addPage([595, 842]);
+        yPosition = pageHeight - margin;
+        return true;
+      }
+      return false;
     }
-    text = String(text);
-    
-    // Sanitize text to remove Unicode characters that can't be encoded in WinAnsi
-    text = sanitizeForPDF(text);
-    
-    const words = text.split(" ");
-    let line = "";
-    let currentY = y;
-    
-    // Ensure we have a valid page reference
-    if (!page) {
-      throw new Error("Page reference is invalid");
-    }
-    
-    for (let i = 0; i < words.length; i++) {
-      const testLine = line + (line ? " " : "") + words[i];
-      const width = fontToUse.widthOfTextAtSize(testLine, size);
-      
-      if (width > maxWidth && line) {
+
+    /**
+     * Adds text to the PDF page with automatic word wrapping.
+     * Text is sanitized to ensure WinAnsi encoding compatibility.
+     * 
+     * @param {string} text - The text to add (will be sanitized automatically).
+     * @param {number} x - The x-coordinate for the text (left margin).
+     * @param {number} y - The starting y-coordinate for the text (top of page).
+     * @param {number} size - The font size in points.
+     * @param {PDFFont} fontToUse - The PDF font object to use for rendering.
+     * @param {rgb} [color=rgb(0, 0, 0)] - The text color (defaults to black).
+     * @param {number} [maxWidth=contentWidth] - The maximum width for text wrapping in points.
+     * @returns {number} The final y-coordinate after text has been drawn (for chaining).
+     * @throws {Error} If the page reference is invalid.
+     */
+    function addText(text, x, y, size, fontToUse, color = rgb(0, 0, 0), maxWidth = contentWidth) {
+      if (!text || text === null || text === undefined) {
+        text = String(text || "");
+      }
+      text = String(text);
+
+      // Sanitize text to remove Unicode characters that can't be encoded in WinAnsi
+      text = sanitizeForPDF(text);
+
+      const words = text.split(" ");
+      let line = "";
+      let currentY = y;
+
+      // Ensure we have a valid page reference
+      if (!page) {
+        throw new Error("Page reference is invalid");
+      }
+
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + (line ? " " : "") + words[i];
+        const width = fontToUse.widthOfTextAtSize(testLine, size);
+
+        if (width > maxWidth && line) {
+          page.drawText(line, { x, y: currentY, size, font: fontToUse, color });
+          line = words[i];
+          currentY -= size + 2;
+        } else {
+          line = testLine;
+        }
+      }
+
+      if (line) {
         page.drawText(line, { x, y: currentY, size, font: fontToUse, color });
-        line = words[i];
         currentY -= size + 2;
-      } else {
-        line = testLine;
+      }
+
+      return currentY;
+    }
+
+    // Title
+    yPosition = addText(
+      safeTranslate("pdf.title"),
+      margin,
+      yPosition,
+      titleSize,
+      boldFont
+    );
+    yPosition -= sectionSpacing;
+
+    // Date
+    const currentDate = formatDate(new Date(), i18n.language);
+    yPosition = addText(
+      `${safeTranslate("pdf.date")}: ${currentDate}`,
+      margin,
+      yPosition,
+      normalSize,
+      font,
+      rgb(0.4, 0.4, 0.4)
+    );
+    yPosition -= sectionSpacing * 1.5;
+
+    // Extract calculation result
+    const calculation = readFormAndCalc(formValues);
+
+    // Extract reduction summary
+    const reduction = buildReductionSummary({
+      schoolDegreeId: formValues?.schoolDegreeId,
+      degreeReductionMonths: formValues?.degreeReductionMonths,
+      manualReductionMonths: formValues?.manualReductionMonths,
+      qualificationReductionMonths: formValues?.qualificationReductionRawMonths,
+      labelKey: formValues?.schoolDegreeLabelKey,
+      maxTotalMonths: formValues?.maxTotalReduction ?? 12,
+    });
+
+    /**
+     * Safely translates a translation key, falling back to the key itself if translation fails.
+     * This prevents empty strings or errors from breaking PDF generation.
+     * 
+     * @param {string} key - The translation key to look up.
+     * @param {Object} [options={}] - Optional interpolation options for the translation.
+     * @returns {string} The translated string, or the key if translation fails or is missing.
+     */
+    function safeTranslate(key, options = {}) {
+      try {
+        const result = t(key, options);
+        // i18next returns the key if translation is missing, so check if it's different
+        if (result && result !== key) {
+          return result;
+        }
+        return result || key;
+      } catch (error) {
+        console.warn(`Translation key "${key}" failed:`, error);
+        return key;
       }
     }
-    
-    if (line) {
-      page.drawText(line, { x, y: currentY, size, font: fontToUse, color });
-      currentY -= size + 2;
-    }
-    
-    return currentY;
-  }
 
-  // Title
-  yPosition = addText(
-    safeTranslate("pdf.title"),
-    margin,
-    yPosition,
-    titleSize,
-    boldFont
-  );
-  yPosition -= sectionSpacing;
+    // Replace t with safeTranslate for the rest of the function
+    const safeT = safeTranslate;
 
-  // Date
-  const currentDate = formatDate(new Date(), i18n.language);
-  yPosition = addText(
-    `${safeTranslate("pdf.date")}: ${currentDate}`,
-    margin,
-    yPosition,
-    normalSize,
-    font,
-    rgb(0.4, 0.4, 0.4)
-  );
-  yPosition -= sectionSpacing * 1.5;
+    const numberFormatter = new Intl.NumberFormat(i18n.language, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    });
+    const formatNumber = (value) => numberFormatter.format(value);
 
-  // Extract calculation result
-  const calculation = readFormAndCalc(formValues);
-  
-  // Extract reduction summary
-  const reduction = buildReductionSummary({
-    schoolDegreeId: formValues?.schoolDegreeId,
-    degreeReductionMonths: formValues?.degreeReductionMonths,
-    manualReductionMonths: formValues?.manualReductionMonths,
-    qualificationReductionMonths: formValues?.qualificationReductionRawMonths,
-    labelKey: formValues?.schoolDegreeLabelKey,
-    maxTotalMonths: formValues?.maxTotalReduction ?? 12,
-  });
-  
-  /**
-   * Safely translates a translation key, falling back to the key itself if translation fails.
-   * This prevents empty strings or errors from breaking PDF generation.
-   * 
-   * @param {string} key - The translation key to look up.
-   * @param {Object} [options={}] - Optional interpolation options for the translation.
-   * @returns {string} The translated string, or the key if translation fails or is missing.
-   */
-  function safeTranslate(key, options = {}) {
-    try {
-      const result = t(key, options);
-      // i18next returns the key if translation is missing, so check if it's different
-      if (result && result !== key) {
-        return result;
-      }
-      return result || key;
-    } catch (error) {
-      console.warn(`Translation key "${key}" failed:`, error);
-      return key;
-    }
-  }
+    // Extract inputs for use in calculations
+    const weeklyFull = toNumber(formValues?.weeklyFull);
+    const weeklyPart = toNumber(formValues?.weeklyPart);
+    const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
 
-  // Replace t with safeTranslate for the rest of the function
-  const safeT = safeTranslate;
+    // Get school degree label for use in transparency section
+    const schoolDegreeLabel = reduction.labelKey
+      ? safeT(reduction.labelKey)
+      : safeT("reduction.selectPlaceholder");
 
-  const numberFormatter = new Intl.NumberFormat(i18n.language, {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  });
-  const formatNumber = (value) => numberFormatter.format(value);
+    // Build input field configuration dynamically
+    const inputFieldConfigs = buildInputFieldConfig(
+      formValues,
+      reduction,
+      safeT,
+      formatNumber
+    );
 
-  // Extract inputs for use in calculations
-  const weeklyFull = toNumber(formValues?.weeklyFull);
-  const weeklyPart = toNumber(formValues?.weeklyPart);
-  const fulltimeMonths = toNumber(formValues?.fullDurationMonths);
+    // Input Values Section
+    yPosition = addText(
+      safeT("pdf.inputs"),
+      margin,
+      yPosition,
+      headingSize,
+      boldFont
+    );
+    yPosition -= lineHeight;
 
-  // Get school degree label for use in transparency section
-  const schoolDegreeLabel = reduction.labelKey 
-    ? safeT(reduction.labelKey) 
-    : safeT("reduction.selectPlaceholder");
-
-  // Build input field configuration dynamically
-  const inputFieldConfigs = buildInputFieldConfig(
-    formValues,
-    reduction,
-    safeT,
-    formatNumber
-  );
-
-  // Input Values Section
-  yPosition = addText(
-    safeT("pdf.inputs"),
-    margin,
-    yPosition,
-    headingSize,
-    boldFont
-  );
-  yPosition -= lineHeight;
-
-  // Build inputs array dynamically from configuration
-  const inputs = inputFieldConfigs.map(function mapConfigToInput(config) {
-    try {
-      const formattedValue = formatFieldValue(
-        config.value,
-        config.formatType,
-        numberFormatter,
-        safeT
-      );
-      return {
-        label: safeT(config.labelKey),
-        value: formattedValue,
-      };
-    } catch (error) {
-      console.warn(`Failed to format value for field "${config.labelKey}":`, error);
-      return {
-        label: safeT(config.labelKey),
-        value: config.required ? "N/A" : "",
-      };
-    }
-  }).filter(function filterEmptyInputs(input) {
-    // Filter out empty conditional fields
-    return input.value !== "";
-  });
-
-  // Warn about missing required fields (but don't fail)
-  const hoursLabel = safeT("pdf.hoursPerWeek");
-  const zeroHoursPattern = `0 ${hoursLabel}`;
-  const missingRequiredFields = inputFieldConfigs
-    .filter(function filterRequired(config) {
-      return config.required;
-    })
-    .filter(function checkMissingValue(config) {
+    // Build inputs array dynamically from configuration
+    const inputs = inputFieldConfigs.map(function mapConfigToInput(config) {
       try {
         const formattedValue = formatFieldValue(
           config.value,
@@ -521,360 +490,298 @@ export async function generatePDF(formValues, t, i18n) {
           numberFormatter,
           safeT
         );
-        return !formattedValue || formattedValue === "0" || formattedValue === zeroHoursPattern;
-      } catch {
-        return true;
+        return {
+          label: safeT(config.labelKey),
+          value: formattedValue,
+        };
+      } catch (error) {
+        console.warn(`Failed to format value for field "${config.labelKey}":`, error);
+        return {
+          label: safeT(config.labelKey),
+          value: config.required ? "N/A" : "",
+        };
       }
+    }).filter(function filterEmptyInputs(input) {
+      // Filter out empty conditional fields
+      return input.value !== "";
     });
 
-  if (missingRequiredFields.length > 0) {
-    console.warn("PDF generation: Some required fields are missing or zero:", 
-      missingRequiredFields.map((f) => f.labelKey).join(", "));
-  }
+    // Warn about missing required fields (but don't fail)
+    const hoursLabel = safeT("pdf.hoursPerWeek");
+    const zeroHoursPattern = `0 ${hoursLabel}`;
+    const missingRequiredFields = inputFieldConfigs
+      .filter(function filterRequired(config) {
+        return config.required;
+      })
+      .filter(function checkMissingValue(config) {
+        try {
+          const formattedValue = formatFieldValue(
+            config.value,
+            config.formatType,
+            numberFormatter,
+            safeT
+          );
+          return !formattedValue || formattedValue === "0" || formattedValue === zeroHoursPattern;
+        } catch {
+          return true;
+        }
+      });
 
-  inputs.forEach((input) => {
-    const text = `${input.label}: ${input.value}`;
-    yPosition = addText(text, margin + 20, yPosition, normalSize, font);
-    yPosition -= lineHeight;
-  });
+    if (missingRequiredFields.length > 0) {
+      console.warn("PDF generation: Some required fields are missing or zero:",
+        missingRequiredFields.map((f) => f.labelKey).join(", "));
+    }
 
-  yPosition -= sectionSpacing;
-
-  // Ensure we have space for results section
-  ensurePageSpace(200);
-
-  // Results Section
-  if (calculation && calculation.allowed) {
-    yPosition = addText(
-      safeT("pdf.results"),
-      margin,
-      yPosition,
-      headingSize,
-      boldFont
-    );
-    yPosition -= lineHeight;
-
-    const factor = calculation.factor || (weeklyFull > 0 ? weeklyPart / weeklyFull : 0);
-    const baselineMonths = reduction.total > 0
-      ? calculation.effectiveFulltimeMonths
-      : calculation.fulltimeMonths;
-
-    const results = [
-      { label: safeT("pdf.factor"), value: `${formatNumber(factor * 100)}%` },
-      { label: safeT("pdf.baselineMonths"), value: `${formatNumber(baselineMonths)}` },
-      { label: safeT("pdf.parttimeMonths"), value: `${formatNumber(calculation.parttimeFinalMonths)}` },
-      {
-        label: safeT("pdf.deltaMonths"),
-        value: `${formatSigned(calculation.deltaMonths, (v) => formatNumber(v))}`,
-      },
-    ];
-
-    results.forEach((result) => {
-      const text = `${result.label}: ${result.value}`;
+    inputs.forEach((input) => {
+      const text = `${input.label}: ${input.value}`;
       yPosition = addText(text, margin + 20, yPosition, normalSize, font);
       yPosition -= lineHeight;
     });
 
     yPosition -= sectionSpacing;
-  }
 
-  // Ensure we have space for disclaimer section
-  ensurePageSpace(100);
+    // Ensure we have space for results section
+    ensurePageSpace(200);
 
-  // Disclaimer Section (on first page, before transparency)
-  yPosition -= sectionSpacing;
-  yPosition = addText(
-    safeT("pdf.disclaimer"),
-    margin,
-    yPosition,
-    headingSize,
-    boldFont
-  );
-  yPosition -= lineHeight;
-  yPosition = addText(
-    safeT("pdf.disclaimerText"),
-    margin + 20,
-    yPosition,
-    normalSize - 1,
-    font,
-    rgb(0.4, 0.4, 0.4)
-  );
+    // Results Section
+    if (calculation && calculation.allowed) {
+      yPosition = addText(
+        safeT("pdf.results"),
+        margin,
+        yPosition,
+        headingSize,
+        boldFont
+      );
+      yPosition -= lineHeight;
 
-  // Force a new page for transparency section (always start on dedicated page)
-  page = doc.addPage([595, 842]);
-  yPosition = pageHeight - margin;
+      const factor = calculation.factor || (weeklyFull > 0 ? weeklyPart / weeklyFull : 0);
+      const baselineMonths = reduction.total > 0
+        ? calculation.effectiveFulltimeMonths
+        : calculation.fulltimeMonths;
 
-  // Transparency Section (on dedicated page)
-  if (calculation && calculation.allowed) {
+      const results = [
+        { label: safeT("pdf.factor"), value: `${formatNumber(factor * 100)}%` },
+        { label: safeT("pdf.baselineMonths"), value: `${formatNumber(baselineMonths)}` },
+        { label: safeT("pdf.parttimeMonths"), value: `${formatNumber(calculation.parttimeFinalMonths)}` },
+        {
+          label: safeT("pdf.deltaMonths"),
+          value: `${formatSigned(calculation.deltaMonths, (v) => formatNumber(v))}`,
+        },
+      ];
+
+      results.forEach((result) => {
+        const text = `${result.label}: ${result.value}`;
+        yPosition = addText(text, margin + 20, yPosition, normalSize, font);
+        yPosition -= lineHeight;
+      });
+
+      yPosition -= sectionSpacing;
+    }
+
+    // Ensure we have space for disclaimer section
+    ensurePageSpace(100);
+
+    // Disclaimer Section (on first page, before transparency)
+    yPosition -= sectionSpacing;
     yPosition = addText(
-      safeT("pdf.transparency"),
+      safeT("pdf.disclaimer"),
       margin,
       yPosition,
       headingSize,
       boldFont
     );
-    yPosition -= sectionSpacing;
-
-    const minDurationMonths = resolveMinDuration(
-      fulltimeMonths,
-      formValues?.minDurationMonths
-    );
-    const totalReductionMonths = reduction.total;
-    const rawBase = Math.max(0, fulltimeMonths - totalReductionMonths);
-    const basis = calculation.effectiveFulltimeMonths || Math.max(rawBase, minDurationMonths);
-    const factor = calculation.factor || (weeklyFull > 0 ? weeklyPart / weeklyFull : 0);
-    const theoretical = calculation.theoreticalDuration || (factor > 0 ? basis / factor : basis);
-    const extension = theoretical - basis;
-    const sixMonthRuleApplied =
-      Number.isFinite(extension) &&
-      extension <= MAX_EXTENSION_MONTHS &&
-      extension > 0;
-    const durationAfterSixMonths = sixMonthRuleApplied ? basis : theoretical;
-    const capLimit = fulltimeMonths * DURATION_CAP_MULTIPLIER;
-    const capApplied =
-      Number.isFinite(durationAfterSixMonths) &&
-      Number.isFinite(capLimit) &&
-      durationAfterSixMonths > capLimit &&
-      capLimit > 0;
-    const durationAfterCap = capApplied ? capLimit : durationAfterSixMonths;
-    const roundingMode = formValues?.rounding ?? "round";
-    const roundedDuration = calculation.parttimeFinalMonths || Math.floor(durationAfterCap);
-    const deltaVsBasis = calculation.deltaMonths || (roundedDuration - basis);
-    const deltaVsOriginal = calculation.deltaVsOriginal || null;
-
-    const percent =
-      weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
-    const basisYM = formatYearsMonths(basis, safeT);
-    const roundedYM = formatYearsMonths(roundedDuration, safeT);
-
-    // Step 1
-    yPosition = addText(
-      safeT("transparency.step1.title"),
-      margin,
-      yPosition,
-      normalSize + 1,
-      boldFont
-    );
     yPosition -= lineHeight;
     yPosition = addText(
-      safeT("transparency.ratio", {
-        part: formatNumber(weeklyPart),
-        full: formatNumber(weeklyFull),
-        pct: formatNumber(percent),
-      }),
+      safeT("pdf.disclaimerText"),
       margin + 20,
       yPosition,
-      normalSize,
-      font
-    );
-    yPosition -= lineHeight;
-    yPosition = addText(
-      safeT(percent >= 50 ? "transparency.step1.ok" : "transparency.step1.fail"),
-      margin + 20,
-      yPosition,
-      normalSize,
+      normalSize - 1,
       font,
-      percent >= 50 ? rgb(0, 0, 0) : rgb(0.8, 0, 0)
+      rgb(0.4, 0.4, 0.4)
     );
-    yPosition -= sectionSpacing;
 
-    // Step 2
-    yPosition = addText(
-      safeT("transparency.step2.title"),
-      margin,
-      yPosition,
-      normalSize + 1,
-      boldFont
-    );
-    yPosition -= lineHeight;
-    yPosition = addText(
-      safeT("transparency.step2.text", {
-        part: formatNumber(weeklyPart),
-        full: formatNumber(weeklyFull),
-        factor: formatNumber(factor),
-      }),
-      margin + 20,
-      yPosition,
-      normalSize,
-      font
-    );
-    yPosition -= sectionSpacing;
+    // Force a new page for transparency section (always start on dedicated page)
+    page = doc.addPage([595, 842]);
+    yPosition = pageHeight - margin;
 
-    // Step 3
-    const reductionBreakdownParts = [];
-    if (reduction.degree > 0 && reduction.labelKey) {
-      reductionBreakdownParts.push(
-        safeT("reduction.breakdown.degree", {
-          months: formatNumber(reduction.degree),
-          label: schoolDegreeLabel,
-        })
-      );
-    }
-    if (reduction.manual > 0) {
-      reductionBreakdownParts.push(
-        safeT("reduction.breakdown.manual", {
-          months: formatNumber(reduction.manual),
-        })
-      );
-    }
-    if (reduction.qualification > 0) {
-      reductionBreakdownParts.push(
-        safeT("reduction.breakdown.qualification", {
-          months: formatNumber(reduction.qualification),
-        })
-      );
-    }
-    const reductionBreakdown =
-      reductionBreakdownParts.length > 0
-        ? reductionBreakdownParts.join(", ")
-        : safeT("reduction.breakdown.none");
-    yPosition = addText(
-      safeT("transparency.step3.title"),
-      margin,
-      yPosition,
-      normalSize + 1,
-      boldFont
-    );
-    yPosition -= lineHeight;
-    yPosition = addText(
-      safeT("transparency.step3.text", {
-        fullM: formatNumber(fulltimeMonths),
-        reductions: reductionBreakdown,
-        rawBase: formatNumber(rawBase),
-        minM: formatNumber(minDurationMonths),
-        basis: formatNumber(basis),
-        basisYM,
-      }),
-      margin + 20,
-      yPosition,
-      normalSize,
-      font
-    );
-    yPosition -= sectionSpacing;
-
-    // Step 4
-    yPosition = addText(
-      safeT("transparency.step4.title"),
-      margin,
-      yPosition,
-      normalSize + 1,
-      boldFont
-    );
-    yPosition -= lineHeight;
-    yPosition = addText(
-      safeT("transparency.step4.text", {
-        basis: formatNumber(basis),
-        factor: formatNumber(factor),
-        dtheo: formatNumber(theoretical),
-      }),
-      margin + 20,
-      yPosition,
-      normalSize,
-      font
-    );
-    yPosition -= sectionSpacing;
-
-    // Step 5
-    yPosition = addText(
-      safeT("transparency.step5.title"),
-      margin,
-      yPosition,
-      normalSize + 1,
-      boldFont
-    );
-    yPosition -= lineHeight;
-    yPosition = addText(
-      safeT(
-        sixMonthRuleApplied
-          ? "transparency.step5.sixApplied"
-          : "transparency.step5.sixSkipped",
-        {
-          extension: formatSigned(extension, (v) => formatNumber(v)),
-          limited: formatNumber(basis),
-        }
-      ),
-      margin + 20,
-      yPosition,
-      normalSize,
-      font
-    );
-    yPosition -= lineHeight;
-    yPosition = addText(
-      safeT(
-        capApplied
-          ? "transparency.step5.capApplied"
-          : "transparency.step5.capSkipped",
-        {
-          afterSix: formatNumber(durationAfterSixMonths),
-          cap: formatNumber(capLimit),
-        }
-      ),
-      margin + 20,
-      yPosition,
-      normalSize,
-      font
-    );
-    yPosition -= sectionSpacing;
-
-    // Step 6
-    const roundingFnLabel = safeT(`transparency.rounding.${roundingMode}`);
-    yPosition = addText(
-      safeT("transparency.step6.title"),
-      margin,
-      yPosition,
-      normalSize + 1,
-      boldFont
-    );
-    yPosition -= lineHeight;
-    yPosition = addText(
-      safeT("transparency.step6.text", {
-        rounding: roundingFnLabel,
-        value: formatNumber(durationAfterCap),
-        rounded: formatNumber(roundedDuration),
-        roundedYM,
-      }),
-      margin + 20,
-      yPosition,
-      normalSize,
-      font
-    );
-    yPosition -= sectionSpacing;
-
-    // Final Result
-    yPosition = addText(
-      safeT("transparency.result", {
-        months: formatNumber(roundedDuration),
-        yearsMonths: roundedYM,
-      }),
-      margin,
-      yPosition,
-      normalSize + 1,
-      boldFont
-    );
-    yPosition -= lineHeight;
-    yPosition = addText(
-      safeT("transparency.delta.basis", {
-        delta: formatSigned(deltaVsBasis, (v) => formatNumber(v)),
-      }),
-      margin + 20,
-      yPosition,
-      normalSize,
-      font
-    );
-    yPosition -= lineHeight;
-    if (Number.isFinite(deltaVsOriginal) && deltaVsOriginal !== 0) {
+    // Transparency Section (on dedicated page)
+    if (calculation && calculation.allowed) {
       yPosition = addText(
-        safeT("transparency.delta.original", {
-          delta: formatSigned(deltaVsOriginal, (v) => formatNumber(v)),
-        }),
-        margin + 20,
+        safeT("pdf.transparency"),
+        margin,
         yPosition,
-        normalSize,
-        font
+        headingSize,
+        boldFont
       );
-      yPosition -= lineHeight;
+      yPosition -= sectionSpacing;
+
+      const minDurationMonths = resolveMinDuration(
+        fulltimeMonths,
+        formValues?.minDurationMonths
+      );
+      const totalReductionMonths = reduction.total;
+      const rawBase = Math.max(0, fulltimeMonths - totalReductionMonths);
+      const basis = calculation.effectiveFulltimeMonths || Math.max(rawBase, minDurationMonths);
+      const factor = calculation.factor || (weeklyFull > 0 ? weeklyPart / weeklyFull : 0);
+      const theoretical = calculation.theoreticalDuration || (factor > 0 ? basis / factor : basis);
+      const extension = theoretical - basis;
+      const sixMonthRuleApplied =
+        Number.isFinite(extension) &&
+        extension <= MAX_EXTENSION_MONTHS &&
+        extension > 0;
+      const durationAfterSixMonths = sixMonthRuleApplied ? basis : theoretical;
+      const capLimit = fulltimeMonths * DURATION_CAP_MULTIPLIER;
+      const capApplied =
+        Number.isFinite(durationAfterSixMonths) &&
+        Number.isFinite(capLimit) &&
+        durationAfterSixMonths > capLimit &&
+        capLimit > 0;
+      const durationAfterCap = capApplied ? capLimit : durationAfterSixMonths;
+      const roundedDuration = calculation.parttimeFinalMonths || Math.floor(durationAfterCap);
+
+      const percent =
+        weeklyFull > 0 && Number.isFinite(factor) ? Math.round(factor * 100) : 0;
+      const basisYM = formatYearsMonths(basis, safeT);
+      const roundedYM = formatYearsMonths(roundedDuration, safeT);
+
+      // --- Diagram Section ---
+      yPosition -= 10;
+
+      // Config
+      // contentWidth is already defined in outer scope
+      const barHeight = 20;
+      const barSpacing = 25; // Space between two bars
+      const maxBarWidth = contentWidth;
+      const fullTimeColor = rgb(0.9, 0.9, 0.9); // Slate-200 approx
+      const partTimeBgColor = rgb(0.95, 0.95, 1.0); // Slate-100/Blue-50 approx
+      const partTimeFillColor = rgb(0.15, 0.4, 0.9); // Blue-600 approx
+
+      // 1. Draw Full-Time Bar
+      // Label
+      page.drawText(`${safeT("transparency.simple.chart.fullLabel")} - ${formatNumber(weeklyFull)} h`, {
+        x: margin,
+        y: yPosition + 4,
+        size: 9,
+        font,
+        color: rgb(0.4, 0.4, 0.4)
+      });
+      // Bar Background
+      page.drawRectangle({
+        x: margin,
+        y: yPosition - barHeight,
+        width: maxBarWidth,
+        height: barHeight,
+        color: fullTimeColor,
+      });
+
+      yPosition -= (barHeight + barSpacing);
+
+      // 2. Draw Part-Time Bar
+      // Label
+      page.drawText(`${safeT("pdf.parttimeHours")} - ${formatNumber(weeklyPart)} h (${percent}%)`, {
+        x: margin,
+        y: yPosition + 4,
+        size: 9,
+        font: boldFont,
+        color: partTimeFillColor
+      });
+
+      // Bar Background (Container)
+      page.drawRectangle({
+        x: margin,
+        y: yPosition - barHeight,
+        width: maxBarWidth,
+        height: barHeight,
+        color: partTimeBgColor,
+      });
+
+      // Bar Fill (Actual value)
+      const fillWidth = (Math.max(0, Math.min(100, percent)) / 100) * maxBarWidth;
+      if (fillWidth > 0) {
+        page.drawRectangle({
+          x: margin,
+          y: yPosition - barHeight,
+          width: fillWidth,
+          height: barHeight,
+          color: partTimeFillColor,
+        });
+      }
+
+      yPosition -= (barHeight + sectionSpacing);
+      // --- End Diagram Section ---
+
+      // Helper to add simple step with values
+      const addSimpleStep = (stepNum, valueText = "") => {
+        yPosition = addText(
+          safeT(`transparency.simple.step${stepNum}.title`),
+          margin,
+          yPosition,
+          normalSize + 1,
+          boldFont
+        );
+        yPosition -= lineHeight;
+
+        let text = safeT(`transparency.simple.step${stepNum}.text`);
+        if (valueText) {
+          text += ` ${valueText}`;
+        }
+
+        yPosition = addText(
+          text,
+          margin + 20,
+          yPosition,
+          normalSize,
+          font
+        );
+        yPosition -= sectionSpacing;
+      };
+
+      // Step 1
+      const step1Status = percent >= 50
+        ? `(${percent}% >= 50% - OK)`
+        : `(${percent}% < 50% - Error)`;
+      addSimpleStep(1, step1Status);
+
+      // Step 2
+      addSimpleStep(2, `(${formatNumber(weeklyPart)} / ${formatNumber(weeklyFull)} = ${formatNumber(factor)} -> ${percent}%)`);
+
+      // Step 3
+      const reductionLabel = reduction.total > 0 ? `-${formatNumber(reduction.total)}` : "0";
+      addSimpleStep(3, `(${formatNumber(fulltimeMonths)} ${reductionLabel} -> ${formatNumber(basis)} Months)`);
+
+      // Step 4
+      addSimpleStep(4, `(${formatNumber(basis)} / ${formatNumber(factor)} = ${formatNumber(theoretical)} Months)`);
+
+      // Step 5
+      let protectionText = "";
+      if (sixMonthRuleApplied) {
+        protectionText = `(+${formatNumber(extension)} Months <= 6 Months -> Ignored)`;
+      } else if (capApplied) {
+        protectionText = `(> ${formatNumber(capLimit)} Months -> Capped)`;
+      } else {
+        protectionText = "(OK)";
+      }
+      addSimpleStep(5, protectionText);
+
+      // Step 6
+      addSimpleStep(6, `(${formatNumber(durationAfterCap)} -> ${formatNumber(roundedDuration)} Months)`);
+
+      yPosition -= sectionSpacing;
+
     }
-  }
+
+    // Add page numbers
+    const pages = doc.getPages();
+    for (let i = 0; i < pages.length; i++) {
+      const p = pages[i];
+      p.drawText(`${i + 1} / ${pages.length}`, {
+        x: p.getWidth() / 2 - 10,
+        y: 20,
+        size: 10,
+        font,
+        color: rgb(0.4, 0.4, 0.4),
+      });
+    }
 
     const pdfBytes = await doc.save();
     return pdfBytes;
