@@ -250,7 +250,7 @@
             "chart": {
                 "fullTime": "Vollzeit: {{hours}} h (100%)",
                 "partTime": "Teilzeit: {{hours}} h ({{percent}}%)",
-                "fullLabel": "Full Time / Vollzeit"
+                "fullLabel": "Vollzeit"
             },
             "actions": {
                 "close": "Schließen",
