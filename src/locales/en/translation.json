@@ -292,7 +292,7 @@
       "chart": {
         "fullTime": "Full-time: {{hours}} h (100%)",
         "partTime": "Part-time: {{hours}} h ({{percent}}%)",
-        "fullLabel": "Full Time / Vollzeit"
+        "fullLabel": "Full-time"
       },
       "actions": {
         "close": "Close",
@@ -424,26 +424,26 @@
   },
   "tooltip": {
     "info": "Information",
-    "fulltimeHours": "In many companies full-time ranges between 35 and 48 hours per week.",
-    "parttimeHours": "Allowed range: at least 50% and at most 80% of the full-time hours.",
-    "regularDuration": "At least 12 months.",
-    "schoolDegree": "Some school degrees already cover training content. That’s why the chamber can shorten the duration. The chamber and the company decide together.",
-    "qualifications": "Here you can indicate whether you have additional experience or qualifications that may shorten the training time.",
-    "qualificationMax": "This qualification can shorten the training by up to 12 months.",
+    "fulltimeHours": "In many companies full-time ranges between 35 and 48 hours per week. Legal basis: § 7a BBiG (part-time uses regular full-time hours as anchor).",
+    "parttimeHours": "Allowed range: at least 50% and at most 80% of the full-time hours. Basis: § 7a BBiG (part-time vocational training).",
+    "regularDuration": "At least 12 months. Basis: § 8 BBiG (shortening/extension of training duration).",
+    "schoolDegree": "Some school degrees already cover training content. That’s why the chamber can shorten the duration. The chamber and the company decide together. Basis: § 8 (1) BBiG (crediting prior education).",
+    "qualifications": "Here you can indicate whether you have additional experience or qualifications that may shorten the training time. Basis: § 8 (1) BBiG (crediting prior education).",
+    "qualificationMax": "This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening of training duration).",
     "reduction": {
-      "hs": "Lower secondary school certificate: Usually no reduction.",
-      "mr": "Intermediate school certificate: Often up to 6 months shorter.",
-      "fhr": "Advanced technical college entrance qualification: Often up to 12 months shorter.",
-      "abi": "General higher education entrance qualification: Often up to 12 months shorter."
+      "hs": "Lower secondary school certificate: Usually no reduction. Source: § 8 (1) BBiG (credit possible if content is recognised).",
+      "mr": "Intermediate school certificate: Often up to 6 months shorter. Source: § 8 (1) BBiG (credit possible if content is recognised).",
+      "fhr": "Advanced technical college entrance qualification: Often up to 12 months shorter. Source: § 8 (1) BBiG (credit possible if content is recognised).",
+      "abi": "General higher education entrance qualification: Often up to 12 months shorter. Source: § 8 (1) BBiG (credit possible if content is recognised)."
     },
     "qualification": {
-      "familyCare": "Select this if you care for children or dependent family members. This qualification can shorten the training by up to 12 months.",
-      "ageOver21": "Select this if you are over 21 years old when starting your training. This qualification can shorten the training by up to 12 months.",
-      "completedTraining": "Select this if you have already completed a vocational training program. This qualification can shorten the training by up to 12 months.",
-      "vocationalFoundation": "Select this if you have completed a basic vocational training year. This qualification can shorten the training by up to 12 months.",
-      "vocationalExperience": "Select this if you already have relevant work experience. This qualification can shorten the training by up to 12 months.",
-      "academic": "Select this if you have a university or college degree. This qualification can shorten the training by up to 12 months.",
-      "foreignRecognition": "Select this if a foreign vocational or educational qualification has been officially recognized. This qualification can shorten the training by up to 12 months."
+      "familyCare": "Select this if you care for children or dependent family members. This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening for prior education/life situation).",
+      "ageOver21": "Select this if you are over 21 years old when starting your training. This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening for prior education/life situation).",
+      "completedTraining": "Select this if you have already completed a vocational training program. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
+      "vocationalFoundation": "Select this if you have completed a basic vocational training year. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
+      "vocationalExperience": "Select this if you already have relevant work experience. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
+      "academic": "Select this if you have a university or college degree. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
+      "foreignRecognition": "Select this if a foreign vocational or educational qualification has been officially recognized. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education)."
     }
   }
 }

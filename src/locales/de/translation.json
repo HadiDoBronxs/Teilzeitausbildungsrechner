@@ -292,7 +292,7 @@
             "chart": {
                 "fullTime": "Vollzeit: {{hours}} h (100%)",
                 "partTime": "Teilzeit: {{hours}} h ({{percent}}%)",
-                "fullLabel": "Full Time / Vollzeit"
+                "fullLabel": "Vollzeit"
             },
             "actions": {
                 "close": "Schließen",
@@ -424,26 +424,26 @@
     },
     "tooltip": {
         "info": "Information",
-        "fulltimeHours": "In vielen Betrieben liegt die Vollzeit zwischen 35 und 48 Stunden pro Woche.",
-        "parttimeHours": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
-        "regularDuration": "Mindestens 12 Monate.",
-        "schoolDegree": "Manche Schulabschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen. Kammer und Betrieb entscheiden gemeinsam.",
-        "qualifications": "Hier können Sie angeben, ob Sie weitere Erfahrungen oder Abschlüsse haben, die die Ausbildungszeit verkürzen können.",
-        "qualificationMax": "Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
+        "fulltimeHours": "In vielen Betrieben liegt die Vollzeit zwischen 35 und 48 Stunden pro Woche. Gesetzliche Basis: § 7a BBiG (Teilzeit auf Basis der regulären Vollzeitstunden).",
+        "parttimeHours": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden. Grundlage: § 7a BBiG (Teilzeitberufsausbildung).",
+        "regularDuration": "Mindestens 12 Monate. Grundlage: § 8 BBiG (Verkürzung/Verlängerung der Ausbildungszeit).",
+        "schoolDegree": "Manche Schulabschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen. Kammer und Betrieb entscheiden gemeinsam. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+        "qualifications": "Hier können Sie angeben, ob Sie weitere Erfahrungen oder Abschlüsse haben, die die Ausbildungszeit verkürzen können. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+        "qualificationMax": "Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung der Ausbildungszeit).",
         "reduction": {
-            "hs": "Hauptschulabschluss: Normalerweise keine Verkürzung.",
-            "mr": "Mittlere Reife: Oft bis zu 6 Monate kürzer.",
-            "fhr": "Fachhochschulreife: Oft bis zu 12 Monate kürzer.",
-            "abi": "Abitur: Oft bis zu 12 Monate kürzer."
+            "hs": "Hauptschulabschluss: Normalerweise keine Verkürzung. Quelle: § 8 Abs. 1 BBiG (Anrechnung möglich, wenn Inhalte anerkannt werden).",
+            "mr": "Mittlere Reife: Oft bis zu 6 Monate kürzer. Quelle: § 8 Abs. 1 BBiG (Anrechnung möglich, wenn Inhalte anerkannt werden).",
+            "fhr": "Fachhochschulreife: Oft bis zu 12 Monate kürzer. Quelle: § 8 Abs. 1 BBiG (Anrechnung möglich, wenn Inhalte anerkannt werden).",
+            "abi": "Abitur: Oft bis zu 12 Monate kürzer. Quelle: § 8 Abs. 1 BBiG (Anrechnung möglich, wenn Inhalte anerkannt werden)."
         },
         "qualification": {
-            "familyCare": "Hier wählen Sie aus, wenn Sie Kinder oder pflegebedürftige Angehörige betreuen. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-            "ageOver21": "Hier wählen Sie aus, wenn Sie bei Ausbildungsstart über 21 Jahre alt sind. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-            "completedTraining": "Hier wählen Sie aus, wenn Sie bereits eine Berufsausbildung abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-            "vocationalFoundation": "Hier wählen Sie aus, wenn Sie ein Berufsgrundbildungsjahr abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-            "vocationalExperience": "Hier wählen Sie aus, wenn Sie schon passende Berufserfahrung haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-            "academic": "Hier wählen Sie aus, wenn Sie einen Hochschul- oder Fachhochschulabschluss haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-            "foreignRecognition": "Hier wählen Sie aus, wenn ein ausländischer Berufs- oder Bildungsabschluss anerkannt wurde. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden."
+            "familyCare": "Hier wählen Sie aus, wenn Sie Kinder oder pflegebedürftige Angehörige betreuen. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung wegen Vorbildung/Lebenssituation).",
+            "ageOver21": "Hier wählen Sie aus, wenn Sie bei Ausbildungsstart über 21 Jahre alt sind. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung wegen Vorbildung/Lebenssituation).",
+            "completedTraining": "Hier wählen Sie aus, wenn Sie bereits eine Berufsausbildung abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+            "vocationalFoundation": "Hier wählen Sie aus, wenn Sie ein Berufsgrundbildungsjahr abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+            "vocationalExperience": "Hier wählen Sie aus, wenn Sie schon passende Berufserfahrung haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+            "academic": "Hier wählen Sie aus, wenn Sie einen Hochschul- oder Fachhochschulabschluss haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+            "foreignRecognition": "Hier wählen Sie aus, wenn ein ausländischer Berufs- oder Bildungsabschluss anerkannt wurde. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung)."
         }
     }
 }
