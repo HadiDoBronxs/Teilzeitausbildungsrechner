@@ -100,8 +100,7 @@ export default function ResultSidebar({ values }) {
 
           {/* ONLY ONE scroll-to-top button */}
           <Button
-             onClick={() => {}}
-              disabled
+            onClick={scrollToTop}
             variant="pill"
             size="sm"
             ariaLabel={t("result.navigation.scrollToTop")}
@@ -164,8 +163,7 @@ export default function ResultSidebar({ values }) {
         {/* Navigation */}
         <div className="space-y-2 pt-4 border-t border-slate-200">
           <Button
-             onClick={() => {}}
-              disabled
+            onClick={scrollToTop}
             variant="pill"
             size="sm"
             ariaLabel={t("result.navigation.scrollToTop")}
