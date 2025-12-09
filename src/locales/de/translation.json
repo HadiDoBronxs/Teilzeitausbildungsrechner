@@ -137,7 +137,49 @@
         }
     },
     "tour": {
-        "comingSoon": "Das geführte Design wird bald verfügbar sein."
+        "comingSoon": "Das geführte Design wird bald verfügbar sein.",
+        "tabs": {
+            "inputs": "Eingaben",
+            "education": "Bildung",
+            "reductions": "Verkürzungen",
+            "results": "Ergebnis"
+        },
+        "reduceTraining": {
+            "question": "Möchten Sie die Ausbildungszeit verkürzen?",
+            "no": "Nein",
+            "yes": "Ja",
+            "iDontKnow": "Ich weiß nicht"
+        },
+        "university": {
+            "question": "Haben Sie eine Hochschule besucht?",
+            "yes": "Ja",
+            "no": "Nein"
+        },
+        "ects": {
+            "question": "Haben Sie mindestens 30 ECTS erreicht?",
+            "yes": "Ja",
+            "no": "Nein"
+        },
+        "navigation": {
+            "back": "Zurück",
+            "next": "Weiter"
+        },
+        "sidebar": {
+            "title": "Ihre Angaben",
+            "fulltime": "Vollzeit",
+            "parttime": "Teilzeit",
+            "duration": "Dauer",
+            "education": "Bildung",
+            "reductions": "Verkürzungen",
+            "qualifications": {
+                "familyCare": "Familie/Pflege",
+                "ageOver21": "Über 21 Jahre",
+                "completedTraining": "Abgeschlossene Ausbildung",
+                "vocationalExperience": "Berufserfahrung",
+                "academic": "Hochschulabschluss",
+                "foreignRecognition": "Anerkannter ausländischer Abschluss"
+            }
+        }
     },
     "result": {
         "headline": "Ihre Ausbildung dauert {{value}}.",

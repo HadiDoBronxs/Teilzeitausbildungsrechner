@@ -16,18 +16,25 @@ Runtime and source code:
   - Main routing component using hash-based routing (no React Router dependency).
 - `src/routes/`  
   - Page-level views (routing targets):
-    - `WelcomePage.jsx` – Initial landing page with design selection (compact/tour).
-    - `CompactView.jsx` – Compact calculator view with all inputs in a single page.
-    - `TourView.jsx` – Placeholder for guided tour view (not yet implemented).
-    - `transparenz.jsx` – Transparency information page.
-    - `legal.jsx` – Legal basis information page.
+    - `WelcomePage.jsx` - Initial landing page with design selection (compact/tour).
+    - `CompactView.jsx` - Compact calculator view with all inputs in a single page.
+    - `TourView.jsx` - Guided tour design with step-by-step tab navigation.
+    - `src/routes/tour/` - Tab components for the guided tour:
+      - `InputsTab.jsx` - Basic inputs (hours, duration, reduction preference).
+      - `EducationTab.jsx` - School degree and academic qualifications.
+      - `ReductionsTab.jsx` - Additional qualification reductions.
+      - `ResultsTab.jsx` - Calculation results and PDF export.
+    - `transparenz.jsx` - Transparency information page.
+    - `legal.jsx` - Legal basis information page.
 - `src/features/`  
   - Feature flows (e.g. calculator logic, transparency view).
 - `src/components/`  
   - Shared UI components and their tests.
   - `src/components/ui/` contains the **central UI primitives** (see below).
-  - `src/components/ResultSidebar.jsx` – Desktop sidebar displaying simplified results.
-  - `src/components/ResultBottomBar.jsx` – Mobile bottom bar showing part-time duration.
+  - `src/components/ResultSidebar.jsx` - Desktop sidebar displaying simplified results (CompactView).
+  - `src/components/ResultBottomBar.jsx` - Mobile bottom bar showing part-time duration (CompactView).
+  - `src/components/TourTabs.jsx` - Tab navigation for guided tour (responsive: vertical on mobile, horizontal on desktop).
+  - `src/components/TourSidebar.jsx` - Desktop sidebar showing current inputs summary (TourView).
 - `src/domain/`  
   - Pure business logic (e.g. `trainingDuration`).
 - `src/utils/`  
@@ -52,6 +59,8 @@ Other important folders/files:
 - `npm run test` – run Vitest with jsdom and Testing Library.
 
 Before opening a merge request, `npm run lint` and `npm run test` should pass.
+
+For detailed information on writing and maintaining UI tests, see [UI_TESTING.md](./UI_TESTING.md).
 
 ---
 
@@ -176,7 +185,7 @@ Routes are determined in the following priority order:
 
 2. **Hash-based routes** (primary routing method):
    - `#compact` → `compact` route (CompactView)
-   - `#tour` → `tour` route (TourView - placeholder)
+   - `#tour` → `tour` route (TourView)
 
 3. **Default route**:
    - No hash or pathname match → `welcome` route (WelcomePage)

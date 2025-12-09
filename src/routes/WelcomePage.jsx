@@ -20,8 +20,7 @@ export default function WelcomePage() {
   }
 
   function handleTourClick() {
-    // Tour is not yet implemented, so this is intentionally disabled
-    // Future: window.location.hash = "#tour";
+    window.location.hash = "#tour";
   }
 
   return (
@@ -93,19 +92,17 @@ export default function WelcomePage() {
                 </span>
               </button>
 
-              {/* Guided Design Card (disabled) */}
+              {/* Guided Design Card */}
               <button
                 type="button"
                 onClick={handleTourClick}
-                disabled
-                className="flex flex-col items-center justify-center gap-4 p-6 rounded-xl border-2 border-slate-200 bg-slate-100 opacity-60 cursor-not-allowed"
-                aria-label={`${t("welcome.designs.tour")} - ${t("tour.comingSoon")}`}
-                aria-disabled="true"
+                className="flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-slate-950 hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 transition-colors"
+                aria-label={`${t("welcome.designs.tour")} - ${t("welcome.intro")}`}
               >
-                <span className="text-4xl" aria-hidden="true">
+                <span className="text-4xl text-white" aria-hidden="true">
                   📖
                 </span>
-                <span className="text-lg font-semibold text-slate-600">
+                <span className="text-lg font-semibold text-white">
                   {t("welcome.designs.tour")}
                 </span>
               </button>

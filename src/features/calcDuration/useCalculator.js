@@ -2,9 +2,10 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { buildReductionSummary } from "../../domain/schoolDegreeReductions.js";
 import { generatePDF } from "../../utils/generatePDF.js";
+import { QUALIFICATION_OPTIONS } from "../../components/qualificationOptions.js";
 
 // Default values keep the calculator stable on the initial render.
-const DEFAULT_DEGREE_ID = "hs";
+const DEFAULT_DEGREE_ID = null; // null means "select school leaving certificate" placeholder
 const DEFAULT_FULLTIME_HOURS = 40;
 const DEFAULT_PARTTIME_HOURS = 30;
 const DEFAULT_DURATION_MONTHS = 36;
@@ -36,6 +37,14 @@ export function useCalculator() {
         cappedTotal: 0,
         exceedsCap: false,
     });
+
+    // Tour-specific state (null means not in tour mode, "no"/"yes"/"i-dont-know" means in tour mode)
+    const [wantsReduction, setWantsReduction] = useState(null);
+    const [manualReductionMonths, setManualReductionMonths] = useState(0);
+    const [academicQualification, setAcademicQualification] = useState(false);
+    const [otherQualificationSelection, setOtherQualificationSelection] = useState([]);
+    const [attendedUniversity, setAttendedUniversity] = useState(null); // null/"yes"/"no"
+    const [hasEcts, setHasEcts] = useState(null); // null/"yes"/"no"
 
     // PDF State
     const [pdfBytes, setPdfBytes] = useState(null);
@@ -73,17 +82,95 @@ export function useCalculator() {
         setPdfBytes(null);
     }
 
+    // Tour-specific handlers
+    function handleWantsReductionChange(value) {
+        setWantsReduction(value);
+        // When switching to "no", clear all reduction-related state
+        // Note: schoolDegreeId is kept (it's still valid education info), but its reduction is ignored in calculation
+        if (value === "no") {
+            setAcademicQualification(false);
+            setOtherQualificationSelection([]);
+            setManualReductionMonths(0);
+            setAttendedUniversity(null);
+            setHasEcts(null);
+        }
+    }
+
+    function handleManualReductionChange(value) {
+        // Convert empty string to 0, otherwise use the number
+        setManualReductionMonths(value === "" ? 0 : Number(value) || 0);
+    }
+
+    function handleAcademicQualificationChange(selected) {
+        setAcademicQualification(selected);
+    }
+
+    function handleOtherQualificationChange(selection) {
+        setOtherQualificationSelection(selection);
+    }
+
+    function handleAttendedUniversityChange(value) {
+        setAttendedUniversity(value);
+        // If changing to "no", also clear ECTS
+        if (value === "no") {
+            setHasEcts(null);
+        }
+    }
+
+    function handleHasEctsChange(value) {
+        setHasEcts(value);
+    }
+
     // -- Calculations --
 
+    // Determine if we're in tour mode (wantsReduction is explicitly set, not null)
+    const isTourMode = wantsReduction !== null && wantsReduction !== undefined;
+
+    // Calculate qualification totals from both academic and other qualifications (tour mode)
+    // Only include if wantsReduction is not "no"
+    const tourQualificationTotals = useMemo(() => {
+        if (!isTourMode || !wantsReduction || wantsReduction === "no") {
+            return { rawTotal: 0, cappedTotal: 0, exceedsCap: false };
+        }
+
+        // Combine academic and other qualifications
+        const academicMonths = academicQualification ? 12 : 0;
+        const otherMonths = otherQualificationSelection.reduce((sum, id) => {
+            const option = QUALIFICATION_OPTIONS.find(
+                (item) => item.id === id && item.id !== "academic"
+            );
+            return sum + (option?.maxMonths || 0);
+        }, 0);
+
+        const rawTotal = academicMonths + otherMonths;
+        const cappedTotal = Math.min(rawTotal, MAX_TOTAL_REDUCTION);
+        const exceedsCap = rawTotal > MAX_TOTAL_REDUCTION;
+
+        return { rawTotal, cappedTotal, exceedsCap };
+    }, [isTourMode, wantsReduction, academicQualification, otherQualificationSelection]);
+
+    // Use tour-specific totals if in tour mode, otherwise use compact mode totals
+    const activeQualificationTotals = isTourMode
+        ? tourQualificationTotals
+        : qualificationTotals;
+
+    // Use tour-specific manual reduction if in tour mode, otherwise 0
+    const activeManualReduction = isTourMode
+        ? (wantsReduction === "no" ? 0 : manualReductionMonths)
+        : 0;
+
     const reductionSummary = useMemo(
-        () =>
-            buildReductionSummary({
-                schoolDegreeId,
-                manualReductionMonths: 0,
-                qualificationReductionMonths: qualificationTotals.rawTotal,
+        () => {
+            // In tour mode, if wantsReduction is "no", ignore all reductions including school degree
+            const effectiveSchoolDegreeId = isTourMode && wantsReduction === "no" ? null : schoolDegreeId;
+            return buildReductionSummary({
+                schoolDegreeId: effectiveSchoolDegreeId,
+                manualReductionMonths: activeManualReduction,
+                qualificationReductionMonths: activeQualificationTotals.rawTotal,
                 maxTotalMonths: MAX_TOTAL_REDUCTION,
-            }),
-        [schoolDegreeId, qualificationTotals.rawTotal]
+            });
+        },
+        [isTourMode, wantsReduction, schoolDegreeId, activeManualReduction, activeQualificationTotals.rawTotal]
     );
 
     // Aggregate all downstream calculation inputs
@@ -156,6 +243,14 @@ export function useCalculator() {
         qualificationTotals,
         resetCount,
 
+        // Tour-specific state
+        wantsReduction,
+        manualReductionMonths,
+        academicQualification,
+        otherQualificationSelection,
+        attendedUniversity,
+        hasEcts,
+
         // Computed / Results
         formValues,
         showLegalHint,
@@ -174,6 +269,14 @@ export function useCalculator() {
         handleSaveAsPDF,
         handleClosePDF,
         handleReset,
+
+        // Tour-specific handlers
+        handleWantsReductionChange,
+        handleManualReductionChange,
+        handleAcademicQualificationChange,
+        handleOtherQualificationChange,
+        handleAttendedUniversityChange,
+        handleHasEctsChange,
 
         // i18n prop needed if called outside (but we used hook inside so t is available)
         t,
