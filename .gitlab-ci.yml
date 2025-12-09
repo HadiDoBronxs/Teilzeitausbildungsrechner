@@ -88,7 +88,7 @@ deploy-job:      # This job runs in the deploy stage.
   environment: production
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "develop"
     - if: $CI_COMMIT_BRANCH == "ci-update"
   needs:
     - unit-tests
