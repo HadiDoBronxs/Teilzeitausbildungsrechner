@@ -180,6 +180,11 @@ describe("ResultCard", () => {
       screen.getByRole("button", { name: "Wie wird das berechnet?" })
     );
 
+    // Toggle expert mode to see the detailed ratio text
+    await user.click(
+      screen.getByRole("button", { name: "Detaillierte Rechnung anzeigen" })
+    );
+
     expect(
       screen.getByText("Ihre 30 Stunden pro Woche sind 75 % von 40 Stunden.")
     ).toBeInTheDocument();

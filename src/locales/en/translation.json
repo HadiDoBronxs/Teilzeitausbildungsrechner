@@ -173,32 +173,32 @@
     "intro": "Here is the full calculation in plain language.",
     "ratio": "Your {{part}} hours per week are {{pct}} % of {{full}} hours.",
     "step1": {
-      "title": "Step 1: Check the 50% rule",
-      "ok": "This meets the 50% rule. We can continue.",
-      "fail": "This is below 50%. Please adjust your hours or talk to your chamber."
+      "title": "Step 1: Check minimum hours",
+      "ok": "Share is above 50%. This is allowed.",
+      "fail": "Share is below 50%. This is too low for part-time training."
     },
     "step2": {
       "title": "Step 2: Part-time factor",
-      "text": "We divide {{part}} hours by {{full}} hours. That gives the part-time factor {{factor}}."
+      "text": "We calculate: {{part}} hours divided by {{full}} hours. Result is factor {{factor}}."
     },
     "step3": {
       "title": "Step 3: Base duration",
-      "text": "Standard duration {{fullM}} months - {{reductions}} = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
+      "text": "Start: {{fullM}} months. We subtract reductions ({{reductions}}). Left: {{rawBase}} months. Due to minimum duration we use {{basis}} months ({{basisYM}})."
     },
     "step4": {
       "title": "Step 4: New part-time duration",
-      "text": "We divide the base duration {{basis}} months by the part-time factor {{factor}}. That results in {{dtheo}} months."
+      "text": "Base {{basis}} months divided by factor {{factor}} results in {{dtheo}} months."
     },
     "step5": {
       "title": "Step 5: Protective rules",
-      "sixApplied": "The extension would be {{extension}} months. We limit it and stay at {{limited}} months.",
-      "sixSkipped": "The extension is {{extension}} months. No limit is needed.",
-      "capApplied": "After step 4 we would reach {{afterSix}} months, which is more than 1.5 × the standard duration ({{cap}} months). We cap it at {{cap}} months.",
-      "capSkipped": "The duration stays at {{afterSix}} months and remains below the cap of {{cap}} months."
+      "sixApplied": "Extension would be {{extension}} months. We limit it to {{limited}} months (6-month rule).",
+      "sixSkipped": "Extension is {{extension}} months. This is okay (under 6 months).",
+      "capApplied": "Result would be {{afterSix}} months. Too long (Max: {{cap}} months). We cap at {{cap}} months.",
+      "capSkipped": "Duration {{afterSix}} months is allowed (Max: {{cap}} months)."
     },
     "step6": {
       "title": "Step 6: Round and present",
-      "text": "We round {{value}} months with {{rounding}} and get {{rounded}} months ({{roundedYM}})."
+      "text": "{{value}} months are {{rounding}}. Result: {{rounded}} months ({{roundedYM}})."
     },
     "result": "Final result: {{months}} months ({{yearsMonths}}).",
     "delta": {
@@ -215,6 +215,48 @@
       "round": "standard rounding",
       "ceil": "round up",
       "floor": "round down"
+    },
+    "simple": {
+      "title": "How this is calculated",
+      "teaser": "Your {{desiredHours}} hours per week are {{percentage}} of the normal {{fullTimeHours}} hours.",
+      "step1": {
+        "title": "Step 1: Check minimum hours",
+        "text": "We check if your hours are allowed as part-time. If not, we stop the calculation."
+      },
+      "step2": {
+        "title": "Step 2: Share of full-time",
+        "text": "We compare your hours to full time. This shows how much you work weekly (e.g. 75%)."
+      },
+      "step3": {
+        "title": "Step 3: Determine base duration",
+        "text": "We start with the normal training time and subtract possible reductions (max 12 months). Then we use at least the statutory minimum."
+      },
+      "step4": {
+        "title": "Step 4: Calculate part-time duration",
+        "text": "Using your hours share we estimate how long the training will take (theoretical value)."
+      },
+      "step5": {
+        "title": "Step 5: Apply protection rules",
+        "text": "Small extensions up to 6 months are ignored. Duration must not exceed 1.5× the normal time."
+      },
+      "step6": {
+        "title": "Step 6: Round and show result",
+        "text": "We round down to full months and show the final result."
+      },
+      "result": {
+        "main": "Your part-time duration is {{months}} months ({{years}} years {{remMonths}} months).",
+        "diff": "That is {{diff}} months compared to full-time."
+      },
+      "chart": {
+        "fullTime": "Full-time: {{hours}} h (100%)",
+        "partTime": "Part-time: {{hours}} h ({{percent}}%)",
+        "fullLabel": "Full Time / Vollzeit"
+      },
+      "actions": {
+        "close": "Close",
+        "showExpert": "Show detailed calculation",
+        "hideExpert": "Hide detailed calculation"
+      }
     }
   },
   "error": {
