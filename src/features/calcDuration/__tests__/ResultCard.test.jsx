@@ -4,7 +4,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect } from "vitest";
-import ResultCard from "./ResultCard";
+import ResultCard from "../ResultCard";
 
 // Default form values fixture for most tests.
 const baseValues = {

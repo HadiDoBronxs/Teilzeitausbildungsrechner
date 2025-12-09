@@ -19,6 +19,9 @@ Der Dev-Server läuft standardmäßig unter `http://localhost:5173`.
 
 ## Qualitätschecks
 - `npm run lint` überprüft den Code mit ESLint.
+- `npm run test` führt Tests mit Vitest aus.
+
+Hinweis: Eine Anleitung zum Schreiben und Warten von UI-Tests findet man in [UI_TESTING.md](./UI_TESTING.md).
 
 ## Produktion
 ```bash
@@ -54,7 +57,7 @@ Die Anwendung verwendet **Hash-basiertes Routing**:
 
 - **Welcome Page** (`/` oder `#`) – Startseite mit Design-Auswahl
 - **Compact View** (`#compact`) – Kompakte Rechner-Ansicht mit allen Eingabefeldern
-- **Tour View** (`#tour`) – Geführtes Design (noch nicht implementiert)
+- **Tour View** (`#tour`) – Geführtes Design mit Tab-Navigation
 - **Transparenz** (`/transparenz`) – Transparenz-Informationen
 - **Rechtsgrundlage** (`/legal`) – Rechtsgrundlagen-Informationen
 

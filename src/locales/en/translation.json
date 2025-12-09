@@ -137,7 +137,49 @@
     }
   },
   "tour": {
-    "comingSoon": "The guided design will be available soon."
+    "comingSoon": "The guided design will be available soon.",
+    "tabs": {
+      "inputs": "Inputs",
+      "education": "Education",
+      "reductions": "Reductions",
+      "results": "Results"
+    },
+    "reduceTraining": {
+      "question": "Do you want to reduce the training time?",
+      "no": "No",
+      "yes": "Yes",
+      "iDontKnow": "I don't know"
+    },
+    "university": {
+      "question": "Have you attended a university?",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "ects": {
+      "question": "Have you achieved at least 30 ECTS?",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "navigation": {
+      "back": "Back",
+      "next": "Next"
+    },
+    "sidebar": {
+      "title": "Your Information",
+      "fulltime": "Full-time",
+      "parttime": "Part-time",
+      "duration": "Duration",
+      "education": "Education",
+      "reductions": "Reductions",
+      "qualifications": {
+        "familyCare": "Family/Care",
+        "ageOver21": "Over 21 years",
+        "completedTraining": "Completed training",
+        "vocationalExperience": "Vocational experience",
+        "academic": "Academic achievements",
+        "foreignRecognition": "Recognized foreign qualification"
+      }
+    }
   },
   "result": {
     "headline": "Your training takes {{value}}.",
