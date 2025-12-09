@@ -128,15 +128,15 @@ export default function ResultSidebar({ values }) {
             </Button>
 
             <Button
-  onClick={() => {}}
-  variant="ghost"
-  size="sm"
-  disabled
-  ariaLabel={`${t("result.navigation.scrollToResults")} (${t("result.navigation.comingSoon")})`}
-  className="w-full justify-start"
->
-  ↓ {t("result.navigation.scrollToResults")}
-</Button>
+              onClick={() => {}}
+              variant="ghost"
+              size="sm"
+              disabled
+              ariaLabel={`${t("result.navigation.scrollToResults")} (${t("result.navigation.comingSoon")})`}
+              className="w-full justify-start"
+            >
+              ↓ {t("result.navigation.scrollToResults")}
+            </Button>
           </div>
         </Card>
       </aside>
