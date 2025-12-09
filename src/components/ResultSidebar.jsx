@@ -1,6 +1,7 @@
 // ResultSidebar.jsx – Desktop sidebar component displaying simplified calculation results.
 // Shows only core metrics (training duration, fulltime months, parttime months, difference)
 // without reduction reasons. Only visible on desktop (lg breakpoint and above).
+
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import readFormAndCalc from "../features/calcDuration/readFormAndCalc.js";
@@ -78,7 +79,7 @@ function buildMetrics(result, baselineMonths, translate) {
 export default function ResultSidebar({ values }) {
   const { t } = useTranslation();
 
-  // Scroll-to-top function (Ticket #50)
+  // Scroll-to-top function (#50)
   function scrollToTop() {
     window.scrollTo({
       top: 0,
@@ -92,7 +93,9 @@ export default function ResultSidebar({ values }) {
     ? `result.error.${result.errorCode}`
     : "result.error.generic";
 
-  // ERROR STATE
+  //
+  // ERROR STATE (Tests expect exactly 2 buttons: scroll-to-top + scroll-to-results)
+  //
   if (!result || result.allowed === false) {
     return (
       <aside className="w-full min-w-0" aria-label={t("result.error.title")}>
@@ -104,7 +107,7 @@ export default function ResultSidebar({ values }) {
             <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
           </header>
 
-          {/* Navigation buttons (now implemented for scroll-to-top) */}
+          {/* Only ONE scroll-to-top button (required by test) */}
           <Button
             onClick={scrollToTop}
             variant="pill"
@@ -115,18 +118,8 @@ export default function ResultSidebar({ values }) {
             ↑ {t("result.navigation.scrollToTop")}
           </Button>
 
-          {/* These remain visible even in error state to maintain accessibility */}
+          {/* Scroll-to-results (disabled) */}
           <div className="space-y-2 pt-4 border-t border-slate-200">
-            <Button
-              onClick={scrollToTop}
-              variant="pill"
-              size="sm"
-              ariaLabel={t("result.navigation.scrollToTop")}
-              className="w-full justify-start"
-            >
-              ↑ {t("result.navigation.scrollToTop")}
-            </Button>
-
             <Button
               onClick={() => {}}
               variant="ghost"
@@ -143,7 +136,9 @@ export default function ResultSidebar({ values }) {
     );
   }
 
+  //
   // NORMAL STATE
+  //
   const baselineMonths = getBaselineMonths(result);
   const formattedParttime = formatParttimeMonths(result, t);
   const metrics = buildMetrics(result, baselineMonths, t);
@@ -160,7 +155,7 @@ export default function ResultSidebar({ values }) {
           </h2>
         </header>
 
-        {/* Metrics display */}
+        {/* Metrics */}
         <div className="space-y-4">
           {metrics.map((metric) => (
             <StatItem
@@ -172,7 +167,7 @@ export default function ResultSidebar({ values }) {
           ))}
         </div>
 
-        {/* Navigation buttons */}
+        {/* Navigation */}
         <div className="space-y-2 pt-4 border-t border-slate-200">
           <Button
             onClick={scrollToTop}
