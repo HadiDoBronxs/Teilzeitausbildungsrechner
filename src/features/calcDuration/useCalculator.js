@@ -41,6 +41,9 @@ export function useCalculator() {
     const [pdfBytes, setPdfBytes] = useState(null);
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
+    // Reset State
+    const [resetCount, setResetCount] = useState(0);
+
     // -- Handlers --
 
     // Persist selected degree ID (or null/undefined)
@@ -126,6 +129,23 @@ export function useCalculator() {
         }
     }
 
+    function handleReset() {
+        setSchoolDegreeId(DEFAULT_DEGREE_ID);
+        setFulltimeHours(DEFAULT_FULLTIME_HOURS);
+        setParttimeHours(DEFAULT_PARTTIME_HOURS);
+        setFullDurationMonths(DEFAULT_DURATION_MONTHS);
+        setQualificationSelection([]);
+        setQualificationTotals({
+            rawTotal: 0,
+            cappedTotal: 0,
+            exceedsCap: false,
+        });
+        setPdfBytes(null);
+        setIsGeneratingPDF(false);
+        setResetCount((prev) => prev + 1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
     return {
         // State
         schoolDegreeId,
@@ -134,6 +154,7 @@ export function useCalculator() {
         // (fullDurationMonths isn't directly needed by the view usually, but setters are)
         qualificationSelection,
         qualificationTotals,
+        resetCount,
 
         // Computed / Results
         formValues,
@@ -152,6 +173,7 @@ export function useCalculator() {
         setQualificationTotals,
         handleSaveAsPDF,
         handleClosePDF,
+        handleReset,
 
         // i18n prop needed if called outside (but we used hook inside so t is available)
         t,

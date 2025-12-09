@@ -63,6 +63,8 @@
     "app": {
         "title": "Teilzeit- Ausbildungs- Rechner",
         "languages": "Sprache",
+        "reset": "Zurücksetzen",
+        "reset_explained": "Alle Eingaben zurücksetzen.",
         "languageNames": {
             "de": "🇩🇪 Deutsch",
             "en": "🇬🇧 Englisch"
@@ -336,34 +338,28 @@
         "printError": "PDF konnte nicht gedruckt werden. Bitte speichern Sie das PDF und drucken Sie es manuell.",
         "popupBlocked": "Bitte erlauben Sie Popups zum Drucken oder verwenden Sie die Schaltfläche Speichern und drucken Sie die gespeicherte Datei."
     },
-
-"tooltip": {
-    "info": "Information",
-    "fulltimeHours": "In vielen Betrieben liegt die Vollzeit zwischen 35 und 48 Stunden pro Woche.",
-    "parttimeHours": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
-    "regularDuration": "Mindestens 12 Monate.",
-    "schoolDegree": "Manche Schulabschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen. Kammer und Betrieb entscheiden gemeinsam.",
-    "qualifications": "Hier können Sie angeben, ob Sie weitere Erfahrungen oder Abschlüsse haben, die die Ausbildungszeit verkürzen können.",
-
-    "qualificationMax": "Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-
-    "reduction": {
-    "hs": "Hauptschulabschluss: Normalerweise keine Verkürzung.",
-    "mr": "Mittlere Reife: Oft bis zu 6 Monate kürzer.",
-    "fhr": "Fachhochschulreife: Oft bis zu 12 Monate kürzer.",
-    "abi": "Abitur: Oft bis zu 12 Monate kürzer."
-  },
-
-"qualification": {
-  "familyCare": "Hier wählen Sie aus, wenn Sie Kinder oder pflegebedürftige Angehörige betreuen. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "ageOver21": "Hier wählen Sie aus, wenn Sie bei Ausbildungsstart über 21 Jahre alt sind. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "completedTraining": "Hier wählen Sie aus, wenn Sie bereits eine Berufsausbildung abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "vocationalFoundation": "Hier wählen Sie aus, wenn Sie ein Berufsgrundbildungsjahr abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "vocationalExperience": "Hier wählen Sie aus, wenn Sie schon passende Berufserfahrung haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "academic": "Hier wählen Sie aus, wenn Sie einen Hochschul- oder Fachhochschulabschluss haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "foreignRecognition": "Hier wählen Sie aus, wenn ein ausländischer Berufs- oder Bildungsabschluss anerkannt wurde. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden."
-  }
+    "tooltip": {
+        "info": "Information",
+        "fulltimeHours": "In vielen Betrieben liegt die Vollzeit zwischen 35 und 48 Stunden pro Woche.",
+        "parttimeHours": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
+        "regularDuration": "Mindestens 12 Monate.",
+        "schoolDegree": "Manche Schulabschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen. Kammer und Betrieb entscheiden gemeinsam.",
+        "qualifications": "Hier können Sie angeben, ob Sie weitere Erfahrungen oder Abschlüsse haben, die die Ausbildungszeit verkürzen können.",
+        "qualificationMax": "Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
+        "reduction": {
+            "hs": "Hauptschulabschluss: Normalerweise keine Verkürzung.",
+            "mr": "Mittlere Reife: Oft bis zu 6 Monate kürzer.",
+            "fhr": "Fachhochschulreife: Oft bis zu 12 Monate kürzer.",
+            "abi": "Abitur: Oft bis zu 12 Monate kürzer."
+        },
+        "qualification": {
+            "familyCare": "Hier wählen Sie aus, wenn Sie Kinder oder pflegebedürftige Angehörige betreuen. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
+            "ageOver21": "Hier wählen Sie aus, wenn Sie bei Ausbildungsstart über 21 Jahre alt sind. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
+            "completedTraining": "Hier wählen Sie aus, wenn Sie bereits eine Berufsausbildung abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
+            "vocationalFoundation": "Hier wählen Sie aus, wenn Sie ein Berufsgrundbildungsjahr abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
+            "vocationalExperience": "Hier wählen Sie aus, wenn Sie schon passende Berufserfahrung haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
+            "academic": "Hier wählen Sie aus, wenn Sie einen Hochschul- oder Fachhochschulabschluss haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
+            "foreignRecognition": "Hier wählen Sie aus, wenn ein ausländischer Berufs- oder Bildungsabschluss anerkannt wurde. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden."
+        }
     }
-
-
 }
