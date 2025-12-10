@@ -78,8 +78,8 @@ export default function ResultSidebar({ values }) {
     : "result.error.generic";
 
   //
-  // ERROR STATE - tests require exactly 2 buttons:
-  // 1) Scroll to top (enabled)
+  // ERROR STATE — tests require exactly 2 buttons:
+  // 1) Scroll to top (disabled)
   // 2) Scroll to results (disabled)
   //
   if (!result || result.allowed === false) {
@@ -98,11 +98,11 @@ export default function ResultSidebar({ values }) {
             <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
           </header>
 
-          {/* Navigation section for error state - same structure as normal state */}
+          {/* Navigation section for error state */}
           <div className="space-y-2 pt-4 border-t border-slate-200">
-            {/* Scroll-to-top button */}
+            {/* Scroll-to-top disabled in error state */}
             <Button
-              onClick={scrollToTop}
+              disabled
               variant="pill"
               size="sm"
               aria-label={t("result.navigation.scrollToTop")}
@@ -162,6 +162,7 @@ export default function ResultSidebar({ values }) {
 
         {/* Navigation section */}
         <div className="space-y-2 pt-4 border-t border-slate-200">
+          {/* Scroll-to-top enabled in normal state */}
           <Button
             onClick={scrollToTop}
             variant="pill"
@@ -172,6 +173,7 @@ export default function ResultSidebar({ values }) {
             ↑ {t("result.navigation.scrollToTop")}
           </Button>
 
+          {/* Scroll-to-results disabled */}
           <Button
             disabled
             variant="ghost"
