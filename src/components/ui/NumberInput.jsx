@@ -13,8 +13,22 @@ const ERROR_CLASSES = "border-red-500 focus-visible:outline-red-500";
 function NumberInput({ className = "", invalid, ...rest }) {
   const inputProps = { ...rest };
   if (inputProps.inputMode === undefined) {
-    inputProps.inputMode = "numeric";
+  inputProps.inputMode = "numeric";
   }
+
+  // Prevent wheel/trackpad scroll from changing the value while focused
+  const userWheelHandler = inputProps.onWheel;
+  inputProps.onWheel = (event) => {
+    event.preventDefault(); // stop default number increment on scroll
+    if (typeof userWheelHandler === "function") {
+      userWheelHandler(event);
+    }
+  };
+  inputProps.onWheelCapture = (event) => {
+    // Drop focus early so trackpad/mouse-wheel gestures cannot alter the value
+    event.preventDefault();
+    event.currentTarget.blur();
+  };
 
   const ariaInvalidProp = inputProps["aria-invalid"];
   const isInvalid =

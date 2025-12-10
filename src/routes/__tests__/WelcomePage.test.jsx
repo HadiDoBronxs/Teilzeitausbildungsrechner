@@ -113,14 +113,13 @@ describe("WelcomePage", () => {
     expect(compactCard).toHaveTextContent("☰");
   });
 
-  it("renders tour design card with book icon and is disabled", () => {
+  it("renders tour design card with book icon and is enabled", () => {
     render(<WelcomePage />);
 
     const tourCard = screen.getByLabelText(/Guided Design/);
     expect(tourCard).toBeInTheDocument();
     expect(tourCard).toHaveTextContent("📖");
-    expect(tourCard).toBeDisabled();
-    expect(tourCard).toHaveAttribute("aria-disabled", "true");
+    expect(tourCard).not.toBeDisabled();
   });
 
   it("navigates to compact view when compact design is clicked", async () => {
@@ -159,15 +158,14 @@ describe("WelcomePage", () => {
     expect(skipLink).toHaveAttribute("href", "#main");
   });
 
-  it("does not navigate when tour design is clicked (disabled)", async () => {
+  it("navigates to tour view when tour design is clicked", async () => {
     const user = userEvent.setup();
-    const initialHash = window.location.hash;
     render(<WelcomePage />);
 
     const tourCard = screen.getByLabelText(/Guided Design/);
     await user.click(tourCard);
 
-    // Hash should not change (tour is not implemented)
-    expect(window.location.hash).toBe(initialHash);
+    // Hash should change to tour
+    expect(window.location.hash).toBe("#tour");
   });
 });

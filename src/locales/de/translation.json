@@ -63,6 +63,8 @@
     "app": {
         "title": "Teilzeit- Ausbildungs- Rechner",
         "languages": "Sprache",
+        "reset": "Zurücksetzen",
+        "reset_explained": "Alle Eingaben zurücksetzen.",
         "languageNames": {
             "de": "🇩🇪 Deutsch",
             "en": "🇬🇧 Englisch"
@@ -135,7 +137,49 @@
         }
     },
     "tour": {
-        "comingSoon": "Das geführte Design wird bald verfügbar sein."
+        "comingSoon": "Das geführte Design wird bald verfügbar sein.",
+        "tabs": {
+            "inputs": "Eingaben",
+            "education": "Bildung",
+            "reductions": "Verkürzungen",
+            "results": "Ergebnis"
+        },
+        "reduceTraining": {
+            "question": "Möchten Sie die Ausbildungszeit verkürzen?",
+            "no": "Nein",
+            "yes": "Ja",
+            "iDontKnow": "Ich weiß nicht"
+        },
+        "university": {
+            "question": "Haben Sie eine Hochschule besucht?",
+            "yes": "Ja",
+            "no": "Nein"
+        },
+        "ects": {
+            "question": "Haben Sie mindestens 30 ECTS erreicht?",
+            "yes": "Ja",
+            "no": "Nein"
+        },
+        "navigation": {
+            "back": "Zurück",
+            "next": "Weiter"
+        },
+        "sidebar": {
+            "title": "Ihre Angaben",
+            "fulltime": "Vollzeit",
+            "parttime": "Teilzeit",
+            "duration": "Dauer",
+            "education": "Bildung",
+            "reductions": "Verkürzungen",
+            "qualifications": {
+                "familyCare": "Familie/Pflege",
+                "ageOver21": "Über 21 Jahre",
+                "completedTraining": "Abgeschlossene Ausbildung",
+                "vocationalExperience": "Berufserfahrung",
+                "academic": "Hochschulabschluss",
+                "foreignRecognition": "Anerkannter ausländischer Abschluss"
+            }
+        }
     },
     "result": {
         "headline": "Ihre Ausbildung dauert {{value}}.",
@@ -172,31 +216,31 @@
         "ratio": "Ihre {{part}} Stunden pro Woche sind {{pct}} % von {{full}} Stunden.",
         "step1": {
             "title": "Schritt 1: Mindestanteil prüfen",
-            "ok": "Das erfüllt die 50-%-Regel. Wir dürfen weiterrechnen.",
-            "fail": "Das liegt unter 50 %. Bitte passen Sie die Stunden an oder sprechen Sie mit Ihrer Kammer."
+            "ok": "Der Anteil ist über 50 %. Das ist zulässig.",
+            "fail": "Der Anteil ist unter 50 %. Das ist zu wenig für eine Teilzeit-Ausbildung."
         },
         "step2": {
             "title": "Schritt 2: Teilzeit-Faktor",
-            "text": "Wir teilen {{part}} Stunden durch {{full}} Stunden. Daraus entsteht der Teilzeit-Faktor {{factor}}."
+            "text": "Wir rechnen: {{part}} Stunden geteilt durch {{full}} Stunden. Das ergibt den Faktor {{factor}}."
         },
         "step3": {
             "title": "Schritt 3: Basisdauer",
-            "text": "Regeldauer {{fullM}} Monate - {{reductions}} ergeben {{rawBase}} Monate. Die Kammer verlangt mindestens {{minM}} Monate, deshalb nutzen wir {{basis}} Monate ({{basisYM}})."
+            "text": "Start: {{fullM}} Monate. Wir ziehen Verkürzungen ab ({{reductions}}). Bleiben {{rawBase}} Monate. Wegen Mindestdauer nutzen wir {{basis}} Monate ({{basisYM}})."
         },
         "step4": {
             "title": "Schritt 4: Neue Teilzeitdauer",
-            "text": "Wir teilen die Basisdauer {{basis}} Monate durch den Teilzeit-Faktor {{factor}}. Daraus werden {{dtheo}} Monate in Teilzeit."
+            "text": "Basisdauer {{basis}} Monate geteilt durch Faktor {{factor}} ergibt {{dtheo}} Monate."
         },
         "step5": {
             "title": "Schritt 5: Schutzregeln",
-            "sixApplied": "Die Verlängerung wäre {{extension}} Monate. Wir begrenzen sie und bleiben bei {{limited}} Monaten.",
-            "sixSkipped": "Die Verlängerung beträgt {{extension}} Monate. Keine Begrenzung nötig.",
-            "capApplied": "Die Dauer nach Schritt 4 wären {{afterSix}} Monate und damit mehr als 1,5 × der Regeldauer ({{cap}} Monate). Wir deckeln auf {{cap}} Monate.",
-            "capSkipped": "Die Dauer bleibt mit {{afterSix}} Monaten unter dem Deckel von {{cap}} Monaten."
+            "sixApplied": "Verlängerung wäre {{extension}} Monate. Wir begrenzen auf {{limited}} Monate (6-Monats-Regel).",
+            "sixSkipped": "Verlängerung ist {{extension}} Monate. Das ist okay (unter 6 Monate).",
+            "capApplied": "Ergebnis wäre {{afterSix}} Monate. Das ist zu lang (Max: {{cap}} Monate). Wir kappen bei {{cap}} Monaten.",
+            "capSkipped": "Dauer {{afterSix}} Monate ist erlaubt (Max: {{cap}} Monate)."
         },
         "step6": {
             "title": "Schritt 6: Runden und Ergebnis",
-            "text": "Wir runden {{value}} Monate mit {{rounding}} und erhalten {{rounded}} Monate ({{roundedYM}})."
+            "text": "{{value}} Monate werden {{rounding}}. Ergebnis: {{rounded}} Monate ({{roundedYM}})."
         },
         "result": "Finales Ergebnis: {{months}} Monate ({{yearsMonths}}).",
         "delta": {
@@ -213,6 +257,48 @@
             "round": "Mathematisches Runden",
             "ceil": "Aufrunden",
             "floor": "Abrunden"
+        },
+        "simple": {
+            "title": "Wie wird das berechnet?",
+            "teaser": "Ihre {{desiredHours}} Stunden pro Woche sind {{percentage}} der normalen {{fullTimeHours}} Stunden.",
+            "step1": {
+                "title": "Schritt 1: Mindeststunden prüfen",
+                "text": "Wir prüfen, ob deine Stunden als Teilzeit zulässig sind. Wenn nicht, stoppen wir die Berechnung."
+            },
+            "step2": {
+                "title": "Schritt 2: Anteil der Arbeitszeit",
+                "text": "Wir vergleichen deine Stunden mit Vollzeit. So wissen wir, wie viel du pro Woche arbeitest (z. B. 75%)."
+            },
+            "step3": {
+                "title": "Schritt 3: Grunddauer bestimmen",
+                "text": "Wir starten mit der normalen Ausbildungsdauer und ziehen mögliche Verkürzungen ab (max. 12 Monate). Dann setzen wir mindestens die gesetzliche Mindestdauer."
+            },
+            "step4": {
+                "title": "Schritt 4: Dauer in Teilzeit berechnen",
+                "text": "Mit deinem Stundenanteil rechnen wir aus, wie lange die Ausbildung voraussichtlich dauert (theoretischer Wert)."
+            },
+            "step5": {
+                "title": "Schritt 5: Schutzregeln prüfen",
+                "text": "Kleine Verlängerungen bis 6 Monate werden nicht angewendet. Die Dauer darf außerdem nicht länger als das 1,5-fache der normalen Zeit werden."
+            },
+            "step6": {
+                "title": "Schritt 6: Runden und Anzeige",
+                "text": "Wir runden auf ganze Monate ab und zeigen dir das Endergebnis an."
+            },
+            "result": {
+                "main": "Deine Teilzeitdauer beträgt {{months}} Monate ({{years}} Jahre {{remMonths}} Monate).",
+                "diff": "Das sind {{diff}} Monate im Vergleich zur Vollzeit."
+            },
+            "chart": {
+                "fullTime": "Vollzeit: {{hours}} h (100%)",
+                "partTime": "Teilzeit: {{hours}} h ({{percent}}%)",
+                "fullLabel": "Vollzeit"
+            },
+            "actions": {
+                "close": "Schließen",
+                "showExpert": "Detaillierte Rechnung anzeigen",
+                "hideExpert": "Detaillierte Rechnung ausblenden"
+            }
         }
     },
     "error": {
@@ -336,34 +422,28 @@
         "printError": "PDF konnte nicht gedruckt werden. Bitte speichern Sie das PDF und drucken Sie es manuell.",
         "popupBlocked": "Bitte erlauben Sie Popups zum Drucken oder verwenden Sie die Schaltfläche Speichern und drucken Sie die gespeicherte Datei."
     },
-
-"tooltip": {
-    "info": "Information",
-    "fulltimeHours": "In vielen Betrieben liegt die Vollzeit zwischen 35 und 48 Stunden pro Woche.",
-    "parttimeHours": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden.",
-    "regularDuration": "Mindestens 12 Monate.",
-    "schoolDegree": "Manche Schulabschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen. Kammer und Betrieb entscheiden gemeinsam.",
-    "qualifications": "Hier können Sie angeben, ob Sie weitere Erfahrungen oder Abschlüsse haben, die die Ausbildungszeit verkürzen können.",
-
-    "qualificationMax": "Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-
-    "reduction": {
-    "hs": "Hauptschulabschluss: Normalerweise keine Verkürzung.",
-    "mr": "Mittlere Reife: Oft bis zu 6 Monate kürzer.",
-    "fhr": "Fachhochschulreife: Oft bis zu 12 Monate kürzer.",
-    "abi": "Abitur: Oft bis zu 12 Monate kürzer."
-  },
-
-"qualification": {
-  "familyCare": "Hier wählen Sie aus, wenn Sie Kinder oder pflegebedürftige Angehörige betreuen. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "ageOver21": "Hier wählen Sie aus, wenn Sie bei Ausbildungsstart über 21 Jahre alt sind. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "completedTraining": "Hier wählen Sie aus, wenn Sie bereits eine Berufsausbildung abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "vocationalFoundation": "Hier wählen Sie aus, wenn Sie ein Berufsgrundbildungsjahr abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "vocationalExperience": "Hier wählen Sie aus, wenn Sie schon passende Berufserfahrung haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "academic": "Hier wählen Sie aus, wenn Sie einen Hochschul- oder Fachhochschulabschluss haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden.",
-  "foreignRecognition": "Hier wählen Sie aus, wenn ein ausländischer Berufs- oder Bildungsabschluss anerkannt wurde. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden."
-  }
+    "tooltip": {
+        "info": "Information",
+        "fulltimeHours": "In vielen Betrieben liegt die Vollzeit zwischen 35 und 48 Stunden pro Woche. Gesetzliche Basis: § 7a BBiG (Teilzeit auf Basis der regulären Vollzeitstunden).",
+        "parttimeHours": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden. Grundlage: § 7a BBiG (Teilzeitberufsausbildung).",
+        "regularDuration": "Mindestens 12 Monate. Grundlage: § 8 BBiG (Verkürzung/Verlängerung der Ausbildungszeit).",
+        "schoolDegree": "Manche Schulabschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen. Kammer und Betrieb entscheiden gemeinsam. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+        "qualifications": "Hier können Sie angeben, ob Sie weitere Erfahrungen oder Abschlüsse haben, die die Ausbildungszeit verkürzen können. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+        "qualificationMax": "Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung der Ausbildungszeit).",
+        "reduction": {
+            "hs": "Hauptschulabschluss: Normalerweise keine Verkürzung. Quelle: § 8 Abs. 1 BBiG (Anrechnung möglich, wenn Inhalte anerkannt werden).",
+            "mr": "Mittlere Reife: Oft bis zu 6 Monate kürzer. Quelle: § 8 Abs. 1 BBiG (Anrechnung möglich, wenn Inhalte anerkannt werden).",
+            "fhr": "Fachhochschulreife: Oft bis zu 12 Monate kürzer. Quelle: § 8 Abs. 1 BBiG (Anrechnung möglich, wenn Inhalte anerkannt werden).",
+            "abi": "Abitur: Oft bis zu 12 Monate kürzer. Quelle: § 8 Abs. 1 BBiG (Anrechnung möglich, wenn Inhalte anerkannt werden)."
+        },
+        "qualification": {
+            "familyCare": "Hier wählen Sie aus, wenn Sie Kinder oder pflegebedürftige Angehörige betreuen. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung wegen Vorbildung/Lebenssituation).",
+            "ageOver21": "Hier wählen Sie aus, wenn Sie bei Ausbildungsstart über 21 Jahre alt sind. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung wegen Vorbildung/Lebenssituation).",
+            "completedTraining": "Hier wählen Sie aus, wenn Sie bereits eine Berufsausbildung abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+            "vocationalFoundation": "Hier wählen Sie aus, wenn Sie ein Berufsgrundbildungsjahr abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+            "vocationalExperience": "Hier wählen Sie aus, wenn Sie schon passende Berufserfahrung haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+            "academic": "Hier wählen Sie aus, wenn Sie einen Hochschul- oder Fachhochschulabschluss haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
+            "foreignRecognition": "Hier wählen Sie aus, wenn ein ausländischer Berufs- oder Bildungsabschluss anerkannt wurde. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung)."
+        }
     }
-
-
 }

@@ -63,6 +63,8 @@
   "app": {
     "title": "Part-time Training Calculator",
     "languages": "Language",
+    "reset": "Reset",
+    "reset_explained": "Reset all inputs.",
     "languageNames": {
       "de": "🇩🇪 German",
       "en": "🇬🇧 English"
@@ -135,7 +137,49 @@
     }
   },
   "tour": {
-    "comingSoon": "The guided design will be available soon."
+    "comingSoon": "The guided design will be available soon.",
+    "tabs": {
+      "inputs": "Inputs",
+      "education": "Education",
+      "reductions": "Reductions",
+      "results": "Results"
+    },
+    "reduceTraining": {
+      "question": "Do you want to reduce the training time?",
+      "no": "No",
+      "yes": "Yes",
+      "iDontKnow": "I don't know"
+    },
+    "university": {
+      "question": "Have you attended a university?",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "ects": {
+      "question": "Have you achieved at least 30 ECTS?",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "navigation": {
+      "back": "Back",
+      "next": "Next"
+    },
+    "sidebar": {
+      "title": "Your Information",
+      "fulltime": "Full-time",
+      "parttime": "Part-time",
+      "duration": "Duration",
+      "education": "Education",
+      "reductions": "Reductions",
+      "qualifications": {
+        "familyCare": "Family/Care",
+        "ageOver21": "Over 21 years",
+        "completedTraining": "Completed training",
+        "vocationalExperience": "Vocational experience",
+        "academic": "Academic achievements",
+        "foreignRecognition": "Recognized foreign qualification"
+      }
+    }
   },
   "result": {
     "headline": "Your training takes {{value}}.",
@@ -171,32 +215,32 @@
     "intro": "Here is the full calculation in plain language.",
     "ratio": "Your {{part}} hours per week are {{pct}} % of {{full}} hours.",
     "step1": {
-      "title": "Step 1: Check the 50% rule",
-      "ok": "This meets the 50% rule. We can continue.",
-      "fail": "This is below 50%. Please adjust your hours or talk to your chamber."
+      "title": "Step 1: Check minimum hours",
+      "ok": "Share is above 50%. This is allowed.",
+      "fail": "Share is below 50%. This is too low for part-time training."
     },
     "step2": {
       "title": "Step 2: Part-time factor",
-      "text": "We divide {{part}} hours by {{full}} hours. That gives the part-time factor {{factor}}."
+      "text": "We calculate: {{part}} hours divided by {{full}} hours. Result is factor {{factor}}."
     },
     "step3": {
       "title": "Step 3: Base duration",
-      "text": "Standard duration {{fullM}} months - {{reductions}} = {{rawBase}} months. The chamber requires at least {{minM}} months, so we use {{basis}} months ({{basisYM}})."
+      "text": "Start: {{fullM}} months. We subtract reductions ({{reductions}}). Left: {{rawBase}} months. Due to minimum duration we use {{basis}} months ({{basisYM}})."
     },
     "step4": {
       "title": "Step 4: New part-time duration",
-      "text": "We divide the base duration {{basis}} months by the part-time factor {{factor}}. That results in {{dtheo}} months."
+      "text": "Base {{basis}} months divided by factor {{factor}} results in {{dtheo}} months."
     },
     "step5": {
       "title": "Step 5: Protective rules",
-      "sixApplied": "The extension would be {{extension}} months. We limit it and stay at {{limited}} months.",
-      "sixSkipped": "The extension is {{extension}} months. No limit is needed.",
-      "capApplied": "After step 4 we would reach {{afterSix}} months, which is more than 1.5 × the standard duration ({{cap}} months). We cap it at {{cap}} months.",
-      "capSkipped": "The duration stays at {{afterSix}} months and remains below the cap of {{cap}} months."
+      "sixApplied": "Extension would be {{extension}} months. We limit it to {{limited}} months (6-month rule).",
+      "sixSkipped": "Extension is {{extension}} months. This is okay (under 6 months).",
+      "capApplied": "Result would be {{afterSix}} months. Too long (Max: {{cap}} months). We cap at {{cap}} months.",
+      "capSkipped": "Duration {{afterSix}} months is allowed (Max: {{cap}} months)."
     },
     "step6": {
       "title": "Step 6: Round and present",
-      "text": "We round {{value}} months with {{rounding}} and get {{rounded}} months ({{roundedYM}})."
+      "text": "{{value}} months are {{rounding}}. Result: {{rounded}} months ({{roundedYM}})."
     },
     "result": "Final result: {{months}} months ({{yearsMonths}}).",
     "delta": {
@@ -213,6 +257,48 @@
       "round": "standard rounding",
       "ceil": "round up",
       "floor": "round down"
+    },
+    "simple": {
+      "title": "How this is calculated",
+      "teaser": "Your {{desiredHours}} hours per week are {{percentage}} of the normal {{fullTimeHours}} hours.",
+      "step1": {
+        "title": "Step 1: Check minimum hours",
+        "text": "We check if your hours are allowed as part-time. If not, we stop the calculation."
+      },
+      "step2": {
+        "title": "Step 2: Share of full-time",
+        "text": "We compare your hours to full time. This shows how much you work weekly (e.g. 75%)."
+      },
+      "step3": {
+        "title": "Step 3: Determine base duration",
+        "text": "We start with the normal training time and subtract possible reductions (max 12 months). Then we use at least the statutory minimum."
+      },
+      "step4": {
+        "title": "Step 4: Calculate part-time duration",
+        "text": "Using your hours share we estimate how long the training will take (theoretical value)."
+      },
+      "step5": {
+        "title": "Step 5: Apply protection rules",
+        "text": "Small extensions up to 6 months are ignored. Duration must not exceed 1.5× the normal time."
+      },
+      "step6": {
+        "title": "Step 6: Round and show result",
+        "text": "We round down to full months and show the final result."
+      },
+      "result": {
+        "main": "Your part-time duration is {{months}} months ({{years}} years {{remMonths}} months).",
+        "diff": "That is {{diff}} months compared to full-time."
+      },
+      "chart": {
+        "fullTime": "Full-time: {{hours}} h (100%)",
+        "partTime": "Part-time: {{hours}} h ({{percent}}%)",
+        "fullLabel": "Full-time"
+      },
+      "actions": {
+        "close": "Close",
+        "showExpert": "Show detailed calculation",
+        "hideExpert": "Hide detailed calculation"
+      }
     }
   },
   "error": {
@@ -225,10 +311,10 @@
     "warning": "Your selection adds up to {{raw}} months. Only {{max}} months can be taken into account.",
     "totalWarning": "Your answers add up to {{sum}} months. Only {{max}} months are applied.",
     "legalHint": "For reductions over 6 months, an extra proof of suitability is required.",
-        "answers": {
-            "yes": "Yes",
-            "no": "No"
-        },
+    "answers": {
+      "yes": "Yes",
+      "no": "No"
+    },
     "familyCare": {
       "question": "Do you have family or care responsibilities?",
       "note": "up to {{months}} months"
@@ -253,13 +339,13 @@
       "question": "Has a foreign qualification been recognized?",
       "note": "up to {{months}} months"
     }
-    },
-    "pdf": {
-        "saveButton": "Save as PDF",
-        "title": "Part-time Training Calculation",
-        "inputs": "Input Values",
-        "results": "Calculation Results",
-        "transparency": "Calculation Transparency",
+  },
+  "pdf": {
+    "saveButton": "Save as PDF",
+    "title": "Part-time Training Calculation",
+    "inputs": "Input Values",
+    "results": "Calculation Results",
+    "transparency": "Calculation Transparency",
     "date": "Date",
     "fulltimeHours": "Full-time hours per week",
     "parttimeHours": "Part-time hours per week",
@@ -275,53 +361,53 @@
     "deltaMonths": "Change (months)",
     "factor": "Part-time factor",
     "disclaimer": "Disclaimer",
-        "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary.",
-        "qualificationReduction": "Qualification reduction (months)",
-        "totalReductionWarningLabel": "Cap notice",
-        "totalReductionWarning": "Your answers sum up to {{sum}} months. Only {{max}} months count."
+    "disclaimerText": "This calculation is for informational purposes only and is not legally binding. The actual training duration is determined by the responsible chamber (IHK/HWK) and the training company. Regional regulations may vary.",
+    "qualificationReduction": "Qualification reduction (months)",
+    "totalReductionWarningLabel": "Cap notice",
+    "totalReductionWarning": "Your answers sum up to {{sum}} months. Only {{max}} months count."
+  },
+  "legal": {
+    "title": "Legal basis",
+    "openLaw": "Open law text",
+    "bbig7a": {
+      "heading": "§7a BBiG – Part-time vocational training",
+      "text1": "The company and the apprentices can agree to run the training in part-time. The regular weekly training hours are permanently reduced so that training and other commitments fit together.",
+      "text2": "Even with fewer weekly hours, the goal stays the same: all training content must be covered. This can extend the overall duration or the company adapts the plan to make up the missing time."
     },
-    "legal": {
-        "title": "Legal basis",
-        "openLaw": "Open law text",
-        "bbig7a": {
-            "heading": "§7a BBiG – Part-time vocational training",
-            "text1": "The company and the apprentices can agree to run the training in part-time. The regular weekly training hours are permanently reduced so that training and other commitments fit together.",
-            "text2": "Even with fewer weekly hours, the goal stays the same: all training content must be covered. This can extend the overall duration or the company adapts the plan to make up the missing time."
-        },
-        "hwo27b": {
-            "heading": "§27b HwO – Part-time training in crafts",
-            "text1": "In crafts, training can also be arranged as part-time. The company and apprentices decide together how many hours per week are reduced so that family, care, or other reasons are considered.",
-            "text2": "It remains crucial that all professional content is covered. The company plans the practical phases so that, despite fewer hours, full qualification is achieved."
-        },
-        "easy": {
-            "heading": "In simple language",
-            "point1": "Part-time training means fewer hours per week than usual.",
-            "point2": "The total duration can become longer because you learn fewer hours each week.",
-            "point3": "The company and apprentices decide together how much to reduce.",
-            "point4": "The chamber checks and approves so everything is official.",
-            "point5": "All important learning content stays the same."
-        },
-        "notice": {
-            "heading": "Important notice",
-            "text": "This information does not replace legal advice. The responsible chamber always decides on reductions and process.",
-            "links": {
-                "title": "Official information",
-                "arbeitsagentur": "Federal Employment Agency – Part-time vocational training",
-                "ihk": "Chambers of Industry and Commerce (IHK)",
-                "bmbf": "Federal Ministry of Education and Research (BMBF)"
-            }
-        },
-        "sources": {
-            "heading": "Additional official sources",
-            "bbig": "BBiG – law overview",
-            "hwo": "HwO – law overview",
-            "bmbf": "BMBF: Part-time vocational training (PDF)"
-        }
+    "hwo27b": {
+      "heading": "§27b HwO – Part-time training in crafts",
+      "text1": "In crafts, training can also be arranged as part-time. The company and apprentices decide together how many hours per week are reduced so that family, care, or other reasons are considered.",
+      "text2": "It remains crucial that all professional content is covered. The company plans the practical phases so that, despite fewer hours, full qualification is achieved."
     },
-    "pdfViewer": {
-        "loading": "Loading PDF...",
-        "close": "Close",
-        "closeViewer": "Close viewer",
+    "easy": {
+      "heading": "In simple language",
+      "point1": "Part-time training means fewer hours per week than usual.",
+      "point2": "The total duration can become longer because you learn fewer hours each week.",
+      "point3": "The company and apprentices decide together how much to reduce.",
+      "point4": "The chamber checks and approves so everything is official.",
+      "point5": "All important learning content stays the same."
+    },
+    "notice": {
+      "heading": "Important notice",
+      "text": "This information does not replace legal advice. The responsible chamber always decides on reductions and process.",
+      "links": {
+        "title": "Official information",
+        "arbeitsagentur": "Federal Employment Agency – Part-time vocational training",
+        "ihk": "Chambers of Industry and Commerce (IHK)",
+        "bmbf": "Federal Ministry of Education and Research (BMBF)"
+      }
+    },
+    "sources": {
+      "heading": "Additional official sources",
+      "bbig": "BBiG – law overview",
+      "hwo": "HwO – law overview",
+      "bmbf": "BMBF: Part-time vocational training (PDF)"
+    }
+  },
+  "pdfViewer": {
+    "loading": "Loading PDF...",
+    "close": "Close",
+    "closeViewer": "Close viewer",
     "previous": "Previous",
     "previousPage": "Previous page",
     "next": "Next",
@@ -336,35 +422,28 @@
     "printError": "Failed to print PDF. Please try saving and printing manually.",
     "popupBlocked": "Please allow popups to print, or use the Save button and print the saved file."
   },
-
-
-"tooltip": {
-  "info": "Information",
-"fulltimeHours": "In many companies full-time ranges between 35 and 48 hours per week.",
-"parttimeHours": "Allowed range: at least 50% and at most 80% of the full-time hours.",
-  "regularDuration": "At least 12 months.",
-  "schoolDegree": "Some school degrees already cover training content. That’s why the chamber can shorten the duration. The chamber and the company decide together.",
-  "qualifications": "Here you can indicate whether you have additional experience or qualifications that may shorten the training time.",
-
-  "qualificationMax": "This qualification can shorten the training by up to 12 months.",
-
-  "reduction": {
-    "hs": "Lower secondary school certificate: Usually no reduction.",
-    "mr": "Intermediate school certificate: Often up to 6 months shorter.",
-    "fhr": "Advanced technical college entrance qualification: Often up to 12 months shorter.",
-    "abi": "General higher education entrance qualification: Often up to 12 months shorter."
-  },
-
-"qualification": {
-    "familyCare": "Select this if you care for children or dependent family members. This qualification can shorten the training by up to 12 months.",
-    "ageOver21": "Select this if you are over 21 years old when starting your training. This qualification can shorten the training by up to 12 months.",
-    "completedTraining": "Select this if you have already completed a vocational training program. This qualification can shorten the training by up to 12 months.",
-    "vocationalFoundation": "Select this if you have completed a basic vocational training year. This qualification can shorten the training by up to 12 months.",
-    "vocationalExperience": "Select this if you already have relevant work experience. This qualification can shorten the training by up to 12 months.",
-    "academic": "Select this if you have a university or college degree. This qualification can shorten the training by up to 12 months.",
-    "foreignRecognition": "Select this if a foreign vocational or educational qualification has been officially recognized. This qualification can shorten the training by up to 12 months."
-        }
+  "tooltip": {
+    "info": "Information",
+    "fulltimeHours": "In many companies full-time ranges between 35 and 48 hours per week. Legal basis: § 7a BBiG (part-time uses regular full-time hours as anchor).",
+    "parttimeHours": "Allowed range: at least 50% and at most 80% of the full-time hours. Basis: § 7a BBiG (part-time vocational training).",
+    "regularDuration": "At least 12 months. Basis: § 8 BBiG (shortening/extension of training duration).",
+    "schoolDegree": "Some school degrees already cover training content. That’s why the chamber can shorten the duration. The chamber and the company decide together. Basis: § 8 (1) BBiG (crediting prior education).",
+    "qualifications": "Here you can indicate whether you have additional experience or qualifications that may shorten the training time. Basis: § 8 (1) BBiG (crediting prior education).",
+    "qualificationMax": "This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening of training duration).",
+    "reduction": {
+      "hs": "Lower secondary school certificate: Usually no reduction. Source: § 8 (1) BBiG (credit possible if content is recognised).",
+      "mr": "Intermediate school certificate: Often up to 6 months shorter. Source: § 8 (1) BBiG (credit possible if content is recognised).",
+      "fhr": "Advanced technical college entrance qualification: Often up to 12 months shorter. Source: § 8 (1) BBiG (credit possible if content is recognised).",
+      "abi": "General higher education entrance qualification: Often up to 12 months shorter. Source: § 8 (1) BBiG (credit possible if content is recognised)."
+    },
+    "qualification": {
+      "familyCare": "Select this if you care for children or dependent family members. This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening for prior education/life situation).",
+      "ageOver21": "Select this if you are over 21 years old when starting your training. This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening for prior education/life situation).",
+      "completedTraining": "Select this if you have already completed a vocational training program. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
+      "vocationalFoundation": "Select this if you have completed a basic vocational training year. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
+      "vocationalExperience": "Select this if you already have relevant work experience. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
+      "academic": "Select this if you have a university or college degree. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
+      "foreignRecognition": "Select this if a foreign vocational or educational qualification has been officially recognized. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education)."
     }
-
-
+  }
 }

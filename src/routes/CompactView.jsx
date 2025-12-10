@@ -42,6 +42,8 @@ export default function CompactView() {
     isGeneratingPDF,
     handleSaveAsPDF,
     handleClosePDF,
+    resetCount,
+    handleReset,
   } = useCalculator();
 
   return (
@@ -59,50 +61,60 @@ export default function CompactView() {
       >
         {/* Desktop grid layout */}
         <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[minmax(200px,280px)_minmax(0,672px)_minmax(200px,280px)] xl:grid-cols-[minmax(280px,320px)_minmax(0,672px)_minmax(280px,320px)] lg:gap-4 xl:gap-6 2xl:gap-8">
-
           {/* Desktop spacer column */}
           <div className="hidden lg:block" />
 
           {/* Main content column */}
           <div className="w-full max-w-2xl flex flex-col items-center gap-4 mx-auto">
+            <div className="w-full flex flex-col items-center gap-4">
+              {/* Back button above title */}
+              <div className="w-full flex items-center justify-between">
+                <Button
+                  onClick={() => {
+                    window.location.hash = "";
+                  }}
+                  variant="secondary"
+                  size="sm"
+                  ariaLabel={t("welcome.backButton")}
+                  className="self-start"
+                >
+                  ← {t("welcome.backButton")}
+                </Button>
+                <LanguageToggle />
+              </div>
 
-            {/* Back button + language toggle */}
-            <div className="w-full flex items-center justify-between">
-              <Button
-                onClick={() => { window.location.hash = ""; }}
-                variant="secondary"
-                size="sm"
-                ariaLabel={t("welcome.backButton")}
-                className="self-start"
+              {/* Page headline */}
+              <h1
+                id={MAIN_HEADING_ID}
+                className="text-2xl font-bold text-center min-h-[4.5rem] max-w-sm mx-auto line-clamp-3"
+                style={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  wordBreak: "break-word",
+                  hyphens: "auto",
+                }}
               >
-                ← {t("welcome.backButton")}
-              </Button>
-              <LanguageToggle />
+                {t("app.title")}
+              </h1>
             </div>
 
-            {/* Page headline */}
-            <h1
-              id={MAIN_HEADING_ID}
-              className="text-2xl font-bold text-center min-h-[4.5rem] max-w-sm mx-auto line-clamp-3"
-              style={{
-                display: "-webkit-box",
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
-                wordBreak: "break-word",
-                hyphens: "auto",
-              }}
-            >
-              {t("app.title")}
-            </h1>
-
             {/* All input fields */}
-            <FulltimeHoursInput onValueChange={handleFulltimeHoursChange} />
+            <FulltimeHoursInput
+              key={`ft-${resetCount}`}
+              onValueChange={handleFulltimeHoursChange}
+            />
             <ParttimeHoursInput
+              key={`pt-${resetCount}`}
               fulltimeHours={fulltimeHours}
               onValueChange={handleParttimeHoursChange}
             />
-            <RegularDurationInput onValueChange={setFullDurationMonths} />
+            <RegularDurationInput
+              key={`rd-${resetCount}`}
+              onValueChange={setFullDurationMonths}
+            />
+            {/* Degree select provides the automatic reduction months. */}
             <SchoolDegreeReductionSelect
               value={schoolDegreeId ?? ""}
               onChange={handleSchoolDegreeSelect}
@@ -134,6 +146,17 @@ export default function CompactView() {
               className="w-full rounded-xl"
             >
               {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
+            </Button>
+
+            {/* Reset button */}
+            <Button
+              onClick={handleReset}
+              variant="ghost"
+              size="md"
+              className="w-full text-slate-500 justify-center"
+              ariaLabel={t("app.reset_explained")}
+            >
+              {t("app.reset")}
             </Button>
           </div>
 

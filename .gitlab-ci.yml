@@ -54,7 +54,7 @@ build-vite:
   artifacts:
     paths:
       - dist/
-    expire_in: 1 week
+    expire_in: 2 days
 
 unit-tests:
   stage: test
@@ -76,14 +76,28 @@ unit-tests:
     when: always
     paths:
       - coverage/
-    expire_in: 1 week
-  coverage: '/All files\s+\|\s+\d+\.\d+\%\s+\|\s+\d+\.\d+\%\s+\|\s+\d+\.\d+\%\s+\|\s+(\d+\.\d+%)/'
+    expire_in: 2 days
+  coverage: '/All files\s+\|\s+\d+\.\d+\s+\|\s+\d+\.\d+\s+\|\s+\d+\.\d+\s+\|\s+(\d+\.\d+)/'
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  timeout: 5m
   environment: production
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == "ci-update"
   needs:
     - unit-tests
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n $DOCKER_HUB_USER:$DOCKER_HUB_TOKEN | base64)\"}}}" > /kaniko/.docker/config.json
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - /kaniko/executor
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination ebischof/tzr-rechner:latest
+      --cache=true
