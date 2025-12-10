@@ -66,7 +66,7 @@ function buildMetrics(result, baselineMonths, translate) {
 export default function ResultSidebar({ values }) {
   const { t } = useTranslation();
 
-  // Scroll-to-top (#50)
+  // Scroll-to-top functionality
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -78,8 +78,8 @@ export default function ResultSidebar({ values }) {
     : "result.error.generic";
 
   //
-  // ERROR STATE — tests require exactly 2 buttons:
-  // 1) Scroll to top
+  // ERROR STATE - tests require exactly 2 buttons:
+  // 1) Scroll to top (enabled)
   // 2) Scroll to results (disabled)
   //
   if (!result || result.allowed === false) {
@@ -98,19 +98,20 @@ export default function ResultSidebar({ values }) {
             <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
           </header>
 
-          {/* ONLY ONE scroll-to-top button */}
-          <Button
-            onClick={scrollToTop}
-            variant="pill"
-            size="sm"
-            aria-label={t("result.navigation.scrollToTop")}
-            className="w-full justify-start"
-          >
-            ↑ {t("result.navigation.scrollToTop")}
-          </Button>
-
-          {/* Only one additional button: disabled scroll-to-results */}
+          {/* Navigation section for error state - same structure as normal state */}
           <div className="space-y-2 pt-4 border-t border-slate-200">
+            {/* Scroll-to-top button */}
+            <Button
+              onClick={scrollToTop}
+              variant="pill"
+              size="sm"
+              aria-label={t("result.navigation.scrollToTop")}
+              className="w-full justify-start"
+            >
+              ↑ {t("result.navigation.scrollToTop")}
+            </Button>
+
+            {/* Disabled scroll-to-results button */}
             <Button
               disabled
               variant="ghost"
@@ -129,7 +130,7 @@ export default function ResultSidebar({ values }) {
   }
 
   //
-  // NORMAL STATE
+  // NORMAL STATE with valid calculation results
   //
   const baselineMonths = getBaselineMonths(result);
   const formattedParttime = formatParttimeMonths(result, t);
@@ -147,7 +148,7 @@ export default function ResultSidebar({ values }) {
           </h2>
         </header>
 
-        {/* Metrics */}
+        {/* Metrics display section */}
         <div className="space-y-4">
           {metrics.map((metric) => (
             <StatItem
@@ -159,7 +160,7 @@ export default function ResultSidebar({ values }) {
           ))}
         </div>
 
-        {/* Navigation */}
+        {/* Navigation section */}
         <div className="space-y-2 pt-4 border-t border-slate-200">
           <Button
             onClick={scrollToTop}
