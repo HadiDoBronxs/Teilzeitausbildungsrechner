@@ -1,5 +1,6 @@
 // CompactView.jsx – Compact design mode showing all inputs in a single view.
-// Desktop: Shows results in a sidebar. Mobile: Shows results in a bottom bar when ResultCard is not visible.
+// Desktop: Shows results in a sidebar. Mobile: Shows results in a bottom bar plus a floating "scroll to top" button.
+
 import FulltimeHoursInput from "../components/FulltimeHoursInput.jsx";
 import ParttimeHoursInput from "../components/ParttimeHoursInput.jsx";
 import RegularDurationInput from "../components/RegularDurationInput.jsx";
@@ -18,12 +19,10 @@ const MAIN_HEADING_ID = "main-heading";
 const RESULT_CARD_ID = "result-card";
 
 /**
- * CompactView component - compact design mode for the calculator.
- * Displays all input fields in a single view, similar to the original calculator.
- * Uses the shared useCalculator hook and input components (no logic duplication).
- * Responsive layout:
- * - Desktop: Main content + sidebar with simplified results
- * - Mobile: Main content + bottom bar (when ResultCard not visible)
+ * CompactView – full calculator in one page layout.
+ * Responsive behavior:
+ * - Desktop: full layout + sticky sidebar
+ * - Mobile: main content + bottom bar + floating scroll-to-top button
  */
 export default function CompactView() {
   const {
@@ -49,23 +48,23 @@ export default function CompactView() {
 
   return (
     <>
+      {/* Accessibility skip link */}
       <a className="skip-link" href={`#${MAIN_ID}`}>
         {t("skipToMain")}
       </a>
+
       <main
         id={MAIN_ID}
         tabIndex="-1"
         aria-labelledby={MAIN_HEADING_ID}
         className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
       >
-        {/* Desktop layout: grid with centered calculator and sticky sidebar */}
-        {/* Sidebar columns use minmax to allow shrinking on smaller screens, calculator column is constrained to prevent layout shift */}
+        {/* Desktop grid layout */}
         <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[minmax(200px,280px)_minmax(0,672px)_minmax(200px,280px)] xl:grid-cols-[minmax(280px,320px)_minmax(0,672px)_minmax(280px,320px)] lg:gap-4 xl:gap-6 2xl:gap-8">
-          {/* Left spacer column (empty on desktop, matches sidebar width) */}
+          {/* Desktop spacer column */}
           <div className="hidden lg:block" />
 
-          {/* Main content area - centered calculator */}
-          {/* Fixed max-width to prevent layout shift when switching languages */}
+          {/* Main content column */}
           <div className="w-full max-w-2xl flex flex-col items-center gap-4 mx-auto">
             <div className="w-full flex flex-col items-center gap-4">
               {/* Back button above title */}
@@ -83,28 +82,38 @@ export default function CompactView() {
                 </Button>
                 <LanguageToggle />
               </div>
+
+              {/* Page headline */}
               <h1
                 id={MAIN_HEADING_ID}
                 className="text-2xl font-bold text-center min-h-[4.5rem] max-w-sm mx-auto line-clamp-3"
                 style={{
-                  display: '-webkit-box',
+                  display: "-webkit-box",
                   WebkitLineClamp: 3,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  wordBreak: 'break-word',
-                  hyphens: 'auto'
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                  wordBreak: "break-word",
+                  hyphens: "auto",
                 }}
               >
                 {t("app.title")}
               </h1>
             </div>
-            <FulltimeHoursInput key={`ft-${resetCount}`} onValueChange={handleFulltimeHoursChange} />
+
+            {/* All input fields */}
+            <FulltimeHoursInput
+              key={`ft-${resetCount}`}
+              onValueChange={handleFulltimeHoursChange}
+            />
             <ParttimeHoursInput
               key={`pt-${resetCount}`}
               fulltimeHours={fulltimeHours}
               onValueChange={handleParttimeHoursChange}
             />
-            <RegularDurationInput key={`rd-${resetCount}`} onValueChange={setFullDurationMonths} />
+            <RegularDurationInput
+              key={`rd-${resetCount}`}
+              onValueChange={setFullDurationMonths}
+            />
             {/* Degree select provides the automatic reduction months. */}
             <SchoolDegreeReductionSelect
               value={schoolDegreeId ?? ""}
@@ -115,14 +124,20 @@ export default function CompactView() {
               onChange={setQualificationSelection}
               onTotalChange={setQualificationTotals}
             />
+
+            {/* Legal notice if applicable */}
             {showLegalHint && (
               <p className="text-xs text-amber-700" role="note">
                 {t("qualifications.legalHint")}
               </p>
             )}
+
+            {/* Result card */}
             <div id={RESULT_CARD_ID} className="w-full">
               <ResultCard values={formValues} />
             </div>
+
+            {/* Save as PDF button */}
             <Button
               onClick={handleSaveAsPDF}
               disabled={isGeneratingPDF}
@@ -132,6 +147,8 @@ export default function CompactView() {
             >
               {isGeneratingPDF ? "Generating PDF..." : t("pdf.saveButton")}
             </Button>
+
+            {/* Reset button */}
             <Button
               onClick={handleReset}
               variant="ghost"
@@ -143,17 +160,30 @@ export default function CompactView() {
             </Button>
           </div>
 
-          {/* Desktop sidebar with simplified results - sticky */}
+          {/* Desktop sidebar */}
           <div className="hidden lg:block lg:sticky lg:top-8 lg:self-start lg:h-fit">
             <ResultSidebar values={formValues} />
           </div>
         </div>
 
-        {/* Mobile bottom bar (only shows when ResultCard is not visible) */}
+        {/* MOBILE: Floating Scroll-To-Top Button */}
+        <div className="lg:hidden fixed right-4 bottom-[10%] z-50">
+          <Button
+            variant="pill"
+            size="sm"
+            ariaLabel={t("result.navigation.scrollToTop")}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            ↑ {t("result.navigation.scrollToTop")}
+          </Button>
+        </div>
+
+        {/* Mobile bottom bar */}
         <ResultBottomBar values={formValues} resultCardId={RESULT_CARD_ID} />
       </main>
+
+      {/* PDF viewer modal */}
       {pdfBytes && <PDFViewer pdfBytes={pdfBytes} onClose={handleClosePDF} />}
     </>
   );
 }
-
