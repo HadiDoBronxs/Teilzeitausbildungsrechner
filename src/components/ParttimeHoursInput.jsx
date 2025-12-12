@@ -43,10 +43,12 @@ export default function ParttimeHoursInput({
 
   // Compute min/max allowed hours from the provided fulltimeHours.
   // computeParttimeBounds should be a pure function returning {min, max}.
-  const { min: computedMin, max: computedMax } = useMemo(
+  const parttimeBounds = useMemo(
     () => computeParttimeBounds(fulltimeHours),
     [fulltimeHours]
   );
+  const computedMin = parttimeBounds.min;
+  const computedMax = parttimeBounds.max;
 
   /**
    * preferredDefault
