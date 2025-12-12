@@ -129,25 +129,9 @@ export default function ParttimeHoursInput({
         step={0.5}
         value={hours}
         onChange={(e) => {
-        let v = e.target.value;
-
-        // Convert comma → dot
-        v = v.replace(",", ".");
-
-        // Prevent multiple dots
-        const parts = v.split(".");
-        if (parts.length > 2) {
-          v = parts[0] + "." + parts.slice(1).join("");
-        }
-
-        // Limit to max 1 decimal
-        if (parts[1] && parts[1].length > 1) {
-          v = `${parts[0]}.${parts[1].slice(0, 1)}`;
-        }
-
-
-        setHours(v);
-      }}
+          // Value is already sanitized by NumberInput
+          setHours(e.target.value);
+        }}
         aria-invalid={!isValid}
         aria-describedby={describedBy}
       />

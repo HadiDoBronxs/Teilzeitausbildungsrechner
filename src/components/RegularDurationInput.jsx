@@ -46,36 +46,23 @@ export default function RegularDurationInput({ onValueChange }) {
         step={1}
         value={months}
         onChange={(e) => {
-        let v = e.target.value;
+          let v = e.target.value;
+          // Value is already sanitized by NumberInput
+          // No decimals allowed → strip everything after the dot
+          const integerValue = v.split(".")[0];
+          
+          // Allow empty value
+          if (integerValue === "") {
+            setMonths("");
+            return;
+          }
 
-        // Support comma input (German users)
-        v = v.replace(",", ".");
-
-        // Prevent more than one dot
-        const parts = v.split(".");
-        if (parts.length > 2) {
-          v = parts[0] + "." + parts.slice(1).join("");
-        }
-
-        // No decimals allowed → strip everything after the dot
-        if (parts[1]) {
-          v = parts[0];
-        }
-
-
-        // Allow empty value
-        if (v === "") {
-          setMonths("");
-          return;
-        }
-
-        // Convert sanitized string to number
-        const numeric = Number(v);
-        if (!Number.isNaN(numeric)) {
-          setMonths(numeric);
-        }
-      }}
-
+          // Convert sanitized string to number
+          const numeric = Number(integerValue);
+          if (!Number.isNaN(numeric)) {
+            setMonths(numeric);
+          }
+        }}
         aria-invalid={!isValid}
         aria-describedby={ariaDescribedBy}
       />
