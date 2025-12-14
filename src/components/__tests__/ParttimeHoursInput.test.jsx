@@ -55,6 +55,14 @@ describe("ParttimeHoursInput", () => {
     expect(screen.queryByRole("alert")).toBeNull();
   });
 
+  it("shows factor info as polite live status when visible", () => {
+    render(<ParttimeHoursInput fulltimeHours={40} />);
+
+    const status = screen.getByRole("status");
+    expect(status).toHaveAttribute("aria-live", "polite");
+    expect(status).toHaveTextContent("parttimeHours.");
+  });
+
   it("caps the computed max at 35h when fulltime is high (e.g. 45h)", async () => {
     render(<ParttimeHoursInput fulltimeHours={45} />);
     const input = screen.getByTestId(PARTTIME_INPUT_NAME);
