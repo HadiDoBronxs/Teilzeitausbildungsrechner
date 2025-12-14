@@ -29,7 +29,7 @@ export default function ResultsTab({
     <div
       role="tabpanel"
       id="tabpanel-results"
-      aria-labelledby="tab-results"
+      aria-labelledby="tab-mobile-results tab-results"
       className="space-y-6"
     >
       <div className="space-y-4">

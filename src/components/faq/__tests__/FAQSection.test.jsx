@@ -69,6 +69,25 @@ describe("FAQSection keyboard accessibility", () => {
     expect(firstPanel).not.toHaveClass("hidden");
   });
 
+  it("links panels to triggers via aria-labelledby and role=region", async () => {
+    render(<FAQSection />);
+
+    const trigger = screen.getByRole("button", {
+      name: /faq.items.rule50.question/i,
+    });
+    expect(trigger).toHaveAttribute("aria-controls", "faq-panel-rule50");
+    expect(trigger).toHaveAttribute("id", "faq-trigger-rule50");
+
+    // Open to reveal region
+    await userEvent.click(trigger);
+
+    const panel = screen.getByRole("region", {
+      name: /faq.items.rule50.question/i,
+    });
+    expect(panel).toHaveAttribute("id", "faq-panel-rule50");
+    expect(panel).toHaveAttribute("aria-labelledby", "faq-trigger-rule50");
+  });
+
   it("keeps accordion buttons operable when not disabled", async () => {
     const user = userEvent.setup();
     render(<FAQSection />);
