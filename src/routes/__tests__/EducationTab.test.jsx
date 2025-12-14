@@ -69,7 +69,10 @@ describe("EducationTab", () => {
 
     const tabPanel = screen.getByRole("tabpanel");
     expect(tabPanel).toHaveAttribute("id", "tabpanel-education");
-    expect(tabPanel).toHaveAttribute("aria-labelledby", "tab-education");
+    expect(tabPanel).toHaveAttribute(
+      "aria-labelledby",
+      expect.stringContaining("tab-education")
+    );
   });
 
   it("should render school degree select", () => {

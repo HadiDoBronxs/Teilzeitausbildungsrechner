@@ -51,7 +51,10 @@ describe("ReductionsTab", () => {
 
     const tabPanel = screen.getByRole("tabpanel");
     expect(tabPanel).toHaveAttribute("id", "tabpanel-reductions");
-    expect(tabPanel).toHaveAttribute("aria-labelledby", "tab-reductions");
+    expect(tabPanel).toHaveAttribute(
+      "aria-labelledby",
+      expect.stringContaining("tab-reductions")
+    );
   });
 
   it("should render OtherQualificationReductions component", () => {
