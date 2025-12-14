@@ -116,15 +116,6 @@ export default function WelcomePage() {
             </p>
           </Card>
 
-          <div className="flex justify-end">
-            <a
-              href="#faq"
-              className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-            >
-              {t("welcome.faqAnchorLabel")}
-            </a>
-          </div>
-
           <FAQSection />
         </div>
       </main>
