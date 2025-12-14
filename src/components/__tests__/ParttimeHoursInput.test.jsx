@@ -6,6 +6,7 @@ import ParttimeHoursInput from "../ParttimeHoursInput";
 import {
   PARTTIME_INPUT_NAME,
   computeParttimeBounds,
+  PARTTIME_ERROR_ID,
 } from "../ParttimeHoursInput.helpers";
 
 describe("ParttimeHoursInput", () => {
@@ -28,6 +29,7 @@ describe("ParttimeHoursInput", () => {
     await userEvent.clear(input);
     await userEvent.type(input, "15");
     expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", PARTTIME_ERROR_ID);
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 20-32");
   });
 
@@ -38,6 +40,7 @@ describe("ParttimeHoursInput", () => {
     await userEvent.clear(input);
     await userEvent.type(input, "35");
     expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", PARTTIME_ERROR_ID);
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 20-32");
   });
 

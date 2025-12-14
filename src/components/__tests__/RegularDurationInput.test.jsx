@@ -7,6 +7,7 @@ import {
   REGULAR_DURATION_NAME,
   DURATION_MIN,
   DURATION_MAX,
+  REGULAR_DURATION_ERROR_ID,
 } from "../RegularDurationInput.constants";
 
 describe("RegularDurationInput", () => {
@@ -29,6 +30,7 @@ describe("RegularDurationInput", () => {
     await userEvent.type(input, "6");
 
     expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", REGULAR_DURATION_ERROR_ID);
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 12-48");
   });
 
@@ -40,6 +42,7 @@ describe("RegularDurationInput", () => {
     await userEvent.type(input, "60");
 
     expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", REGULAR_DURATION_ERROR_ID);
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 12-48");
   });
 

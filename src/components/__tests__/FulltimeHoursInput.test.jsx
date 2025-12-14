@@ -7,6 +7,7 @@ import {
   FULLTIME_INPUT_NAME,
   FULLTIME_MIN,
   FULLTIME_MAX,
+  FULLTIME_ERROR_ID,
 } from "../FulltimeHoursInput.constants";
 
 describe("FulltimeHoursInput", () => {
@@ -29,6 +30,7 @@ describe("FulltimeHoursInput", () => {
     await userEvent.type(input, "50");
 
     expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", FULLTIME_ERROR_ID);
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 35-48");
   });
 

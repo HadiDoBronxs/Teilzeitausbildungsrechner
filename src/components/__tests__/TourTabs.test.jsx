@@ -1,6 +1,7 @@
 // Tests for TourTabs component - tab navigation for guided tour
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("react-i18next", () => ({
@@ -170,6 +171,28 @@ describe("TourTabs", () => {
     fireEvent.keyDown(inputsTab, { key: "a" });
 
     expect(onTabChange).not.toHaveBeenCalled();
+  });
+
+  it("allows keyboard navigation via user.tab and arrow keys", async () => {
+    const onTabChange = vi.fn();
+    const user = userEvent.setup();
+    render(<TourTabs {...defaultProps} onTabChange={onTabChange} />);
+
+    await user.tab();
+    const inputsTab = screen.getByRole("tab", { name: /tour.tabs.inputs/i });
+    expect(inputsTab).toHaveFocus();
+
+    await user.keyboard("{ArrowRight}");
+    expect(onTabChange).toHaveBeenCalledTimes(1);
+    expect(onTabChange).toHaveBeenLastCalledWith("education");
+
+    await user.keyboard("{Enter}");
+    expect(onTabChange).toHaveBeenCalledTimes(2);
+    expect(onTabChange).toHaveBeenLastCalledWith("inputs");
+
+    await user.keyboard(" ");
+    expect(onTabChange).toHaveBeenCalledTimes(3);
+    expect(onTabChange).toHaveBeenLastCalledWith("inputs");
   });
 
   it("should not handle keyboard navigation when disabled", () => {
