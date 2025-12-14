@@ -2,7 +2,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import ReductionInfo from "../ui/ReductionInfo.jsx";
+import ReductionInfo from "../ReductionInfo.jsx";
 
 // Mock react-i18next
 const mockT = vi.fn((key, params = {}) => {
