@@ -93,8 +93,8 @@ export default function OtherQualificationReductions({
                 handleAnswer(option.id, event.target.value === "yes")
               }
             >
-              <option value="yes">{t("qualifications.answers.yes")}</option>
               <option value="no">{t("qualifications.answers.no")}</option>
+              <option value="yes">{t("qualifications.answers.yes")}</option>
             </SelectField>
             {yesSelected && (
               <ReductionInfo

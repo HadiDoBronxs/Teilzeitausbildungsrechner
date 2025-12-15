@@ -39,7 +39,7 @@ export default function ReductionsTab({
     <div
       role="tabpanel"
       id="tabpanel-reductions"
-      aria-labelledby="tab-reductions"
+      aria-labelledby="tab-mobile-reductions tab-reductions"
       className="space-y-6"
     >
       <div className="space-y-4">

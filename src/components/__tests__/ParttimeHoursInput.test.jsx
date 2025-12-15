@@ -6,6 +6,7 @@ import ParttimeHoursInput from "../ParttimeHoursInput";
 import {
   PARTTIME_INPUT_NAME,
   computeParttimeBounds,
+  PARTTIME_ERROR_ID,
 } from "../ParttimeHoursInput.helpers";
 
 describe("ParttimeHoursInput", () => {
@@ -28,6 +29,7 @@ describe("ParttimeHoursInput", () => {
     await userEvent.clear(input);
     await userEvent.type(input, "15");
     expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", PARTTIME_ERROR_ID);
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 20-32");
   });
 
@@ -38,6 +40,7 @@ describe("ParttimeHoursInput", () => {
     await userEvent.clear(input);
     await userEvent.type(input, "35");
     expect(input).toHaveAttribute("aria-invalid", "true");
+    expect(input).toHaveAttribute("aria-describedby", PARTTIME_ERROR_ID);
     expect(screen.getByRole("alert")).toHaveTextContent("ERR 20-32");
   });
 
@@ -50,6 +53,14 @@ describe("ParttimeHoursInput", () => {
 
     expect(input).toHaveAttribute("aria-invalid", "false");
     expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("shows factor info as polite live status when visible", () => {
+    render(<ParttimeHoursInput fulltimeHours={40} />);
+
+    const status = screen.getByRole("status");
+    expect(status).toHaveAttribute("aria-live", "polite");
+    expect(status).toHaveTextContent("parttimeHours.");
   });
 
   it("caps the computed max at 35h when fulltime is high (e.g. 45h)", async () => {

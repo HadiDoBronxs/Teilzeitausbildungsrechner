@@ -56,7 +56,7 @@ export default function EducationTab({
     <div
       role="tabpanel"
       id="tabpanel-education"
-      aria-labelledby="tab-education"
+      aria-labelledby="tab-mobile-education tab-education"
       className="space-y-6"
     >
       <div className="space-y-4 flex flex-col items-center">

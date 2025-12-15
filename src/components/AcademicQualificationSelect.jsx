@@ -50,8 +50,8 @@ export default function AcademicQualificationSelect({ value = false, onChange })
         value={value ? "yes" : "no"}
         onChange={handleChange}
       >
-        <option value="yes">{t("qualifications.answers.yes")}</option>
         <option value="no">{t("qualifications.answers.no")}</option>
+        <option value="yes">{t("qualifications.answers.yes")}</option>
       </SelectField>
 
       {value && (

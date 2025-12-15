@@ -859,3 +859,58 @@ describe("TourView - Invalid Input Validation", () => {
     });
   });
 });
+
+describe("TourView accessibility", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("links tabpanels to both mobile and desktop tab ids via aria-labelledby", () => {
+    vi.mocked(useCalculator).mockReturnValue({
+      schoolDegreeId: "hs",
+      fulltimeHours: 40,
+      parttimeHours: 30,
+      wantsReduction: "no",
+      manualReductionMonths: 0,
+      academicQualification: false,
+      otherQualificationSelection: [],
+      attendedUniversity: "no",
+      hasEcts: null,
+      formValues: {
+        weeklyFull: 40,
+        weeklyPart: 30,
+        fullDurationMonths: 36,
+        reductionMonths: 0,
+      },
+      pdfBytes: null,
+      isGeneratingPDF: false,
+      handleSchoolDegreeSelect: vi.fn(),
+      handleFulltimeHoursChange: vi.fn(),
+      handleParttimeHoursChange: vi.fn(),
+      setFullDurationMonths: vi.fn(),
+      handleWantsReductionChange: vi.fn(),
+      handleManualReductionChange: vi.fn(),
+      handleAcademicQualificationChange: vi.fn(),
+      handleOtherQualificationChange: vi.fn(),
+      handleAttendedUniversityChange: vi.fn(),
+      handleHasEctsChange: vi.fn(),
+      handleSaveAsPDF: vi.fn(),
+      handleClosePDF: vi.fn(),
+      handleReset: vi.fn(),
+    });
+
+    mockReadFormAndCalc.mockReturnValue(createValidResult());
+
+    render(<TourView />);
+
+    const inputsPanel = screen.getByRole("tabpanel", { name: /tour.tabs.inputs/ });
+    expect(inputsPanel).toHaveAttribute(
+      "aria-labelledby",
+      expect.stringContaining("tab-mobile-inputs")
+    );
+    expect(inputsPanel).toHaveAttribute(
+      "aria-labelledby",
+      expect.stringContaining("tab-inputs")
+    );
+  });
+});

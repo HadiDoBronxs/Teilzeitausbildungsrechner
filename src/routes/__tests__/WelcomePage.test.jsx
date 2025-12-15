@@ -17,7 +17,6 @@ const mockT = (key) => {
     "welcome.legalDisclaimer": "Note: This calculator is for informational purposes only.",
     "welcome.faqTitle": "FAQ",
     "welcome.faqIntro": "Quick answers about the calculator.",
-    "welcome.faqAnchorLabel": "Jump to FAQ section",
     "welcome.faqLinkLegal": "Legal basis",
     "welcome.faqLinkTransparency": "Result explanation",
     "tour.comingSoon": "The guided design will be available soon.",
@@ -143,7 +142,6 @@ describe("WelcomePage", () => {
   it("renders FAQ placeholder area", () => {
     render(<WelcomePage />);
 
-    expect(screen.getByText("Jump to FAQ section")).toBeInTheDocument();
     expect(screen.getByText("How is the part-time duration calculated?")).toBeInTheDocument();
   });
 

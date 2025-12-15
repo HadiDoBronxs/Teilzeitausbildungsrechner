@@ -43,7 +43,7 @@ export default function InputsTab({
     <div
       role="tabpanel"
       id="tabpanel-inputs"
-      aria-labelledby="tab-inputs"
+      aria-labelledby="tab-mobile-inputs tab-inputs"
       className="space-y-6"
     >
       <div className="space-y-4">
