@@ -81,7 +81,7 @@ export default function WelcomePage() {
               <button
                 type="button"
                 onClick={handleCompactClick}
-                className="flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-slate-950 hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 transition-colors"
+                className="flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-slate-950 hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 transition-colors"
                 aria-label={`${t("welcome.designs.compact")} - ${t("welcome.intro")}`}
               >
                 <span className="text-4xl text-white" aria-hidden="true">
@@ -96,7 +96,7 @@ export default function WelcomePage() {
               <button
                 type="button"
                 onClick={handleTourClick}
-                className="flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-slate-950 hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 transition-colors"
+                className="flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-slate-950 hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 transition-colors"
                 aria-label={`${t("welcome.designs.tour")} - ${t("welcome.intro")}`}
               >
                 <span className="text-4xl text-white" aria-hidden="true">

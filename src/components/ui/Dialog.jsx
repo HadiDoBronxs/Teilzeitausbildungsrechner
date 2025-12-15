@@ -114,7 +114,7 @@ function Dialog({
         aria-modal="true"
         aria-labelledby={labelledBy}
         tabIndex={-1}
-        className={`w-full ${maxWidth} rounded-2xl bg-white shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 ${className}`}
+        className={`w-full ${maxWidth} rounded-2xl bg-white shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 ${className}`}
         {...rest}
       >
         <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">

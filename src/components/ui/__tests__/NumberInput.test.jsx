@@ -38,7 +38,7 @@ describe("NumberInput", () => {
     const input = screen.getByTestId("test-input");
     
     expect(input).toHaveAttribute("aria-invalid", "true");
-    expect(input.className).toContain("border-red-500");
+    expect(input.className).toContain("border-red-600");
   });
 
   it("applies error styling when aria-invalid is true", () => {
@@ -46,7 +46,7 @@ describe("NumberInput", () => {
     const input = screen.getByTestId("test-input");
     
     expect(input).toHaveAttribute("aria-invalid", "true");
-    expect(input.className).toContain("border-red-500");
+    expect(input.className).toContain("border-red-600");
   });
 
   it("allows custom className", () => {

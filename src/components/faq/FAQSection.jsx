@@ -87,14 +87,14 @@ export default function FAQSection() {
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           <button
             type="button"
-            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
             onClick={() => setShowLegal(true)}
           >
             {t("welcome.faqLinkLegal")}
           </button>
           <button
             type="button"
-            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
             onClick={() => setShowTransparency(true)}
           >
             {t("welcome.faqLinkTransparency")}
@@ -131,7 +131,7 @@ export default function FAQSection() {
                       onClick={() => toggle(item)}
                       onKeyDown={(event) => handleKeyToggle(event, item)}
                       // Dark button for strong contrast; icon indicates state.
-                      className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left rounded-xl bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400 transition shadow-sm"
+                      className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left rounded-xl bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 transition shadow-sm"
                     >
                       <span className="font-medium">
                         {t(`faq.items.${item}.question`)}

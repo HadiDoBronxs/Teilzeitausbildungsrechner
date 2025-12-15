@@ -13,6 +13,13 @@
   --color-link: #1d4ed8;
   --color-link-hover: #1e3a8a;
   --color-focus: #0f766e;
+  --color-focus-strong: #0f766e;
+  --color-focus-soft: rgba(15, 118, 110, 0.2);
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-disabled-bg: #e2e8f0;
+  --color-disabled-text: #475569;
+  --color-border: #cbd5e1;
 }
 
 .skip-link {
@@ -88,9 +95,9 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid var(--color-focus);
+  outline: 3px solid var(--color-focus-strong);
   outline-offset: 3px;
-  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
+  box-shadow: 0 0 0 3px var(--color-focus-soft);
 }
 
 a:focus-visible {
