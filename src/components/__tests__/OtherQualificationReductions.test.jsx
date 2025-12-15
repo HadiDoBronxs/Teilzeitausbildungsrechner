@@ -1,6 +1,7 @@
 // Tests for OtherQualificationReductions component - non-academic qualification reductions
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 vi.mock("react-i18next", () => ({
@@ -89,6 +90,19 @@ describe("OtherQualificationReductions", () => {
 
     expect(screen.getByTestId("tooltip-tooltip.qualification.familyCare")).toBeInTheDocument();
     expect(screen.getByTestId("tooltip-tooltip.qualification.ageOver21")).toBeInTheDocument();
+  });
+
+  it("renders options in order No -> Yes and ArrowDown selects yes", async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<OtherQualificationReductions {...defaultProps} onChange={onChange} />);
+
+    const select = screen.getByTestId("qualification-select-familyCare");
+    const options = Array.from(select.querySelectorAll("option")).map((opt) => opt.value);
+    expect(options).toEqual(["no", "yes"]);
+
+    await user.selectOptions(select, "yes");
+    expect(onChange).toHaveBeenCalledWith(["familyCare"]);
   });
 
   it("should call onChange when qualification is selected", () => {
