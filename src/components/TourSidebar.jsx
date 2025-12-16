@@ -67,7 +67,7 @@ export default function TourSidebar({
           </h2>
         </header>
 
-        <div className="space-y-3">
+        <div className="space-y-3 pt-2 border-t border-slate-200">
           {/* Basic inputs */}
           {fulltimeHours && (
             <div className="text-sm">
