@@ -1,6 +1,7 @@
 // Tests for TourView component - guided tour design mode functionality
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // Mock pdfjs-dist before importing TourView (which imports PDFViewer)
@@ -347,6 +348,57 @@ describe("TourView - Invalid Input Validation", () => {
       // The tab should remain on inputs
       expect(screen.getByRole("tabpanel", { name: /tour.tabs.inputs/ })).toBeInTheDocument();
     });
+  });
+
+  it("supports keyboard focus order for skip link, main, back button, language toggle, first tab", async () => {
+    const user = userEvent.setup();
+    vi.mocked(useCalculator).mockReturnValue({
+      schoolDegreeId: "hs",
+      fulltimeHours: 40,
+      parttimeHours: 30,
+      wantsReduction: "no",
+      manualReductionMonths: 0,
+      academicQualification: false,
+      otherQualificationSelection: [],
+      attendedUniversity: null,
+      hasEcts: null,
+      formValues: {
+        weeklyFull: 40,
+        weeklyPart: 30,
+        fullDurationMonths: 36,
+        reductionMonths: 0,
+      },
+      pdfBytes: null,
+      isGeneratingPDF: false,
+      handleSchoolDegreeSelect: vi.fn(),
+      handleFulltimeHoursChange: vi.fn(),
+      handleParttimeHoursChange: vi.fn(),
+      setFullDurationMonths: vi.fn(),
+      handleWantsReductionChange: vi.fn(),
+      handleManualReductionChange: vi.fn(),
+      handleAcademicQualificationChange: vi.fn(),
+      handleOtherQualificationChange: vi.fn(),
+      handleAttendedUniversityChange: vi.fn(),
+      handleHasEctsChange: vi.fn(),
+      handleSaveAsPDF: vi.fn(),
+      handleClosePDF: vi.fn(),
+      handleReset: vi.fn(),
+    });
+    mockReadFormAndCalc.mockReturnValue(createValidResult());
+
+    render(<TourView />);
+
+    await user.tab();
+    expect(screen.getByText("skipToMain")).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByRole("button", { name: /welcome.backButton/i })).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByLabelText(/Switch to next language/i)).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByRole("tab", { name: /tour.tabs.inputs/i })).toHaveFocus();
   });
 
   describe("when inputs are valid", () => {

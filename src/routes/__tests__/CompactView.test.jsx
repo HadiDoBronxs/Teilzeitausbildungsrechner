@@ -1,6 +1,7 @@
 // Tests for CompactView component - compact design mode functionality
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // Mock pdfjs-dist before importing CompactView (which imports PDFViewer)
@@ -199,5 +200,16 @@ describe("CompactView", () => {
 
     // PDFViewer should not be rendered
     expect(screen.queryByTestId("pdf-viewer")).not.toBeInTheDocument();
+  });
+
+  it("supports keyboard focus order for skip link, main, back button", async () => {
+    const user = userEvent.setup();
+    render(<CompactView />);
+
+    await user.tab();
+    expect(screen.getByText("skipToMain")).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByRole("button", { name: /welcome.backButton/i })).toHaveFocus();
   });
 });

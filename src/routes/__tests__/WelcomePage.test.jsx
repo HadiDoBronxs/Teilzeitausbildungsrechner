@@ -166,4 +166,23 @@ describe("WelcomePage", () => {
     // Hash should change to tour
     expect(window.location.hash).toBe("#tour");
   });
+
+  it("supports keyboard focus order for skip link and design cards", async () => {
+    const user = userEvent.setup();
+    render(<WelcomePage />);
+
+    await user.tab();
+    expect(screen.getByText("Skip to main content")).toHaveFocus();
+
+    await user.tab();
+    expect(
+      screen.getByLabelText(/Switch to next language/i)
+    ).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByLabelText(/Compact Design/)).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByLabelText(/Guided Design/)).toHaveFocus();
+  });
 });
