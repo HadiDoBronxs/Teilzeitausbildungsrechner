@@ -12,6 +12,7 @@ import ResultSidebar from "../components/ResultSidebar.jsx";
 import ResultBottomBar from "../components/ResultBottomBar.jsx";
 import PDFViewer from "../components/PDFViewer.jsx";
 import Button from "../components/ui/Button.jsx";
+import Card from "../components/ui/Card.jsx";
 import { useCalculator } from "../features/calcDuration/useCalculator.js";
 
 const MAIN_ID = "main";
@@ -127,9 +128,16 @@ export default function CompactView() {
 
             {/* Legal notice if applicable */}
             {showLegalHint && (
-              <p className="text-xs text-amber-700" role="note">
-                {t("qualifications.legalHint")}
-              </p>
+              <Card
+                variant="default"
+                padding="p-4"
+                role="note"
+                className="bg-amber-50 border-amber-200"
+              >
+                <p className="text-xs text-amber-700">
+                  {t("qualifications.legalHint")}
+                </p>
+              </Card>
             )}
 
             {/* Result card */}
