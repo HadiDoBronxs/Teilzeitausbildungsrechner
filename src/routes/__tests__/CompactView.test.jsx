@@ -87,7 +87,7 @@ describe("CompactView", () => {
   it("renders the calculator title", () => {
     render(<CompactView />);
 
-    expect(screen.getByText("app.title")).toBeInTheDocument();
+    expect(screen.getByText("app.titleMobile")).toBeInTheDocument();
   });
 
   it("renders all input components", () => {
