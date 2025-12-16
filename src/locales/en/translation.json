@@ -84,7 +84,6 @@
     "faqIntro": "Short answers about the part-time training calculator. Includes easy-to-read wording.",
     "faqLinkLegal": "Legal basis",
     "faqLinkTransparency": "Result explanation",
-    "faqPlaceholder": "FAQ Area (to be implemented later)",
     "backButton": "Back"
   },
   "faq": {
@@ -137,7 +136,6 @@
     }
   },
   "tour": {
-    "comingSoon": "The guided design will be available soon.",
     "tabs": {
       "inputs": "Inputs",
       "education": "Education",
@@ -183,11 +181,6 @@
   },
   "result": {
     "headline": "Your training takes {{value}}.",
-    "compare": {
-      "withReduction": "Full-time (with reduction): {{eff}} months, your part-time: {{part}} months ({{delta}} months).",
-      "noReduction": "Full-time: {{full}} months, your part-time: {{part}} months ({{delta}} months)."
-    },
-    "factor": "Factor: {{pct}} %",
     "howCalculated": "How is this calculated?",
     "navigation": {
       "scrollToTop": "Scroll to top",
@@ -290,8 +283,6 @@
         "diff": "That is {{diff}} months compared to full-time."
       },
       "chart": {
-        "fullTime": "Full-time: {{hours}} h (100%)",
-        "partTime": "Part-time: {{hours}} h ({{percent}}%)",
         "fullLabel": "Full-time"
       },
       "actions": {
@@ -306,9 +297,7 @@
   },
   "qualifications": {
     "title": "Additional Qualifications",
-    "description": "Answer the questions about additional qualifications. The overall reduction is capped at {{max}} months.",
     "summary": "Applied qualification reduction: {{months}} / {{max}} months",
-    "warning": "Your selection adds up to {{raw}} months. Only {{max}} months can be taken into account.",
     "totalWarning": "Your answers add up to {{sum}} months. Only {{max}} months are applied.",
     "legalHint": "For reductions over 6 months, an extra proof of suitability is required.",
     "answers": {
@@ -387,16 +376,10 @@
       "point4": "The chamber checks and approves so everything is official.",
       "point5": "All important learning content stays the same."
     },
-    "notice": {
-      "heading": "Important notice",
-      "text": "This information does not replace legal advice. The responsible chamber always decides on reductions and process.",
-      "links": {
-        "title": "Official information",
-        "arbeitsagentur": "Federal Employment Agency – Part-time vocational training",
-        "ihk": "Chambers of Industry and Commerce (IHK)",
-        "bmbf": "Federal Ministry of Education and Research (BMBF)"
-      }
-    },
+      "notice": {
+        "heading": "Important notice",
+        "text": "This information does not replace legal advice. The responsible chamber always decides on reductions and process."
+      },
     "sources": {
       "heading": "Additional official sources",
       "bbig": "BBiG – law overview",
@@ -440,7 +423,6 @@
       "familyCare": "Select this if you care for children or dependent family members. This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening for prior education/life situation).",
       "ageOver21": "Select this if you are over 21 years old when starting your training. This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening for prior education/life situation).",
       "completedTraining": "Select this if you have already completed a vocational training program. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
-      "vocationalFoundation": "Select this if you have completed a basic vocational training year. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
       "vocationalExperience": "Select this if you already have relevant work experience. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
       "academic": "Select this if you have a university or college degree. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education).",
       "foreignRecognition": "Select this if a foreign vocational or educational qualification has been officially recognized. This qualification can shorten the training by up to 12 months. Basis: § 8 (1) BBiG (crediting prior education)."

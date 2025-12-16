@@ -137,7 +137,6 @@
         }
     },
     "tour": {
-        "comingSoon": "Das geführte Design wird bald verfügbar sein.",
         "tabs": {
             "inputs": "Eingaben",
             "education": "Bildung",
@@ -183,11 +182,6 @@
     },
     "result": {
         "headline": "Ihre Ausbildung dauert {{value}}.",
-        "compare": {
-            "withReduction": "Vollzeit (mit Verkürzung): {{eff}} Monate, Ihre Teilzeit: {{part}} Monate ({{delta}} Monate).",
-            "noReduction": "Vollzeit: {{full}} Monate, Ihre Teilzeit: {{part}} Monate ({{delta}} Monate)."
-        },
-        "factor": "Faktor: {{pct}} %",
         "howCalculated": "Wie wird das berechnet?",
         "navigation": {
             "scrollToTop": "Zum Anfang",
@@ -290,8 +284,6 @@
                 "diff": "Das sind {{diff}} Monate im Vergleich zur Vollzeit."
             },
             "chart": {
-                "fullTime": "Vollzeit: {{hours}} h (100%)",
-                "partTime": "Teilzeit: {{hours}} h ({{percent}}%)",
                 "fullLabel": "Vollzeit"
             },
             "actions": {
@@ -306,9 +298,7 @@
     },
     "qualifications": {
         "title": "Weitere Qualifikationen",
-        "description": "Beantworten Sie die Fragen zu Ihren weiteren Qualifikationen. Insgesamt sind höchstens {{max}} Monate möglich.",
         "summary": "Angerechnete Qualifikationsverkürzung: {{months}} / {{max}} Monate",
-        "warning": "Die Auswahl ergibt rechnerisch {{raw}} Monate. Es werden jedoch höchstens {{max}} Monate berücksichtigt.",
         "totalWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate.",
         "legalHint": "Bei Verkürzungen über 6 Monate ist ein zusätzlicher Nachweis deiner Eignung erforderlich.",
         "answers": {
@@ -389,13 +379,7 @@
         },
         "notice": {
             "heading": "Wichtiger Hinweis",
-            "text": "Diese Informationen ersetzen keine Rechtsberatung. Über Verkürzungen und Abläufe entscheidet immer die zuständige Kammer.",
-            "links": {
-                "title": "Offizielle Informationen",
-                "arbeitsagentur": "Agentur für Arbeit – Teilzeitberufsausbildung",
-                "ihk": "Industrie- und Handelskammern",
-                "bmbf": "Bundesministerium für Bildung und Forschung"
-            }
+            "text": "Diese Informationen ersetzen keine Rechtsberatung. Über Verkürzungen und Abläufe entscheidet immer die zuständige Kammer."
         },
         "sources": {
             "heading": "Weitere offizielle Quellen",
@@ -440,7 +424,6 @@
             "familyCare": "Hier wählen Sie aus, wenn Sie Kinder oder pflegebedürftige Angehörige betreuen. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung wegen Vorbildung/Lebenssituation).",
             "ageOver21": "Hier wählen Sie aus, wenn Sie bei Ausbildungsstart über 21 Jahre alt sind. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung wegen Vorbildung/Lebenssituation).",
             "completedTraining": "Hier wählen Sie aus, wenn Sie bereits eine Berufsausbildung abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
-            "vocationalFoundation": "Hier wählen Sie aus, wenn Sie ein Berufsgrundbildungsjahr abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
             "vocationalExperience": "Hier wählen Sie aus, wenn Sie schon passende Berufserfahrung haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
             "academic": "Hier wählen Sie aus, wenn Sie einen Hochschul- oder Fachhochschulabschluss haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
             "foreignRecognition": "Hier wählen Sie aus, wenn ein ausländischer Berufs- oder Bildungsabschluss anerkannt wurde. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung)."
