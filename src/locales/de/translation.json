@@ -61,7 +61,8 @@
         "other": "Sonstiger Abschluss"
     },
     "app": {
-        "title": "Teilzeit- Ausbildungs- Rechner",
+        "title": "Teilzeitausbildungsrechner",
+        "titleMobile": "Teilzeit\u00ADausbildungs\u00ADrechner",
         "languages": "Sprache",
         "reset": "Zurücksetzen",
         "reset_explained": "Alle Eingaben zurücksetzen.",
@@ -76,7 +77,7 @@
         "question": "Wollen Sie das kompakte Design nutzen oder das geführte Design? Für die meisten Nutzer*innen empfehlen wir das geführte Design.",
         "designs": {
             "compact": "Kompaktes Design",
-            "tour": "Geführtes Design"
+            "tour": "Geführtes \u00ADDesign"
         },
         "legalDisclaimer": "Hinweis: Dieser Rechner dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt.",
         "faqTitle": "FAQ",

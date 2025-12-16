@@ -93,11 +93,9 @@ export default function CompactView() {
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
-                  wordBreak: "break-word",
-                  hyphens: "auto",
                 }}
               >
-                {t("app.title")}
+                {t("app.titleMobile")}
               </h1>
             </div>
 
