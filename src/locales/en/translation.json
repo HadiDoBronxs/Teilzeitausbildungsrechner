@@ -90,6 +90,8 @@
     "categories": {
       "calculation": "Calculation & Inputs",
       "rules": "Rules & Limits",
+      "practice": "Practice cases",
+      "technical": "Technical notes",
       "legal": "Legal"
     },
     "items": {
@@ -122,6 +124,26 @@
         "question": "Why is my reduction capped?",
         "answer": "We apply maximum reductions (for example 6 months) and a protection limit: part-time lasts at most 1.5 × the standard duration. This keeps results realistic and chamber-compliant.",
         "easy": "In short: There are caps for reduction and extension so the result stays realistic."
+      },
+      "shiftPlan": {
+        "question": "How do I plan when I have shifts or block school?",
+        "answer": "Enter your average weekly hours. For shift or block schedules, use the mean from your plan (school and company combined) so the part-time factor stays realistic.",
+        "easy": "In short: Use your average weekly hours, even if shifts or block school change."
+      },
+      "hoursChange": {
+        "question": "What if my company changes the full-time hours later?",
+        "answer": "Update the “Full-time hours per week” field. The calculator recalculates factor and duration immediately. Check with your company and chamber if contract details need updates.",
+        "easy": "In short: Enter the new full-time hours, the calculator updates. Align with company/chamber if needed."
+      },
+      "saveData": {
+        "question": "Does the calculator save my inputs?",
+        "answer": "No. All inputs stay locally in your browser and are not sent to any server.",
+        "easy": "In short: Your data stays in the browser and is not stored."
+      },
+      "pdfIssue": {
+        "question": "PDF will not open or download?",
+        "answer": "Allow pop-ups/downloads in your browser and use a current browser version. If the download was blocked, regenerate the PDF or try another browser.",
+        "easy": "In short: Allow pop-ups/downloads and use a current browser; otherwise regenerate the PDF or switch browser."
       },
       "binding": {
         "question": "Is the result binding?",

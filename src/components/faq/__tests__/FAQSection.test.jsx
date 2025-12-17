@@ -103,4 +103,18 @@ describe("FAQSection keyboard accessibility", () => {
     await user.click(reductionQuestion);
     expect(reductionQuestion).toHaveAttribute("aria-expanded", "false");
   });
+
+  it("renders new categories and questions", () => {
+    render(<FAQSection />);
+
+    expect(screen.getByText("faq.categories.practice")).toBeInTheDocument();
+    expect(screen.getByText("faq.categories.technical")).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: /faq.items.shiftPlan.question/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /faq.items.saveData.question/i })
+    ).toBeInTheDocument();
+  });
 });

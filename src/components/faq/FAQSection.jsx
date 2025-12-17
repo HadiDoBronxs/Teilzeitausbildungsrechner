@@ -36,6 +36,14 @@ const FAQ_CATEGORIES = [
     items: ["below50", "capReduction"],
   },
   {
+    key: "practice",
+    items: ["shiftPlan", "hoursChange"],
+  },
+  {
+    key: "technical",
+    items: ["saveData", "pdfIssue"],
+  },
+  {
     key: "legal",
     items: ["binding", "whoDecides"],
   },
