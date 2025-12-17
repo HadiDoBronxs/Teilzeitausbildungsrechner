@@ -42,21 +42,24 @@ const SIZE_STYLES = {
  * - as: optional element override (e.g. "a" for link-style buttons).
  * - icon: optional React node rendered with the label and marked aria-hidden.
  */
-function Button({
-  children,
-  variant = "primary",
-  size = "md",
-  icon,
-  type = "button",
-  disabled,
-  ariaLabel,
-  onClick,
-  as,
-  ariaHaspopup,
-  ariaExpanded,
-  className = "",
-  ...rest
-}) {
+const Button = React.forwardRef(function Button(
+  {
+    children,
+    variant = "primary",
+    size = "md",
+    icon,
+    type = "button",
+    disabled,
+    ariaLabel,
+    onClick,
+    as,
+    ariaHaspopup,
+    ariaExpanded,
+    className = "",
+    ...rest
+  },
+  ref,
+) {
   const Component = as || "button";
   const variantClass = VARIANT_STYLES[variant] || VARIANT_STYLES.primary;
   const sizeClass = SIZE_STYLES[size] || "";
@@ -71,6 +74,7 @@ function Button({
   if (Component === "button") {
     return (
       <button
+        ref={ref}
         type={type}
         disabled={disabled}
         aria-label={ariaLabel}
@@ -88,6 +92,7 @@ function Button({
   // Non-button renders (e.g. anchor) still carry the same className and ARIA details.
   return (
     <Component
+      ref={ref}
       aria-label={ariaLabel}
       aria-haspopup={ariaHaspopup}
       aria-expanded={ariaExpanded}
@@ -98,6 +103,6 @@ function Button({
       {content}
     </Component>
   );
-}
+});
 
 export default Button;
