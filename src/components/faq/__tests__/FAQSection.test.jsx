@@ -144,4 +144,46 @@ describe("FAQSection keyboard accessibility", () => {
       screen.getByText(/faq.items.shiftPlan.easy/i)
     ).toBeInTheDocument();
   });
+
+  it("supports Home/End key navigation between triggers", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const firstTrigger = screen.getByRole("button", {
+      name: /faq.items.calcHow.question/i,
+    });
+    const lastTrigger = screen.getByRole("button", {
+      name: /faq.items.whoDecides.question/i,
+    });
+
+    await user.tab();
+    await user.tab();
+    await user.tab();
+    expect(firstTrigger).toHaveFocus();
+
+    await user.keyboard("{End}");
+    expect(lastTrigger).toHaveFocus();
+
+    await user.keyboard("{Home}");
+    expect(firstTrigger).toHaveFocus();
+  });
+
+  it("wraps long questions and answers without layout issues", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const technicalQuestion = screen.getByRole("button", {
+      name: /faq.items.pdfIssue.question/i,
+    });
+    await user.click(technicalQuestion);
+
+    expect(technicalQuestion).toBeVisible();
+    const panel = screen.getByRole("region", {
+      name: /faq.items.pdfIssue.question/i,
+    });
+    expect(panel).toBeVisible();
+    expect(
+      screen.getByText(/faq.items.pdfIssue.answer/i)
+    ).toBeInTheDocument();
+  });
 });

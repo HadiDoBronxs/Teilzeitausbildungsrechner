@@ -54,6 +54,7 @@ export default function FAQSection() {
 
   // Tracks which FAQ items are expanded (accordion state)
   const [openIds, setOpenIds] = useState([]);
+  const firstTriggerId = FAQ_CATEGORIES[0]?.items[0];
 
   // Controls visibility of the legal and transparency dialogs
   const [showLegal, setShowLegal] = useState(false);
@@ -71,6 +72,20 @@ export default function FAQSection() {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       toggle(id);
+    }
+    if (event.key === "Home") {
+      event.preventDefault();
+      const first = document.getElementById(`faq-trigger-${firstTriggerId}`);
+      if (first) first.focus();
+    }
+    if (event.key === "End") {
+      event.preventDefault();
+      const lastItem =
+        FAQ_CATEGORIES[FAQ_CATEGORIES.length - 1]?.items[
+          FAQ_CATEGORIES[FAQ_CATEGORIES.length - 1].items.length - 1
+        ];
+      const last = document.getElementById(`faq-trigger-${lastItem}`);
+      if (last) last.focus();
     }
   }
 
