@@ -3,28 +3,28 @@
 import React from "react";
 
 const BASE_CLASS =
-  "inline-flex items-center gap-2 font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500 disabled:opacity-60 disabled:cursor-not-allowed";
+  "inline-flex items-center gap-2 font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 disabled:cursor-not-allowed disabled:shadow-none";
 
 // variant -> visual treatment. primary = filled blue CTA, text = inline link, pill = rounded badge-like action, ghost = subtle icon/text button.
 const VARIANT_STYLES = {
   primary:
-    "justify-center rounded-md bg-slate-950 px-4 py-2 text-white shadow-sm hover:bg-slate-900 disabled:bg-slate-700",
+    "justify-center rounded-md bg-slate-950 px-4 py-2 text-white shadow-sm hover:bg-slate-900 disabled:bg-slate-300 disabled:text-slate-700",
   text:
-    "gap-1 rounded-none bg-transparent px-0 py-0 text-blue-700 underline underline-offset-2 hover:text-blue-900 disabled:text-blue-300",
+    "gap-1 rounded-none bg-transparent px-0 py-0 text-blue-700 underline underline-offset-2 hover:text-blue-900 disabled:text-slate-500 disabled:no-underline",
   pill:
-    "rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-800 shadow-sm hover:bg-slate-100",
+    "rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-800 shadow-sm hover:bg-slate-100 disabled:bg-slate-200 disabled:text-slate-700 disabled:border-slate-300",
   ghost:
-    "gap-1 rounded-md px-3 py-1 text-slate-700 hover:bg-slate-100 disabled:text-slate-400",
+    "gap-1 rounded-md px-3 py-1 text-slate-700 hover:bg-slate-100 disabled:text-slate-600 disabled:bg-slate-100",
   icon:
-    "justify-center rounded-full p-2 text-slate-700 hover:bg-slate-100 disabled:text-slate-400 focus-visible:ring-2 focus-visible:ring-blue-500",
+    "justify-center rounded-full p-2 text-slate-700 hover:bg-slate-100 disabled:text-slate-600 disabled:bg-slate-100",
   secondary:
-    "justify-center rounded-md bg-slate-700 px-4 py-2 text-white shadow-sm hover:bg-slate-600 disabled:bg-slate-600",
+    "justify-center rounded-md bg-slate-700 px-4 py-2 text-white shadow-sm hover:bg-slate-600 disabled:bg-slate-300 disabled:text-slate-700",
   destructive:
-    "justify-center rounded-md bg-red-600 px-4 py-2 text-white shadow-sm hover:bg-red-700 disabled:bg-red-400",
+    "justify-center rounded-md bg-red-600 px-4 py-2 text-white shadow-sm hover:bg-red-700 disabled:bg-slate-300 disabled:text-slate-700",
   success:
-    "justify-center rounded-md bg-green-600 px-4 py-2 text-white shadow-sm hover:bg-green-700 disabled:bg-green-400",
+    "justify-center rounded-md bg-green-600 px-4 py-2 text-white shadow-sm hover:bg-green-700 disabled:bg-slate-300 disabled:text-slate-700",
   brand:
-    "justify-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-sm hover:bg-blue-700 disabled:bg-blue-400",
+    "justify-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-sm hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-700",
 };
 
 // size prop only adjusts font sizing so spacing stays defined by variants.

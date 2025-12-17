@@ -1,7 +1,7 @@
 // SelectField.jsx – Styled <select> used in TZR dropdowns (e.g. school degree).
 const BASE_CLASSES =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
-const ERROR_CLASSES = "border-red-500 focus-visible:outline-red-500";
+  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700";
+const ERROR_CLASSES = "border-red-600 focus-visible:outline-red-600";
 
 /**
  * Props:
