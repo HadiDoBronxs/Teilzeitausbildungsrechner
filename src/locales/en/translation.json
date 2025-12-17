@@ -138,12 +138,12 @@
       "saveData": {
         "question": "Does the calculator save my inputs?",
         "answer": "No. All inputs stay locally in your browser and are not sent to any server.",
-        "easy": "In short: Your data stays in the browser and is not stored."
+        "easy": "In short: Your data stays in the browser. Nothing is stored or sent."
       },
       "pdfIssue": {
         "question": "PDF will not open or download?",
         "answer": "Allow pop-ups/downloads in your browser and use a current browser version. If the download was blocked, regenerate the PDF or try another browser.",
-        "easy": "In short: Allow pop-ups/downloads and use a current browser; otherwise regenerate the PDF or switch browser."
+        "easy": "In short: Allow pop-ups/downloads, use a current browser. Otherwise regenerate the PDF or switch browser."
       },
       "binding": {
         "question": "Is the result binding?",

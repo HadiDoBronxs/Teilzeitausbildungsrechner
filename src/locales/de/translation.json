@@ -128,7 +128,7 @@
             "shiftPlan": {
                 "question": "Wie plane ich bei Schicht- oder Blockunterricht?",
                 "answer": "Tragen Sie die durchschnittlichen Wochenstunden ein. Bei Schicht- oder Blockplänen den Mittelwert aus Ihrem Plan nehmen (Schule und Betrieb zusammen). So bleibt der Teilzeit-Faktor realistisch.",
-                "easy": "Kurz erklärt: Nutze den Durchschnitt deiner Wochenstunden, auch wenn Schichten oder Blockschule wechseln."
+                "easy": "Kurz erklärt: Nimm deinen Wochen-Durchschnitt. Auch wenn Schichten oder Blockschule wechseln."
             },
             "hoursChange": {
                 "question": "Was, wenn der Betrieb später die Vollzeitstunden ändert?",
@@ -138,12 +138,12 @@
             "saveData": {
                 "question": "Speichert der Rechner meine Eingaben?",
                 "answer": "Nein. Alle Eingaben bleiben lokal im Browser und werden nicht an einen Server gesendet.",
-                "easy": "Kurz erklärt: Deine Daten bleiben nur im Browser und werden nicht gespeichert."
+                "easy": "Kurz erklärt: Deine Daten bleiben im Browser. Wir speichern nichts."
             },
             "pdfIssue": {
                 "question": "PDF lässt sich nicht öffnen oder laden?",
                 "answer": "Erlaube Pop-ups/Downloads im Browser und nutze einen aktuellen Browser. Wenn der Download blockiert wurde, PDF erneut generieren oder einen anderen Browser versuchen.",
-                "easy": "Kurz erklärt: Pop-ups/Downloads erlauben und aktuellen Browser nutzen; sonst PDF neu erstellen oder Browser wechseln."
+                "easy": "Kurz erklärt: Pop-ups/Downloads erlauben. Aktuellen Browser nutzen. Sonst PDF neu erstellen oder Browser wechseln."
             },
             "binding": {
                 "question": "Ist das Ergebnis verbindlich?",

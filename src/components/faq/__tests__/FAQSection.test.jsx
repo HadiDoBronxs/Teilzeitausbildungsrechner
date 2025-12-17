@@ -117,4 +117,18 @@ describe("FAQSection keyboard accessibility", () => {
       screen.getByRole("button", { name: /faq.items.saveData.question/i })
     ).toBeInTheDocument();
   });
+
+  it("shows easy-to-read text when a new item is opened", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const shiftPlanTrigger = screen.getByRole("button", {
+      name: /faq.items.shiftPlan.question/i,
+    });
+    await user.click(shiftPlanTrigger);
+
+    expect(
+      screen.getByText(/faq.items.shiftPlan.easy/i)
+    ).toBeInTheDocument();
+  });
 });
