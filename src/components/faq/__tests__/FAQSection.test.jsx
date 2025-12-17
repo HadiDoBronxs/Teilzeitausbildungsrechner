@@ -118,6 +118,19 @@ describe("FAQSection keyboard accessibility", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders all category headings in order", () => {
+    render(<FAQSection />);
+
+    const headings = screen.getAllByRole("heading", { level: 3 });
+    expect(headings.map((h) => h.textContent)).toEqual([
+      "faq.categories.calculation",
+      "faq.categories.rules",
+      "faq.categories.practice",
+      "faq.categories.technical",
+      "faq.categories.legal",
+    ]);
+  });
+
   it("shows easy-to-read text when a new item is opened", async () => {
     const user = userEvent.setup();
     render(<FAQSection />);
