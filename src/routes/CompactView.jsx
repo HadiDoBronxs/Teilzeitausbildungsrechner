@@ -25,6 +25,23 @@ const RESULT_CARD_ID = "result-card";
  * - Desktop: full layout + sticky sidebar
  * - Mobile: main content + bottom bar + floating scroll-to-top button
  */
+
+const ArrowDownIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 5v14M19 12l-7 7-7-7" />
+  </svg>
+);
+
 export default function CompactView() {
   const {
     t,
@@ -142,6 +159,19 @@ export default function CompactView() {
                 {t("qualifications.legalHint")}
               </p>
             )}
+
+            {/* Scroll to Results Button */}
+            <Button
+              onClick={() => {
+                document.getElementById(RESULT_CARD_ID)?.scrollIntoView({ behavior: "smooth" });
+              }}
+              variant="secondary"
+              size="lg"
+              className="w-full my-4 shadow-sm"
+              icon={<ArrowDownIcon />}
+            >
+              {t("result.navigation.scrollToResults")}
+            </Button>
 
             {/* Result card */}
             <div id={RESULT_CARD_ID} className="w-full">
