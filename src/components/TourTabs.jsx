@@ -89,11 +89,11 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
           const tabKey = `tour.tabs.${tabId}`;
           
           // Build className based on state for mobile vertical tabs
-          const baseClasses = "px-3 py-2.5 text-sm font-semibold transition-colors rounded-md text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
+          const baseClasses = "px-3 py-2.5 text-sm font-semibold transition-colors rounded-md text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700";
           
           let stateClasses;
           if (disabled) {
-            stateClasses = "!bg-slate-50 !text-slate-400 cursor-not-allowed opacity-60";
+            stateClasses = "!bg-slate-100 !text-slate-600 cursor-not-allowed !border !border-slate-200";
           } else if (isActive) {
             // Active tab: dark background, white text, clear contrast
             stateClasses = "!bg-slate-950 !text-white shadow-sm";
@@ -123,7 +123,7 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
                     flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold
                     ${
                       disabled
-                        ? "bg-slate-200 text-slate-400"
+                        ? "bg-slate-200 text-slate-700 border border-slate-300"
                         : isActive
                         ? "bg-white text-slate-950"
                         : "bg-slate-100 text-slate-600 border border-slate-200"
@@ -147,11 +147,11 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
           const tabKey = `tour.tabs.${tabId}`;
           
           // Build className based on state for desktop horizontal tabs
-          const baseClasses = "px-4 py-2 text-sm font-semibold transition-colors border-b-2 -mb-px whitespace-nowrap flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500";
+          const baseClasses = "px-4 py-2 text-sm font-semibold transition-colors border-b-2 -mb-px whitespace-nowrap flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700";
           
           let stateClasses;
           if (disabled) {
-            stateClasses = "!bg-white !text-slate-400 border-transparent cursor-not-allowed opacity-60";
+            stateClasses = "!bg-slate-100 !text-slate-600 border border-slate-200 cursor-not-allowed";
           } else if (isActive) {
             // Active tab: dark background, white text, dark border
             stateClasses = "!bg-slate-950 !text-white border-slate-950";

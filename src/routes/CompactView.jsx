@@ -14,6 +14,7 @@ import PDFViewer from "../components/PDFViewer.jsx";
 import Button from "../components/ui/Button.jsx";
 import Card from "../components/ui/Card.jsx";
 import { useCalculator } from "../features/calcDuration/useCalculator.js";
+import { useUnsavedChangesWarning } from "../features/calcDuration/useUnsavedChangesWarning.js";
 
 const MAIN_ID = "main";
 const MAIN_HEADING_ID = "main-heading";
@@ -30,6 +31,7 @@ export default function CompactView() {
     t,
     schoolDegreeId,
     fulltimeHours,
+    parttimeHours,
     handleSchoolDegreeSelect,
     handleFulltimeHoursChange,
     handleParttimeHoursChange,
@@ -46,6 +48,15 @@ export default function CompactView() {
     resetCount,
     handleReset,
   } = useCalculator();
+
+  // Set up browser warning when user tries to close tab with unsaved changes
+  useUnsavedChangesWarning({
+    fulltimeHours,
+    parttimeHours,
+    fullDurationMonths: formValues.fullDurationMonths,
+    schoolDegreeId,
+    qualificationSelection,
+  });
 
   return (
     <>

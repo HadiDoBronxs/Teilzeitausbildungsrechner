@@ -14,6 +14,7 @@ import EducationTab from "./tour/EducationTab.jsx";
 import ReductionsTab from "./tour/ReductionsTab.jsx";
 import ResultsTab from "./tour/ResultsTab.jsx";
 import { useCalculator } from "../features/calcDuration/useCalculator.js";
+import { useUnsavedChangesWarning } from "../features/calcDuration/useUnsavedChangesWarning.js";
 import { readFormAndCalc } from "../features/calcDuration/readFormAndCalc.js";
 import { isFulltimeHoursValid } from "../components/FulltimeHoursInput.constants.js";
 import { isParttimeHoursValid } from "../components/ParttimeHoursInput.helpers.js";
@@ -77,6 +78,20 @@ export default function TourView() {
   }, [currentWantsReduction, handleWantsReductionChange]);
 
   const wantsReduction = currentWantsReduction ?? "no";
+
+  // Set up browser warning when user tries to close tab with unsaved changes
+  useUnsavedChangesWarning({
+    fulltimeHours,
+    parttimeHours,
+    fullDurationMonths: formValues.fullDurationMonths,
+    schoolDegreeId,
+    wantsReduction,
+    manualReductionMonths,
+    academicQualification,
+    otherQualificationSelection,
+    attendedUniversity,
+    hasEcts,
+  });
 
   // Validate inputs using the same validation functions as the input components
   // This ensures tabs/buttons are disabled when inputs are out of valid ranges
