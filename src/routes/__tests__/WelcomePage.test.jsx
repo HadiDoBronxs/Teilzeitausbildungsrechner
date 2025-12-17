@@ -180,14 +180,14 @@ describe("WelcomePage", () => {
     expect(screen.getByText("Skip to main content")).toHaveFocus();
 
     await user.tab();
-    expect(
-      screen.getByLabelText(/Switch to next language/i)
-    ).toHaveFocus();
+    const languageToggles = screen.getAllByLabelText(/Switch to next language/i);
+    const focusedToggle = languageToggles.find(toggle => toggle === document.activeElement);
+    expect(focusedToggle).toBeInTheDocument();
 
     await user.tab();
     expect(screen.getByLabelText(/Compact Design/)).toHaveFocus();
 
     await user.tab();
-    expect(screen.getByLabelText(/Guided Design/)).toHaveFocus();
+    expect(screen.getByLabelText(/Part-time Training Calculator.*Welcome/)).toHaveFocus();
   });
 });
