@@ -186,4 +186,33 @@ describe("FAQSection keyboard accessibility", () => {
       screen.getByText(/faq.items.pdfIssue.answer/i)
     ).toBeInTheDocument();
   });
+
+  it("opens and closes the legal dialog via header links", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const legalLink = screen.getByText("welcome.faqLinkLegal");
+    await user.click(legalLink);
+    const legalDialog = screen.getByRole("dialog", { name: "legal.title" });
+    expect(legalDialog).toBeInTheDocument();
+
+    const closeButton = screen.getByRole("button", { name: "transparency.close" });
+    await user.click(closeButton);
+    expect(screen.queryByRole("dialog", { name: "legal.title" })).not.toBeInTheDocument();
+  });
+
+  it("opens and closes the transparency dialog", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const transparencyLink = screen.getByText("welcome.faqLinkTransparency");
+    await user.click(transparencyLink);
+
+    const transparencyRegion = screen.getByRole("region", { name: "transparency-panel" });
+    expect(transparencyRegion).toBeInTheDocument();
+
+    const closeButton = screen.getByRole("button", { name: /close transparency/i });
+    await user.click(closeButton);
+    expect(screen.queryByRole("region", { name: "transparency-panel" })).not.toBeInTheDocument();
+  });
 });
