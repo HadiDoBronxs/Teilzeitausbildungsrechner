@@ -72,7 +72,7 @@
   },
   "welcome": {
     "title": "Part-time Training Calculator",
-    "intro": "Welcome to the Part-time Training Calculator. Choose the design that best suits you.",
+    "intro": "This part-time training calculator helps you estimate how part-time affects the duration of your apprenticeship. Choose a design to get started.",
     "question": "Do you want to use the compact design or the guided design? For most users we recommend the guided design.",
     "designs": {
       "compact": "Compact Design",
@@ -448,6 +448,7 @@
     "fulltimeHours": "In many companies full-time ranges between 35 and 48 hours per week. Legal basis: § 7a BBiG (part-time uses regular full-time hours as anchor).",
     "parttimeHours": "Allowed range: at least 50% and at most 80% of the full-time hours. Basis: § 7a BBiG (part-time vocational training).",
     "regularDuration": "At least 12 months. Basis: § 8 BBiG (shortening/extension of training duration).",
+    "reduceTraining": "Shortening means that the training takes less time. This is voluntary. The decision is made by the chamber and the company. If you are unsure, you can select “I don't know.”",
     "schoolDegree": "Some school degrees already cover training content. That’s why the chamber can shorten the duration. The chamber and the company decide together. Basis: § 8 (1) BBiG (crediting prior education).",
     "qualifications": "Here you can indicate whether you have additional experience or qualifications that may shorten the training time. Basis: § 8 (1) BBiG (crediting prior education).",
     "qualificationMax": "This qualification can shorten the training by up to 12 months. Basis: § 8 BBiG (shortening of training duration).",
