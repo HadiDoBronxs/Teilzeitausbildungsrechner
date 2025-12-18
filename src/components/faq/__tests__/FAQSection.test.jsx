@@ -103,4 +103,116 @@ describe("FAQSection keyboard accessibility", () => {
     await user.click(reductionQuestion);
     expect(reductionQuestion).toHaveAttribute("aria-expanded", "false");
   });
+
+  it("renders new categories and questions", () => {
+    render(<FAQSection />);
+
+    expect(screen.getByText("faq.categories.practice")).toBeInTheDocument();
+    expect(screen.getByText("faq.categories.technical")).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: /faq.items.shiftPlan.question/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /faq.items.saveData.question/i })
+    ).toBeInTheDocument();
+  });
+
+  it("renders all category headings in order", () => {
+    render(<FAQSection />);
+
+    const headings = screen.getAllByRole("heading", { level: 3 });
+    expect(headings.map((h) => h.textContent)).toEqual([
+      "faq.categories.calculation",
+      "faq.categories.rules",
+      "faq.categories.practice",
+      "faq.categories.technical",
+      "faq.categories.legal",
+    ]);
+  });
+
+  it("shows easy-to-read text when a new item is opened", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const shiftPlanTrigger = screen.getByRole("button", {
+      name: /faq.items.shiftPlan.question/i,
+    });
+    await user.click(shiftPlanTrigger);
+
+    expect(
+      screen.getByText(/faq.items.shiftPlan.easy/i)
+    ).toBeInTheDocument();
+  });
+
+  it("supports Home/End key navigation between triggers", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const firstTrigger = screen.getByRole("button", {
+      name: /faq.items.calcHow.question/i,
+    });
+    const lastTrigger = screen.getByRole("button", {
+      name: /faq.items.whoDecides.question/i,
+    });
+
+    await user.tab();
+    await user.tab();
+    await user.tab();
+    expect(firstTrigger).toHaveFocus();
+
+    await user.keyboard("{End}");
+    expect(lastTrigger).toHaveFocus();
+
+    await user.keyboard("{Home}");
+    expect(firstTrigger).toHaveFocus();
+  });
+
+  it("wraps long questions and answers without layout issues", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const technicalQuestion = screen.getByRole("button", {
+      name: /faq.items.pdfIssue.question/i,
+    });
+    await user.click(technicalQuestion);
+
+    expect(technicalQuestion).toBeVisible();
+    const panel = screen.getByRole("region", {
+      name: /faq.items.pdfIssue.question/i,
+    });
+    expect(panel).toBeVisible();
+    expect(
+      screen.getByText(/faq.items.pdfIssue.answer/i)
+    ).toBeInTheDocument();
+  });
+
+  it("opens and closes the legal dialog via header links", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const legalLink = screen.getByText("welcome.faqLinkLegal");
+    await user.click(legalLink);
+    const legalDialog = screen.getByRole("dialog", { name: "legal.title" });
+    expect(legalDialog).toBeInTheDocument();
+
+    const closeButton = screen.getByRole("button", { name: "transparency.close" });
+    await user.click(closeButton);
+    expect(screen.queryByRole("dialog", { name: "legal.title" })).not.toBeInTheDocument();
+  });
+
+  it("opens and closes the transparency dialog", async () => {
+    const user = userEvent.setup();
+    render(<FAQSection />);
+
+    const transparencyLink = screen.getByText("welcome.faqLinkTransparency");
+    await user.click(transparencyLink);
+
+    const transparencyRegion = screen.getByRole("region", { name: "transparency-panel" });
+    expect(transparencyRegion).toBeInTheDocument();
+
+    const closeButton = screen.getByRole("button", { name: /close transparency/i });
+    await user.click(closeButton);
+    expect(screen.queryByRole("region", { name: "transparency-panel" })).not.toBeInTheDocument();
+  });
 });

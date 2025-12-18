@@ -90,6 +90,8 @@
         "categories": {
             "calculation": "Berechnung & Eingaben",
             "rules": "Regeln & Grenzen",
+            "practice": "Praxisfälle",
+            "technical": "Technische Hinweise",
             "legal": "Rechtliches"
         },
         "items": {
@@ -122,6 +124,26 @@
                 "question": "Warum wird meine Verkürzung begrenzt?",
                 "answer": "Wir berücksichtigen maximale Verkürzungen (z. B. 6 Monate) und eine Schutzgrenze: Teilzeit dauert höchstens 1,5 × so lange wie die Regeldauer. So bleiben die Ergebnisse realistisch und kammerkonform.",
                 "easy": "Kurz erklärt: Es gibt Obergrenzen für Verkürzung und Verlängerung, damit das Ergebnis realistisch bleibt."
+            },
+            "shiftPlan": {
+                "question": "Wie plane ich bei Schicht- oder Blockunterricht?",
+                "answer": "Tragen Sie die durchschnittlichen Wochenstunden ein. Bei Schicht- oder Blockplänen den Mittelwert aus Ihrem Plan nehmen (Schule und Betrieb zusammen). So bleibt der Teilzeit-Faktor realistisch.",
+                "easy": "Kurz erklärt: Nimm deinen Wochen-Durchschnitt. Auch wenn Schichten oder Blockschule wechseln."
+            },
+            "hoursChange": {
+                "question": "Was, wenn der Betrieb später die Vollzeitstunden ändert?",
+                "answer": "Passe das Feld „Vollzeitstunden pro Woche“ an. Der Rechner berechnet Faktor und Dauer sofort neu. Klären Sie mit Betrieb und Kammer, ob Vertragsangaben angepasst werden müssen.",
+                "easy": "Kurz erklärt: Neue Vollzeitstunden eintragen, dann rechnet der Rechner neu. Bei Bedarf mit Betrieb/Kammer abstimmen."
+            },
+            "saveData": {
+                "question": "Speichert der Rechner meine Eingaben?",
+                "answer": "Nein. Alle Eingaben bleiben lokal im Browser und werden nicht an einen Server gesendet.",
+                "easy": "Kurz erklärt: Deine Daten bleiben im Browser. Wir speichern nichts."
+            },
+            "pdfIssue": {
+                "question": "PDF lässt sich nicht öffnen oder laden?",
+                "answer": "Erlaube Pop-ups/Downloads im Browser und nutze einen aktuellen Browser. Wenn der Download blockiert wurde, PDF erneut generieren oder einen anderen Browser versuchen.",
+                "easy": "Kurz erklärt: Pop-ups/Downloads erlauben. Aktuellen Browser nutzen. Sonst PDF neu erstellen oder Browser wechseln."
             },
             "binding": {
                 "question": "Ist das Ergebnis verbindlich?",
