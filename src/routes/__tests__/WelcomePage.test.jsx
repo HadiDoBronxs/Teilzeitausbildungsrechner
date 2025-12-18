@@ -104,9 +104,9 @@ describe("WelcomePage", () => {
     render(<WelcomePage />);
 
     expect(screen.getByText("Compact Design")).toBeInTheDocument();
-    const tourCard = screen.getByRole("button", { name: /Part-time Training Calculator.*Welcome/ });
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     expect(tourCard).toBeInTheDocument();
-    expect(tourCard).toHaveTextContent("Part-time Training Calculator");
+    expect(tourCard).toHaveTextContent("Guided Design");
   });
 
   it("renders compact design card with menu icon", () => {
@@ -120,7 +120,7 @@ describe("WelcomePage", () => {
   it("renders tour design card with book icon and is enabled", () => {
     render(<WelcomePage />);
 
-    const tourCard = screen.getByRole("button", { name: /Part-time Training Calculator.*Welcome/ });
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     expect(tourCard).toBeInTheDocument();
     expect(tourCard).toHaveTextContent("📖");
     expect(tourCard).not.toBeDisabled();
@@ -165,7 +165,7 @@ describe("WelcomePage", () => {
     const user = userEvent.setup();
     render(<WelcomePage />);
 
-    const tourCard = screen.getByRole("button", { name: /Part-time Training Calculator.*Welcome/ });
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     await user.click(tourCard);
 
     // Hash should change to tour
@@ -188,6 +188,6 @@ describe("WelcomePage", () => {
     expect(screen.getByLabelText(/Compact Design/)).toHaveFocus();
 
     await user.tab();
-    expect(screen.getByLabelText(/Part-time Training Calculator.*Welcome/)).toHaveFocus();
+    expect(screen.getByLabelText(/Guided Design.*Welcome/)).toHaveFocus();
   });
 });

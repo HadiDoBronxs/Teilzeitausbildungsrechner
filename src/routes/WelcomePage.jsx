@@ -97,14 +97,13 @@ export default function WelcomePage() {
                 type="button"
                 onClick={handleTourClick}
                 className="flex flex-col items-center justify-center gap-4 p-6 rounded-xl bg-slate-950 hover:bg-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 transition-colors"
-                aria-label={`${t("app.title")} - ${t("welcome.intro")}`}
+                aria-label={`${t("welcome.designs.tour")} - ${t("welcome.intro")}`}
               >
                 <span className="text-4xl text-white" aria-hidden="true">
                   📖
                 </span>
                 <span className="text-lg font-semibold text-white">
-                  <span className="lg:hidden">{t("app.titleMobile")}</span>
-                  <span className="hidden lg:inline lg:whitespace-nowrap">{t("app.title")}</span>
+                  {t("welcome.designs.tour")}
                 </span>
               </button>
             </div>
