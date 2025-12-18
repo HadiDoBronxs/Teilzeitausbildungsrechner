@@ -93,7 +93,12 @@ describe("ReductionsTab", () => {
     const notification = screen.getByRole("note");
     expect(notification).toBeInTheDocument();
     expect(notification).toHaveTextContent("qualifications.legalHint");
-    expect(notification).toHaveClass("text-xs", "text-amber-700");
+    // The notification is now wrapped in a Card, so check for Card classes
+    expect(notification).toHaveClass("bg-amber-50", "border-amber-200");
+    // The text with amber-700 is inside the Card
+    const textElement = notification.querySelector("p.text-amber-700");
+    expect(textElement).toBeInTheDocument();
+    expect(textElement).toHaveClass("text-xs", "text-amber-700");
   });
 
   it("should call onBack when Back button is clicked", () => {

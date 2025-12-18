@@ -12,6 +12,7 @@ import ResultSidebar from "../components/ResultSidebar.jsx";
 import ResultBottomBar from "../components/ResultBottomBar.jsx";
 import PDFViewer from "../components/PDFViewer.jsx";
 import Button from "../components/ui/Button.jsx";
+import Card from "../components/ui/Card.jsx";
 import { useCalculator } from "../features/calcDuration/useCalculator.js";
 import { useUnsavedChangesWarning } from "../features/calcDuration/useUnsavedChangesWarning.js";
 
@@ -120,11 +121,9 @@ export default function CompactView() {
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
-                  wordBreak: "break-word",
-                  hyphens: "auto",
                 }}
               >
-                {t("app.title")}
+                {t("app.titleMobile")}
               </h1>
             </div>
 
@@ -155,9 +154,16 @@ export default function CompactView() {
 
             {/* Legal notice if applicable */}
             {showLegalHint && (
-              <p className="text-xs text-amber-700" role="note">
-                {t("qualifications.legalHint")}
-              </p>
+              <Card
+                variant="default"
+                padding="p-4"
+                role="note"
+                className="bg-amber-50 border-amber-200"
+              >
+                <p className="text-xs text-amber-700">
+                  {t("qualifications.legalHint")}
+                </p>
+              </Card>
             )}
 
             {/* Scroll to Results Button */}

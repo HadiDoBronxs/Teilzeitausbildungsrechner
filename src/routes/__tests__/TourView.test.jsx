@@ -394,11 +394,22 @@ describe("TourView - Invalid Input Validation", () => {
     await user.tab();
     expect(screen.getByRole("button", { name: /welcome.backButton/i })).toHaveFocus();
 
+    // Tab to first language toggle (there may be multiple - mobile/desktop)
     await user.tab();
-    expect(screen.getByLabelText(/Switch to next language/i)).toHaveFocus();
+    const languageToggles = screen.getAllByLabelText(/Switch to next language/i);
+    let focusedToggle = languageToggles.find(toggle => toggle === document.activeElement);
+    expect(focusedToggle).toBeInTheDocument();
 
+    // Tab through remaining language toggles (if any) until we reach the tab
+    // There are typically 2 language toggles (mobile and desktop), so we may need one more tab
     await user.tab();
-    expect(screen.getByRole("tab", { name: /tour.tabs.inputs/i })).toHaveFocus();
+    // Check if focus moved to tab or is still on a language toggle
+    const tabElement = screen.getByRole("tab", { name: /tour.tabs.inputs/i });
+    if (document.activeElement !== tabElement) {
+      // Still on a language toggle, tab once more
+      await user.tab();
+    }
+    expect(tabElement).toHaveFocus();
   });
 
   describe("when inputs are valid", () => {
