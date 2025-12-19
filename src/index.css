@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -10,6 +11,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Light mode defaults */
   --color-link: #1d4ed8;
   --color-link-hover: #1e3a8a;
   --color-focus: #0f766e;
@@ -20,6 +22,25 @@
   --color-disabled-bg: #e2e8f0;
   --color-disabled-text: #475569;
   --color-border: #cbd5e1;
+}
+
+:root.dark {
+  /* Dark mode overrides */
+  color-scheme: dark;
+  --color-link: #3b82f6;
+  --color-link-hover: #60a5fa;
+  --color-focus: #2dd4bf;
+  --color-focus-strong: #2dd4bf;
+  --color-focus-soft: rgba(45, 212, 191, 0.2);
+  --color-surface: #1e293b;
+  --color-surface-muted: #0f172a;
+  --color-disabled-bg: #334155;
+  --color-disabled-text: #94a3b8;
+  --color-border: #475569;
+
+  /* Standard colors for dark mode body */
+  background-color: #0f172a;
+  color: #f8fafc;
 }
 
 .skip-link {
@@ -63,8 +84,27 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f8fafc;
+  background-color: var(--color-surface-muted);
+  color: var(--color-disabled-text);
+  /* Fallback or specific text color */
   color: #0f172a;
+  /* Keep default for now, but really should be variable */
+}
+
+/* Update body to actually use the variables we defined */
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-surface-muted);
+  color: #0f172a;
+  /* Default text */
+}
+
+:root.dark body {
+  color: #f8fafc;
 }
 
 h1 {
@@ -119,9 +159,11 @@ a:focus-visible {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -130,6 +172,7 @@ a:focus-visible {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -156,14 +199,17 @@ h1 {
   line-height: 1.2;
 }
 
- 
+
 /* 🎉 FIX: Links, die als Buttons verwendet werden*/
 
 a[role="button"] {
-  color: #f8fafc !important;        /* Weiß wie der normale Button */
-  text-decoration: none !important; /* Keine Unterstreichung */
+  color: #f8fafc !important;
+  /* Weiß wie der normale Button */
+  text-decoration: none !important;
+  /* Keine Unterstreichung */
 }
 
 a[role="button"]:hover {
-  color: #e5e7eb !important;        /* Dezentes Hover-Weiß */
+  color: #e5e7eb !important;
+  /* Dezentes Hover-Weiß */
 }
