@@ -603,8 +603,8 @@ export default function PDFViewer({ pdfBytes, onClose }) {
   if (loading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50">
-        <div className="bg-white rounded-lg p-6">
-          <p className="text-slate-700">{t("pdfViewer.loading")}</p>
+        <div className="bg-white dark:bg-slate-800 rounded-lg p-6">
+          <p className="text-slate-700 dark:text-slate-300">{t("pdfViewer.loading")}</p>
         </div>
       </div>
     );
@@ -613,8 +613,8 @@ export default function PDFViewer({ pdfBytes, onClose }) {
   if (error) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50">
-        <div className="bg-white rounded-lg p-6 max-w-md">
-          <p className="text-red-700 mb-4">{error}</p>
+        <div className="bg-white dark:bg-slate-800 rounded-lg p-6 max-w-md">
+          <p className="text-red-700 dark:text-red-400 mb-4">{error}</p>
           <Button
             onClick={onClose}
             variant="brand"

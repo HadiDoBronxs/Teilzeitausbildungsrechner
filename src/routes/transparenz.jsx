@@ -17,7 +17,7 @@ export default function Transparenz() {
         id={MAIN_ID}
         tabIndex="-1"
         aria-labelledby={MAIN_HEADING_ID}
-        className="min-h-screen bg-slate-50 text-slate-900 px-4 py-12"
+        className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 px-4 py-12"
       >
         <Card as="article" className="max-w-3xl mx-auto space-y-4">
           <div className="flex flex-col gap-4">
