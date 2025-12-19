@@ -48,6 +48,47 @@ function formatDelta(value) {
  * @param {Object} [props.result] - Optional pre-calculated result (used for testing)
  * @returns {JSX.Element|null} ResultCard component or null if calculation cannot run
  */
+function InfoIcon({ className }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+      <path d="M12 17h.01" />
+    </svg>
+  );
+}
+
+function BookIcon({ className }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+    </svg>
+  );
+}
+
 export default function ResultCard({ values, result: injectedResult }) {
   const { t } = useTranslation();
 
@@ -149,12 +190,13 @@ export default function ResultCard({ values, result: injectedResult }) {
   const transparencyButton = (
     <Button
       type="button"
-      variant="primary"
+      variant="ghost"
       size="md"
-      className="w-full sm:flex-1 whitespace-nowrap"
+      className="w-full sm:w-auto text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:underline hover:bg-transparent"
       onClick={openTransparency}
       ariaHaspopup="dialog"
       ariaExpanded={showTransparency}
+      icon={<InfoIcon className="w-4 h-4" />}
     >
       {t("result.howCalculated")}
     </Button>
@@ -168,12 +210,13 @@ export default function ResultCard({ values, result: injectedResult }) {
   const legalButton = (
     <Button
       type="button"
-      variant="primary"
+      variant="ghost"
       size="md"
-      className="w-full sm:flex-1"
+      className="w-full sm:w-auto text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:underline hover:bg-transparent"
       onClick={openLegal}
       ariaHaspopup="dialog"
       ariaExpanded={showLegal}
+      icon={<BookIcon className="w-4 h-4" />}
     >
       {t("legal.title")}
     </Button>
@@ -343,7 +386,7 @@ export default function ResultCard({ values, result: injectedResult }) {
           {/* Action buttons row - transparency and legal dialogs */}
           {/* Layout: Stacked on mobile, side-by-side on small screens and up */}
           {/* Both buttons have equal visual weight (same variant and size) */}
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-6 pt-2">
             {transparencyButton}
             {legalButton}
           </div>

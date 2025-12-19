@@ -71,12 +71,14 @@ export default function LegalContent({ className = "" }) {
         >
           {t("legal.easy.heading")}
         </h3>
-        <ul className="list-disc list-inside space-y-2 text-base md:text-lg leading-relaxed text-slate-800">
+        <ul className="list-disc list-inside space-y-2 text-base md:text-lg leading-relaxed text-slate-800 dark:text-slate-200">
           <li>{t("legal.easy.point1")}</li>
           <li>{t("legal.easy.point2")}</li>
           <li>{t("legal.easy.point3")}</li>
-          <li>{t("legal.easy.point4")}</li>
-          <li>{t("legal.easy.point5")}</li>
+          <ul className="list-circle list-inside pl-6 space-y-2">
+            <li>{t("legal.easy.point4")}</li>
+            <li>{t("legal.easy.point5")}</li>
+          </ul>
         </ul>
       </section>
 

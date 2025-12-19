@@ -3,28 +3,28 @@
 import React from "react";
 
 const BASE_CLASS =
-  "inline-flex items-center gap-2 font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 disabled:cursor-not-allowed disabled:shadow-none";
+  "inline-flex items-center gap-2 font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-500 disabled:cursor-not-allowed disabled:shadow-none";
 
 // variant -> visual treatment. primary = filled blue CTA, text = inline link, pill = rounded badge-like action, ghost = subtle icon/text button.
 const VARIANT_STYLES = {
   primary:
-    "justify-center rounded-md bg-slate-950 px-4 py-2 text-white shadow-sm hover:bg-slate-900 disabled:bg-slate-300 disabled:text-slate-700",
+    "justify-center rounded-md bg-slate-950 dark:bg-slate-950 border border-transparent dark:border-slate-400 px-4 py-2 text-white shadow-sm hover:bg-slate-900 dark:hover:bg-slate-800 disabled:bg-slate-300 dark:disabled:bg-slate-800 disabled:text-slate-700 dark:disabled:text-slate-500",
   text:
-    "gap-1 rounded-none bg-transparent px-0 py-0 text-blue-700 underline underline-offset-2 hover:text-blue-900 disabled:text-slate-500 disabled:no-underline",
+    "gap-1 rounded-none bg-transparent px-0 py-0 text-blue-700 dark:text-blue-400 underline underline-offset-2 hover:text-blue-900 dark:hover:text-blue-300 disabled:text-slate-500 dark:disabled:text-slate-600 disabled:no-underline",
   pill:
-    "rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-800 shadow-sm hover:bg-slate-100 disabled:bg-slate-200 disabled:text-slate-700 disabled:border-slate-300",
+    "rounded-full border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 px-3 py-1 text-slate-800 dark:text-slate-200 shadow-sm hover:bg-slate-100 dark:hover:bg-slate-700 disabled:bg-slate-200 dark:disabled:bg-slate-800 disabled:text-slate-700 dark:disabled:text-slate-500 disabled:border-slate-300 dark:disabled:border-slate-700",
   ghost:
-    "gap-1 rounded-md px-3 py-1 text-slate-700 hover:bg-slate-100 disabled:text-slate-600 disabled:bg-slate-100",
+    "gap-1 rounded-md px-3 py-1 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:text-slate-600 dark:disabled:text-slate-500 disabled:bg-slate-100 dark:disabled:bg-transparent",
   icon:
-    "justify-center rounded-full p-2 text-slate-700 hover:bg-slate-100 disabled:text-slate-600 disabled:bg-slate-100",
+    "justify-center rounded-full p-2 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:text-slate-600 dark:disabled:text-slate-500 disabled:bg-slate-100 dark:disabled:bg-transparent",
   secondary:
-    "justify-center rounded-md bg-slate-700 px-4 py-2 text-white shadow-sm hover:bg-slate-600 disabled:bg-slate-300 disabled:text-slate-700",
+    "justify-center rounded-md bg-slate-700 dark:bg-slate-800 border border-transparent dark:border-slate-500 px-4 py-2 text-white dark:text-slate-200 shadow-sm hover:bg-slate-600 dark:hover:bg-slate-700 disabled:bg-slate-300 dark:disabled:bg-slate-800 disabled:text-slate-700 dark:disabled:text-slate-500 dark:disabled:border-slate-800",
   destructive:
-    "justify-center rounded-md bg-red-600 px-4 py-2 text-white shadow-sm hover:bg-red-700 disabled:bg-slate-300 disabled:text-slate-700",
+    "justify-center rounded-md bg-red-600 dark:bg-red-900/50 border border-transparent dark:border-red-400/50 px-4 py-2 text-white dark:text-red-200 shadow-sm hover:bg-red-700 dark:hover:bg-red-900/70 disabled:bg-slate-300 dark:disabled:bg-slate-800 disabled:text-slate-700 dark:disabled:text-slate-500",
   success:
-    "justify-center rounded-md bg-green-600 px-4 py-2 text-white shadow-sm hover:bg-green-700 disabled:bg-slate-300 disabled:text-slate-700",
+    "justify-center rounded-md bg-green-600 dark:bg-green-900/50 border border-transparent dark:border-green-400/50 px-4 py-2 text-white dark:text-green-200 shadow-sm hover:bg-green-700 dark:hover:bg-green-900/70 disabled:bg-slate-300 dark:disabled:bg-slate-800 disabled:text-slate-700 dark:disabled:text-slate-500",
   brand:
-    "justify-center rounded-md bg-blue-600 px-4 py-2 text-white shadow-sm hover:bg-blue-700 disabled:bg-slate-300 disabled:text-slate-700",
+    "justify-center rounded-md bg-blue-600 dark:bg-blue-600 border border-transparent dark:border-blue-400 px-4 py-2 text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-500 disabled:bg-slate-300 dark:disabled:bg-slate-800 disabled:text-slate-700 dark:disabled:text-slate-500",
 };
 
 // size prop only adjusts font sizing so spacing stays defined by variants.
