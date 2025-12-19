@@ -131,7 +131,8 @@ export default function FAQSection() {
                       onClick={() => toggle(item)}
                       onKeyDown={(event) => handleKeyToggle(event, item)}
                       // Dark button for strong contrast; icon indicates state.
-                      className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left rounded-xl bg-slate-900 dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-500 transition shadow-sm"
+                      className={`w-full flex items-center justify-between gap-4 px-4 py-3 text-left transition shadow-sm bg-slate-900 dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-500 ${isOpen ? "rounded-t-xl" : "rounded-xl"
+                        }`}
                     >
                       <span className="font-medium">
                         {t(`faq.items.${item}.question`)}
@@ -147,7 +148,7 @@ export default function FAQSection() {
                       id={`faq-panel-${item}`}
                       role="region"
                       aria-labelledby={`faq-trigger-${item}`}
-                      className={`border-t border-slate-200 px-4 py-3 space-y-2 bg-slate-50 ${isOpen ? "block" : "hidden"
+                      className={`border-t border-slate-200 dark:border-slate-700 px-4 py-3 space-y-2 bg-slate-50 dark:bg-slate-900 rounded-b-xl ${isOpen ? "block" : "hidden"
                         }`}
                     >
                       <p className="text-sm leading-relaxed text-slate-800 dark:text-slate-200">
