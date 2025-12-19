@@ -61,7 +61,8 @@
         "other": "Sonstiger Abschluss"
     },
     "app": {
-        "title": "Teilzeit- Ausbildungs- Rechner",
+        "title": "Teilzeitausbildungsrechner",
+        "titleMobile": "Teilzeit\u00ADausbildungs\u00ADrechner",
         "languages": "Sprache",
         "reset": "Zurücksetzen",
         "reset_explained": "Alle Eingaben zurücksetzen.",
@@ -76,7 +77,7 @@
         "question": "Wollen Sie das kompakte Design nutzen oder das geführte Design? Für die meisten Nutzer*innen empfehlen wir das geführte Design.",
         "designs": {
             "compact": "Kompaktes Design",
-            "tour": "Geführtes Design"
+            "tour": "Geführtes \u00ADDesign"
         },
         "legalDisclaimer": "Hinweis: Dieser Rechner dient nur zu Informationszwecken und ist nicht rechtsverbindlich. Die tatsächliche Ausbildungsdauer wird von der zuständigen Kammer (IHK/HWK) und dem Ausbildungsbetrieb festgelegt.",
         "faqTitle": "FAQ",
@@ -90,6 +91,8 @@
         "categories": {
             "calculation": "Berechnung & Eingaben",
             "rules": "Regeln & Grenzen",
+            "practice": "Praxisfälle",
+            "technical": "Technische Hinweise",
             "legal": "Rechtliches"
         },
         "items": {
@@ -123,6 +126,26 @@
                 "answer": "Wir berücksichtigen maximale Verkürzungen (z. B. 6 Monate) und eine Schutzgrenze: Teilzeit dauert höchstens 1,5 × so lange wie die Regeldauer. So bleiben die Ergebnisse realistisch und kammerkonform.",
                 "easy": "Kurz erklärt: Es gibt Obergrenzen für Verkürzung und Verlängerung, damit das Ergebnis realistisch bleibt."
             },
+            "shiftPlan": {
+                "question": "Wie plane ich bei Schicht- oder Blockunterricht?",
+                "answer": "Tragen Sie die durchschnittlichen Wochenstunden ein. Bei Schicht- oder Blockplänen den Mittelwert aus Ihrem Plan nehmen (Schule und Betrieb zusammen). So bleibt der Teilzeit-Faktor realistisch.",
+                "easy": "Kurz erklärt: Nimm deinen Wochen-Durchschnitt. Auch wenn Schichten oder Blockschule wechseln."
+            },
+            "hoursChange": {
+                "question": "Was, wenn der Betrieb später die Vollzeitstunden ändert?",
+                "answer": "Passe das Feld „Vollzeitstunden pro Woche“ an. Der Rechner berechnet Faktor und Dauer sofort neu. Klären Sie mit Betrieb und Kammer, ob Vertragsangaben angepasst werden müssen.",
+                "easy": "Kurz erklärt: Neue Vollzeitstunden eintragen, dann rechnet der Rechner neu. Bei Bedarf mit Betrieb/Kammer abstimmen."
+            },
+            "saveData": {
+                "question": "Speichert der Rechner meine Eingaben?",
+                "answer": "Nein. Alle Eingaben bleiben lokal im Browser und werden nicht an einen Server gesendet.",
+                "easy": "Kurz erklärt: Deine Daten bleiben im Browser. Wir speichern nichts."
+            },
+            "pdfIssue": {
+                "question": "PDF lässt sich nicht öffnen oder laden?",
+                "answer": "Erlaube Pop-ups/Downloads im Browser und nutze einen aktuellen Browser. Wenn der Download blockiert wurde, PDF erneut generieren oder einen anderen Browser versuchen.",
+                "easy": "Kurz erklärt: Pop-ups/Downloads erlauben. Aktuellen Browser nutzen. Sonst PDF neu erstellen oder Browser wechseln."
+            },
             "binding": {
                 "question": "Ist das Ergebnis verbindlich?",
                 "answer": "Nein. Das Ergebnis ist eine Orientierung. Die verbindliche Entscheidung trifft Ihre zuständige Kammer zusammen mit dem Ausbildungsbetrieb.",
@@ -136,7 +159,6 @@
         }
     },
     "tour": {
-        "comingSoon": "Das geführte Design wird bald verfügbar sein.",
         "tabs": {
             "inputs": "Eingaben",
             "education": "Bildung",
@@ -182,11 +204,6 @@
     },
     "result": {
         "headline": "Ihre Ausbildung dauert {{value}}.",
-        "compare": {
-            "withReduction": "Vollzeit (mit Verkürzung): {{eff}} Monate, Ihre Teilzeit: {{part}} Monate ({{delta}} Monate).",
-            "noReduction": "Vollzeit: {{full}} Monate, Ihre Teilzeit: {{part}} Monate ({{delta}} Monate)."
-        },
-        "factor": "Faktor: {{pct}} %",
         "howCalculated": "Wie wird das berechnet?",
         "navigation": {
             "scrollToTop": "Zum Anfang",
@@ -289,8 +306,6 @@
                 "diff": "Das sind {{diff}} Monate im Vergleich zur Vollzeit."
             },
             "chart": {
-                "fullTime": "Vollzeit: {{hours}} h (100%)",
-                "partTime": "Teilzeit: {{hours}} h ({{percent}}%)",
                 "fullLabel": "Vollzeit"
             },
             "actions": {
@@ -305,9 +320,7 @@
     },
     "qualifications": {
         "title": "Weitere Qualifikationen",
-        "description": "Beantworten Sie die Fragen zu Ihren weiteren Qualifikationen. Insgesamt sind höchstens {{max}} Monate möglich.",
         "summary": "Angerechnete Qualifikationsverkürzung: {{months}} / {{max}} Monate",
-        "warning": "Die Auswahl ergibt rechnerisch {{raw}} Monate. Es werden jedoch höchstens {{max}} Monate berücksichtigt.",
         "totalWarning": "Deine Auswahl ergibt {{sum}} Monate. Berücksichtigt werden höchstens {{max}} Monate.",
         "legalHint": "Bei Verkürzungen über 6 Monate ist ein zusätzlicher Nachweis deiner Eignung erforderlich.",
         "answers": {
@@ -388,13 +401,7 @@
         },
         "notice": {
             "heading": "Wichtiger Hinweis",
-            "text": "Diese Informationen ersetzen keine Rechtsberatung. Über Verkürzungen und Abläufe entscheidet immer die zuständige Kammer.",
-            "links": {
-                "title": "Offizielle Informationen",
-                "arbeitsagentur": "Agentur für Arbeit – Teilzeitberufsausbildung",
-                "ihk": "Industrie- und Handelskammern",
-                "bmbf": "Bundesministerium für Bildung und Forschung"
-            }
+            "text": "Diese Informationen ersetzen keine Rechtsberatung. Über Verkürzungen und Abläufe entscheidet immer die zuständige Kammer."
         },
         "sources": {
             "heading": "Weitere offizielle Quellen",
@@ -439,7 +446,6 @@
             "familyCare": "Hier wählen Sie aus, wenn Sie Kinder oder pflegebedürftige Angehörige betreuen. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung wegen Vorbildung/Lebenssituation).",
             "ageOver21": "Hier wählen Sie aus, wenn Sie bei Ausbildungsstart über 21 Jahre alt sind. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung wegen Vorbildung/Lebenssituation).",
             "completedTraining": "Hier wählen Sie aus, wenn Sie bereits eine Berufsausbildung abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
-            "vocationalFoundation": "Hier wählen Sie aus, wenn Sie ein Berufsgrundbildungsjahr abgeschlossen haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
             "vocationalExperience": "Hier wählen Sie aus, wenn Sie schon passende Berufserfahrung haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
             "academic": "Hier wählen Sie aus, wenn Sie einen Hochschul- oder Fachhochschulabschluss haben. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
             "foreignRecognition": "Hier wählen Sie aus, wenn ein ausländischer Berufs- oder Bildungsabschluss anerkannt wurde. Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung)."

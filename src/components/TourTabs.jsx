@@ -80,7 +80,7 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
     <div
       role="tablist"
       aria-label={t("tour.tabs.inputs")}
-      className="mb-4 lg:mb-0 lg:border-b lg:border-slate-200 dark:lg:border-slate-800"
+      className="mb-4 lg:mb-0 lg:border-b lg:border-slate-200 dark:lg:border-slate-800 lg:pb-2"
     >
       {/* Mobile: Vertical tabs */}
       <div className="flex flex-col gap-1.5 lg:hidden" aria-hidden={isDesktop}>

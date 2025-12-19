@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import OtherQualificationReductions from "../../components/OtherQualificationReductions.jsx";
 import Button from "../../components/ui/Button.jsx";
+import Card from "../../components/ui/Card.jsx";
 import { useTranslation } from "react-i18next";
 import { summarizeQualificationSelection } from "../../components/qualificationOptions.js";
 
@@ -49,9 +50,16 @@ export default function ReductionsTab({
         />
         {showNotification && (
           <div className="w-full max-w-sm mx-auto">
-            <p className="text-xs text-amber-700 dark:text-amber-400" role="note">
-              {t("qualifications.legalHint")}
-            </p>
+            <Card
+              variant="default"
+              padding="p-4"
+              role="note"
+              className="bg-amber-50 border-amber-200"
+            >
+              <p className="text-xs text-amber-700">
+                {t("qualifications.legalHint")}
+              </p>
+            </Card>
           </div>
         )}
       </div>

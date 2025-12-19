@@ -10,6 +10,8 @@ import WelcomePage from "../WelcomePage.jsx";
 const mockT = (key) => {
   const translations = {
     skipToMain: "Skip to main content",
+    "app.title": "Part-time Training Calculator",
+    "app.titleMobile": "Part-time Training Calculator",
     "welcome.title": "Part-time Training Calculator",
     "welcome.intro": "Welcome to the Part-time Training Calculator. Choose the design that best suits you.",
     "welcome.question": "Do you want to use the compact design or the guided design?",
@@ -82,7 +84,8 @@ describe("WelcomePage", () => {
   it("renders the welcome page with title and intro text", () => {
     render(<WelcomePage />, { wrapper: ThemeProvider });
 
-    expect(screen.getByText("Part-time Training Calculator")).toBeInTheDocument();
+    const heading = screen.getByRole("heading", { name: "Part-time Training Calculator" });
+    expect(heading).toBeInTheDocument();
     expect(
       screen.getByText(
         "Welcome to the Part-time Training Calculator. Choose the design that best suits you."
@@ -102,13 +105,15 @@ describe("WelcomePage", () => {
     render(<WelcomePage />, { wrapper: ThemeProvider });
 
     expect(screen.getByText("Compact Design")).toBeInTheDocument();
-    expect(screen.getByText("Guided Design")).toBeInTheDocument();
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
+    expect(tourCard).toBeInTheDocument();
+    expect(tourCard).toHaveTextContent("Guided Design");
   });
 
   it("renders compact design card with menu icon", () => {
     render(<WelcomePage />, { wrapper: ThemeProvider });
 
-    const compactCard = screen.getByLabelText(/Compact Design/);
+    const compactCard = screen.getByRole("button", { name: /Compact Design/ });
     expect(compactCard).toBeInTheDocument();
     expect(compactCard).toHaveTextContent("☰");
   });
@@ -116,7 +121,7 @@ describe("WelcomePage", () => {
   it("renders tour design card with book icon and is enabled", () => {
     render(<WelcomePage />, { wrapper: ThemeProvider });
 
-    const tourCard = screen.getByLabelText(/Guided Design/);
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     expect(tourCard).toBeInTheDocument();
     expect(tourCard).toHaveTextContent("📖");
     expect(tourCard).not.toBeDisabled();
@@ -126,7 +131,7 @@ describe("WelcomePage", () => {
     const user = userEvent.setup();
     render(<WelcomePage />, { wrapper: ThemeProvider });
 
-    const compactCard = screen.getByLabelText(/Compact Design/);
+    const compactCard = screen.getByRole("button", { name: /Compact Design/ });
     await user.click(compactCard);
 
     expect(window.location.hash).toBe("#compact");
@@ -161,7 +166,7 @@ describe("WelcomePage", () => {
     const user = userEvent.setup();
     render(<WelcomePage />, { wrapper: ThemeProvider });
 
-    const tourCard = screen.getByLabelText(/Guided Design/);
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     await user.click(tourCard);
 
     // Hash should change to tour
@@ -179,14 +184,14 @@ describe("WelcomePage", () => {
     expect(screen.getByRole("button", { name: /Switch theme/i })).toHaveFocus();
 
     await user.tab();
-    expect(
-      screen.getByLabelText(/Switch to next language/i)
-    ).toHaveFocus();
+    const languageToggles = screen.getAllByLabelText(/Switch to next language/i);
+    const focusedToggle = languageToggles.find(toggle => toggle === document.activeElement);
+    expect(focusedToggle).toBeInTheDocument();
 
     await user.tab();
     expect(screen.getByLabelText(/Compact Design/)).toHaveFocus();
 
     await user.tab();
-    expect(screen.getByLabelText(/Guided Design/)).toHaveFocus();
+    expect(screen.getByLabelText(/Guided Design.*Welcome/)).toHaveFocus();
   });
 });

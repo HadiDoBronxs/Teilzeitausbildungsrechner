@@ -184,26 +184,38 @@ export default function TourView() {
       >
         <div className="max-w-7xl mx-auto">
           {/* Header with title, back button, and language toggle */}
-          <div className="mb-4 sm:mb-6 flex flex-col gap-3 sm:gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-              <Button
-                onClick={() => {
-                  window.location.hash = "";
-                }}
-                variant="secondary"
-                size="sm"
-                ariaLabel={t("welcome.backButton")}
-              >
-                ← {t("welcome.backButton")}
-              </Button>
+          {/* Mobile: back button and language above title */}
+          {/* Desktop: back button + title on left, language on right */}
+          <div className="mb-4 sm:mb-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+            {/* Mobile: back button and language toggle row */}
+            {/* Desktop: back button + title row */}
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
+              <div className="w-full flex items-center justify-between lg:w-auto lg:justify-start">
+                <Button
+                  onClick={() => {
+                    window.location.hash = "";
+                  }}
+                  variant="secondary"
+                  size="sm"
+                  ariaLabel={t("welcome.backButton")}
+                  className="self-start lg:self-auto"
+                >
+                  ← {t("welcome.backButton")}
+                </Button>
+                <div className="lg:hidden">
+                  <LanguageToggle />
+                </div>
+              </div>
               <h1
                 id={MAIN_HEADING_ID}
-                className="text-xl sm:text-2xl md:text-3xl font-bold"
+                className="text-xl sm:text-2xl md:text-3xl font-bold lg:whitespace-nowrap"
               >
-                {t("welcome.designs.tour")}
+                <span className="lg:hidden">{t("app.titleMobile")}</span>
+                <span className="hidden lg:inline">{t("app.title")}</span>
               </h1>
             </div>
-            <div className="flex-shrink-0">
+            {/* Desktop: language toggle on right */}
+            <div className="hidden lg:flex lg:flex-shrink-0">
               <LanguageToggle />
             </div>
           </div>

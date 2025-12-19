@@ -71,6 +71,13 @@ export default function ResultSidebar({ values }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function scrollToResults() {
+    const resultCard = document.getElementById("result-card");
+    if (resultCard) {
+      resultCard.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
   const result = useMemo(() => calculateResult(values), [values]);
 
   const errorKey = result?.errorCode
@@ -173,14 +180,12 @@ export default function ResultSidebar({ values }) {
             ↑ {t("result.navigation.scrollToTop")}
           </Button>
 
-          {/* Scroll-to-results disabled */}
+          {/* Scroll-to-results enabled */}
           <Button
-            disabled
-            variant="ghost"
+            onClick={scrollToResults}
+            variant="secondary"
             size="sm"
-            aria-label={`${t("result.navigation.scrollToResults")} (${t(
-              "result.navigation.comingSoon"
-            )})`}
+            aria-label={t("result.navigation.scrollToResults")}
             className="w-full justify-start"
           >
             ↓ {t("result.navigation.scrollToResults")}

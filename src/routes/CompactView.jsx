@@ -13,6 +13,7 @@ import ResultBottomBar from "../components/ResultBottomBar.jsx";
 import PDFViewer from "../components/PDFViewer.jsx";
 import Button from "../components/ui/Button.jsx";
 import ThemeToggle from "../components/ThemeToggle.jsx";
+import Card from "../components/ui/Card.jsx";
 import { useCalculator } from "../features/calcDuration/useCalculator.js";
 import { useUnsavedChangesWarning } from "../features/calcDuration/useUnsavedChangesWarning.js";
 
@@ -26,6 +27,23 @@ const RESULT_CARD_ID = "result-card";
  * - Desktop: full layout + sticky sidebar
  * - Mobile: main content + bottom bar + floating scroll-to-top button
  */
+
+const ArrowDownIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 5v14M19 12l-7 7-7-7" />
+  </svg>
+);
+
 export default function CompactView() {
   const {
     t,
@@ -107,11 +125,9 @@ export default function CompactView() {
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
                   overflow: "hidden",
-                  wordBreak: "break-word",
-                  hyphens: "auto",
                 }}
               >
-                {t("app.title")}
+                {t("app.titleMobile")}
               </h1>
             </div>
 
@@ -142,10 +158,30 @@ export default function CompactView() {
 
             {/* Legal notice if applicable */}
             {showLegalHint && (
-              <p className="text-xs text-amber-700" role="note">
-                {t("qualifications.legalHint")}
-              </p>
+              <Card
+                variant="default"
+                padding="p-4"
+                role="note"
+                className="bg-amber-50 border-amber-200"
+              >
+                <p className="text-xs text-amber-700">
+                  {t("qualifications.legalHint")}
+                </p>
+              </Card>
             )}
+
+            {/* Scroll to Results Button */}
+            <Button
+              onClick={() => {
+                document.getElementById(RESULT_CARD_ID)?.scrollIntoView({ behavior: "smooth" });
+              }}
+              variant="secondary"
+              size="lg"
+              className="w-full my-4 shadow-sm"
+              icon={<ArrowDownIcon />}
+            >
+              {t("result.navigation.scrollToResults")}
+            </Button>
 
             {/* Result card */}
             <div id={RESULT_CARD_ID} className="w-full">
