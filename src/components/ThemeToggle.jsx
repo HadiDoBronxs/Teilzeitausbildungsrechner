@@ -1,10 +1,8 @@
 import { useTheme } from "./ThemeProvider";
 import Button from "./ui/Button";
-import { useTranslation } from "react-i18next";
 
 export default function ThemeToggle() {
     const { theme, setTheme } = useTheme();
-    const { t } = useTranslation();
 
     const handleToggle = () => {
         // Check system preference if current theme is 'system'
