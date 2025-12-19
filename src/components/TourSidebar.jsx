@@ -41,12 +41,12 @@ export default function TourSidebar({
   // Get qualification labels (using short sidebar labels instead of full questions)
   const qualificationLabels = useMemo(() => {
     const labels = [];
-    
+
     // Add academic qualification if selected (moved to reductions section)
     if (academicQualification) {
       labels.push(t("tour.sidebar.qualifications.academic"));
     }
-    
+
     // Add other qualifications
     otherQualificationSelection.forEach((id) => {
       const option = QUALIFICATION_OPTIONS.find((opt) => opt.id === id);
@@ -54,7 +54,7 @@ export default function TourSidebar({
         labels.push(t(`tour.sidebar.qualifications.${id}`));
       }
     });
-    
+
     return labels;
   }, [academicQualification, otherQualificationSelection, t]);
 
@@ -62,7 +62,7 @@ export default function TourSidebar({
     <aside className="w-full min-w-0" aria-label={t("tour.sidebar.title")}>
       <Card className="space-y-4 xl:space-y-6" padding="p-4 xl:p-6" role="status">
         <header className="space-y-2">
-          <h2 className="text-lg xl:text-xl 2xl:text-2xl font-bold text-slate-900 break-words">
+          <h2 className="text-lg xl:text-xl 2xl:text-2xl font-bold text-slate-900 dark:text-white break-words">
             {t("tour.sidebar.title")}
           </h2>
         </header>
@@ -71,52 +71,52 @@ export default function TourSidebar({
           {/* Basic inputs */}
           {fulltimeHours && (
             <div className="text-sm">
-              <span className="font-medium text-slate-600">
+              <span className="font-medium text-slate-600 dark:text-slate-400">
                 {t("tour.sidebar.fulltime")}:
               </span>{" "}
-              <span className="text-slate-900">{fulltimeHours}h</span>
+              <span className="text-slate-900 dark:text-white">{fulltimeHours}h</span>
             </div>
           )}
           {parttimeHours && (
             <div className="text-sm">
-              <span className="font-medium text-slate-600">
+              <span className="font-medium text-slate-600 dark:text-slate-400">
                 {t("tour.sidebar.parttime")}:
               </span>{" "}
-              <span className="text-slate-900">{parttimeHours}h</span>
+              <span className="text-slate-900 dark:text-white">{parttimeHours}h</span>
             </div>
           )}
           {fullDurationMonths && (
             <div className="text-sm">
-              <span className="font-medium text-slate-600">
+              <span className="font-medium text-slate-600 dark:text-slate-400">
                 {t("tour.sidebar.duration")}:
               </span>{" "}
-              <span className="text-slate-900">{fullDurationMonths}M</span>
+              <span className="text-slate-900 dark:text-white">{fullDurationMonths}M</span>
             </div>
           )}
 
           {/* Education section - only school degree, academic moved to reductions */}
           {schoolDegree && (
-            <div className="pt-2 border-t border-slate-200">
-              <div className="text-xs font-semibold text-slate-500 uppercase mb-2">
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+              <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-2">
                 {t("tour.sidebar.education")}
               </div>
-              <div className="text-sm text-slate-700">{schoolDegree}</div>
+              <div className="text-sm text-slate-700 dark:text-slate-300">{schoolDegree}</div>
             </div>
           )}
 
           {/* Reductions section - includes academic qualification and other qualifications */}
           {(qualificationLabels.length > 0 || manualReductionMonths > 0) && (
-            <div className="pt-2 border-t border-slate-200">
-              <div className="text-xs font-semibold text-slate-500 uppercase mb-2">
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+              <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-2">
                 {t("tour.sidebar.reductions")}
               </div>
               {qualificationLabels.map((label, index) => (
-                <div key={index} className="text-sm text-slate-700">
+                <div key={index} className="text-sm text-slate-700 dark:text-slate-300">
                   {label}
                 </div>
               ))}
               {manualReductionMonths > 0 && (
-                <div className="text-sm text-slate-700">
+                <div className="text-sm text-slate-700 dark:text-slate-300">
                   {t("reduction.label")}: {manualReductionMonths}{" "}
                   {t("format.months")}
                 </div>

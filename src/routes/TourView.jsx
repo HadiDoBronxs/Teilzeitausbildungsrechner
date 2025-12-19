@@ -97,20 +97,20 @@ export default function TourView() {
   // This ensures tabs/buttons are disabled when inputs are out of valid ranges
   const areInputsValid = useMemo(() => {
     // Check fulltime hours: must be between 35-48
-    const fulltimeValid = fulltimeHours != null && 
-      !Number.isNaN(Number(fulltimeHours)) && 
+    const fulltimeValid = fulltimeHours != null &&
+      !Number.isNaN(Number(fulltimeHours)) &&
       isFulltimeHoursValid(String(fulltimeHours));
-    
+
     // Check parttime hours: must be within valid range based on fulltime hours
-    const parttimeValid = parttimeHours != null && 
-      !Number.isNaN(Number(parttimeHours)) && 
+    const parttimeValid = parttimeHours != null &&
+      !Number.isNaN(Number(parttimeHours)) &&
       isParttimeHoursValid(String(parttimeHours), fulltimeHours);
-    
+
     // Check duration: must be between 12-48 months
-    const durationValid = formValues.fullDurationMonths != null && 
-      !Number.isNaN(Number(formValues.fullDurationMonths)) && 
+    const durationValid = formValues.fullDurationMonths != null &&
+      !Number.isNaN(Number(formValues.fullDurationMonths)) &&
       isRegularDurationValid(String(formValues.fullDurationMonths));
-    
+
     return fulltimeValid && parttimeValid && durationValid;
   }, [fulltimeHours, parttimeHours, formValues.fullDurationMonths]);
 
@@ -130,7 +130,7 @@ export default function TourView() {
     if (areTabsDisabled) {
       return;
     }
-    
+
     if (activeTab === "inputs") {
       // If reduction is "no", skip to results, otherwise go to education
       setActiveTab(wantsReduction === "no" ? "results" : "education");
@@ -180,7 +180,7 @@ export default function TourView() {
         id={MAIN_ID}
         tabIndex="-1"
         aria-labelledby={MAIN_HEADING_ID}
-        className="min-h-screen bg-slate-50 text-slate-900 px-4 py-12 sm:py-16"
+        className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 px-4 py-12 sm:py-16"
       >
         <div className="max-w-7xl mx-auto">
           {/* Header with title, back button, and language toggle */}

@@ -12,6 +12,7 @@ import ResultSidebar from "../components/ResultSidebar.jsx";
 import ResultBottomBar from "../components/ResultBottomBar.jsx";
 import PDFViewer from "../components/PDFViewer.jsx";
 import Button from "../components/ui/Button.jsx";
+import ThemeToggle from "../components/ThemeToggle.jsx";
 import { useCalculator } from "../features/calcDuration/useCalculator.js";
 import { useUnsavedChangesWarning } from "../features/calcDuration/useUnsavedChangesWarning.js";
 
@@ -68,7 +69,7 @@ export default function CompactView() {
         id={MAIN_ID}
         tabIndex="-1"
         aria-labelledby={MAIN_HEADING_ID}
-        className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 py-8 px-4"
+        className="min-h-screen flex flex-col items-center gap-6 bg-gray-50 dark:bg-slate-950 dark:text-slate-50 py-8 px-4"
       >
         {/* Desktop grid layout */}
         <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[minmax(200px,280px)_minmax(0,672px)_minmax(200px,280px)] xl:grid-cols-[minmax(280px,320px)_minmax(0,672px)_minmax(280px,320px)] lg:gap-4 xl:gap-6 2xl:gap-8">
@@ -91,7 +92,10 @@ export default function CompactView() {
                 >
                   ← {t("welcome.backButton")}
                 </Button>
-                <LanguageToggle />
+                <div className="flex items-center gap-4">
+                  <ThemeToggle />
+                  <LanguageToggle />
+                </div>
               </div>
 
               {/* Page headline */}

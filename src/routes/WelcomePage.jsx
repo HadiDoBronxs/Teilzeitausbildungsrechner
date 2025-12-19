@@ -1,6 +1,7 @@
 // WelcomePage.jsx – Initial landing page that lets users choose between compact and guided (tour) design modes.
 import { useTranslation } from "react-i18next";
 import LanguageToggle from "../components/LanguageToggle.jsx";
+import ThemeToggle from "../components/ThemeToggle.jsx";
 import Card from "../components/ui/Card.jsx";
 import FAQSection from "../components/faq/FAQSection.jsx";
 
@@ -33,15 +34,15 @@ export default function WelcomePage() {
         id={MAIN_ID}
         tabIndex="-1"
         aria-labelledby={MAIN_HEADING_ID}
-        className="min-h-screen bg-slate-50 text-slate-900 px-4 py-12 sm:py-16"
+        className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 px-4 py-12 sm:py-16"
       >
         <div className="max-w-4xl mx-auto space-y-8 sm:space-y-12">
           {/* Header with title and language toggle */}
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <h1 
-              id={MAIN_HEADING_ID} 
+            <h1
+              id={MAIN_HEADING_ID}
               className="text-3xl md:text-4xl font-bold text-center sm:text-left min-h-[4.5rem] md:min-h-[5.5rem] max-w-xs sm:max-w-none mx-auto sm:mx-0 line-clamp-3"
-              style={{ 
+              style={{
                 display: '-webkit-box',
                 WebkitLineClamp: 3,
                 WebkitBoxOrient: 'vertical',
@@ -52,19 +53,22 @@ export default function WelcomePage() {
             >
               {t("welcome.title")}
             </h1>
-            <LanguageToggle />
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              <LanguageToggle />
+            </div>
           </div>
 
           {/* Information text */}
           <Card className="space-y-4" padding="p-6 sm:p-8">
-            <p className="text-base md:text-lg leading-relaxed text-slate-700">
+            <p className="text-base md:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
               {t("welcome.intro")}
             </p>
           </Card>
 
           {/* Design selection question */}
           <Card className="space-y-6" padding="p-6 sm:p-8">
-            <h2 className="text-xl md:text-2xl font-semibold text-slate-900 mb-6 sm:mb-8">
+            <h2 className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white mb-6 sm:mb-8">
               {t("welcome.question")}
             </h2>
 
@@ -111,7 +115,7 @@ export default function WelcomePage() {
 
           {/* Legal disclaimer */}
           <Card variant="info" className="space-y-2" padding="p-6 sm:p-8">
-            <p className="text-sm md:text-base text-slate-700">
+            <p className="text-sm md:text-base text-slate-700 dark:text-slate-300">
               {t("welcome.legalDisclaimer")}
             </p>
           </Card>
