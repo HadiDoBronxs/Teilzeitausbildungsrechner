@@ -30,7 +30,7 @@ export default function RegularDurationInput({ onValueChange }) {
       <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={REGULAR_DURATION_NAME}
-          className="font-semibold text-gray-800"
+          className="font-semibold text-gray-800 dark:text-gray-200"
         >
           {t("regularDuration.label")}
         </label>
@@ -50,7 +50,7 @@ export default function RegularDurationInput({ onValueChange }) {
           // Value is already sanitized by NumberInput
           // No decimals allowed → strip everything after the dot
           const integerValue = v.split(".")[0];
-          
+
           // Allow empty value
           if (integerValue === "") {
             setMonths("");

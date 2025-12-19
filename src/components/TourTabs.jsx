@@ -95,8 +95,8 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
           if (disabled) {
             stateClasses = "!bg-slate-100 dark:!bg-slate-800 !text-slate-600 dark:!text-slate-400 cursor-not-allowed !border !border-slate-200 dark:!border-slate-700";
           } else if (isActive) {
-            // Active tab: dark background (white in dark mode), white text (dark in dark mode), clear contrast
-            stateClasses = "!bg-slate-950 dark:!bg-white !text-white dark:!text-slate-950 shadow-sm";
+            // Active tab: dark background (darker in dark mode), clear contrast
+            stateClasses = "!bg-slate-950 dark:!bg-slate-700 !text-white shadow-sm";
           } else {
             // Inactive tab: light background, dark text, good readability
             stateClasses = "!bg-white dark:!bg-slate-900 !text-slate-700 dark:!text-slate-200 border border-slate-200 dark:border-slate-700 hover:!bg-slate-50 dark:hover:!bg-slate-800 hover:!text-slate-900 dark:hover:!text-white hover:border-slate-300 dark:hover:border-slate-600";
@@ -153,7 +153,7 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
             stateClasses = "!bg-slate-100 dark:!bg-slate-800 !text-slate-600 dark:!text-slate-400 border border-slate-200 dark:border-slate-700 cursor-not-allowed";
           } else if (isActive) {
             // Active tab: dark background, white text, dark border
-            stateClasses = "!bg-slate-950 dark:!bg-white !text-white dark:!text-slate-950 border-slate-950 dark:border-white";
+            stateClasses = "!bg-slate-950 dark:!bg-slate-700 !text-white border-slate-950 dark:border-slate-700";
           } else {
             // Inactive tab: white background, dark text, transparent border
             stateClasses = "!bg-white dark:!bg-slate-900 !text-slate-900 dark:!text-slate-200 border-transparent hover:!text-slate-950 dark:hover:!text-white hover:border-slate-300 dark:hover:border-slate-600";

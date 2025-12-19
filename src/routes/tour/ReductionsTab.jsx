@@ -49,7 +49,7 @@ export default function ReductionsTab({
         />
         {showNotification && (
           <div className="w-full max-w-sm mx-auto">
-            <p className="text-xs text-amber-700" role="note">
+            <p className="text-xs text-amber-700 dark:text-amber-400" role="note">
               {t("qualifications.legalHint")}
             </p>
           </div>

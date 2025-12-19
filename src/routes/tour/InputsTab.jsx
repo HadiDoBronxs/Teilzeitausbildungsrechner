@@ -58,7 +58,7 @@ export default function InputsTab({
         <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
           <label
             htmlFor={REDUCE_TRAINING_SELECT_ID}
-            className="font-semibold text-gray-800"
+            className="font-semibold text-gray-800 dark:text-gray-200"
           >
             {t("tour.reduceTraining.question")}
           </label>

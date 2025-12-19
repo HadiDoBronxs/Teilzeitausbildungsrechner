@@ -48,7 +48,7 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
       <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={SELECT_ID}
-          className="font-semibold text-gray-800"
+          className="font-semibold text-gray-800 dark:text-gray-200"
         >
           {t("reduction.title")}
         </label>
@@ -58,7 +58,7 @@ export default function SchoolDegreeReductionSelect({ value, onChange }) {
       <label
         id={QUESTION_ID}
         htmlFor={SELECT_ID}
-        className="font-semibold text-gray-800"
+        className="font-semibold text-gray-800 dark:text-gray-200"
       >
         {t("reduction.question")}
       </label>
