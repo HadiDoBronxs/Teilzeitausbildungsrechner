@@ -80,7 +80,7 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
     <div
       role="tablist"
       aria-label={t("tour.tabs.inputs")}
-      className="mb-4 lg:mb-0 lg:border-b lg:border-slate-200"
+      className="mb-4 lg:mb-0 lg:border-b lg:border-slate-200 dark:lg:border-slate-800"
     >
       {/* Mobile: Vertical tabs */}
       <div className="flex flex-col gap-1.5 lg:hidden" aria-hidden={isDesktop}>
@@ -96,7 +96,7 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
             stateClasses = "!bg-slate-100 dark:!bg-slate-800 !text-slate-600 dark:!text-slate-400 cursor-not-allowed !border !border-slate-200 dark:!border-slate-700";
           } else if (isActive) {
             // Active tab: dark background (darker in dark mode), clear contrast
-            stateClasses = "!bg-slate-950 dark:!bg-slate-700 !text-white shadow-sm";
+            stateClasses = "!bg-slate-950 dark:!bg-slate-200 !text-white dark:!text-slate-950 shadow-sm";
           } else {
             // Inactive tab: light background, dark text, good readability
             stateClasses = "!bg-white dark:!bg-slate-900 !text-slate-700 dark:!text-slate-200 border border-slate-200 dark:border-slate-700 hover:!bg-slate-50 dark:hover:!bg-slate-800 hover:!text-slate-900 dark:hover:!text-white hover:border-slate-300 dark:hover:border-slate-600";
@@ -152,11 +152,11 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
           if (disabled) {
             stateClasses = "!bg-slate-100 dark:!bg-slate-800 !text-slate-600 dark:!text-slate-400 border border-slate-200 dark:border-slate-700 cursor-not-allowed";
           } else if (isActive) {
-            // Active tab: dark background, white text, dark border
-            stateClasses = "!bg-slate-950 dark:!bg-slate-700 !text-white border-slate-950 dark:border-slate-700";
+            // Active tab: dark background (matches card), white text, borders to merge with card
+            stateClasses = "!bg-slate-950 dark:!bg-slate-900 !text-white border-slate-950 dark:border-slate-800 dark:border-b-slate-900";
           } else {
-            // Inactive tab: white background, dark text, transparent border
-            stateClasses = "!bg-white dark:!bg-slate-900 !text-slate-900 dark:!text-slate-200 border-transparent hover:!text-slate-950 dark:hover:!text-white hover:border-slate-300 dark:hover:border-slate-600";
+            // Inactive tab: distinct button-like appearance in dark mode
+            stateClasses = "!bg-white dark:!bg-slate-800 !text-slate-900 dark:!text-slate-200 border-transparent dark:border-slate-600 hover:!text-slate-950 dark:hover:!text-white hover:border-slate-300 dark:hover:border-slate-500 shadow-sm";
           }
 
           const tabClassName = `${baseClasses} ${stateClasses}`;
