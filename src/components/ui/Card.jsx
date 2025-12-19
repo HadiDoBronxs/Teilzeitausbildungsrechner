@@ -3,9 +3,9 @@ import React from "react";
 
 // variant palette mirrors ResultCard + error/notice sections.
 const VARIANT_STYLES = {
-  default: "bg-white border border-slate-200",
-  error: "bg-white border border-red-200",
-  info: "bg-blue-50 border border-blue-200",
+  default: "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800",
+  error: "bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900",
+  info: "bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900",
 };
 
 /**
