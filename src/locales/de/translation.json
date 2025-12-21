@@ -73,7 +73,7 @@
     },
     "welcome": {
         "title": "Teilzeit\u00ADausbildungs\u00ADrechner",
-        "intro": "Mit diesem Teilzeitausbildungsrechner können Sie unverbindlich abschätzen, wie sich Teilzeit auf die Dauer Ihrer Ausbildung auswirkt. Wählen Sie als Nächstes ein Design, um zu starten.",
+        "intro": "Willkommen beim Teilzeitausbildungsrechner. Wählen Sie das Design, das am besten zu Ihnen passt.",
         "question": "Wollen Sie das kompakte Design nutzen oder das geführte Design? Für die meisten Nutzer*innen empfehlen wir das geführte Design.",
         "designs": {
             "compact": "Kompaktes Design",
@@ -166,7 +166,7 @@
             "results": "Ergebnis"
         },
         "reduceTraining": {
-            "question": "Möchten Sie Ihre Ausbildungszeit verkürzen?",
+            "question": "Möchten Sie die Ausbildungszeit verkürzen?",
             "no": "Nein",
             "yes": "Ja",
             "iDontKnow": "Ich weiß nicht"
@@ -433,7 +433,6 @@
         "fulltimeHours": "In vielen Betrieben liegt die Vollzeit zwischen 35 und 48 Stunden pro Woche. Gesetzliche Basis: § 7a BBiG (Teilzeit auf Basis der regulären Vollzeitstunden).",
         "parttimeHours": "Erlaubter Bereich: mindestens 50 % und höchstens 80 % der Vollzeitstunden. Grundlage: § 7a BBiG (Teilzeitberufsausbildung).",
         "regularDuration": "Mindestens 12 Monate. Grundlage: § 8 BBiG (Verkürzung/Verlängerung der Ausbildungszeit).",
-        "reduceTraining": "Eine Verkürzung bedeutet: Die Ausbildung dauert kürzer. Das ist freiwillig. Die Entscheidung treffen die Kammer und der Betrieb. Wenn Sie unsicher sind, können Sie „Ich weiß nicht“ auswählen.",
         "schoolDegree": "Manche Schulabschlüsse enthalten Teile der Ausbildung. Deshalb kann die Kammer die Dauer verkürzen. Kammer und Betrieb entscheiden gemeinsam. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
         "qualifications": "Hier können Sie angeben, ob Sie weitere Erfahrungen oder Abschlüsse haben, die die Ausbildungszeit verkürzen können. Grundlage: § 8 Abs. 1 BBiG (Anrechnung von Vorbildung).",
         "qualificationMax": "Mit dieser Qualifikation kann die Ausbildungszeit um bis zu 12 Monate verkürzt werden. Grundlage: § 8 BBiG (Verkürzung der Ausbildungszeit).",
