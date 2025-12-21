@@ -12,7 +12,7 @@ const mockT = (key) => {
     "app.title": "Part-time Training Calculator",
     "app.titleMobile": "Part-time Training Calculator",
     "welcome.title": "Part-time Training Calculator",
-    "welcome.intro": "This part-time training calculator helps you estimate how part-time affects the duration of your apprenticeship. Choose a design to get started.",
+    "welcome.intro": "Welcome to the Part-time Training Calculator. Choose the design that best suits you.",
     "welcome.question": "Do you want to use the compact design or the guided design?",
     "welcome.designs.compact": "Compact Design",
     "welcome.designs.tour": "Guided Design",
@@ -87,7 +87,7 @@ describe("WelcomePage", () => {
     expect(heading).toBeInTheDocument();
     expect(
       screen.getByText(
-        "This part-time training calculator helps you estimate how part-time affects the duration of your apprenticeship. Choose a design to get started."
+        "Welcome to the Part-time Training Calculator. Choose the design that best suits you."
       )
     ).toBeInTheDocument();
   });

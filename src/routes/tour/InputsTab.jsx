@@ -5,7 +5,6 @@ import ParttimeHoursInput from "../../components/ParttimeHoursInput.jsx";
 import RegularDurationInput from "../../components/RegularDurationInput.jsx";
 import SelectField from "../../components/ui/SelectField.jsx";
 import Button from "../../components/ui/Button.jsx";
-import Tooltip from "../../components/InfoTooltip.jsx";
 import { useTranslation } from "react-i18next";
 
 const REDUCE_TRAINING_SELECT_ID = "reduce-training-select";
@@ -57,15 +56,12 @@ export default function InputsTab({
 
         {/* Reduce training question */}
         <div className="flex flex-col gap-2 w-full max-w-sm mx-auto p-2">
-          <div className="flex items-start justify-between gap-2">
-            <label
-              htmlFor={REDUCE_TRAINING_SELECT_ID}
-              className="font-semibold text-gray-800 flex-1 min-w-0 break-words"
-            >
-              {t("tour.reduceTraining.question")}
-            </label>
-            <Tooltip contentKey="tooltip.reduceTraining" />
-          </div>
+          <label
+            htmlFor={REDUCE_TRAINING_SELECT_ID}
+            className="font-semibold text-gray-800"
+          >
+            {t("tour.reduceTraining.question")}
+          </label>
           <SelectField
             id={REDUCE_TRAINING_SELECT_ID}
             name={REDUCE_TRAINING_SELECT_ID}
