@@ -8,11 +8,6 @@ import WelcomePage from "../WelcomePage.jsx";
 // Mock react-i18next
 const mockT = (key) => {
   const translations = {
-    "app.languages": "Language",
-    "app.languageNames.de": "German",
-    "app.languageNames.en": "English",
-    "app.languageNames.tr": "Turkish",
-    "app.languageNames.ar": "Arabic",
     skipToMain: "Skip to main content",
     "app.title": "Part-time Training Calculator",
     "app.titleMobile": "Part-time Training Calculator",
@@ -109,7 +104,7 @@ describe("WelcomePage", () => {
     render(<WelcomePage />);
 
     expect(screen.getByText("Compact Design")).toBeInTheDocument();
-    const tourCard = screen.getByRole("button", { name: /Guided Design/i });
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     expect(tourCard).toBeInTheDocument();
     expect(tourCard).toHaveTextContent("Guided Design");
   });
@@ -125,7 +120,7 @@ describe("WelcomePage", () => {
   it("renders tour design card with book icon and is enabled", () => {
     render(<WelcomePage />);
 
-    const tourCard = screen.getByRole("button", { name: /Guided Design/i });
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     expect(tourCard).toBeInTheDocument();
     expect(tourCard).toHaveTextContent("📖");
     expect(tourCard).not.toBeDisabled();
@@ -170,7 +165,7 @@ describe("WelcomePage", () => {
     const user = userEvent.setup();
     render(<WelcomePage />);
 
-    const tourCard = screen.getByRole("button", { name: /Guided Design/i });
+    const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     await user.click(tourCard);
 
     // Hash should change to tour
@@ -193,6 +188,6 @@ describe("WelcomePage", () => {
     expect(screen.getByLabelText(/Compact Design/)).toHaveFocus();
 
     await user.tab();
-    expect(screen.getByLabelText(/Guided Design/i)).toHaveFocus();
+    expect(screen.getByLabelText(/Guided Design.*Welcome/)).toHaveFocus();
   });
 });
