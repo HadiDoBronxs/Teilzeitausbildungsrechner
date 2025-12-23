@@ -82,7 +82,7 @@ export default function FAQSection() {
       event.preventDefault();
       const lastItem =
         FAQ_CATEGORIES[FAQ_CATEGORIES.length - 1]?.items[
-          FAQ_CATEGORIES[FAQ_CATEGORIES.length - 1].items.length - 1
+        FAQ_CATEGORIES[FAQ_CATEGORIES.length - 1].items.length - 1
         ];
       const last = document.getElementById(`faq-trigger-${lastItem}`);
       if (last) last.focus();
@@ -110,14 +110,14 @@ export default function FAQSection() {
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           <button
             type="button"
-            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+            className="text-sm font-medium text-blue-700 dark:text-[#5D5CFF] hover:text-blue-900 dark:hover:text-[#4B4ACF] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-[#5D5CFF]"
             onClick={() => setShowLegal(true)}
           >
             {t("welcome.faqLinkLegal")}
           </button>
           <button
             type="button"
-            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+            className="text-sm font-medium text-blue-700 dark:text-[#5D5CFF] hover:text-blue-900 dark:hover:text-[#4B4ACF] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-[#5D5CFF]"
             onClick={() => setShowTransparency(true)}
           >
             {t("welcome.faqLinkTransparency")}
