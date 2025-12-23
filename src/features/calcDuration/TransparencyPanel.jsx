@@ -251,7 +251,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
       onClose,
       t,
       <div className="space-y-4">
-        <h3 className="text-base font-semibold text-slate-900">
+        <h3 className="text-base font-semibold text-slate-900 dark:text-white">
           {t("result.error.title")}
         </h3>
         <p className="text-slate-800">{t(errorKey)}</p>
@@ -264,7 +264,7 @@ export default function TransparencyPanel({ formValues, onClose }) {
   const simpleView = (
     <div className="space-y-8">
       {/* Teaser */}
-      <p className="text-base text-slate-800 leading-relaxed">
+      <p className="text-base text-slate-800 dark:text-slate-200 leading-relaxed">
         {t("transparency.simple.teaser", {
           desiredHours: formatNumber(weeklyPart),
           percentage: formatNumber(percent),
@@ -280,23 +280,23 @@ export default function TransparencyPanel({ formValues, onClose }) {
       >
         {/* Full-time Bar */}
         <div className="w-full">
-          <div className="flex justify-between text-xs font-medium text-slate-500 mb-1">
+          <div className="flex justify-between text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
             <span>{t("transparency.simple.chart.fullLabel")}</span>
             <span>{formatNumber(weeklyFull)} h</span>
           </div>
-          <div className="h-6 w-full rounded bg-slate-200 relative">
+          <div className="h-6 w-full rounded bg-slate-200 dark:bg-slate-700 relative">
           </div>
         </div>
 
         {/* Part-time Bar */}
         <div className="w-full">
-          <div className="flex justify-between text-xs font-medium text-blue-700 mb-1">
+          <div className="flex justify-between text-xs font-medium text-blue-700 dark:text-blue-300 mb-1">
             <span>{t("result.labels.part")}</span>
             <span className="font-bold">{formatNumber(weeklyPart)} h ({formatNumber(percent)}%)</span>
           </div>
-          <div className="h-6 w-full rounded bg-slate-100 relative overflow-hidden">
+          <div className="h-6 w-full rounded bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
             <div
-              className="h-full bg-blue-600 transition-all duration-700 ease-out rounded shadow-sm"
+              className="h-full bg-blue-600 dark:bg-blue-500 transition-all duration-700 ease-out rounded shadow-sm"
               style={{ width: `${Math.min(100, Math.max(0, percent))}%` }}
             ></div>
           </div>
@@ -307,10 +307,10 @@ export default function TransparencyPanel({ formValues, onClose }) {
       <div className="space-y-6">
         {[1, 2, 3, 4, 5, 6].map((step) => (
           <div key={step}>
-            <h3 className="font-semibold text-base text-slate-900 mb-1">
+            <h3 className="font-semibold text-base text-slate-900 dark:text-white mb-1">
               {t(`transparency.simple.step${step}.title`)}
             </h3>
-            <p className="text-sm text-slate-600 leading-relaxed">
+            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
               {t(`transparency.simple.step${step}.text`)}
             </p>
           </div>
@@ -318,15 +318,15 @@ export default function TransparencyPanel({ formValues, onClose }) {
       </div>
 
       {/* Result Line */}
-      <div className="bg-blue-50 rounded-lg p-5 text-center space-y-2 border border-blue-100 shadow-sm">
-        <p className="text-xl font-bold text-blue-900">
+      <div className="bg-blue-50 dark:bg-blue-900/30 rounded-lg p-5 text-center space-y-2 border border-blue-100 dark:border-blue-900 shadow-sm">
+        <p className="text-xl font-bold text-blue-900 dark:text-blue-100">
           {t("transparency.simple.result.main", {
             months: formatNumber(roundedDuration),
             years: roundedYears,
             remMonths: roundedMonthsRem,
           })}
         </p>
-        <p className="text-sm font-medium text-blue-700">
+        <p className="text-sm font-medium text-blue-700 dark:text-blue-300">
           {t("transparency.simple.result.diff", {
             diff: formatNumber(
               Number.isFinite(deltaVsOriginal) && deltaVsOriginal !== 0
@@ -341,68 +341,68 @@ export default function TransparencyPanel({ formValues, onClose }) {
 
   // --- Expert View Render (Existing logic) ---
   const expertView = (
-    <div className="space-y-6 mt-8 pt-8 border-t border-slate-200 animate-in fade-in slide-in-from-top-4 duration-300">
-      <h3 className="text-lg font-bold text-slate-900 mb-4">
+    <div className="space-y-6 mt-8 pt-8 border-t border-slate-200 dark:border-slate-700 animate-in fade-in slide-in-from-top-4 duration-300">
+      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">
         {t("transparency.simple.actions.showExpert").replace("anzeigen", "").replace("Show", "")} Details
       </h3>
 
-      <p className="text-sm text-slate-700">{t("transparency.intro")}</p>
+      <p className="text-sm text-slate-700 dark:text-slate-300">{t("transparency.intro")}</p>
 
-      <div className="rounded-lg bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700">
+      <div className="rounded-lg bg-slate-100 dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300">
         {t("transparency.ratio", ratioValues)}
       </div>
 
       <section className="space-y-1">
-        <h4 className="font-semibold text-slate-900">{t("transparency.step1.title")}</h4>
-        <p className="text-sm text-slate-600">
+        <h4 className="font-semibold text-slate-900 dark:text-white">{t("transparency.step1.title")}</h4>
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           {t(percent >= 50 ? "transparency.step1.ok" : "transparency.step1.fail")}
         </p>
       </section>
 
       <section className="space-y-1">
-        <h4 className="font-semibold text-slate-900">{t("transparency.step2.title")}</h4>
-        <p className="text-sm text-slate-600">{t("transparency.step2.text", step2Values)}</p>
+        <h4 className="font-semibold text-slate-900 dark:text-white">{t("transparency.step2.title")}</h4>
+        <p className="text-sm text-slate-600 dark:text-slate-400">{t("transparency.step2.text", step2Values)}</p>
       </section>
 
       <section className="space-y-1">
-        <h4 className="font-semibold text-slate-900">{t("transparency.step3.title")}</h4>
-        <p className="text-sm text-slate-600">{t("transparency.step3.text", step3Values)}</p>
+        <h4 className="font-semibold text-slate-900 dark:text-white">{t("transparency.step3.title")}</h4>
+        <p className="text-sm text-slate-600 dark:text-slate-400">{t("transparency.step3.text", step3Values)}</p>
       </section>
 
       <section className="space-y-1">
-        <h4 className="font-semibold text-slate-900">{t("transparency.step4.title")}</h4>
-        <p className="text-sm text-slate-600">{t("transparency.step4.text", step4Values)}</p>
+        <h4 className="font-semibold text-slate-900 dark:text-white">{t("transparency.step4.title")}</h4>
+        <p className="text-sm text-slate-600 dark:text-slate-400">{t("transparency.step4.text", step4Values)}</p>
       </section>
 
       <section className="space-y-1">
-        <h4 className="font-semibold text-slate-900">{t("transparency.step5.title")}</h4>
-        <p className="text-sm text-slate-600">
+        <h4 className="font-semibold text-slate-900 dark:text-white">{t("transparency.step5.title")}</h4>
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           {t(sixMonthRuleApplied ? "transparency.step5.sixApplied" : "transparency.step5.sixSkipped", protectionValues)}
         </p>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
           {t(capApplied ? "transparency.step5.capApplied" : "transparency.step5.capSkipped", protectionValues)}
         </p>
       </section>
 
       <section className="space-y-1">
-        <h4 className="font-semibold text-slate-900">{t("transparency.step6.title")}</h4>
-        <p className="text-sm text-slate-600">{t("transparency.step6.text", step6Values)}</p>
+        <h4 className="font-semibold text-slate-900 dark:text-white">{t("transparency.step6.title")}</h4>
+        <p className="text-sm text-slate-600 dark:text-slate-400">{t("transparency.step6.text", step6Values)}</p>
       </section>
 
-      <section className="space-y-2 bg-white p-3 rounded border border-slate-200">
-        <p className="font-semibold text-slate-900">
+      <section className="space-y-2 bg-white dark:bg-slate-900 p-3 rounded border border-slate-200 dark:border-slate-800">
+        <p className="font-semibold text-slate-900 dark:text-white">
           {t("transparency.result", {
             months: formatNumber(roundedDuration),
             yearsMonths: roundedYM,
           })}
         </p>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           {t("transparency.delta.basis", {
             delta: formatSigned(deltaVsBasis, formatNumber),
           })}
         </p>
         {Number.isFinite(deltaVsOriginal) && deltaVsOriginal !== 0 && (
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {t("transparency.delta.original", {
               delta: formatSigned(deltaVsOriginal, formatNumber),
             })}

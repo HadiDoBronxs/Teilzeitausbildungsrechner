@@ -3,6 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { ThemeProvider } from "../../components/ThemeProvider.jsx";
 
 // Mock pdfjs-dist before importing CompactView (which imports PDFViewer)
 vi.mock("../../components/PDFViewer.jsx", () => ({
@@ -86,13 +87,13 @@ describe("CompactView", () => {
   });
 
   it("renders the calculator title", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     expect(screen.getByText("app.titleMobile")).toBeInTheDocument();
   });
 
   it("renders all input components", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // Check that input components are rendered (they have specific labels)
     // The actual input rendering is tested in their own test files
@@ -100,7 +101,7 @@ describe("CompactView", () => {
   });
 
   it("renders ResultCard with form values", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // ResultCard should be rendered (tested in its own test file)
     const resultCardContainer = document.getElementById("result-card");
@@ -108,13 +109,13 @@ describe("CompactView", () => {
   });
 
   it("renders PDF save button", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     expect(screen.getByText("pdf.saveButton")).toBeInTheDocument();
   });
 
   it("has proper accessibility attributes", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     const main = screen.getByRole("main");
     expect(main).toHaveAttribute("id", "main");
@@ -125,7 +126,7 @@ describe("CompactView", () => {
   });
 
   it("renders ResultSidebar component", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // ResultSidebar should be rendered (it's hidden on mobile, but component exists)
     // We verify by checking the structure exists
@@ -133,7 +134,7 @@ describe("CompactView", () => {
   });
 
   it("renders ResultBottomBar component", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // ResultBottomBar should be rendered (it's hidden on desktop, but component exists)
     // We verify by checking the structure exists
@@ -146,7 +147,7 @@ describe("CompactView", () => {
       schoolDegreeId: null,
     });
 
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // Component should render without errors
     expect(screen.getByRole("main")).toBeInTheDocument();
@@ -158,14 +159,14 @@ describe("CompactView", () => {
       showLegalHint: true,
     });
 
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // Legal hint should be rendered
     expect(screen.getByText("qualifications.legalHint")).toBeInTheDocument();
   });
 
   it("does not render legal hint when showLegalHint is false", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // Legal hint should not be rendered
     expect(screen.queryByText("qualifications.legalHint")).not.toBeInTheDocument();
@@ -177,7 +178,7 @@ describe("CompactView", () => {
       isGeneratingPDF: true,
     });
 
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     expect(screen.getByText("Generating PDF...")).toBeInTheDocument();
     expect(screen.queryByText("pdf.saveButton")).not.toBeInTheDocument();
@@ -189,14 +190,14 @@ describe("CompactView", () => {
       pdfBytes: new Uint8Array([1, 2, 3]),
     });
 
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // PDFViewer should be rendered
     expect(screen.getByTestId("pdf-viewer")).toBeInTheDocument();
   });
 
   it("does not render PDFViewer when pdfBytes is null", () => {
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     // PDFViewer should not be rendered
     expect(screen.queryByTestId("pdf-viewer")).not.toBeInTheDocument();
@@ -204,7 +205,7 @@ describe("CompactView", () => {
 
   it("supports keyboard focus order for skip link, main, back button", async () => {
     const user = userEvent.setup();
-    render(<CompactView />);
+    render(<CompactView />, { wrapper: ThemeProvider });
 
     await user.tab();
     expect(screen.getByText("skipToMain")).toHaveFocus();

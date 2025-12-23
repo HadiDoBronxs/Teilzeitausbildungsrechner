@@ -104,7 +104,7 @@ function Dialog({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 dark:bg-slate-950/80 px-4"
       onMouseDown={handleOverlayClick}
       role="presentation"
     >
@@ -114,12 +114,12 @@ function Dialog({
         aria-modal="true"
         aria-labelledby={labelledBy}
         tabIndex={-1}
-        className={`w-full ${maxWidth} rounded-2xl bg-white shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 ${className}`}
+        className={`w-full ${maxWidth} rounded-2xl bg-white dark:bg-slate-900 shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-500 ${className}`}
         {...rest}
       >
-        <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+        <header className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-6 py-4">
           {title ? (
-            <h2 id={labelledBy} className="text-xl font-semibold text-slate-900">
+            <h2 id={labelledBy} className="text-xl font-semibold text-slate-900 dark:text-white">
               {title}
             </h2>
           ) : null}
@@ -127,7 +127,7 @@ function Dialog({
             variant="ghost"
             onClick={onClose}
             ariaLabel={closeLabel}
-            className="text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-transparent"
+            className="text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-transparent"
           >
             {closeLabel}
           </Button>

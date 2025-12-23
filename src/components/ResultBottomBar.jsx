@@ -68,15 +68,15 @@ export default function ResultBottomBar({ values, resultCardId = "result-card" }
 
   return (
     <div
-      className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-slate-200 shadow-lg z-50"
+      className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#151A23] border-t-2 border-slate-200 dark:border-[#2D3748] shadow-lg z-50"
       role="status"
       aria-label={t("result.labels.part")}
     >
       <div className="px-4 py-3 flex items-center justify-between max-w-md mx-auto">
-        <span className="text-sm font-medium text-slate-600">
+        <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
           {t("result.labels.part")}:
         </span>
-        <span className="text-lg font-bold text-slate-900">{formattedParttime}</span>
+        <span className="text-lg font-bold text-slate-900 dark:text-white">{formattedParttime}</span>
       </div>
     </div>
   );

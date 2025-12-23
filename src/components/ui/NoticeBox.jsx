@@ -4,8 +4,8 @@ import Button from "./Button";
 
 // variant toggles palette: info (blue highlight) vs legal (neutral slate).
 const VARIANT_CLASS = {
-  info: "border-blue-200 bg-blue-50 text-blue-900",
-  legal: "border-slate-200 bg-slate-50 text-slate-900",
+  info: "border-blue-200 dark:border-blue-900 bg-blue-50 dark:bg-blue-950/30 text-blue-900 dark:text-blue-100",
+  legal: "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-200",
 };
 
 /**

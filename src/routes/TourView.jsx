@@ -2,6 +2,7 @@
 // Organizes calculator inputs into step-by-step tabs with explanations.
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import ThemeToggle from "../components/ThemeToggle.jsx";
 import LanguageToggle from "../components/LanguageToggle.jsx";
 import TourTabs from "../components/TourTabs.jsx";
 import TourSidebar from "../components/TourSidebar.jsx";
@@ -97,22 +98,24 @@ export default function TourView() {
   // This ensures tabs/buttons are disabled when inputs are out of valid ranges
   const areInputsValid = useMemo(() => {
     // Check fulltime hours: must be between 35-48
-    const fulltimeValid = fulltimeHours != null && 
-      !Number.isNaN(Number(fulltimeHours)) && 
+    const fulltimeValid = fulltimeHours != null &&
+      !Number.isNaN(Number(fulltimeHours)) &&
       isFulltimeHoursValid(String(fulltimeHours));
-    
+
     // Check parttime hours: must be within valid range based on fulltime hours
-    const parttimeValid = parttimeHours != null && 
-      !Number.isNaN(Number(parttimeHours)) && 
+    const parttimeValid = parttimeHours != null &&
+      !Number.isNaN(Number(parttimeHours)) &&
       isParttimeHoursValid(String(parttimeHours), fulltimeHours);
-    
+
     // Check duration: must be between 12-48 months
-    const durationValid = formValues.fullDurationMonths != null && 
-      !Number.isNaN(Number(formValues.fullDurationMonths)) && 
+    const durationValid = formValues.fullDurationMonths != null &&
+      !Number.isNaN(Number(formValues.fullDurationMonths)) &&
       isRegularDurationValid(String(formValues.fullDurationMonths));
-    
+
     return fulltimeValid && parttimeValid && durationValid;
   }, [fulltimeHours, parttimeHours, formValues.fullDurationMonths]);
+
+
 
   // Compute result to check if inputs are valid (tabs should be disabled if result.allowed === false)
   const result = useMemo(
@@ -123,6 +126,8 @@ export default function TourView() {
   // Tabs should be disabled if inputs are invalid (either validation fails OR result.allowed === false)
   const areTabsDisabled = !areInputsValid || !result || result.allowed === false;
 
+
+
   // Determine next tab based on current tab and wantsReduction preference
   // Prevent navigation if inputs are invalid
   function handleNext() {
@@ -130,7 +135,7 @@ export default function TourView() {
     if (areTabsDisabled) {
       return;
     }
-    
+
     if (activeTab === "inputs") {
       // If reduction is "no", skip to results, otherwise go to education
       setActiveTab(wantsReduction === "no" ? "results" : "education");
@@ -180,7 +185,7 @@ export default function TourView() {
         id={MAIN_ID}
         tabIndex="-1"
         aria-labelledby={MAIN_HEADING_ID}
-        className="min-h-screen bg-slate-50 text-slate-900 px-4 py-12 sm:py-16"
+        className="min-h-screen bg-slate-50 dark:bg-[#0B0E14] text-slate-900 dark:text-slate-50 px-4 py-12 sm:py-16"
       >
         <div className="max-w-7xl mx-auto">
           {/* Header with title, back button, and language toggle */}
@@ -202,7 +207,8 @@ export default function TourView() {
                 >
                   ← {t("welcome.backButton")}
                 </Button>
-                <div className="lg:hidden">
+                <div className="lg:hidden flex items-center gap-2">
+                  <ThemeToggle />
                   <LanguageToggle />
                 </div>
               </div>
@@ -215,7 +221,8 @@ export default function TourView() {
               </h1>
             </div>
             {/* Desktop: language toggle on right */}
-            <div className="hidden lg:flex lg:flex-shrink-0">
+            <div className="hidden lg:flex lg:flex-shrink-0 lg:items-center lg:gap-2">
+              <ThemeToggle />
               <LanguageToggle />
             </div>
           </div>

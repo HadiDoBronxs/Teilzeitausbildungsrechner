@@ -102,11 +102,11 @@ export default function ResultSidebar({ values }) {
             <h2 className="text-lg xl:text-xl 2xl:text-2xl font-bold text-red-700 break-words">
               {t("result.error.title")}
             </h2>
-            <p className="text-slate-700 text-sm md:text-base">{t(errorKey)}</p>
+            <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base">{t(errorKey)}</p>
           </header>
 
           {/* Navigation section for error state */}
-          <div className="space-y-2 pt-4 border-t border-slate-200">
+          <div className="space-y-2 pt-4 border-t border-slate-200 dark:border-slate-700">
             {/* Scroll-to-top disabled in error state */}
             <Button
               disabled
@@ -150,7 +150,7 @@ export default function ResultSidebar({ values }) {
     >
       <Card className="space-y-4 xl:space-y-6" padding="p-4 xl:p-6" role="status">
         <header className="space-y-2">
-          <h2 className="text-lg xl:text-xl 2xl:text-2xl font-bold text-slate-900 break-words">
+          <h2 className="text-lg xl:text-xl 2xl:text-2xl font-bold text-slate-900 dark:text-white break-words">
             {t("result.headline", { value: formattedParttime })}
           </h2>
         </header>
@@ -168,7 +168,7 @@ export default function ResultSidebar({ values }) {
         </div>
 
         {/* Navigation section */}
-        <div className="space-y-2 pt-4 border-t border-slate-200">
+        <div className="space-y-2 pt-4 border-t border-slate-200 dark:border-slate-700">
           {/* Scroll-to-top enabled in normal state */}
           <Button
             onClick={scrollToTop}

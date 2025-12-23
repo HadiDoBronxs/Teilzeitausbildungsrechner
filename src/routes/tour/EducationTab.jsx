@@ -72,7 +72,7 @@ export default function EducationTab({
           <div className="flex flex-col gap-2 w-full max-w-sm p-2">
             <label
               htmlFor={UNIVERSITY_SELECT_ID}
-              className="font-semibold text-gray-800"
+              className="font-semibold text-gray-800 dark:text-gray-200"
             >
               {t("tour.university.question")}
             </label>
@@ -94,7 +94,7 @@ export default function EducationTab({
             <div className="flex items-center justify-between gap-2">
               <label
                 htmlFor={ECTS_SELECT_ID}
-                className="font-semibold text-gray-800 text-center flex-1"
+                className="font-semibold text-gray-800 dark:text-gray-200 text-center flex-1"
               >
                 {t("tour.ects.question")}
               </label>

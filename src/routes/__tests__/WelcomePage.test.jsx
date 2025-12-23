@@ -3,6 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { ThemeProvider } from "../../components/ThemeProvider.jsx";
 import WelcomePage from "../WelcomePage.jsx";
 
 // Mock react-i18next
@@ -81,7 +82,7 @@ describe("WelcomePage", () => {
   });
 
   it("renders the welcome page with title and intro text", () => {
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     const heading = screen.getByRole("heading", { name: "Part-time Training Calculator" });
     expect(heading).toBeInTheDocument();
@@ -93,7 +94,7 @@ describe("WelcomePage", () => {
   });
 
   it("renders the design selection question", () => {
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     expect(
       screen.getByText("Do you want to use the compact design or the guided design?")
@@ -101,7 +102,7 @@ describe("WelcomePage", () => {
   });
 
   it("renders both design selection cards", () => {
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     expect(screen.getByText("Compact Design")).toBeInTheDocument();
     const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
@@ -110,7 +111,7 @@ describe("WelcomePage", () => {
   });
 
   it("renders compact design card with menu icon", () => {
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     const compactCard = screen.getByRole("button", { name: /Compact Design/ });
     expect(compactCard).toBeInTheDocument();
@@ -118,7 +119,7 @@ describe("WelcomePage", () => {
   });
 
   it("renders tour design card with book icon and is enabled", () => {
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     expect(tourCard).toBeInTheDocument();
@@ -128,7 +129,7 @@ describe("WelcomePage", () => {
 
   it("navigates to compact view when compact design is clicked", async () => {
     const user = userEvent.setup();
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     const compactCard = screen.getByRole("button", { name: /Compact Design/ });
     await user.click(compactCard);
@@ -137,7 +138,7 @@ describe("WelcomePage", () => {
   });
 
   it("renders legal disclaimer", () => {
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     expect(
       screen.getByText("Note: This calculator is for informational purposes only.")
@@ -145,13 +146,13 @@ describe("WelcomePage", () => {
   });
 
   it("renders FAQ placeholder area", () => {
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     expect(screen.getByText("How is the part-time duration calculated?")).toBeInTheDocument();
   });
 
   it("has proper accessibility attributes", () => {
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     const main = screen.getByRole("main");
     expect(main).toHaveAttribute("id", "main");
@@ -163,7 +164,7 @@ describe("WelcomePage", () => {
 
   it("navigates to tour view when tour design is clicked", async () => {
     const user = userEvent.setup();
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     const tourCard = screen.getByRole("button", { name: /Guided Design.*Welcome/ });
     await user.click(tourCard);
@@ -174,10 +175,13 @@ describe("WelcomePage", () => {
 
   it("supports keyboard focus order for skip link and design cards", async () => {
     const user = userEvent.setup();
-    render(<WelcomePage />);
+    render(<WelcomePage />, { wrapper: ThemeProvider });
 
     await user.tab();
     expect(screen.getByText("Skip to main content")).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByRole("button", { name: /Switch theme/i })).toHaveFocus();
 
     await user.tab();
     const languageToggles = screen.getAllByLabelText(/Switch to next language/i);

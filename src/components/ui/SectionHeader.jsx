@@ -28,13 +28,13 @@ function SectionHeader({
   return (
     <header className={`flex flex-col gap-3 ${alignClass} ${className}`}>
       <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <HeadingTag className="text-2xl font-bold text-slate-900">
+        <HeadingTag className="text-2xl font-bold text-slate-900 dark:text-white">
           {title}
         </HeadingTag>
         {actions ? <div className="flex shrink-0 gap-2">{actions}</div> : null}
       </div>
       {subtitle ? (
-        <p className="text-base text-slate-700">{subtitle}</p>
+        <p className="text-base text-slate-700 dark:text-slate-300">{subtitle}</p>
       ) : null}
       {badgeList.length > 0 ? (
         <div className="flex flex-wrap gap-2">

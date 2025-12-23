@@ -115,7 +115,7 @@ export default function ParttimeHoursInput({
       <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={PARTTIME_INPUT_NAME}
-          className="font-semibold text-gray-800"
+          className="font-semibold text-gray-800 dark:text-gray-200"
         >
           {t("parttimeHours.label")}
         </label>
@@ -156,14 +156,13 @@ export default function ParttimeHoursInput({
         <div
           role="status"
           aria-live="polite"
-          className={`text-sm font-semibold ${
-            meetsMinFactor ? "text-emerald-700" : "text-red-700"
-          }`}
+          className={`text-sm font-semibold ${meetsMinFactor ? "text-emerald-700" : "text-red-700"
+            }`}
         >
           {meetsMinFactor
             ? t("parttimeHours.factorText", {
-                percent: ((numericHours / fulltimeNumeric) * 100).toFixed(0),
-              })
+              percent: ((numericHours / fulltimeNumeric) * 100).toFixed(0),
+            })
             : t("parttimeHours.factorError")}
         </div>
       )}

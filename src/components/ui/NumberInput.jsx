@@ -5,7 +5,7 @@ import { useRef, useEffect } from "react";
 import { sanitizePositiveDecimal } from "../../utils/sanitizePositiveDecimal.js";
 
 const BASE_CLASSES =
-  "w-full rounded-lg border border-slate-300 px-3 py-2 text-center text-base text-slate-900 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700";
+  "w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B0E14] px-3 py-2 text-center text-base text-slate-900 dark:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-[#5D5CFF]";
 const ERROR_CLASSES = "border-red-600 focus-visible:outline-red-600";
 
 /**
@@ -28,7 +28,7 @@ function NumberInput({ className = "", invalid, ...rest }) {
 
   const inputProps = { ...rest };
   if (inputProps.inputMode === undefined) {
-  inputProps.inputMode = "numeric";
+    inputProps.inputMode = "numeric";
   }
 
   // Block invalid keys before they're entered (prevents "e", "+", "-", etc.)
@@ -40,7 +40,7 @@ function NumberInput({ className = "", invalid, ...rest }) {
       "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown",
       "Home", "End"
     ];
-    
+
     // Allow Ctrl/Cmd + A, C, V, X, Z (copy, paste, cut, undo)
     if (e.ctrlKey || e.metaKey) {
       if (["a", "c", "v", "x", "z"].includes(e.key.toLowerCase())) {
@@ -50,7 +50,7 @@ function NumberInput({ className = "", invalid, ...rest }) {
         return;
       }
     }
-    
+
     // Check if key is allowed
     if (allowedKeys.includes(e.key)) {
       if (typeof userOnKeyDown === "function") {
@@ -58,7 +58,7 @@ function NumberInput({ className = "", invalid, ...rest }) {
       }
       return;
     }
-    
+
     // Check if it's a digit, dot, or comma
     if (/^[0-9.,]$/.test(e.key)) {
       if (typeof userOnKeyDown === "function") {
@@ -66,7 +66,7 @@ function NumberInput({ className = "", invalid, ...rest }) {
       }
       return;
     }
-    
+
     // Block all other keys (including "e", "+", "-", etc.)
     e.preventDefault();
   };

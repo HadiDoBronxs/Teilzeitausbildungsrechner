@@ -51,7 +51,7 @@ export default function ResultsTab({
             onClick={onReset}
             variant="ghost"
             size="md"
-            className="w-full text-slate-500 justify-center"
+            className="w-full text-slate-500 dark:text-slate-400 justify-center"
             ariaLabel={t("app.reset_explained")}
           >
             {t("app.reset")}

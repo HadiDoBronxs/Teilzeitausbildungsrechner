@@ -47,7 +47,7 @@ export default function FulltimeHoursInput({ onValueChange }) {
       <div className="flex items-center justify-between gap-2">
         <label
           htmlFor={FULLTIME_INPUT_NAME}
-          className="font-semibold text-gray-800"
+          className="font-semibold text-gray-800 dark:text-gray-200"
         >
           {t("fulltimeHours.label")}
         </label>

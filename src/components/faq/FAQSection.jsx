@@ -82,7 +82,7 @@ export default function FAQSection() {
       event.preventDefault();
       const lastItem =
         FAQ_CATEGORIES[FAQ_CATEGORIES.length - 1]?.items[
-          FAQ_CATEGORIES[FAQ_CATEGORIES.length - 1].items.length - 1
+        FAQ_CATEGORIES[FAQ_CATEGORIES.length - 1].items.length - 1
         ];
       const last = document.getElementById(`faq-trigger-${lastItem}`);
       if (last) last.focus();
@@ -100,24 +100,24 @@ export default function FAQSection() {
       <div className="text-center space-y-2 sm:max-w-3xl mx-auto">
         <h2
           id="faq-heading"
-          className="text-2xl font-semibold text-slate-900 leading-tight"
+          className="text-2xl font-semibold text-slate-900 dark:text-white leading-tight"
         >
           {t("welcome.faqTitle")}
         </h2>
-        <p className="text-sm text-slate-700 leading-relaxed">
+        <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
           {t("welcome.faqIntro")}
         </p>
         <div className="flex flex-wrap justify-center gap-3 pt-2">
           <button
             type="button"
-            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+            className="text-sm font-medium text-blue-700 dark:text-[#5D5CFF] hover:text-blue-900 dark:hover:text-[#4B4ACF] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-[#5D5CFF]"
             onClick={() => setShowLegal(true)}
           >
             {t("welcome.faqLinkLegal")}
           </button>
           <button
             type="button"
-            className="text-sm font-medium text-blue-700 underline underline-offset-4 hover:no-underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+            className="text-sm font-medium text-blue-700 dark:text-[#5D5CFF] hover:text-blue-900 dark:hover:text-[#4B4ACF] transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-[#5D5CFF]"
             onClick={() => setShowTransparency(true)}
           >
             {t("welcome.faqLinkTransparency")}
@@ -134,7 +134,7 @@ export default function FAQSection() {
           >
             <h3
               id={`faq-cat-${category.key}`}
-              className="text-lg font-semibold text-slate-900"
+              className="text-lg font-semibold text-slate-900 dark:text-white"
             >
               {t(`faq.categories.${category.key}`)}
             </h3>
@@ -144,7 +144,7 @@ export default function FAQSection() {
                 return (
                   <li
                     key={item}
-                    className="rounded-xl border border-slate-200 bg-white shadow-sm"
+                    className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-sm"
                   >
                     <button
                       type="button"
@@ -154,7 +154,8 @@ export default function FAQSection() {
                       onClick={() => toggle(item)}
                       onKeyDown={(event) => handleKeyToggle(event, item)}
                       // Dark button for strong contrast; icon indicates state.
-                      className="w-full flex items-center justify-between gap-4 px-4 py-3 text-left rounded-xl bg-slate-900 text-white hover:bg-slate-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 transition shadow-sm"
+                      className={`w-full flex items-center justify-between gap-4 px-4 py-3 text-left transition shadow-sm bg-slate-900 dark:bg-slate-800 text-white hover:bg-slate-800 dark:hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-500 ${isOpen ? "rounded-t-xl" : "rounded-xl"
+                        }`}
                     >
                       <span className="font-medium">
                         {t(`faq.items.${item}.question`)}
@@ -170,14 +171,13 @@ export default function FAQSection() {
                       id={`faq-panel-${item}`}
                       role="region"
                       aria-labelledby={`faq-trigger-${item}`}
-                      className={`border-t border-slate-200 px-4 py-3 space-y-2 bg-slate-50 ${
-                        isOpen ? "block" : "hidden"
-                      }`}
+                      className={`border-t border-slate-200 dark:border-slate-700 px-4 py-3 space-y-2 bg-slate-50 dark:bg-slate-900 rounded-b-xl ${isOpen ? "block" : "hidden"
+                        }`}
                     >
-                      <p className="text-sm leading-relaxed text-slate-800">
+                      <p className="text-sm leading-relaxed text-slate-800 dark:text-slate-200">
                         {t(`faq.items.${item}.answer`)}
                       </p>
-                      <p className="text-sm text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2">
                         {t(`faq.items.${item}.easy`)}
                       </p>
                     </div>

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import Button from "../ui/Button.jsx";
 import Card from "../ui/Card.jsx";
 
-const PARAGRAPH_CLASS = "text-base md:text-lg leading-relaxed text-slate-800";
+const PARAGRAPH_CLASS = "text-base md:text-lg leading-relaxed text-slate-800 dark:text-slate-200";
 
 /**
  * Reusable legal basis content for the calculator and modal.
@@ -21,7 +21,7 @@ export default function LegalContent({ className = "" }) {
       <section className="space-y-3" aria-labelledby="legal-bbig7a-heading">
         <h3
           id="legal-bbig7a-heading"
-          className="text-xl md:text-2xl font-semibold text-slate-900"
+          className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white"
         >
           {t("legal.bbig7a.heading")}
         </h3>
@@ -44,7 +44,7 @@ export default function LegalContent({ className = "" }) {
       <section className="space-y-3" aria-labelledby="legal-hwo27b-heading">
         <h3
           id="legal-hwo27b-heading"
-          className="text-xl md:text-2xl font-semibold text-slate-900"
+          className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white"
         >
           {t("legal.hwo27b.heading")}
         </h3>
@@ -67,16 +67,18 @@ export default function LegalContent({ className = "" }) {
       <section className="space-y-3" aria-labelledby="legal-easy-heading">
         <h3
           id="legal-easy-heading"
-          className="text-xl md:text-2xl font-semibold text-slate-900"
+          className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white"
         >
           {t("legal.easy.heading")}
         </h3>
-        <ul className="list-disc list-inside space-y-2 text-base md:text-lg leading-relaxed text-slate-800">
+        <ul className="list-disc list-inside space-y-2 text-base md:text-lg leading-relaxed text-slate-800 dark:text-slate-200">
           <li>{t("legal.easy.point1")}</li>
           <li>{t("legal.easy.point2")}</li>
           <li>{t("legal.easy.point3")}</li>
-          <li>{t("legal.easy.point4")}</li>
-          <li>{t("legal.easy.point5")}</li>
+          <ul className="list-circle list-inside pl-6 space-y-2">
+            <li>{t("legal.easy.point4")}</li>
+            <li>{t("legal.easy.point5")}</li>
+          </ul>
         </ul>
       </section>
 
@@ -84,7 +86,7 @@ export default function LegalContent({ className = "" }) {
       <section className="space-y-4" aria-labelledby="legal-notice-heading">
         <h3
           id="legal-notice-heading"
-          className="text-xl md:text-2xl font-semibold text-slate-900"
+          className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white"
         >
           {t("legal.notice.heading")}
         </h3>
@@ -94,13 +96,13 @@ export default function LegalContent({ className = "" }) {
       {/* Additional official sources (only those provided) open in a new tab. */}
       <Card
         as="section"
-        className="space-y-3 border-slate-200 bg-slate-50"
+        className="space-y-3 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
         padding="p-4 sm:p-5"
         aria-labelledby="legal-sources-heading"
       >
         <h3
           id="legal-sources-heading"
-          className="text-xl md:text-2xl font-semibold text-slate-900"
+          className="text-xl md:text-2xl font-semibold text-slate-900 dark:text-white"
         >
           {t("legal.sources.heading")}
         </h3>

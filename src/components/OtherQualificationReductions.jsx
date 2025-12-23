@@ -78,7 +78,7 @@ export default function OtherQualificationReductions({
             <div className="flex items-center justify-between gap-2">
               <label
                 htmlFor={selectId}
-                className="font-semibold text-gray-800 text-center flex-1"
+                className="font-semibold text-gray-800 dark:text-gray-200 text-center flex-1"
               >
                 {t(`${option.labelKey}.question`)}
               </label>
@@ -107,7 +107,7 @@ export default function OtherQualificationReductions({
       })}
       {value.length > 0 && (
         <div className="w-full max-w-sm mx-auto p-2 space-y-2">
-          <p className="text-sm font-semibold text-slate-900">
+          <p className="text-sm font-semibold text-slate-900 dark:text-slate-50">
             {t("qualifications.summary", {
               months: cappedTotal,
               max: MAX_QUALIFICATION_REDUCTION,

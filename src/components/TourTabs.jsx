@@ -41,9 +41,9 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
     if (typeof window !== "undefined" && window.matchMedia) {
       const mediaQuery = window.matchMedia("(min-width: 1024px)");
       const updateIsDesktop = () => setIsDesktop(mediaQuery.matches);
-      
+
       updateIsDesktop(); // Set initial value
-      
+
       // Use modern addEventListener API (addListener/removeListener are deprecated)
       mediaQuery.addEventListener("change", updateIsDesktop);
       return () => mediaQuery.removeEventListener("change", updateIsDesktop);
@@ -80,30 +80,30 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
     <div
       role="tablist"
       aria-label={t("tour.tabs.inputs")}
-      className="mb-4 lg:mb-0 lg:border-b lg:border-slate-200 lg:pb-2"
+      className="mb-4 lg:mb-0 lg:border-b lg:border-slate-200 dark:lg:border-slate-800 lg:pb-2"
     >
       {/* Mobile: Vertical tabs */}
       <div className="flex flex-col gap-1.5 lg:hidden" aria-hidden={isDesktop}>
         {visibleTabs.map((tabId, index) => {
           const isActive = activeTab === tabId;
           const tabKey = `tour.tabs.${tabId}`;
-          
+
           // Build className based on state for mobile vertical tabs
           const baseClasses = "px-3 py-2.5 text-sm font-semibold transition-colors rounded-md text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700";
-          
+
           let stateClasses;
           if (disabled) {
-            stateClasses = "!bg-slate-100 !text-slate-600 cursor-not-allowed !border !border-slate-200";
+            stateClasses = "!bg-slate-100 dark:!bg-slate-800 !text-slate-600 dark:!text-slate-400 cursor-not-allowed !border !border-slate-200 dark:!border-slate-700";
           } else if (isActive) {
-            // Active tab: dark background, white text, clear contrast
-            stateClasses = "!bg-slate-950 !text-white shadow-sm";
+            // Active tab: dark background (darker in dark mode), clear contrast
+            stateClasses = "!bg-slate-950 dark:!bg-[#5D5CFF] !text-white dark:!text-white shadow-sm";
           } else {
             // Inactive tab: light background, dark text, good readability
-            stateClasses = "!bg-white !text-slate-700 border border-slate-200 hover:!bg-slate-50 hover:!text-slate-900 hover:border-slate-300";
+            stateClasses = "!bg-white dark:!bg-[#151A23] !text-slate-700 dark:!text-slate-400 border border-slate-200 dark:border-slate-700 hover:!bg-slate-50 dark:hover:!bg-[#1e293b] hover:!text-slate-900 dark:hover:!text-white hover:border-slate-300 dark:hover:border-slate-600";
           }
-          
+
           const tabClassName = `${baseClasses} ${stateClasses}`;
-          
+
           return (
             <button
               key={`mobile-${tabId}`}
@@ -121,10 +121,9 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
                 <span
                   className={`
                     flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold
-                    ${
-                      disabled
-                        ? "bg-slate-200 text-slate-700 border border-slate-300"
-                        : isActive
+                    ${disabled
+                      ? "bg-slate-200 text-slate-700 border border-slate-300"
+                      : isActive
                         ? "bg-white text-slate-950"
                         : "bg-slate-100 text-slate-600 border border-slate-200"
                     }
@@ -145,23 +144,24 @@ export default function TourTabs({ activeTab, onTabChange, wantsReduction, disab
         {visibleTabs.map((tabId) => {
           const isActive = activeTab === tabId;
           const tabKey = `tour.tabs.${tabId}`;
-          
+
           // Build className based on state for desktop horizontal tabs
           const baseClasses = "px-4 py-2 text-sm font-semibold transition-colors border-b-2 -mb-px whitespace-nowrap flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700";
-          
+
           let stateClasses;
           if (disabled) {
-            stateClasses = "!bg-slate-100 !text-slate-600 border border-slate-200 cursor-not-allowed";
+            stateClasses = "!bg-slate-100 dark:!bg-slate-800 !text-slate-600 dark:!text-slate-400 border border-slate-200 dark:border-slate-700 cursor-not-allowed";
           } else if (isActive) {
-            // Active tab: dark background, white text, dark border
-            stateClasses = "!bg-slate-950 !text-white border-slate-950";
+            // Active tab: dark background (matches card), white text, borders to merge with card
+            // Dashdark X: Use brand color highlight or deep surface
+            stateClasses = "!bg-slate-950 dark:!bg-[#5D5CFF] !text-white border-slate-950 dark:border-[#5D5CFF] dark:border-b-[#5D5CFF]";
           } else {
-            // Inactive tab: white background, dark text, transparent border
-            stateClasses = "!bg-white !text-slate-900 border-transparent hover:!text-slate-950 hover:border-slate-300";
+            // Inactive tab: distinct button-like appearance in dark mode
+            stateClasses = "!bg-white dark:!bg-[#151A23] !text-slate-900 dark:!text-slate-400 border-transparent dark:border-slate-700 hover:!text-slate-950 dark:hover:!text-white hover:border-slate-300 dark:hover:border-[#5D5CFF] shadow-sm";
           }
-          
+
           const tabClassName = `${baseClasses} ${stateClasses}`;
-          
+
           return (
             <button
               key={`desktop-${tabId}`}

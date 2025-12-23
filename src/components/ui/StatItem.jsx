@@ -16,10 +16,10 @@ function StatItem({ label, value, description, emphasisLevel = "strong", classNa
 
   return (
     <div className={`space-y-1 text-center ${className}`}>
-      <dt className="text-sm font-medium text-slate-600">{label}</dt>
-      <dd className={valueClass}>{value}</dd>
+      <dt className="text-sm font-medium text-slate-600 dark:text-slate-400">{label}</dt>
+      <dd className={`${valueClass} dark:text-white`}>{value}</dd>
       {description ? (
-        <p className="text-sm text-slate-500">{description}</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">{description}</p>
       ) : null}
     </div>
   );
