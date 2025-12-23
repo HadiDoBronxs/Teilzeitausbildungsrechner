@@ -27,9 +27,9 @@
 :root.dark {
   /* Dark mode overrides - Dashdark X Style */
   color-scheme: dark;
-  --color-link: #6366f1;
-  /* Vibrant Indigo */
-  --color-link-hover: #818cf8;
+  --color-link: #818cf8;
+  /* Lighter Indigo for AA Compliance (6.48:1) */
+  --color-link-hover: #a5b4fc;
   --color-focus: #5D5CFF;
   /* Bright Blurple */
   --color-focus-strong: #5D5CFF;
