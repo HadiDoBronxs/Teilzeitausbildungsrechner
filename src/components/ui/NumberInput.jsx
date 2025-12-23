@@ -5,7 +5,7 @@ import { useRef, useEffect } from "react";
 import { sanitizePositiveDecimal } from "../../utils/sanitizePositiveDecimal.js";
 
 const BASE_CLASSES =
-  "w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-center text-base text-slate-900 dark:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-500";
+  "w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-[#0B0E14] px-3 py-2 text-center text-base text-slate-900 dark:text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-[#5D5CFF]";
 const ERROR_CLASSES = "border-red-600 focus-visible:outline-red-600";
 
 /**

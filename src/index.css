@@ -25,21 +25,31 @@
 }
 
 :root.dark {
-  /* Dark mode overrides */
+  /* Dark mode overrides - Dashdark X Style */
   color-scheme: dark;
-  --color-link: #3b82f6;
-  --color-link-hover: #60a5fa;
-  --color-focus: #2dd4bf;
-  --color-focus-strong: #2dd4bf;
-  --color-focus-soft: rgba(45, 212, 191, 0.2);
-  --color-surface: #1e293b;
-  --color-surface-muted: #0f172a;
+  --color-link: #6366f1;
+  /* Vibrant Indigo */
+  --color-link-hover: #818cf8;
+  --color-focus: #5D5CFF;
+  /* Bright Blurple */
+  --color-focus-strong: #5D5CFF;
+  --color-focus-soft: rgba(93, 92, 255, 0.2);
+
+  /* Dashdark X Palette */
+  --color-bg-body: #0B0E14;
+  /* Deepest Navy/Black */
+  --color-surface: #151A23;
+  /* Card/Sidebar Background */
+  --color-surface-muted: #1e293b;
+  /* Slightly lighter for inputs/muted areas */
+
   --color-disabled-bg: #334155;
   --color-disabled-text: #94a3b8;
-  --color-border: #475569;
+  --color-border: #2D3748;
+  /* Subtle border */
 
   /* Standard colors for dark mode body */
-  background-color: #0f172a;
+  background-color: var(--color-bg-body);
   color: #f8fafc;
 }
 
@@ -92,18 +102,21 @@ body {
 }
 
 /* Update body to actually use the variables we defined */
+/* Update body to actually use the variables we defined */
 body {
   margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--color-surface-muted);
+  /* Default light mode background */
+  background-color: #f8fafc;
   color: #0f172a;
   /* Default text */
 }
 
 :root.dark body {
+  background-color: var(--color-bg-body);
   color: #f8fafc;
 }
 
