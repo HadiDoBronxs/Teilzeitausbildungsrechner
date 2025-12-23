@@ -2,6 +2,7 @@
 // Organizes calculator inputs into step-by-step tabs with explanations.
 import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import ThemeToggle from "../components/ThemeToggle.jsx";
 import LanguageToggle from "../components/LanguageToggle.jsx";
 import TourTabs from "../components/TourTabs.jsx";
 import TourSidebar from "../components/TourSidebar.jsx";
@@ -202,7 +203,8 @@ export default function TourView() {
                 >
                   ← {t("welcome.backButton")}
                 </Button>
-                <div className="lg:hidden">
+                <div className="lg:hidden flex items-center gap-2">
+                  <ThemeToggle />
                   <LanguageToggle />
                 </div>
               </div>
@@ -215,7 +217,8 @@ export default function TourView() {
               </h1>
             </div>
             {/* Desktop: language toggle on right */}
-            <div className="hidden lg:flex lg:flex-shrink-0">
+            <div className="hidden lg:flex lg:flex-shrink-0 lg:items-center lg:gap-2">
+              <ThemeToggle />
               <LanguageToggle />
             </div>
           </div>
