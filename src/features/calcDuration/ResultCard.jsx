@@ -190,9 +190,9 @@ export default function ResultCard({ values, result: injectedResult }) {
   const transparencyButton = (
     <Button
       type="button"
-      variant="ghost"
+      variant="secondary"
       size="md"
-      className="w-full sm:w-auto text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:underline hover:bg-transparent"
+      className="w-full sm:w-auto"
       onClick={openTransparency}
       ariaHaspopup="dialog"
       ariaExpanded={showTransparency}
@@ -210,9 +210,9 @@ export default function ResultCard({ values, result: injectedResult }) {
   const legalButton = (
     <Button
       type="button"
-      variant="ghost"
+      variant="secondary"
       size="md"
-      className="w-full sm:w-auto text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:underline hover:bg-transparent"
+      className="w-full sm:w-auto"
       onClick={openLegal}
       ariaHaspopup="dialog"
       ariaExpanded={showLegal}
@@ -350,7 +350,7 @@ export default function ResultCard({ values, result: injectedResult }) {
 
                 {/* Manual reduction badge - shown when user-entered manual reduction exists */}
                 {hasManualReduction ? (
-                  <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <div className="inline-flex rounded-full border border-slate-200 bg-slate-100 dark:bg-[#1e293b] px-3 py-1 text-xs font-semibold text-slate-700 dark:text-slate-300">
                     {t("reduction.manualApplied", {
                       months: reduction.manual,
                     })}

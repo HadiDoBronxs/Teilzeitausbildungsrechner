@@ -180,7 +180,7 @@ export default function TourView() {
         id={MAIN_ID}
         tabIndex="-1"
         aria-labelledby={MAIN_HEADING_ID}
-        className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 px-4 py-12 sm:py-16"
+        className="min-h-screen bg-slate-50 dark:bg-[#0B0E14] text-slate-900 dark:text-slate-50 px-4 py-12 sm:py-16"
       >
         <div className="max-w-7xl mx-auto">
           {/* Header with title, back button, and language toggle */}

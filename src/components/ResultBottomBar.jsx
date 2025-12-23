@@ -68,7 +68,7 @@ export default function ResultBottomBar({ values, resultCardId = "result-card" }
 
   return (
     <div
-      className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-950 border-t-2 border-slate-200 dark:border-slate-800 shadow-lg z-50"
+      className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#151A23] border-t-2 border-slate-200 dark:border-[#2D3748] shadow-lg z-50"
       role="status"
       aria-label={t("result.labels.part")}
     >

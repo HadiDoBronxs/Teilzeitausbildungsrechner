@@ -67,7 +67,7 @@ export default function TourSidebar({
           </h2>
         </header>
 
-        <div className="space-y-3 pt-2 border-t border-slate-200">
+        <div className="space-y-3 pt-2 border-t border-slate-200 dark:border-[#2D3748]">
           {/* Basic inputs */}
           {fulltimeHours && (
             <div className="text-sm">
@@ -96,7 +96,7 @@ export default function TourSidebar({
 
           {/* Education section - only school degree, academic moved to reductions */}
           {schoolDegree && (
-            <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+            <div className="pt-2 border-t border-slate-200 dark:border-[#2D3748]">
               <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-2">
                 {t("tour.sidebar.education")}
               </div>
@@ -106,7 +106,7 @@ export default function TourSidebar({
 
           {/* Reductions section - includes academic qualification and other qualifications */}
           {(qualificationLabels.length > 0 || manualReductionMonths > 0) && (
-            <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+            <div className="pt-2 border-t border-slate-200 dark:border-[#2D3748]">
               <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-2">
                 {t("tour.sidebar.reductions")}
               </div>
