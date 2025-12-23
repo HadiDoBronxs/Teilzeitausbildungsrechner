@@ -115,6 +115,8 @@ export default function TourView() {
     return fulltimeValid && parttimeValid && durationValid;
   }, [fulltimeHours, parttimeHours, formValues.fullDurationMonths]);
 
+
+
   // Compute result to check if inputs are valid (tabs should be disabled if result.allowed === false)
   const result = useMemo(
     () => readFormAndCalc(formValues),
@@ -123,6 +125,8 @@ export default function TourView() {
 
   // Tabs should be disabled if inputs are invalid (either validation fails OR result.allowed === false)
   const areTabsDisabled = !areInputsValid || !result || result.allowed === false;
+
+
 
   // Determine next tab based on current tab and wantsReduction preference
   // Prevent navigation if inputs are invalid

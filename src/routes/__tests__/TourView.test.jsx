@@ -3,6 +3,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { ThemeProvider } from "../../components/ThemeProvider.jsx";
 
 // Mock pdfjs-dist before importing TourView (which imports PDFViewer)
 vi.mock("../../components/PDFViewer.jsx", () => ({
@@ -109,7 +110,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       mockReadFormAndCalc.mockReturnValue(createInvalidResult("invalidHours"));
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Check that tabs are disabled
       const tabs = screen.getAllByRole("tab");
@@ -153,7 +154,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       mockReadFormAndCalc.mockReturnValue(createInvalidResult("minFactor"));
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Check that tabs are disabled
       const tabs = screen.getAllByRole("tab");
@@ -197,7 +198,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       mockReadFormAndCalc.mockReturnValue(createInvalidResult("invalidHours"));
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Check that tabs are disabled
       const tabs = screen.getAllByRole("tab");
@@ -241,7 +242,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       mockReadFormAndCalc.mockReturnValue(createInvalidResult("invalidHours"));
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Find Next button by role (Button component wraps text in span)
       const nextButton = screen.getByRole("button", { name: /tour.navigation.next/ });
@@ -283,7 +284,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       mockReadFormAndCalc.mockReturnValue(createInvalidResult("invalidHours"));
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Should start on inputs tab (tabpanel is labelled by tab button)
       const inputsTab = screen.getByRole("tab", { name: /tour.tabs.inputs/ });
@@ -335,7 +336,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       mockReadFormAndCalc.mockReturnValue(createInvalidResult("invalidHours"));
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Should start on inputs tab
       expect(screen.getByRole("tabpanel", { name: /tour.tabs.inputs/ })).toBeInTheDocument();
@@ -386,7 +387,7 @@ describe("TourView - Invalid Input Validation", () => {
     });
     mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-    render(<TourView />);
+    render(<TourView />, { wrapper: ThemeProvider });
 
     await user.tab();
     expect(screen.getByText("skipToMain")).toHaveFocus();
@@ -394,22 +395,27 @@ describe("TourView - Invalid Input Validation", () => {
     await user.tab();
     expect(screen.getByRole("button", { name: /welcome.backButton/i })).toHaveFocus();
 
+    // Tab to theme toggle
+    await user.tab();
+    const themeToggles = screen.getAllByLabelText(/Switch theme/i);
+    const focusedThemeToggle = themeToggles.find(toggle => toggle === document.activeElement);
+    expect(focusedThemeToggle).toBeInTheDocument();
+
     // Tab to first language toggle (there may be multiple - mobile/desktop)
     await user.tab();
     const languageToggles = screen.getAllByLabelText(/Switch to next language/i);
-    let focusedToggle = languageToggles.find(toggle => toggle === document.activeElement);
+    const focusedToggle = languageToggles.find(toggle => toggle === document.activeElement);
     expect(focusedToggle).toBeInTheDocument();
 
-    // Tab through remaining language toggles (if any) until we reach the tab
-    // There are typically 2 language toggles (mobile and desktop), so we may need one more tab
-    await user.tab();
-    // Check if focus moved to tab or is still on a language toggle
-    const tabElement = screen.getByRole("tab", { name: /tour.tabs.inputs/i });
-    if (document.activeElement !== tabElement) {
-      // Still on a language toggle, tab once more
+    // Tab through remaining headers (theme/language toggles) until we reach the inputs tab
+    // JSDOM might render both mobile and desktop versions as focusable since it doesn't fully process CSS visibility
+    const inputsTab = screen.getByRole("tab", { name: /tour.tabs.inputs/i });
+    for (let i = 0; i < 5; i++) {
+      if (document.activeElement === inputsTab) break;
       await user.tab();
     }
-    expect(tabElement).toHaveFocus();
+
+    expect(inputsTab).toHaveFocus();
   });
 
   describe("when inputs are valid", () => {
@@ -448,7 +454,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Tabs should be enabled
       const tabs = screen.getAllByRole("tab");
@@ -506,7 +512,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator());
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       const nextButton = screen.getByRole("button", { name: /tour.navigation.next →/i });
       fireEvent.click(nextButton);
@@ -518,7 +524,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ wantsReduction: "no" }));
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       const nextButton = screen.getByRole("button", { name: /tour.navigation.next →/i });
       fireEvent.click(nextButton);
@@ -530,7 +536,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator());
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Navigate to education tab
       const educationTab = screen.getByRole("tab", { name: /tour.tabs.education/ });
@@ -546,7 +552,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator());
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Navigate to reductions tab
       const reductionsTab = screen.getByRole("tab", { name: /tour.tabs.reductions/ });
@@ -562,7 +568,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator());
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Navigate to results tab
       const resultsTab = screen.getByRole("tab", { name: /tour.tabs.results/ });
@@ -578,7 +584,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ wantsReduction: "no" }));
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Navigate to results tab
       const resultsTab = screen.getByRole("tab", { name: /tour.tabs.results/ });
@@ -594,7 +600,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator());
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Navigate to reductions tab
       const reductionsTab = screen.getByRole("tab", { name: /tour.tabs.reductions/ });
@@ -610,7 +616,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator());
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Navigate to education tab
       const educationTab = screen.getByRole("tab", { name: /tour.tabs.education/ });
@@ -660,7 +666,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ wantsReduction: "yes" }));
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      const { rerender } = render(<TourView />);
+      const { rerender } = render(<TourView />, { wrapper: ThemeProvider });
 
       // Navigate to education tab
       const educationTab = screen.getByRole("tab", { name: /tour.tabs.education/ });
@@ -668,7 +674,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       // Change wantsReduction to "no"
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ wantsReduction: "no" }));
-      rerender(<TourView />);
+      rerender(<TourView />, { wrapper: ThemeProvider });
 
       expect(screen.getByRole("tabpanel", { name: /tour.tabs.results/ })).toBeInTheDocument();
     });
@@ -677,7 +683,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ wantsReduction: "yes" }));
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      const { rerender } = render(<TourView />);
+      const { rerender } = render(<TourView />, { wrapper: ThemeProvider });
 
       // Navigate to reductions tab
       const reductionsTab = screen.getByRole("tab", { name: /tour.tabs.reductions/ });
@@ -685,7 +691,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       // Change wantsReduction to "no"
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ wantsReduction: "no" }));
-      rerender(<TourView />);
+      rerender(<TourView />, { wrapper: ThemeProvider });
 
       expect(screen.getByRole("tabpanel", { name: /tour.tabs.results/ })).toBeInTheDocument();
     });
@@ -728,7 +734,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ wantsReduction: "no" }));
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Sidebar should receive null for schoolDegreeId
       // We can't directly test this, but we can verify the component renders
@@ -743,7 +749,7 @@ describe("TourView - Invalid Input Validation", () => {
       );
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // Use getAllByRole since there are multiple complementary elements (wrapper + sidebar)
       const complementaryElements = screen.getAllByRole("complementary");
@@ -797,7 +803,7 @@ describe("TourView - Invalid Input Validation", () => {
         configurable: true,
       });
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       // The button uses ariaLabel prop which sets aria-label attribute
       // The accessible name is just "welcome.backButton", not including the arrow
@@ -852,7 +858,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator());
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       expect(screen.getByTestId("pdf-viewer")).toBeInTheDocument();
     });
@@ -861,7 +867,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ pdfBytes: null }));
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       expect(screen.queryByTestId("pdf-viewer")).not.toBeInTheDocument();
     });
@@ -871,7 +877,7 @@ describe("TourView - Invalid Input Validation", () => {
       vi.mocked(useCalculator).mockReturnValue(createMockCalculator({ handleClosePDF }));
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       const closeButton = screen.getByText("Close PDF");
       fireEvent.click(closeButton);
@@ -916,7 +922,7 @@ describe("TourView - Invalid Input Validation", () => {
 
       mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-      render(<TourView />);
+      render(<TourView />, { wrapper: ThemeProvider });
 
       expect(handleWantsReductionChange).toHaveBeenCalledWith("no");
     });
@@ -964,7 +970,7 @@ describe("TourView accessibility", () => {
 
     mockReadFormAndCalc.mockReturnValue(createValidResult());
 
-    render(<TourView />);
+    render(<TourView />, { wrapper: ThemeProvider });
 
     const inputsPanel = screen.getByRole("tabpanel", { name: /tour.tabs.inputs/ });
     expect(inputsPanel).toHaveAttribute(
