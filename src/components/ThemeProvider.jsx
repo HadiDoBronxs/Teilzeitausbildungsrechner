@@ -2,6 +2,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const ThemeContext = createContext();
 
+/**
+ * ThemeProvider manages the application's color theme (light/dark/system).
+ * 
+ * Features:
+ * - Persists selection to localStorage ("theme" key).
+ * - Detects system preference ("prefers-color-scheme") when set to "system".
+ * - Applies "dark" or "light" class to the HTML root element.
+ */
 export function ThemeProvider({ children }) {
     // Initialize theme from localStorage or system preference
     const [theme, setTheme] = useState(() => {

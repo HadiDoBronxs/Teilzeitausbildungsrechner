@@ -35,18 +35,18 @@
   --color-focus-strong: #5D5CFF;
   --color-focus-soft: rgba(93, 92, 255, 0.2);
 
-  /* Dashdark X Palette */
+  /* Dashdark X Palette - Deep Navy & Vibrant Indigo */
   --color-bg-body: #0B0E14;
-  /* Deepest Navy/Black */
+  /* Main background (Deepest Navy) */
   --color-surface: #151A23;
-  /* Card/Sidebar Background */
+  /* Card/Sidebar background (Slightly lighter) */
   --color-surface-muted: #1e293b;
-  /* Slightly lighter for inputs/muted areas */
+  /* Input fields/muted areas */
 
   --color-disabled-bg: #334155;
   --color-disabled-text: #94a3b8;
   --color-border: #2D3748;
-  /* Subtle border */
+  /* Subtle border for separation */
 
   /* Standard colors for dark mode body */
   background-color: var(--color-bg-body);

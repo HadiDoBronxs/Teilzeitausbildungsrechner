@@ -6,6 +6,14 @@ const BASE_CLASS =
   "inline-flex items-center gap-2 font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700 dark:focus-visible:outline-teal-500 disabled:cursor-not-allowed disabled:shadow-none";
 
 // variant -> visual treatment. primary = filled blue CTA, text = inline link, pill = rounded badge-like action, ghost = subtle icon/text button.
+/**
+ * Button Visual Styles
+ * Define the appearance of buttons for each variant.
+ * 
+ * Dashdark X Note:
+ * - Dark mode uses specific hex overrides (e.g. `dark:bg-[#5D5CFF]`) to match the deep navy/indigo theme.
+ * - 'primary' and 'brand' variants use the Vibrant Indigo accent color in dark mode.
+ */
 const VARIANT_STYLES = {
   primary:
     "justify-center rounded-lg bg-slate-950 dark:bg-[#5D5CFF] border border-transparent dark:border-[#5D5CFF] px-4 py-2 text-white shadow-sm hover:bg-slate-900 dark:hover:bg-[#4B4ACF] disabled:bg-slate-300 dark:disabled:bg-slate-800 disabled:text-slate-700 dark:disabled:text-slate-500",
